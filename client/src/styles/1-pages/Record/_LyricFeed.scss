@@ -1,0 +1,73 @@
+.lyrics__feed--container {
+  @include flexCenter(100%, 100%, 0, center, center, column);
+  // background: linear-gradient(323deg, #262626 0%, #474646 100%);
+
+  .record__lyrics {
+    @include flexCenter(88%, 96%, 0.3em 0.3em 1em 1em, center, flex-start, row);
+    // box-shadow: inset 2px 2px 2px #222222, inset -2px -2px 2px #484848;
+    // margin-top: 2%;
+
+    .record__lyrics-list {
+      @include flexCenter(93%, 96%, 0.3em 0.3em 0.7em 0.7em, flex-start, stretch, column);
+      margin-top: 2%;
+      overflow-y: scroll;
+      z-index: 1;
+
+      .record__lyrics-item {
+        @include flexCenter(initial, 99%, 0.5em 1.3em 1.3em 0.5em, flex-start, flex-start, row);
+        // box-shadow: inset 1px 1px 3px #020202fc, inset -1px -1px 2px #6d6d6d;
+        // background: #282828;
+        padding: 0.75%;
+        // margin-bottom: 1%;
+
+        .record__item-num {
+          @include flexCenter(100%, 4%, 0, center, center, row);
+
+          .record__item-num-text {
+            color: $base-color;
+            font-size: 0.65rem;
+          }
+        }
+
+        .record__item-words {
+          @include flexCenter(initial, 95%, 0, flex-start, flex-start, row);
+          flex-wrap: wrap;
+          margin-left: 1%;
+
+          .record__item-words-text {
+            @include flexCenter(auto, auto, 0, center, center, row);
+            color: $primary-color-200;
+            font-size: 0.85rem;
+            line-height: 1;
+            padding: 0em 0.3em 0em 0em;
+          }
+          .record__item-words-text.initial-prompt {
+            color: #b4b4b4;
+            font-size: 0.9rem;
+            width: 100%;
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+}
+.record__transcript--container {
+  @include flexCenter(20%, 100%, 0, center, center, row);
+
+  .record__transcript {
+    @include flexCenter(78%, 96%, 100vh, center, center, row);
+    box-shadow: inset 2px 2px 3px #222222fc, inset -2px -2px 3px #5d5d5ddb;
+    overflow: scroll;
+
+    .record__transcript-text {
+      height: 90%;
+      width: 93%;
+      text-align: start;
+      overflow-y: scroll;
+      color: #3ad3b9;
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+  }
+}

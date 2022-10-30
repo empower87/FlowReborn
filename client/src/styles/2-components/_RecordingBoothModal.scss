@@ -1,0 +1,373 @@
+.RecordBoothModal {
+  @include flexCenter(100%, 100%, 0px, flex-start, center, column);
+  position: absolute;
+  top: 0;
+  z-index: 5;
+  opacity: 1;
+}
+
+.opacity-section-1 {
+  @include flexCenter(30%, 100%, 0px, center, center, column);
+  background: #0000008c;
+}
+.opacity-section-2 {
+  @include flexCenter(35%, 100%, 0px, center, center, column);
+  background: #0000008c;
+}
+.opacity-section-3 {
+  @include flexCenter(35%, 100%, 0px, center, center, column);
+  background: #0000008c;
+}
+
+.close-window-btn {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+}
+
+.section-4_controls {
+  @include flexCenter(35%, 95%, 2em 2em 0.9em 0.9em, center, center, column);
+  background: linear-gradient(314deg, #b6b6b6 0%, #d6d6d6 100%);
+  position: absolute;
+  bottom: 34%;
+
+  .section_shadow-div-inset {
+    @include flexCenter(96%, 97%, 25px 25px 10px 10px, center, center, column);
+    box-shadow: inset 2px 2px 3px 0px #7a7a7a, inset -2px -2px 3px #ffffff;
+
+    .section_next-container {
+      @include flexCenter(17%, 100%, 10px, center, center, row);
+
+      .next-container_shadow-div-inset {
+        @include flexCenter(69%, 96%, 20px 20px 3px 3px, center, center, column);
+        box-shadow: 2px 2px 3px 0px #7a7a7a, -2px -2px 3px #ffffff;
+        color: #ec6aa0;
+        font-weight: bold;
+      }
+    }
+    .section_text-container {
+      @include flexCenter(83%, 100%, 10px, flex-start, center, column);
+
+      .text-container_shadow-div-outset {
+        @include flexCenter(97%, 96%, 3px 3px 7px 7px, flex-start, center, column);
+        box-shadow: 2px 2px 3px 0px #868686, -2px -2px 2px #ffffff;
+
+        .steps_shadow-div-inset {
+          @include flexCenter(initial, 95%, 0.2em 2em 0.2em 2em, center, center, row);
+          min-height: 15%;
+          opacity: 0;
+          margin-top: 0.25em;
+          box-shadow: inset 2px 2px 3px 0px #7a7a7a, inset -2px -2px 3px #ffffff;
+          color: white;
+          padding: 0.25em;
+
+          .steps__index {
+            @include flexCenter(100%, 10%, 0, flex-start, flex-end, column);
+
+            .steps__index--shadow-div-outset {
+              @include flexCenter(93%, 92%, 0.2em 0.2em 0.2em 4em, center, center, column);
+              box-shadow: 2px 2px 3px 0px #858585, -1px -1px 2px #ffffff;
+              margin-top: 0.1em;
+              font-size: 0.8em;
+              color: #ec6aa0;
+              font-weight: bold;
+            }
+          }
+          .steps__steps {
+            @include flexCenter(initial, 90%, 0.2em 2em 0.2em 2em, center, flex-start, column);
+            padding-left: 3%;
+
+            .steps__text {
+              height: fit-content;
+              width: 85%;
+              font-size: 0.8rem;
+              text-align: start;
+              line-height: 1;
+              color: #ec6aa0;
+
+              &.title {
+                width: 90%;
+                border-radius: 3em;
+                background: #ec6aa0;
+                box-shadow: inset 1px 1px 2px 0px #784b5d, inset -1px -1px 2px #fefefe;
+                color: white;
+                font-weight: bold;
+                margin-bottom: 0.25em;
+                padding: 0.7% 0% 0.7% 3%;
+              }
+              &.text {
+                color: white;
+                font-size: 0.75rem;
+                line-height: 0.9;
+              }
+            }
+          }
+        }
+        .highlight-step {
+          box-shadow: inset 2px 2px 4px 0px #5e2d41, inset -2px -2px 3px #ffd9e8;
+          background: #ec6aa0;
+          border: 3px solid #ec6aa0;
+          .steps__index {
+            .steps__index--shadow-div-outset {
+              color: white;
+              box-shadow: 2px 2px 3px 0px #974064, -1px -1px 2px #ffc5dd;
+            }
+          }
+          .steps__steps {
+            .steps__text.title {
+              box-shadow: inset 1px 1px 2px 0px #92536c, inset -1px -1px 2px #ffffff;
+              background: #ffd4e6;
+              color: #ec6aa0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.arrow-container {
+  @include flexCenter(100px, 5px, 0px, center, center, row);
+  position: absolute;
+  background: #e24f8c;
+
+  .arrow-head {
+    @include flexCenter(15px, 15px, 0px, center, center, row);
+    background: #e24f8c;
+    position: absolute;
+  }
+  .up {
+    clip-path: polygon(50% 39%, 0 100%, 100% 100%);
+    top: -14px;
+  }
+  .down {
+    clip-path: polygon(50% 59%, 3% 0, 100% 0);
+    bottom: -14px;
+  }
+}
+
+.modal-navigation-container {
+  @include flexCenter(6%, 90%, 50px, center, center, row);
+  position: absolute;
+  bottom: 8px;
+  background: linear-gradient(314deg, #b6b6b6 0%, #d6d6d6 100%);
+
+  .modal-navigation_shadow-div-inset {
+    @include flexCenter(86%, 98%, 50px, center, center, row);
+    box-shadow: inset 2px 2px 2px 0px #7a7a7a, inset -2px -2px 1px #ffffff;
+
+    .modal-navigation_shadow-div-outset {
+      @include flexCenter(76%, 96%, 50px, space-between, center, row);
+      box-shadow: 2px 2px 2px 0px #7a7a7a, -2px -2px 1px #ffffff;
+
+      .next-back-btn {
+        @include flexCenter(73%, 46px, 50px, center, center, row);
+        background: initial;
+        border: none;
+        box-shadow: 2px 2px 3px 0px #7a7a7a, -2px -2px 2px #ffffff;
+      }
+      .back-btn {
+        margin-left: 2%;
+        color: #e24f8c;
+
+        &:active {
+          background: #aaaaaa;
+          box-shadow: inset 2px 2px 3px 0px #424242, inset -2px -2px 3px #a3a3a3;
+        }
+      }
+      .next-btn {
+        margin-right: 2%;
+        color: white;
+        background: #e24f8c;
+        box-shadow: 2px 2px 5px 0px #381321, -1px -1px 3px #ffffff;
+        &:active {
+          background: #c597aa;
+          box-shadow: inset 2px 2px 5px 0px #442a34, inset -1px -1px 2px #ffffff;
+        }
+      }
+    }
+  }
+}
+
+// toggle classes for modal position associated with modalInDisplay
+.first-modal {
+  transition: bottom 0.5s;
+}
+.second-modal {
+  transition: bottom 0.5s;
+}
+.third-modal {
+  bottom: 8%;
+  height: 215px;
+  transition: bottom 0.5s;
+}
+.fourth-modal {
+  bottom: 31%;
+  transition: bottom 0.5s;
+}
+
+// toggle classes for arrow position when current tip associated is in focus
+.arrow-zero-zero {
+  height: 25.5%;
+  top: 66%;
+  left: 84%;
+}
+.arrow-one-one {
+  height: 13%;
+  top: 66%;
+  left: 27%;
+}
+.arrow-one-two {
+  height: 13%;
+  top: 66%;
+  left: 87%;
+}
+.arrow-one-three {
+  height: 7.5%;
+  top: 66%;
+  left: 71%;
+}
+.arrow-two-one {
+  height: 15.5%;
+  bottom: 40.8%;
+  left: 14%;
+}
+.arrow-two-two {
+  height: 7.5%;
+  bottom: 40.8%;
+  left: 14%;
+}
+.arrow-two-three {
+  height: 0.5%;
+  bottom: 40.8%;
+  left: 14%;
+}
+.arrow-three-one {
+  height: 2.5%;
+  bottom: 66%;
+  left: 22%;
+}
+.arrow-three-two {
+  height: 8%;
+  bottom: 66%;
+  left: 47%;
+}
+
+// toggle classes for revealing section of TestAudio that current tip in focus is associated with
+.focus-one-one {
+  clip-path: polygon(
+    0% 0%,
+    0% 100%,
+    5% 100%,
+    5% 43%,
+    63% 43%,
+    63% 62%,
+    0% 62%,
+    0% 100%,
+    100% 100%,
+    100% 0%
+  );
+}
+.focus-one-two {
+  clip-path: polygon(
+    0% 0%,
+    0% 100%,
+    81% 100%,
+    81% 47%,
+    98% 47%,
+    98% 71%,
+    0% 71%,
+    0% 100%,
+    100% 100%,
+    100% 0%
+  );
+}
+.focus-one-three {
+  clip-path: polygon(
+    0% 0%,
+    0% 100%,
+    5% 100%,
+    5% 28%,
+    95% 28%,
+    95% 44%,
+    0% 44%,
+    0% 100%,
+    100% 100%,
+    100% 0%
+  );
+}
+.focus-two-one {
+  clip-path: polygon(
+    0% 0%,
+    0% 100%,
+    1% 100%,
+    1% 10%,
+    99% 10%,
+    99% 35%,
+    0% 35%,
+    0% 100%,
+    100% 100%,
+    100% 0%
+  );
+}
+.focus-two-two {
+  clip-path: polygon(
+    0% 0%,
+    0% 100%,
+    1% 100%,
+    1% 34%,
+    99% 34%,
+    99% 58%,
+    0% 58%,
+    0% 100%,
+    100% 100%,
+    100% 0%
+  );
+}
+.focus-two-three {
+  clip-path: polygon(
+    0% 0%,
+    0% 100%,
+    1% 100%,
+    1% 57%,
+    99% 57%,
+    99% 81%,
+    0% 81%,
+    0% 100%,
+    100% 100%,
+    100% 0%
+  );
+}
+.focus-three-one {
+  clip-path: polygon(
+    0% 0%,
+    0% 100%,
+    1% 100%,
+    1% 80%,
+    99% 80%,
+    99% 100%,
+    1% 100%,
+    1% 100%,
+    100% 100%,
+    100% 0%
+  );
+}
+.focus-three-two {
+  clip-path: polygon(
+    0% 0%,
+    0% 100%,
+    1% 100%,
+    1% 2%,
+    99% 2%,
+    99% 83%,
+    1% 83%,
+    1% 100%,
+    100% 100%,
+    100% 0%
+  );
+}
+
+// toggle class to add border on TestAudio section that current tip in focus is associated with
+.focus-border {
+  border: 2px solid #e24f8c;
+}

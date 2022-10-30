@@ -1,0 +1,24 @@
+@use "sass:map";
+
+.Icon__wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+
+  .Icon {
+    height: 90%;
+    width: 90%;
+
+    &.White {
+      filter: $svg-color-base;
+    }
+    &.Primary {
+      filter: $svg-color-primary-400;
+    }
+    &.Gray {
+      filter: $svg-color-gray-200;
+    }
+  }
+}

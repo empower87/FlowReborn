@@ -1,0 +1,16 @@
+@mixin flexCenter(
+  $height: 100%,
+  $width: 100%,
+  $border-radius: none,
+  $justify: center,
+  $align: center,
+  $direction: row
+) {
+  height: $height;
+  width: $width;
+  border-radius: $border-radius;
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+  flex-direction: $direction;
+}

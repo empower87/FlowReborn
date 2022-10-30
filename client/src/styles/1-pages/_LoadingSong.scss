@@ -1,0 +1,119 @@
+.LoadingSong {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  background: linear-gradient(327deg, #000000 0%, #a1a0a0 100%);
+
+  .loading-song__header {
+    @include flexCenter(12%, 100%, 0em 0em 0em 2.8em, space-evenly, center, row);
+    background: linear-gradient(180deg, #b1b1b1 0%, #6f6f6f 100%);
+    z-index: 1;
+    .loading-song__header--bs-outset {
+      @include flexCenter(90%, 97%, 0.3em 0.3em 0.3em 2.7em, center, center, row);
+      box-shadow: 2px 2px 3px #424242, -2px -2px 3px 0px #dfdfdf;
+
+      .loading-song__header--bs-inset {
+        @include flexCenter(92%, 97.5%, 0.2em 0.2em 0.2em 2.5em, center, center, row);
+        box-shadow: inset 2px 2px 3px #545454, inset -2px -2px 3px 0px #bfbfbf;
+
+        .song-header__button--container {
+          @include flexCenter(100%, 12%, 0, center, center, row);
+
+          .song-header__button {
+            @include flexCenter(85%, 73%, 0.3em 0.3em 0.3em 10em, center, flex-start, row);
+            box-shadow: 2px 2px 3px #424242, -1px -1px 3px 0px #efefef;
+          }
+        }
+        .song-header__details {
+          @include flexCenter(100%, 88%, 0, flex-start, center, row);
+          .song-header__details--bs-outset {
+            @include flexCenter(86%, 98%, 0.3em, center, center, row);
+            box-shadow: 2px 2px 3px #505050, -1px -1px 3px 0px #dfdfdf;
+          }
+        }
+      }
+    }
+  }
+
+  .loading-song__video {
+    height: 48%;
+    width: 100%;
+    z-index: 1;
+    position: relative;
+  }
+
+  .loading-song__body {
+    @include flexCenter(40%, 100%, 2em 2em 0em 0em, center, center, column);
+    background: linear-gradient(180deg, #b1b1b1 0%, #636363 100%);
+
+    .song-body__play {
+      @include flexCenter(70%, 100%, 0, center, center, column);
+
+      .song-body__play--bs-inset {
+        @include flexCenter(95%, 97%, 1.8em 1.8em 0.3em 0.3em, center, center, column);
+        box-shadow: inset 2px 2px 3px #484848, inset -2px -2px 3px 0px #c5c5c5;
+
+        .song-body__play--bs-outset {
+          @include flexCenter(94%, 96%, 1.6em, center, center, column);
+          box-shadow: 2px 2px 3px #525252, -1.5px -1.5px 3px 0px #e5e5e5;
+
+          .song-body__play-btn {
+            @include flexCenter(75%, 100%, 0, center, center, row);
+
+            .song-body__navigate {
+              @include flexCenter(100%, 15%, 0, center, center, column);
+
+              .song-body__navigate-btn {
+                @include flexCenter(93%, 75%, 1.3em 0.2em 0.2em 0.2em, center, center, column);
+                box-shadow: 2px 2px 3px #363636, -1px -1px 3px 0px #ffffff;
+              }
+            }
+            .song-body__play-btn--container {
+              @include flexCenter(100%, 70%, 0, center, center, column);
+
+              .song-body__play-btn--bs-inset {
+                @include flexCenter(94%, 99%, 1em, center, center, column);
+                box-shadow: inset 2px 2px 3px #565656, inset -2px -2px 3px 0px #d1d1d1;
+              }
+            }
+          }
+          .song-body__play-slider {
+            @include flexCenter(25%, 100%, 0, center, center, column);
+
+            .song-body__play-slider--bs-inset {
+              @include flexCenter(94%, 98%, 0.2em 0.2em 1.5em 1.5em, center, center, row);
+              box-shadow: inset 2px 2px 3px #545454, inset -2px -2px 3px 0px #bfbfbf;
+
+              .song-body__play-slider--bs-outset {
+                @include flexCenter(72%, 95%, 4em, center, center, row);
+                box-shadow: 2px 2px 3px #424242, -1px -1px 3px 0px #e3e3e3;
+              }
+            }
+          }
+        }
+      }
+    }
+    .song-body__social-buttons {
+      @include flexCenter(30%, 100%, 0, center, center, row);
+
+      .song-body__social-buttons--bs-outset {
+        @include flexCenter(94%, 97%, 0.3em 0.3em 2em 2em, center, center, row);
+        box-shadow: 2px 2px 3px #3c3c3c, -2px -2px 3px 0px #c3c3c3;
+
+        .song-body__social-buttons--bs-inset {
+          @include flexCenter(90%, 97.5%, 0.3em 0.3em 1.7em 1.7em, center, flex-start, row);
+          box-shadow: inset 2px 2px 3px #4c4c4c, inset -2px -2px 3px 0px #9c9c9c;
+
+          .song-body__social-button {
+            @include flexCenter(100%, 33%, 0, center, center, column);
+
+            .song-body__social-button--bs-outset {
+              @include flexCenter(85%, 94%, 0.25em, center, center, column);
+              box-shadow: 2px 2px 3px #424242, -1px -1px 3px 0px #d1d1d1;
+            }
+          }
+        }
+      }
+    }
+  }
+}

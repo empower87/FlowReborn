@@ -1,0 +1,530 @@
+@keyframes smallScale {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+@keyframes recording-title {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.RecordingVideo {
+  @include flexCenter(100%, 100%, 0, center, center, column);
+  background: black;
+}
+
+.record__video--wrapper {
+  @include flexCenter(100%, 100%, 0, flex-start, flex-start, row);
+  // padding-top: 56.25%;
+  position: absolute;
+  z-index: 0;
+
+  .record__video {
+    @include flexCenter(100%, 100%, 0, center, center, row);
+    object-fit: cover;
+  }
+  .record__side-buttons {
+    @include flexCenter(100%, stretch, 0px, center, center, column);
+    background: #a7a7a7;
+  }
+}
+
+.recording__header {
+  @include flexCenter(5%, 100%, 0px, space-evenly, center, column);
+  z-index: 1;
+  background: #a7a7a7;
+  box-shadow: 0px 20px 50px 0px black;
+
+  .recording__header--bs-inset {
+    @include flexCenter(78%, 98%, 100vh, center, center, row);
+    box-shadow: inset 2px 2px 3px #707070fc, inset -2px -2px 3px #ffffffdb;
+    overflow: scroll;
+
+    .recording__header-left {
+      @include flexCenter(100%, 8%, 0, center, center, row);
+
+      .recording__header-go-back-btn {
+        @include flexCenter(70%, 70%, 2em, center, center, row);
+        box-shadow: 1px 1px 3px #3a3a3a, -1px -1px 3px #ffffff;
+        background: $primary-color-300;
+
+        &:hover {
+          background: $primary-color-200;
+        }
+      }
+
+      .recording__user-photo {
+        @include flexCenter(100%, 45%, 0, center, center, row);
+
+        .recording__user-photo--bs-outset {
+          @include flexCenter(70%, 60%, 5em, center, center, row);
+
+          .recording__user-photo--wrapper {
+            @include flexCenter(90%, 90%, 5em, center, center, row);
+            overflow: hidden;
+            border: 1px solid white;
+          }
+        }
+      }
+      &.Back {
+        width: 13%;
+        .recording__header-go-back-btn {
+          @include flexCenter(70%, 81%, 2em, center, center, row);
+        }
+      }
+    }
+
+    .recording__header-right {
+      @include flexCenter(100%, stretch, 0, flex-end, center, row);
+
+      .recording__title {
+        height: 66%;
+        width: stretch;
+        border-radius: 0.2em 2em 2em 3em;
+        box-shadow: 1px 1px 3px #3a3a3a, -1px -1px 2px #ffffff;
+        text-indent: 5%;
+        text-align: center;
+        overflow-y: scroll;
+        color: $base-color;
+        font-size: 0.85rem;
+        margin-right: 0.3em;
+
+        &.isRecording {
+          background: linear-gradient(-45deg, $secondary-color-200, $secondary-color-300, $secondary-color-400);
+          background-size: 400% 400%;
+          animation: recording-title 4s ease infinite;
+        }
+      }
+
+      .recording__finish {
+        @include flexCenter(100%, 55%, 0, flex-start, center, row);
+
+        .recording__finish-btn {
+          @include flexCenter(66%, 96%, 1em, center, center, row);
+          background: $secondary-color-400;
+          color: $base-color;
+          box-shadow: 1px 1px 2px 0px #535353, -1px -1px 2px #f7f7f7;
+          &:hover {
+            background: $secondary-color-300;
+          }
+        }
+
+        .recording__add-beat {
+          @include flexCenter(100%, 96%, 1em, center, center, row);
+
+          .recording__add-beat-text {
+            @include flexCenter(100%, 80%, 0, center, center, row);
+
+            .recording__add-beat-text--bs-outset {
+              @include flexCenter(66%, 95%, 3em, center, center, row);
+              box-shadow: 1px 1px 2px 0px #535353, -1px -1px 2px #f7f7f7;
+              font-size: 0.85rem;
+              background: $primary-color-300;
+              color: white;
+            }
+          }
+          .recording__add-beat-btn {
+            @include flexCenter(100%, 20%, 0, center, center, row);
+
+            .recording__add-beat-btn--bs-outset {
+              @include flexCenter(66%, 80%, 3em, center, center, row);
+              background: $primary-color-300;
+              box-shadow: 1px 1px 2px 0px #535353, -1px -1px 2px #f7f7f7;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.recording-booth__body {
+  @include flexCenter(95%, 100%, 0, flex-end, center, column);
+
+  .recording-video__actions--container {
+    @include flexCenter(100%, 100%, 0, center, center, row);
+    min-height: 54%;
+
+    .record__lyrics--container {
+      @include flexCenter(100%, 84%, 0, center, center, column);
+    }
+
+    .recording-booth__side-menu {
+      @include flexCenter(100%, 16%, 0, flex-start, flex-start, column);
+
+      .recording-booth__side-menu--bs-inset {
+        @include flexCenter(75%, 80%, 3em, center, center, column);
+        background: linear-gradient(323deg, #808080 0%, #b8b8b8 100%);
+        border: 2px solid #b8b8b8;
+        box-shadow: inset 2px 2px 3px 0px #313131, inset -1px -1px 3px #ffffff;
+        z-index: 1;
+        margin-top: 0.5em;
+
+        .recording-booth__side-menu-list {
+          @include flexCenter(97%, 88%, 3em, flex-start, center, column);
+          position: relative;
+
+          .recording-booth__side-menu-item {
+            @include flexCenter(40px, 100%, 3em, center, center, column);
+
+            .recording-booth__side-menu-btn {
+              @include flexCenter(90%, 90%, 3em, center, center, column);
+              box-shadow: 2px 2px 3px #5e5e5e, -1px -1px 3px #f6f6f6;
+              color: $base-color;
+              font-size: 0.7em;
+
+              &.Pressed {
+                box-shadow: inset 1px 1px 3px #61273f, inset -1px -1px 3px #fffafc;
+                background: $primary-color-200;
+              }
+              &:hover {
+                background: $primary-color-200;
+              }
+              &:active {
+                box-shadow: inset 1px 1px 3px #61273f, inset -1px -1px 3px #fffafc;
+                background: $primary-color-200;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .suggestions {
+    @include flexCenter(auto, 100%, 0, space-evenly, center, column);
+    max-height: 50%;
+    position: relative;
+    z-index: 1;
+
+    .suggestions__transitionGroup {
+      @include flexCenter(auto, 100%, 1em 0.3em 1.7em 0.2em, space-evenly, center, column);
+
+      .suggestions-box {
+        @include flexCenter(50px, 97%, 1em 0.3em 1.7em 0.2em, center, flex-start, row);
+        box-shadow: inset 2px 2px 3px 0px #313131, inset -2px -2px 3px #e4e4e4;
+        background: linear-gradient(323deg, #808080 0%, #b8b8b8 100%);
+        border: 2px solid #a2a2a2;
+        margin-bottom: 2%;
+
+        .suggestions__pos-header--container {
+          @include flexCenter(100%, 100%, 0, space-evenly, flex-start, column);
+
+          .suggestions__pos-header {
+            @include flexCenter(40%, 100%, 0, flex-start, flex-end, row);
+
+            .suggestions__pos-header--bs-inset {
+              @include flexCenter(78%, 50%, 2.5em 2em 2em 0.5em, flex-start, center, row);
+              box-shadow: 2px 2px 3px #5e5e5e, -1px -1px 3px #f6f6f6;
+              padding-left: 2%;
+              margin-left: 1%;
+
+              .rhyme-actions__header-text {
+                width: 40%;
+                color: $primary-color-300;
+                font-size: 0.75rem;
+                // font-weight: bold;
+                letter-spacing: 0.5px;
+                text-align: start;
+              }
+              .rhyme-actions__header-query-word {
+                color: $secondary-color-300;
+                font-size: 0.8rem;
+                font-weight: bold;
+              }
+            }
+            .suggestions__pos-btns--container {
+              @include flexCenter(78%, 50%, 0, center, flex-end, row);
+
+              .suggestions__pos-btn {
+                @include flexCenter(100%, 32%, 0, center, center, row);
+
+                .suggestions__pos-btn--bs-outset {
+                  @include flexCenter(100%, 94%, 0.2em, center, center, row);
+                  box-shadow: 2px 2px 3px #5e5e5e, -1px -1px 3px #f6f6f6;
+                  color: $primary-color-200;
+                  font-size: 0.8rem;
+
+                  &:hover {
+                    background: $primary-color-200;
+                    color: $base-color;
+                  }
+                  &.Selected {
+                    box-shadow: inset 2px 2px 3px #784f60, inset -1px -1px 3px #ffffff;
+                    background: $primary-color-200;
+                    color: $base-color;
+                  }
+                  &.RHY {
+                    border-radius: 2em 0.2em 0.2em 2em;
+                  }
+                  &.SYN {
+                    border-radius: 0.2em 2em 2em 0.2em;
+                  }
+                }
+              }
+            }
+          }
+
+          .rhyme-actions__suggestions--container {
+            @include flexCenter(60%, 100%, 0, center, center, row);
+            overflow-x: scroll;
+
+            .rhyme-actions__suggestions {
+              @include flexCenter(75%, 98%, 2em 0.2em 3em 2em, flex-start, flex-start, column);
+              flex-wrap: wrap;
+              box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
+              background: linear-gradient(270deg, #767675, #00000012, #767676);
+
+              .rhyme-actions__suggestions-type {
+                @include flexCenter(100%, 20%, 0, center, center, column);
+
+                .rhyme-actions__suggestions-type--bs-outset {
+                  @include flexCenter(63%, 87%, 2em 0.2em 0.2em 2em, center, center, column);
+                  box-shadow: 1px 1px 3px 0px #74505f, -1px -1px 2px #ffeff6;
+                  background: $primary-color-200;
+
+                  .rhyme-actions__suggestions-text {
+                    color: $base-color;
+                    font-size: 0.7rem;
+                  }
+                }
+              }
+
+              .rhyme-actions__suggestions-type-scroller {
+                @include flexCenter(100%, 80%, 0, flex-start, center, row);
+                overflow-x: scroll;
+                white-space: nowrap;
+
+                .rhyme-actions__scroll-text {
+                  width: auto;
+                  white-space: nowrap;
+                  color: #38ffc9;
+                  font-size: 1.1rem;
+                }
+              }
+              .rhyme-actions__suggestions-text.initial-prompt {
+                color: #5f5f5f;
+                text-align: start;
+                font-weight: normal;
+              }
+            }
+          }
+        }
+      }
+      .item-enter {
+        opacity: 0;
+        height: 0px;
+      }
+
+      .item-enter-active {
+        opacity: 1;
+        height: 50px;
+        transition: opacity 300ms ease-in, height 300ms ease-in;
+      }
+      .item-exit {
+        opacity: 1;
+        height: 50px;
+      }
+      .item-exit-active {
+        opacity: 0;
+        height: 0px;
+        transition: opacity 300ms ease-in, height 300ms ease-in;
+      }
+    }
+
+    .suggestions__action-btns {
+      @include flexCenter(20%, 100%, 0, center, center, row);
+      padding-bottom: 2%;
+
+      .suggestions__action-btns--container {
+        @include flexCenter(100%, 60%, 0, center, center, row);
+
+        .suggestions__side-btn--container {
+          @include flexCenter(100%, 25%, 0, center, center, row);
+
+          .suggestions__side-btn--bs-inset {
+            @include flexCenter(35px, 35px, 100%, center, center, row);
+            // box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
+            box-shadow: inset 1px 1px 3px #383838, inset -2px -2px 3px #ffffff;
+            background: #b8b8b8;
+            border: 2px solid #b8b8b8;
+
+            .suggestions__side-btn {
+              @include flexCenter(80%, 80%, 100%, center, center, row);
+              box-shadow: 1px 1px 3px #333333, -1px -1px 2px #ffffff;
+
+              &.Check {
+                background: $base-color;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.record-btn {
+  @include flexCenter(55px, 55px, 100vh, center, center, row);
+  // position: absolute;
+  // top: -4.5em;
+  // right: 0.4em;
+  background: #b8b8b8;
+  border: 2px solid $secondary-color-400;
+
+  .record-btn_shadow-div-inset {
+    @include flexCenter(90%, 90%, 100vh, center, center, row);
+    box-shadow: inset 1px 1px 3px 0px #393838, inset -1px -1px 3px #ffffff;
+
+    .record-btn_shadow-div-inset-2 {
+      @include flexCenter(80%, 80%, 100vh, center, center, row);
+      box-shadow: inset 1px 1px 3px 0px #393838, inset -1px -1px 3px #ffffff;
+
+      .record-btn_shadow-div-outset {
+        @include flexCenter(75%, 75%, 100vh, center, center, row);
+        z-index: 2;
+
+        button {
+          box-shadow: 1px 1px 3px #1a483a, -1px -1px 2px #b5ffe5;
+          &:active {
+            box-shadow: inset 1px 1px 3px 0px #0d7457, inset -1px -1px 3px #b6ffe6;
+          }
+        }
+      }
+      .record-2_record-btn--animation-div {
+        @include flexCenter(3.2em, 3.2em, 100vh, flex-end, center, row);
+        position: absolute;
+        z-index: 1;
+        opacity: 0;
+        box-shadow: -1px 5px 5px #0000005c;
+      }
+      .record-btn-animation {
+        opacity: 1;
+        background: #00ffba;
+        animation: smallScale 1s infinite;
+      }
+    }
+  }
+}
+
+// transcript bar
+.suggestions__transcript--container {
+  @include flexCenter(30px, 100%, 2em 0.2em 0.2em 2em, flex-start, flex-start, row);
+  margin-left: 3%;
+  z-index: 1;
+
+  .suggestions__transcript--bs-inset {
+    @include flexCenter(22px, 92%, 2em 2em 0.5em 2em, center, center, row);
+    box-shadow: inset 1px 1px 2px 0px #35624d, inset -1px -1px 2px #ffffff;
+    border: 2px solid #48cbaa;
+    background: linear-gradient(92deg, #48cbaa, #5ac4a9);
+
+    .suggestions__transcript-title {
+      @include flexCenter(100%, 15%, 0, center, center, row);
+
+      .suggestions__transcript-title--bs-outset {
+        @include flexCenter(75%, 82%, 2em 0.2em 0.2em 2em, center, center, row);
+        box-shadow: 1px 1px 3px 0px #307061, -1px -1px 2px #bbf9ea;
+        color: $base-color;
+        font-size: 0.8rem;
+      }
+    }
+
+    .suggestions__transcript-text {
+      @include flexCenter(100%, 85%, 0, flex-start, center, row);
+
+      .suggestions__transcript--wrapper {
+        @include flexCenter(70%, 98%, 0.2em 0.6em 0.2em 0.2em, flex-start, center, row);
+        overflow-x: scroll;
+        white-space: nowrap;
+
+        .suggestions__transcript {
+          height: 65%;
+          width: auto;
+          white-space: nowrap;
+          color: $base-color;
+          font-size: 0.95rem;
+        }
+      }
+    }
+  }
+}
+
+.suggestions__settings--container {
+  @include flexCenter(30px, 100%, 2em 0.2em 0.2em 2em, center, center, row);
+  margin-bottom: 2%;
+
+  .suggestions__settings--bs-inset {
+    @include flexCenter(85%, 97%, 2em 2em 0.5em 2em, center, center, row);
+    box-shadow: inset 1px 1px 2px 0px #502a3a, inset -1px -1px 2px #ffffff;
+    border: 2px solid #ec6aa0;
+    background: linear-gradient(92deg, #dd80a7, #ea8ab2);
+
+    .suggestions__transcript-title {
+      @include flexCenter(100%, 16%, 0, center, center, row);
+
+      .suggestions__transcript-title--bs-outset {
+        @include flexCenter(75%, 82%, 2em 0.2em 0.2em 2em, center, center, row);
+        box-shadow: 1px 1px 3px 0px #724859, -1px -1px 2px #ffd8e8;
+        color: $base-color;
+        font-size: 0.8rem;
+      }
+    }
+
+    .suggestions__settings-list--container {
+      @include flexCenter(100%, 68%, 0, flex-start, center, row);
+
+      .suggestions__settings-list {
+        @include flexCenter(75%, 98%, 0.2em 0.6em 0.2em 0.2em, flex-start, center, row);
+        display: inline-block;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        white-space: nowrap;
+
+        .suggestions__settings-item {
+          @include flexCenter(85%, 72px, 0, center, center, row);
+          margin-left: 1%;
+          display: inline-block;
+
+          .suggestions__settings-item-btn {
+            @include flexCenter(95%, 95%, 2em, center, center, row);
+            box-shadow: 1px 1px 3px 0px #954465, -1px -1px 2px #ffcde2;
+
+            .suggestions__settings-item-btn-text--wrapper {
+              @include flexCenter(100%, 75%, 0, center, center, row);
+
+              .suggestions__settings-item-btn-text {
+                color: $base-color;
+                font-size: 0.7rem;
+                margin-left: 0.5em;
+                white-space: nowrap;
+              }
+            }
+
+            .suggestions__settings-item-btn-icon {
+              @include flexCenter(100%, 25%, 0, center, center, row);
+            }
+
+            &.Selected {
+              box-shadow: inset 1px 1px 3px 0px #922350, inset -1px -1px 2px #ffe5f0;
+              background: $primary-color-300;
+            }
+          }
+        }
+      }
+    }
+  }
+}
