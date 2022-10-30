@@ -13,13 +13,6 @@ import { createContext } from "./utils/trpc"
 dotenv.config({ path: path.join(__dirname, "./.env") })
 const app: Application = express()
 
-// const db = mysql.createConnection({
-//   user: 'root',
-//   host: 'localhost',
-//   password: '',
-//   database: 'Flow'
-// })
-
 const MONGODB_URI = customConfig.dbUri
 mongoose
   .connect(MONGODB_URI)
