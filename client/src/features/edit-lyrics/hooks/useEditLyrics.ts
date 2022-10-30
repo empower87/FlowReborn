@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react"
 import { useAuth } from "src/context/AuthContext"
 import { ISongTake } from "src/features/recording-booth/utils/types"
 import useHistory from "src/hooks/useHistory"
-import { trpc } from "src/utils/trpc"
 import { ISong } from "../../../../../server/src/models"
 
 type UseEditLyricsProps = {
@@ -21,19 +20,25 @@ export type LyricsState = {
 export function useSongLyrics({ _songs }: Pick<UseEditLyricsProps, "_songs">) {
   const { user } = useAuth()
   const userId = user?._id as string
-  const usersSongs = trpc.useQuery(["songs.users-songs", { _id: userId }], { enabled: !!userId })
+  // const usersSongs = trpc.useQuery(["songs.users-songs", { _id: userId }], { enabled: !!userId })
   const [songs, setSongs] = useState<(ISong | ISongTake)[] | ISong[]>([])
   const [initialLyricsHistory, setInitialLyricsHistory] = useState<LyricsState[]>([])
 
-  useEffect(() => {
-    if (!usersSongs.data) return
+  // useEffect(() => {
+  //   if (!usersSongs.data) return
 
+  //   if (_songs) {
+  //     setSongs([..._songs, ...usersSongs.data])
+  //   } else {
+  //     setSongs(usersSongs.data)
+  //   }
+  // }, [usersSongs, _songs])
+
+  useEffect(() => {
     if (_songs) {
-      setSongs([..._songs, ...usersSongs.data])
-    } else {
-      setSongs(usersSongs.data)
+      setSongs([..._songs])
     }
-  }, [usersSongs, _songs])
+  }, [_songs])
 
   useEffect(() => {
     if (songs.length) {
