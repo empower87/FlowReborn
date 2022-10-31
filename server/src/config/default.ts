@@ -5,7 +5,12 @@ const customConfig = {
   port: 5000,
   accessTokenExpiresIn: 15,
   refreshTokenExpiresIn: 60,
-  origin: ["http://localhost:3000", "http://10.0.0.82:3000", "https://iron-flow.herokuapp.com"],
+  origin: [
+    "http://localhost:3000",
+    "http://10.0.0.82:3000",
+    "https://iron-flow.herokuapp.com",
+    "https://flow-henna.vercel.app",
+  ],
 
   dbUri: process.env.MONGODB_URI as string,
   accessTokenPrivateKey: process.env.ACCESS_TOKEN as string,
