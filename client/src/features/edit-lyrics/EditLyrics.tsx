@@ -28,6 +28,7 @@ export default function EditLyrics() {
     setCurrentSong,
     currentLyrics,
     setCurrentLyricsList,
+    checkForEditedLyrics,
     onUndo,
     onRedo,
     onReset,
@@ -67,6 +68,7 @@ export default function EditLyrics() {
         songId={currentLyrics?.songId}
         lyrics={currentLyrics?.lyrics}
         setLyricsHistory={setCurrentLyricsList}
+        checkForEditedLyrics={checkForEditedLyrics}
         onDeleteLyric={onDeleteLyric}
         onSaveLyric={onSaveLyric}
       />

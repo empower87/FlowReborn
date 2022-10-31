@@ -11,7 +11,7 @@ export interface ISong {
   lyrics: string[][]
   title: string
   audio: string
-  user: IUser | string
+  user: IUser
   thumbnail?: string
   video?: string
   createdOn?: Date

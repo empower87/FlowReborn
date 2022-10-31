@@ -1,43 +1,51 @@
-import { useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
 import { moveIcon } from "../../assets/images/_icons"
 import { LyricLine } from "./hooks/useEditLyrics"
 
 type Props = {
   songId: string
+  editList: string[]
+  setEditList: Dispatch<SetStateAction<string[]>>
+  checkForEditedLyrics: (_songId: string, _id: string, _lyric: string) => boolean
   line: LyricLine
   onDeleteLyric: (_songId: string, _line: LyricLine) => void
   onSaveLyric: (_songId: string, _line: LyricLine) => void
 }
 
-export default function EachLyricLine({ songId, line, onDeleteLyric, onSaveLyric }: Props) {
+export default function EachLyricLine({
+  songId,
+  editList,
+  setEditList,
+  checkForEditedLyrics,
+  line,
+  onDeleteLyric,
+  onSaveLyric,
+}: Props) {
   const [lyricLine, setLyricLine] = useState<string[]>([])
   const [isEditing, setIsEditing] = useState(false)
-  const [isEdited, setIsEdited] = useState(false)
+  const [isEdited, setIsEdited] = useState<boolean>(false)
   const regexNo = /^(?:\d*)/g
 
   useEffect(() => {
-    const lyricLine = line.array.map((each) => each).join(" ")
+    const lyricLine = [...line.array].map((each) => each).join(" ")
     setLyricLine([lyricLine])
   }, [line])
 
   useEffect(() => {
-    if (isEditing) return
-    const lyricOriginal = line.array.map((each) => each).join(" ")
-    if (lyricOriginal === lyricLine[0]) {
-      setIsEdited(false)
-    } else {
-      setIsEdited(true)
-    }
-  }, [isEditing])
+    const isEdit = checkForEditedLyrics(songId, line.id, lyricLine[0])
+    setIsEdited(isEdit)
+  }, [isEditing, lyricLine])
 
   const editLyricLine = () => {
     setIsEditing(true)
   }
 
   const saveLyricLine = () => {
-    onSaveLyric(songId, { id: line.id, array: lyricLine })
+    const splitString = lyricLine[0].split(" ")
+    onSaveLyric(songId, { id: line.id, array: splitString })
     setIsEditing(false)
+    setEditList((prev) => [...prev, line.id])
   }
 
   return (
@@ -69,7 +77,7 @@ export default function EachLyricLine({ songId, line, onDeleteLyric, onSaveLyric
                     <textarea
                       className="edit-lyrics__edit-field"
                       placeholder={lyricLine[0]}
-                      value={lyricLine}
+                      value={lyricLine[0]}
                       onChange={(e) => setLyricLine([e.target.value])}
                     />
                   </form>

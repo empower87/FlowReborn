@@ -7,17 +7,20 @@ export default function EditLyricsList({
   songId,
   lyrics,
   setLyricsHistory,
+  checkForEditedLyrics,
   onDeleteLyric,
   onSaveLyric,
 }: {
   songId: string
   lyrics: LyricLine[]
   setLyricsHistory: (_songId: string, _lyrics: LyricLine[]) => void
+  checkForEditedLyrics: (_songId: string, _id: string, _lyric: string) => boolean
   onDeleteLyric: (_songId: string, _lyric: LyricLine) => void
   onSaveLyric: (_songId: string, _lyric: LyricLine) => void
 }) {
   const [lyricsState, setLyricsState] = useState<LyricLine[]>([])
   const [onEnd, setOnEnd] = useState<boolean>(false)
+  const [editList, setEditList] = useState<string[]>([])
 
   useEffect(() => {
     setLyricsState(lyrics)
@@ -50,6 +53,9 @@ export default function EditLyricsList({
             <EditLyricsItem
               key={`${each.id}lyric${index}`}
               songId={songId}
+              editList={editList}
+              setEditList={setEditList}
+              checkForEditedLyrics={checkForEditedLyrics}
               line={each}
               onDeleteLyric={onDeleteLyric}
               onSaveLyric={onSaveLyric}

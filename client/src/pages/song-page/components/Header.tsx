@@ -110,7 +110,7 @@ export default function Header({ song, songs }: HeaderProps) {
           <ExitButton />
           <div className="songscreen__title--container">
             <div className="songscreen__title--shadow-inset">
-              <Photo photoUrl={song.user?.picture} username={song.user.username} />
+              <Photo photoUrl={song.user?.picture} username={song.user?.username} />
 
               <div className="songscreen__song-data--container">
                 <div className="songscreen__song-title--container">

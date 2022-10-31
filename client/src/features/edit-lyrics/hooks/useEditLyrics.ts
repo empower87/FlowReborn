@@ -82,6 +82,21 @@ export default function useEditLyrics({ _songs, _initialLyrics, _currentSong }: 
     }
   }, [currentSong, lyricsHistory])
 
+  const checkForEditedLyrics = (_songId: string, _id: string, _lyric: string) => {
+    let isEdited = false
+    _initialLyrics.forEach((each) => {
+      if (each.songId === _songId) {
+        each.lyrics.forEach((each) => {
+          if (each.id === _id) {
+            const stringify = each.array.map((each) => each).join(" ")
+            if (stringify !== _lyric) isEdited = true
+          }
+        })
+      }
+    })
+    return isEdited
+  }
+
   const setCurrentLyricsList = (_songId: string, _lyrics: LyricLine[]) => {
     setLyricsHistory((prev) =>
       prev.map((each) => {
@@ -156,6 +171,7 @@ export default function useEditLyrics({ _songs, _initialLyrics, _currentSong }: 
     setCurrentLyricsList,
     lyricsHistory,
     setLyricsHistory,
+    checkForEditedLyrics,
     onUndo,
     onRedo,
     onReset,
