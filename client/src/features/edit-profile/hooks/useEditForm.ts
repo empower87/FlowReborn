@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useCallback } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import "react-image-crop/src/ReactCrop.scss"
 import { useQueryClient } from "react-query"
@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom"
 import { useAuth } from "src/context/AuthContext"
 import { convertBase64ToBlob } from "src/utils/convertBase64ToBlob"
 import { trpc } from "src/utils/trpc"
+import { ISong } from "../../../../../server/src/models"
 
 interface IFormInputs {
   picture: string
@@ -39,6 +40,7 @@ export default function useEditForm() {
       soundCloud: user?.socials?.soundCloud,
     },
   })
+  const [songs, setSongs] = useState<ISong[]>([])
   const queryClient = useQueryClient()
   const upload = trpc.useMutation(["users.upload-file"])
   const getSongs = trpc.useQuery(["songs.users-songs", { _id: userId }], { enabled: !!userId })
@@ -123,5 +125,11 @@ export default function useEditForm() {
     methods.reset()
   }
 
-  return { onSubmitHandler, onResetHandler, songs: getSongs.data, methods }
+  useEffect(() => {
+    if (getSongs.data) {
+      setSongs(getSongs.data)
+    }
+  }, [getSongs])
+
+  return { onSubmitHandler, onResetHandler, songs, methods }
 }
