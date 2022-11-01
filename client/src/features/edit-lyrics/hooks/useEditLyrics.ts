@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useState } from "react"
-import { useAuth } from "src/context/AuthContext"
 import { ISongTake } from "src/features/recording-booth/utils/types"
 import useHistory from "src/hooks/useHistory"
 import { trpc } from "src/utils/trpc"
 import { ISong } from "../../../../../server/src/models"
 
-type UseEditLyricsProps = {
+type UseSongLyricsProps = {
   _songs: (ISong | ISongTake)[] | ISong[]
+  _userId: string
+}
+type UseEditLyricsProps = {
   _initialLyrics: LyricsState[]
   _currentSong: ISong | ISongTake
 }
@@ -18,10 +20,8 @@ export type LyricsState = {
   lyrics: LyricLine[]
 }
 
-export function useSongLyrics({ _songs }: Pick<UseEditLyricsProps, "_songs">) {
-  const { user } = useAuth()
-  const userId = user ? user._id : ""
-  const usersSongs = trpc.useQuery(["songs.users-songs", { _id: userId }], { enabled: !!userId })
+export function useSongLyrics({ _userId, _songs }: UseSongLyricsProps) {
+  const usersSongs = trpc.useQuery(["songs.users-songs", { _id: _userId }], { enabled: !!_userId })
   const [songs, setSongs] = useState<(ISong | ISongTake)[] | ISong[]>([])
   const [initialLyricsHistory, setInitialLyricsHistory] = useState<LyricsState[]>([])
 
@@ -54,7 +54,7 @@ export function useSongLyrics({ _songs }: Pick<UseEditLyricsProps, "_songs">) {
   return { songs, initialLyricsHistory }
 }
 
-export default function useEditLyrics({ _songs, _initialLyrics, _currentSong }: UseEditLyricsProps) {
+export default function useEditLyrics({ _initialLyrics, _currentSong }: UseEditLyricsProps) {
   const [currentSong, setCurrentSong] = useState<ISong | ISongTake>({ ..._currentSong })
   const [
     lyricsHistory,
