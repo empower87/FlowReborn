@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useState } from "react"
 import { ISongTake } from "src/features/recording-booth/utils/types"
 import useHistory from "src/hooks/useHistory"
-import { trpc } from "src/utils/trpc"
 import { ISong } from "../../../../../server/src/models"
 
 type UseSongLyricsProps = {
   _songs: (ISong | ISongTake)[] | ISong[]
-  _userId: string
+  usersSongs: ISong[]
 }
 type UseEditLyricsProps = {
   _initialLyrics: LyricsState[]
@@ -20,18 +19,18 @@ export type LyricsState = {
   lyrics: LyricLine[]
 }
 
-export function useSongLyrics({ _userId, _songs }: UseSongLyricsProps) {
-  const usersSongs = trpc.useQuery(["songs.users-songs", { _id: _userId }], { enabled: !!_userId })
+export function useSongLyrics({ _songs, usersSongs }: UseSongLyricsProps) {
+  // const usersSongs = trpc.useQuery(["songs.users-songs", { _id: _userId }], { enabled: !!_userId })
   const [songs, setSongs] = useState<(ISong | ISongTake)[] | ISong[]>([])
   const [initialLyricsHistory, setInitialLyricsHistory] = useState<LyricsState[]>([])
 
   useEffect(() => {
-    if (!usersSongs.data) return
+    if (!usersSongs) return
 
     if (_songs) {
-      setSongs([..._songs, ...usersSongs.data])
+      setSongs([..._songs, ...usersSongs])
     } else {
-      setSongs(usersSongs.data)
+      setSongs(usersSongs)
     }
   }, [usersSongs, _songs])
 

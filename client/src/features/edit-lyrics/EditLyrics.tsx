@@ -2,6 +2,7 @@ import { useCallback, useState } from "react"
 import { useLocation } from "react-router-dom"
 import { useAuth } from "src/context/AuthContext"
 import { ISongTake } from "src/features/recording-booth/utils/types"
+import { trpc } from "src/utils/trpc"
 import { ISong } from "../../../../server/src/models/Song"
 import { downIcon } from "../../assets/images/_icons"
 import { Beat, beatList } from "../../constants/index"
@@ -22,8 +23,12 @@ export default function EditLyrics() {
   const { user } = useAuth()
   const state = location.state as LocationPropTypes
   const [currentBeat, setCurrentBeat] = useState<Beat>(beatList[0])
+  const usersSongs = trpc.useQuery(["songs.users-songs", { _id: user ? user._id : "" }])
 
-  const { songs, initialLyricsHistory } = useSongLyrics({ _userId: user ? user._id : "", _songs: state.allSongs })
+  const { songs, initialLyricsHistory } = useSongLyrics({
+    _songs: state.allSongs,
+    usersSongs: usersSongs.data ? usersSongs.data : [],
+  })
 
   const {
     currentSong,
