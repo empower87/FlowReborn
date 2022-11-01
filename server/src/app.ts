@@ -30,12 +30,12 @@ app.use(
   })
 )
 app.use("/api/trpc", trpcExpress.createExpressMiddleware({ router: appRouter, createContext }))
-app.use(express.static(path.join(__dirname, "../client/build")))
+app.use(express.static(path.join(__dirname, "../../client/build")))
 
 const PORT = customConfig.port
 
 app.get("*", (req: Request, res: Response, next: NextFunction) => {
-  res.sendFile(path.join(__dirname, "../client/build/index.html"))
+  res.sendFile(path.join(__dirname, "../../client/build/index.html"))
 })
 
 app.listen(PORT, () => console.log(`Listening to port ${PORT}`))
