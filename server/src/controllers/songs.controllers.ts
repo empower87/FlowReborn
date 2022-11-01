@@ -51,7 +51,6 @@ export const getUsersSongsHandler = async ({ ctx, input }: ContextWithInput<Song
       path: "comments",
       populate: "user",
     })
-    .exec()
   if (!userSongs) throw TRPCError("BAD_REQUEST", "user not found")
   return userSongs
 }

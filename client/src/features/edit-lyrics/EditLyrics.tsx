@@ -23,7 +23,7 @@ export default function EditLyrics() {
   const { user } = useAuth()
   const state = location.state as LocationPropTypes
   const [currentBeat, setCurrentBeat] = useState<Beat>(beatList[0])
-  const usersSongs = trpc.useQuery(["songs.users-songs", { _id: user ? user._id : "" }])
+  const usersSongs = trpc.useQuery(["songs.users-songs", { _id: null as unknown as string }])
 
   const { songs, initialLyricsHistory } = useSongLyrics({
     _songs: state.allSongs,
