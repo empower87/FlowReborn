@@ -49,7 +49,8 @@ function App() {
     trpc.createClient({
       url:
         process.env.NODE_ENV === "production"
-          ? "https://iron-flow.herokuapp.com/api/trpc"
+          ? // ? "https://iron-flow.herokuapp.com/api/trpc"
+            "https://flow-henna.vercel.app/api/trpc"
           : "http://localhost:5000/api/trpc",
       headers() {
         return { Authorization: getAuthToken() }
