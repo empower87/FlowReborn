@@ -5682,13 +5682,13 @@ button {
 .EditLyrics .edit-lyrics__lyrics--container .edit-lyrics__lyrics-list .lyrics-list-item .list-item-1_edit-lyrics .edit-lyrics-container .edit-lyrics_shadow-div-outset .close-btn-container .close-btn_shadow-div-inset {
   height: 87%;
   width: 3.3em;
-  border-radius: 2em 0.2em 2em 2em;
+  border-radius: 2em 0.2em 0.2em 2em;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
   box-shadow: inset 2px 2px 3px 0px #474747, inset -2px -2px 3px #c5c5c5;
-  margin-right: 0.3em;
+  margin-right: 0.25em;
 }
 .EditLyrics .edit-lyrics__lyrics--container .edit-lyrics__lyrics-list .lyrics-list-item .list-item-1_edit-lyrics .list-item-2_lyric-suggestions {
   height: 35%;
@@ -5793,17 +5793,17 @@ button {
 .EditLyrics .edit-lyrics__lyrics--container .edit-lyrics__lyrics-list .lyrics-list-item:hover .list-item-1_edit-lyrics .edit-lyrics-container .edit-lyrics_shadow-div-outset .close-btn-container .close-btn_shadow-div-inset {
   box-shadow: inset 2px 2px 3px 0px #964c6b, inset -2px -2px 2px #f394bc;
 }
-.EditLyrics .edit-lyrics__lyrics--container .edit-lyrics__lyrics-list .lyrics-list-item:hover .list-item-1_edit-lyrics .edit-lyrics-container .edit-lyrics_shadow-div-outset .close-btn-container .close-btn_shadow-div-inset .close-btn_shadow-div-outset {
-  box-shadow: 2px 2px 3px 0px #964c6b, -2px -2px 2px #ffa7cc;
+.EditLyrics .edit-lyrics__lyrics--container .edit-lyrics__lyrics-list .lyrics-list-item:hover .list-item-1_edit-lyrics .edit-lyrics-container .edit-lyrics_shadow-div-outset .close-btn-container .close-btn_shadow-div-inset .buttons_shadow-div-outset {
+  box-shadow: 2px 2px 3px 0px #964c6b, -1px -1px 2px #ffa7cc;
 }
-.EditLyrics .edit-lyrics__lyrics--container .edit-lyrics__lyrics-list .lyrics-list-item:hover .list-item-1_edit-lyrics .edit-lyrics-container .edit-lyrics_shadow-div-outset .close-btn-container .close-btn_shadow-div-inset .close-btn_shadow-div-outset img {
+.EditLyrics .edit-lyrics__lyrics--container .edit-lyrics__lyrics-list .lyrics-list-item:hover .list-item-1_edit-lyrics .edit-lyrics-container .edit-lyrics_shadow-div-outset .close-btn-container .close-btn_shadow-div-inset .buttons_shadow-div-outset img {
   filter: invert(100%) sepia(3%) saturate(0%) hue-rotate(293deg) brightness(107%) contrast(103%);
 }
-.EditLyrics .edit-lyrics__lyrics--container .edit-lyrics__lyrics-list .lyrics-list-item:hover .list-item-1_edit-lyrics .edit-lyrics-container .edit-lyrics_shadow-div-outset .close-btn-container .close-btn_shadow-div-inset .close-btn_shadow-div-outset:hover {
+.EditLyrics .edit-lyrics__lyrics--container .edit-lyrics__lyrics-list .lyrics-list-item:hover .list-item-1_edit-lyrics .edit-lyrics-container .edit-lyrics_shadow-div-outset .close-btn-container .close-btn_shadow-div-inset .buttons_shadow-div-outset:hover {
   background: #ff96c2;
   box-shadow: 2px 2px 3px 0px #964c6b, -1px -1px 2px #ffe9f3;
 }
-.EditLyrics .edit-lyrics__lyrics--container .edit-lyrics__lyrics-list .lyrics-list-item:hover .list-item-1_edit-lyrics .edit-lyrics-container .edit-lyrics_shadow-div-outset .close-btn-container .close-btn_shadow-div-inset .close-btn_shadow-div-outset:active {
+.EditLyrics .edit-lyrics__lyrics--container .edit-lyrics__lyrics-list .lyrics-list-item:hover .list-item-1_edit-lyrics .edit-lyrics-container .edit-lyrics_shadow-div-outset .close-btn-container .close-btn_shadow-div-inset .buttons_shadow-div-outset:active {
   background: #ff96c2;
   box-shadow: inset 2px 2px 3px 0px #964c6b, inset -2px -2px 2px #ffd7e8;
 }
@@ -5937,6 +5937,10 @@ button {
 .EditLyrics .section-3_controls .controls-container .controls-1_options .options_shadow-div-outset .options-2_toggle-lyrics .edit-lyrics__actions-btn--container .edit-lyrics__actions-btn.can-undo-redo img {
   filter: invert(100%) sepia(3%) saturate(0%) hue-rotate(293deg) brightness(107%) contrast(103%);
 }
+.EditLyrics .section-3_controls .controls-container .controls-1_options .options_shadow-div-outset .options-2_toggle-lyrics .edit-lyrics__actions-btn--container .edit-lyrics__actions-btn.can-undo-redo:hover {
+  background: #ff9ec7;
+  box-shadow: 2px 2px 3px #5b4b52, -1px -1px 2px 0px #fff2f7;
+}
 .EditLyrics .section-3_controls .controls-container .controls-1_options .options_shadow-div-outset .options-2_toggle-lyrics .edit-lyrics__actions-btn--container .edit-lyrics__actions-btn.reset {
   border-radius: 2em 0.3em 0.3em 2em;
   color: #a6a6a6;
@@ -5953,6 +5957,11 @@ button {
 .EditLyrics .section-3_controls .controls-container .controls-1_options .options_shadow-div-outset .options-2_toggle-lyrics .edit-lyrics__actions-btn--container .edit-lyrics__actions-btn.save:active {
   box-shadow: none;
   background: #fa8cba;
+}
+.EditLyrics .section-3_controls .controls-container .controls-1_options .options_shadow-div-outset .options-2_toggle-lyrics .edit-lyrics__actions-btn--container .edit-lyrics__actions-btn:hover {
+  background: #a1a1a1;
+  color: #ffffff;
+  box-shadow: 2px 2px 3px #4d4d4d, -1px -1px 2px 0px #d8d8d8;
 }
 .EditLyrics .section-3_controls .controls-container .edit-lyrics__audio {
   height: 34%;

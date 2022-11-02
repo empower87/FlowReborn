@@ -1,8 +1,6 @@
 import { useCallback, useState } from "react"
 import { useLocation } from "react-router-dom"
-import { useAuth } from "src/context/AuthContext"
 import { ISongTake } from "src/features/recording-booth/utils/types"
-import { trpc } from "src/utils/trpc"
 import { ISong } from "../../../../server/src/models/Song"
 import { downIcon } from "../../assets/images/_icons"
 import { Beat, beatList } from "../../constants/index"
@@ -20,16 +18,9 @@ type LocationPropTypes = {
 
 export default function EditLyrics() {
   const location = useLocation()
-  const { user } = useAuth()
   const state = location.state as LocationPropTypes
   const [currentBeat, setCurrentBeat] = useState<Beat>(beatList[0])
-  const usersSongs = trpc.useQuery(["songs.users-songs", { _id: null as unknown as string }])
-
-  const { songs, initialLyricsHistory } = useSongLyrics({
-    _songs: state.allSongs,
-    usersSongs: usersSongs.data ? usersSongs.data : [],
-  })
-
+  const { songs, initialLyricsHistory } = useSongLyrics({ _songs: state.allSongs })
   const {
     currentSong,
     setCurrentSong,
@@ -44,7 +35,9 @@ export default function EditLyrics() {
     canRedo,
     onDeleteLyric,
     onSaveLyric,
+    onAddLyric,
   } = useEditLyrics({
+    _songs: songs,
     _initialLyrics: initialLyricsHistory,
     _currentSong: state.currentSong,
   })
@@ -66,13 +59,16 @@ export default function EditLyrics() {
     })
   }, [songs, currentSong])
 
+  const onAdd = () => {
+    onAddLyric(currentLyrics.songId)
+  }
+
   return (
     <div className="EditLyrics">
       <EditLyricsHeader currentSong={currentSong} setCurrentSong={setCurrentSong} allSongs={songs} />
 
       <EditLyricsList
-        songId={currentLyrics?.songId}
-        lyrics={currentLyrics?.lyrics}
+        currentLyrics={currentLyrics}
         setLyricsHistory={setCurrentLyricsList}
         checkForEditedLyrics={checkForEditedLyrics}
         onDeleteLyric={onDeleteLyric}
@@ -85,6 +81,7 @@ export default function EditLyrics() {
             onUndo={onUndo}
             onRedo={onRedo}
             onReset={onReset}
+            onAdd={onAdd}
             onSave={onSave}
             canUndo={canUndo}
             canRedo={canRedo}

@@ -1,13 +1,12 @@
 import { useCallback, useEffect, useState } from "react"
+import { useAuth } from "src/context/AuthContext"
 import { ISongTake } from "src/features/recording-booth/utils/types"
 import useHistory from "src/hooks/useHistory"
+import { trpc } from "src/utils/trpc"
 import { ISong } from "../../../../../server/src/models"
 
-type UseSongLyricsProps = {
-  _songs: (ISong | ISongTake)[] | ISong[]
-  usersSongs: ISong[]
-}
 type UseEditLyricsProps = {
+  _songs: (ISong | ISongTake)[] | ISong[]
   _initialLyrics: LyricsState[]
   _currentSong: ISong | ISongTake
 }
@@ -19,18 +18,20 @@ export type LyricsState = {
   lyrics: LyricLine[]
 }
 
-export function useSongLyrics({ _songs, usersSongs }: UseSongLyricsProps) {
-  // const usersSongs = trpc.useQuery(["songs.users-songs", { _id: _userId }], { enabled: !!_userId })
+export function useSongLyrics({ _songs }: Pick<UseEditLyricsProps, "_songs">) {
+  const { user } = useAuth()
+  const userId = user ? user._id : ""
+  const usersSongs = trpc.useQuery(["songs.users-songs", { _id: userId }], { enabled: !!userId })
   const [songs, setSongs] = useState<(ISong | ISongTake)[] | ISong[]>([])
   const [initialLyricsHistory, setInitialLyricsHistory] = useState<LyricsState[]>([])
 
   useEffect(() => {
-    if (!usersSongs) return
+    if (!usersSongs.data) return
 
     if (_songs) {
-      setSongs([..._songs, ...usersSongs])
+      setSongs([..._songs, ...usersSongs.data])
     } else {
-      setSongs(usersSongs)
+      setSongs(usersSongs.data)
     }
   }, [usersSongs, _songs])
 
@@ -75,38 +76,64 @@ export default function useEditLyrics({ _initialLyrics, _currentSong }: UseEditL
   }, [_currentSong])
 
   useEffect(() => {
+    console.log(history, "HISTORY IS CHANGING REAL TIME")
+  }, [history, lyricsHistory])
+
+  useEffect(() => {
     if (lyricsHistory.length && currentSong) {
       const song = lyricsHistory.filter((each) => each.songId === currentSong._id)
       setCurrentLyrics(song[0])
     }
   }, [currentSong, lyricsHistory])
 
-  const checkForEditedLyrics = (_songId: string, _id: string, _lyric: string) => {
-    let isEdited = false
-    _initialLyrics.forEach((each) => {
-      if (each.songId === _songId) {
-        each.lyrics.forEach((each) => {
-          if (each.id === _id) {
-            const stringify = each.array.map((each) => each).join(" ")
-            if (stringify !== _lyric) isEdited = true
-          }
-        })
-      }
-    })
-    return isEdited
-  }
-
-  const setCurrentLyricsList = (_songId: string, _lyrics: LyricLine[]) => {
-    setLyricsHistory((prev) =>
-      prev.map((each) => {
+  const checkForEditedLyrics = useCallback(
+    (_songId: string, _id: string, _lyric: string) => {
+      let isEdited = false
+      _initialLyrics.forEach((each) => {
         if (each.songId === _songId) {
-          return { ...each, lyrics: _lyrics }
-        } else {
-          return each
+          each.lyrics.forEach((each) => {
+            if (each.id === _id) {
+              const stringify = each.array.map((each) => each).join(" ")
+              if (stringify !== _lyric) isEdited = true
+            }
+          })
         }
       })
-    )
-  }
+      return isEdited
+    },
+    [_initialLyrics]
+  )
+
+  const onAddLyric = useCallback(
+    (_songId: string) => {
+      setLyricsHistory((prev) =>
+        prev.map((each) => {
+          if (each.songId === _songId) {
+            let lyrics = [...each.lyrics, { id: `${each.lyrics.length + 1}`, array: [] }]
+            return { ...each, lyrics: lyrics }
+          } else {
+            return each
+          }
+        })
+      )
+    },
+    [lyricsHistory]
+  )
+
+  const setCurrentLyricsList = useCallback(
+    (_songId: string, _lyrics: LyricLine[]) => {
+      setLyricsHistory((prev) =>
+        prev.map((each) => {
+          if (each.songId === _songId) {
+            return { ...each, lyrics: _lyrics }
+          } else {
+            return each
+          }
+        })
+      )
+    },
+    [lyricsHistory]
+  )
 
   const onReset = () => {
     if (JSON.stringify(_initialLyrics) === JSON.stringify(lyricsHistory)) {
@@ -179,5 +206,6 @@ export default function useEditLyrics({ _initialLyrics, _currentSong }: UseEditL
     canRedo,
     onDeleteLyric,
     onSaveLyric,
+    onAddLyric,
   }
 }

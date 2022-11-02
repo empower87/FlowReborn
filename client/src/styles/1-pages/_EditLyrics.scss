@@ -296,9 +296,9 @@
                 @include flexCenter(100%, 15%, 0, flex-end, center, row);
 
                 .close-btn_shadow-div-inset {
-                  @include flexCenter(87%, 3.3em, 2em 0.2em 2em 2em, center, center, row);
+                  @include flexCenter(87%, 3.3em, 2em 0.2em 0.2em 2em, center, center, row);
                   box-shadow: inset 2px 2px 3px 0px #474747, inset -2px -2px 3px #c5c5c5;
-                  margin-right: 0.3em;
+                  margin-right: 0.25em;
                 }
               }
             }
@@ -383,8 +383,8 @@
                 .close-btn-container {
                   .close-btn_shadow-div-inset {
                     box-shadow: inset 2px 2px 3px 0px #964c6b, inset -2px -2px 2px #f394bc;
-                    .close-btn_shadow-div-outset {
-                      box-shadow: 2px 2px 3px 0px #964c6b, -2px -2px 2px #ffa7cc;
+                    .buttons_shadow-div-outset {
+                      box-shadow: 2px 2px 3px 0px #964c6b, -1px -1px 2px #ffa7cc;
 
                       img {
                         filter: invert(100%) sepia(3%) saturate(0%) hue-rotate(293deg) brightness(107%) contrast(103%);
@@ -518,6 +518,10 @@
                   img {
                     filter: $svg-color-base;
                   }
+                  &:hover {
+                    background: $primary-color-200;
+                    box-shadow: 2px 2px 3px #5b4b52, -1px -1px 2px 0px #fff2f7;
+                  }
                 }
                 &.reset {
                   border-radius: 2em 0.3em 0.3em 2em;
@@ -537,6 +541,11 @@
                     box-shadow: none;
                     background: #fa8cba;
                   }
+                }
+                &:hover {
+                  background: #a1a1a1;
+                  color: $base-color;
+                  box-shadow: 2px 2px 3px #4d4d4d, -1px -1px 2px 0px #d8d8d8;
                 }
               }
             }

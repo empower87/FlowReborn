@@ -1,18 +1,16 @@
 import { useEffect, useState } from "react"
 import { ReactSortable } from "react-sortablejs"
-import EditLyricsItem from "../EditLyricsItem"
-import { LyricLine } from "../hooks/useEditLyrics"
+import EditLyricsItemWrapper from "../EditLyricsItemWrapper"
+import { LyricLine, LyricsState } from "../hooks/useEditLyrics"
 
 export default function EditLyricsList({
-  songId,
-  lyrics,
+  currentLyrics,
   setLyricsHistory,
   checkForEditedLyrics,
   onDeleteLyric,
   onSaveLyric,
 }: {
-  songId: string
-  lyrics: LyricLine[]
+  currentLyrics: LyricsState
   setLyricsHistory: (_songId: string, _lyrics: LyricLine[]) => void
   checkForEditedLyrics: (_songId: string, _id: string, _lyric: string) => boolean
   onDeleteLyric: (_songId: string, _lyric: LyricLine) => void
@@ -20,15 +18,14 @@ export default function EditLyricsList({
 }) {
   const [lyricsState, setLyricsState] = useState<LyricLine[]>([])
   const [onEnd, setOnEnd] = useState<boolean>(false)
-  const [editList, setEditList] = useState<string[]>([])
 
   useEffect(() => {
-    setLyricsState(lyrics)
-  }, [lyrics])
+    setLyricsState(currentLyrics.lyrics)
+  }, [currentLyrics])
 
   useEffect(() => {
     if (onEnd) {
-      setLyricsHistory(songId, lyricsState)
+      setLyricsHistory(currentLyrics.songId, lyricsState)
       setOnEnd(false)
     }
   }, [onEnd])
@@ -50,11 +47,9 @@ export default function EditLyricsList({
       >
         {lyricsState?.map((each, index: number) => {
           return (
-            <EditLyricsItem
+            <EditLyricsItemWrapper
               key={`${each.id}lyric${index}`}
-              songId={songId}
-              editList={editList}
-              setEditList={setEditList}
+              songId={currentLyrics.songId}
               checkForEditedLyrics={checkForEditedLyrics}
               line={each}
               onDeleteLyric={onDeleteLyric}

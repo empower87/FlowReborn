@@ -1,53 +1,42 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { Dispatch, SetStateAction } from "react"
+import { moveIcon } from "src/assets/images/_icons"
 import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
-import { moveIcon } from "../../assets/images/_icons"
-import { LyricLine } from "./hooks/useEditLyrics"
 
-type Props = {
-  songId: string
-  editList: string[]
-  setEditList: Dispatch<SetStateAction<string[]>>
-  checkForEditedLyrics: (_songId: string, _id: string, _lyric: string) => boolean
-  line: LyricLine
-  onDeleteLyric: (_songId: string, _line: LyricLine) => void
-  onSaveLyric: (_songId: string, _line: LyricLine) => void
+type EditLyricsItemProps = {
+  getItemIndex: () => string
+  lyricLine: string[]
+  setLyricLine: Dispatch<SetStateAction<string[]>>
+  isEdited: boolean
+  isEditing: boolean
+  saveLyricLine: () => void
+  editLyricLine: () => void
+  deleteLyricLine: () => void
 }
 
-export default function EachLyricLine({
-  songId,
-  editList,
-  setEditList,
-  checkForEditedLyrics,
-  line,
-  onDeleteLyric,
-  onSaveLyric,
-}: Props) {
-  const [lyricLine, setLyricLine] = useState<string[]>([])
-  const [isEditing, setIsEditing] = useState(false)
-  const [isEdited, setIsEdited] = useState<boolean>(false)
-  const regexNo = /^(?:\d*)/g
+type ButtonProps = {
+  type: "Edit" | "Save" | "Delete"
+  onClick: () => void
+  size?: number
+}
 
-  useEffect(() => {
-    const lyricLine = [...line.array].map((each) => each).join(" ")
-    setLyricLine([lyricLine])
-  }, [line])
+const Button = ({ type, onClick, size }: ButtonProps) => {
+  return (
+    <button className={`buttons_shadow-div-outset ${type}`} onClick={() => onClick()}>
+      <Icon type={ButtonTypes[type]} options={{ color: type === "Delete" ? "Primary" : "White", size: size }} />
+    </button>
+  )
+}
 
-  useEffect(() => {
-    const isEdit = checkForEditedLyrics(songId, line.id, lyricLine[0])
-    setIsEdited(isEdit)
-  }, [isEditing, lyricLine])
-
-  const editLyricLine = () => {
-    setIsEditing(true)
-  }
-
-  const saveLyricLine = () => {
-    const splitString = lyricLine[0].split(" ")
-    onSaveLyric(songId, { id: line.id, array: splitString })
-    setIsEditing(false)
-    setEditList((prev) => [...prev, line.id])
-  }
-
+export default function EditLyricsItem({
+  getItemIndex,
+  lyricLine,
+  setLyricLine,
+  isEdited,
+  isEditing,
+  saveLyricLine,
+  editLyricLine,
+  deleteLyricLine,
+}: EditLyricsItemProps) {
   return (
     <li className="lyrics-list-item">
       <div className="list-item-1_edit-lyrics">
@@ -57,7 +46,7 @@ export default function EachLyricLine({
               <div className="buttons-container_shadow-div-inset">
                 <div className="bar-number-container">
                   <div className="bar-num_shadow-div-inset">
-                    <div className="bar-num_shadow-div-outset">{line.id.match(regexNo)}</div>
+                    <div className="bar-num_shadow-div-outset">{getItemIndex()}</div>
                   </div>
                 </div>
                 <div className="buttons_shadow-div-inset">
@@ -99,7 +88,7 @@ export default function EachLyricLine({
 
             <div className="close-btn-container">
               <div className="close-btn_shadow-div-inset">
-                <Button type="Delete" onClick={() => onDeleteLyric(songId, line)} size={75} />
+                <Button type="Delete" onClick={deleteLyricLine} size={75} />
               </div>
             </div>
           </div>
@@ -114,32 +103,18 @@ export default function EachLyricLine({
           <div className="get-lyrics--container"></div>
           <div className="undo-redo--container">
             {/* <div className="undo-redo__btn--container">
-              <button className="undo-redo__btn undo" onClick={back}>
-                <img src={undoIcon} alt="undo" className="button-icons" />
-              </button>
-            </div>
-            <div className="undo-redo__btn--container">
-              <button className="undo-redo__btn redo" onClick={forward}>
-                <img src={redoIcon} alt="redo" className="button-icons" />
-              </button>
-            </div> */}
+            <button className="undo-redo__btn undo" onClick={back}>
+              <img src={undoIcon} alt="undo" className="button-icons" />
+            </button>
+          </div>
+          <div className="undo-redo__btn--container">
+            <button className="undo-redo__btn redo" onClick={forward}>
+              <img src={redoIcon} alt="redo" className="button-icons" />
+            </button>
+          </div> */}
           </div>
         </div>
       </div>
     </li>
-  )
-}
-
-type ButtonProps = {
-  type: "Edit" | "Save" | "Delete"
-  onClick: () => void
-  size?: number
-}
-
-const Button = ({ type, onClick, size }: ButtonProps) => {
-  return (
-    <button className={`buttons_shadow-div-outset ${type}`} onClick={() => onClick()}>
-      <Icon type={ButtonTypes[type]} options={{ color: type === "Delete" ? "Primary" : "White", size: size }} />
-    </button>
   )
 }

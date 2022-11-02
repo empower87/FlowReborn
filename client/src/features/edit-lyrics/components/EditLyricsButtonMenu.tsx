@@ -5,6 +5,7 @@ type EditLyricsButtonMenuProps = {
   onUndo: () => void
   onRedo: () => void
   onReset: () => void
+  onAdd: () => void
   onSave: () => void
   canUndo: boolean
   canRedo: boolean
@@ -37,6 +38,7 @@ export default function EditLyricsButtonMenu({
   onUndo,
   onRedo,
   onReset,
+  onAdd,
   onSave,
   canUndo,
   canRedo,
@@ -53,6 +55,9 @@ export default function EditLyricsButtonMenu({
           </Button>
           <Button type="redo" onClick={onRedo} canRedo={canRedo}>
             <Icon type={ButtonTypes.Redo} options={{ color: "Gray", size: 70 }} />
+          </Button>
+          <Button type="add" onClick={onAdd}>
+            <Icon type={ButtonTypes.Plus} options={{ color: "Primary", size: 70 }} />
           </Button>
           <Button type="save" onClick={onSave}>
             Save
