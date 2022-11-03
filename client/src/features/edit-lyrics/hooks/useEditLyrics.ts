@@ -136,8 +136,8 @@ export default function useEditLyrics({ _initialLyrics, _currentSong }: UseEditL
   )
 
   const onReset = () => {
-    if (JSON.stringify(_initialLyrics) === JSON.stringify(lyricsHistory)) {
-      return console.log("nothing to reset")
+    if (JSON.stringify(_initialLyrics) === JSON.stringify(lyricsHistory) && history.length <= 2) {
+      return console.log(history, "nothing to reset")
     }
     reset()
     setLyricsHistory([..._initialLyrics])

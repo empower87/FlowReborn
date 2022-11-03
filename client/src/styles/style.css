@@ -5941,20 +5941,20 @@ button {
   background: #ff9ec7;
   box-shadow: 2px 2px 3px #5b4b52, -1px -1px 2px 0px #fff2f7;
 }
-.EditLyrics .section-3_controls .controls-container .controls-1_options .options_shadow-div-outset .options-2_toggle-lyrics .edit-lyrics__actions-btn--container .edit-lyrics__actions-btn.reset {
+.EditLyrics .section-3_controls .controls-container .controls-1_options .options_shadow-div-outset .options-2_toggle-lyrics .edit-lyrics__actions-btn--container .edit-lyrics__actions-btn.Reset {
   border-radius: 2em 0.3em 0.3em 2em;
   color: #a6a6a6;
 }
-.EditLyrics .section-3_controls .controls-container .controls-1_options .options_shadow-div-outset .options-2_toggle-lyrics .edit-lyrics__actions-btn--container .edit-lyrics__actions-btn.reset:active {
+.EditLyrics .section-3_controls .controls-container .controls-1_options .options_shadow-div-outset .options-2_toggle-lyrics .edit-lyrics__actions-btn--container .edit-lyrics__actions-btn.Reset:active {
   box-shadow: none;
   background: gray;
 }
-.EditLyrics .section-3_controls .controls-container .controls-1_options .options_shadow-div-outset .options-2_toggle-lyrics .edit-lyrics__actions-btn--container .edit-lyrics__actions-btn.save {
+.EditLyrics .section-3_controls .controls-container .controls-1_options .options_shadow-div-outset .options-2_toggle-lyrics .edit-lyrics__actions-btn--container .edit-lyrics__actions-btn.Save {
   border-radius: 0.3em 2em 2em 0.3em;
   background: #ec6aa0;
   color: white;
 }
-.EditLyrics .section-3_controls .controls-container .controls-1_options .options_shadow-div-outset .options-2_toggle-lyrics .edit-lyrics__actions-btn--container .edit-lyrics__actions-btn.save:active {
+.EditLyrics .section-3_controls .controls-container .controls-1_options .options_shadow-div-outset .options-2_toggle-lyrics .edit-lyrics__actions-btn--container .edit-lyrics__actions-btn.Save:active {
   box-shadow: none;
   background: #fa8cba;
 }

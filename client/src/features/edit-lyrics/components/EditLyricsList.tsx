@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { ReactSortable } from "react-sortablejs"
-import EditLyricsItemWrapper from "../EditLyricsItemWrapper"
 import { LyricLine, LyricsState } from "../hooks/useEditLyrics"
+import EditLyricsItemWrapper from "./EditLyricsItemWrapper"
 
 export default function EditLyricsList({
   currentLyrics,

@@ -6,7 +6,7 @@ import { downIcon } from "../../assets/images/_icons"
 import { Beat, beatList } from "../../constants/index"
 import { EditLyricsAudioPlayer } from "./components/EditLyricsAudioPlayer"
 import EditLyricsBeatSelect from "./components/EditLyricsBeatSelect"
-import EditLyricsButtonMenu from "./components/EditLyricsButtonMenu"
+import EditLyricsButtonMenu, { ActionButton } from "./components/EditLyricsButtonMenu"
 import EditLyricsHeader from "./components/EditLyricsHeader"
 import EditLyricsList from "./components/EditLyricsList"
 import useEditLyrics, { useSongLyrics } from "./hooks/useEditLyrics"
@@ -77,15 +77,14 @@ export default function EditLyrics() {
 
       <div className="section-3_controls">
         <div className="controls-container">
-          <EditLyricsButtonMenu
-            onUndo={onUndo}
-            onRedo={onRedo}
-            onReset={onReset}
-            onAdd={onAdd}
-            onSave={onSave}
-            canUndo={canUndo}
-            canRedo={canRedo}
-          />
+          <EditLyricsButtonMenu>
+            <ActionButton type="Reset" onClick={onReset} />
+            <ActionButton type="Undo" onClick={onUndo} isClickable={canUndo} color={"Gray"} size={70} />
+            <ActionButton type="Redo" onClick={onRedo} isClickable={canRedo} color={"Gray"} size={70} />
+            <ActionButton type="Plus" onClick={onAdd} color={"Primary"} size={70} />
+            <ActionButton type="Save" onClick={onSave} />
+          </EditLyricsButtonMenu>
+
           <EditLyricsAudioPlayer currentSong={currentSong} />
           <EditLyricsBeatSelect currentBeat={currentBeat} setCurrentBeat={setCurrentBeat} />
         </div>
