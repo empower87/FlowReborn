@@ -150,3 +150,30 @@
     // box-shadow: 2px 2px 3px #565656, -1px -1px 2px #e8e8e8
   }
 }
+
+.marquee-wrapper {
+  @include flexCenter(75%, 92%, 0em 0em 1.4em 0em, flex-start, center, row);
+  // position: absolute;
+  overflow: hidden;
+
+  .song-title-marquee {
+    font-size: 0.95rem;
+    color: white;
+    font-weight: bold;
+    white-space: nowrap;
+    text-align: start;
+    span {
+      font-size: 0.95rem;
+      color: $primary-color-200;
+      font-weight: 500;
+    }
+  }
+}
+
+.marquee--animation {
+  .song-title-marquee {
+    animation: floatText 5s linear infinite;
+    padding-left: 30%;
+    display: inline-block;
+  }
+}

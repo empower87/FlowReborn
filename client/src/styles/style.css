@@ -5284,7 +5284,7 @@ button {
 }
 .EditLyrics .edit-lyrics__header .edit-lyrics__header--shadow-inset .edit-lyrics__exit--container {
   height: 100%;
-  width: 11%;
+  width: 10%;
   border-radius: 0;
   display: flex;
   justify-content: flex-start;
@@ -5317,7 +5317,7 @@ button {
 }
 .EditLyrics .edit-lyrics__header .edit-lyrics__header--shadow-inset .edit-lyrics__title--container {
   height: 100%;
-  width: 40%;
+  width: 50%;
   border-radius: 0;
   display: flex;
   justify-content: flex-start;
@@ -5326,28 +5326,58 @@ button {
 }
 .EditLyrics .edit-lyrics__header .edit-lyrics__header--shadow-inset .edit-lyrics__title--container .edit-lyrics__title--shadow-outset {
   height: 77%;
-  width: 96%;
+  width: 97%;
   border-radius: 0.2em;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  box-shadow: 2px 2px 3px 0px #333333, -1px -1px 2px #858585;
+}
+.EditLyrics .edit-lyrics__header .edit-lyrics__header--shadow-inset .edit-lyrics__title--container .edit-lyrics__title--shadow-outset .edit-lyrics__profile-pic {
+  height: 100%;
+  width: 20%;
+  border-radius: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  box-shadow: 2px 2px 3px 0px #333333, -1px -1px 2px #858585;
+}
+.EditLyrics .edit-lyrics__header .edit-lyrics__header--shadow-inset .edit-lyrics__title--container .edit-lyrics__title--shadow-outset .edit-lyrics__profile-pic .edit-lyrics__profile-pic--bs-inset {
+  height: 85%;
+  width: 85%;
+  border-radius: 0.2em 2em 2em 0.2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: inset 2px 2px 3px 0px #333333, inset -2px -2px 3px #7e7e7e;
+}
+.EditLyrics .edit-lyrics__header .edit-lyrics__header--shadow-inset .edit-lyrics__title--container .edit-lyrics__title--shadow-outset .edit-lyrics__profile-pic .edit-lyrics__profile-pic--bs-inset .edit-lyrics__profile-pic--wrapper {
+  height: 70%;
+  width: 70%;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #ec6aa0;
 }
 .EditLyrics .edit-lyrics__header .edit-lyrics__header--shadow-inset .edit-lyrics__title--container .edit-lyrics__title--shadow-outset .edit-lyrics__title {
   color: white;
-  width: 100%;
-  font-size: 0.9rem;
-  font-weight: bold;
+  width: auto;
+  font-size: 0.95rem;
   text-align: start;
   text-indent: 5%;
+  white-space: nowrap;
 }
 .EditLyrics .edit-lyrics__header .edit-lyrics__header--shadow-inset .edit-lyrics__title--container .edit-lyrics__title--shadow-outset .edit-lyrics__title.name {
   color: #ec6aa0;
 }
 .EditLyrics .edit-lyrics__header .edit-lyrics__header--shadow-inset .edit-lyrics__select-song {
   height: 100%;
-  width: 49%;
+  width: 40%;
   border-radius: 0;
   display: flex;
   justify-content: flex-start;
@@ -5357,7 +5387,7 @@ button {
 .EditLyrics .edit-lyrics__header .edit-lyrics__header--shadow-inset .edit-lyrics__select-song .edit-lyrics__select-song--shadow-outset {
   height: 77%;
   width: 97%;
-  border-radius: 0.2em 1.3em 0.2em 0.2em;
+  border-radius: 0.2em 1.2em 0.2em 0.2em;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8388,6 +8418,36 @@ button {
   background: #58e4bc;
   box-shadow: 2px 2px 3px #1a483a, -1px -1px 2px #b5ffe5;
 }
+.marquee-wrapper {
+  height: 75%;
+  width: 92%;
+  border-radius: 0em 0em 1.4em 0em;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  overflow: hidden;
+}
+.marquee-wrapper .song-title-marquee {
+  font-size: 0.95rem;
+  color: white;
+  font-weight: bold;
+  white-space: nowrap;
+  text-align: start;
+}
+.marquee-wrapper .song-title-marquee span {
+  font-size: 0.95rem;
+  color: #ff9ec7;
+  font-weight: 500;
+}
+
+.marquee--animation .song-title-marquee {
+  -webkit-animation: floatText 5s linear infinite;
+          animation: floatText 5s linear infinite;
+  padding-left: 30%;
+  display: inline-block;
+}
+
 .Loading {
   height: 100%;
   width: 100%;

@@ -35,7 +35,7 @@
       box-shadow: inset 2px 2px 3px 0px #313131, inset -2px -2px 3px #898989;
 
       .edit-lyrics__exit--container {
-        @include flexCenter(100%, 11%, 0, flex-start, center, row);
+        @include flexCenter(100%, 10%, 0, flex-start, center, row);
 
         .edit-lyrics__exit-btn {
           @include flexCenter(77%, 74%, 0.2em 0.2em 0.2em 1.2em, center, center, column);
@@ -59,29 +59,46 @@
       }
 
       .edit-lyrics__title--container {
-        @include flexCenter(100%, 40%, 0, flex-start, center, row);
+        @include flexCenter(100%, 50%, 0, flex-start, center, row);
+
         .edit-lyrics__title--shadow-outset {
-          @include flexCenter(77%, 96%, 0.2em, center, center, column);
+          @include flexCenter(77%, 97%, 0.2em, flex-start, center, row);
           box-shadow: 2px 2px 3px 0px #333333, -1px -1px 2px #858585;
+
+          .edit-lyrics__profile-pic {
+            @include flexCenter(100%, 20%, 0, center, center, column);
+
+            .edit-lyrics__profile-pic--bs-inset {
+              @include flexCenter(85%, 85%, 0.2em 2em 2em 0.2em, center, center, column);
+              box-shadow: inset 2px 2px 3px 0px #333333, inset -2px -2px 3px #7e7e7e;
+
+              .edit-lyrics__profile-pic--wrapper {
+                @include flexCenter(70%, 70%, 100%, center, center, column);
+                overflow: hidden;
+                border: 1px solid #ec6aa0;
+              }
+            }
+          }
 
           .edit-lyrics__title {
             color: white;
-            width: 100%;
-            font-size: 0.9rem;
-            font-weight: bold;
+            width: auto;
+            font-size: 0.95rem;
             text-align: start;
             text-indent: 5%;
+            white-space: nowrap;
           }
           .edit-lyrics__title.name {
             color: #ec6aa0;
           }
         }
       }
+
       .edit-lyrics__select-song {
-        @include flexCenter(100%, 49%, 0, flex-start, center, row);
+        @include flexCenter(100%, 40%, 0, flex-start, center, row);
 
         .edit-lyrics__select-song--shadow-outset {
-          @include flexCenter(77%, 97%, 0.2em 1.3em 0.2em 0.2em, center, center, column);
+          @include flexCenter(77%, 97%, 0.2em 1.2em 0.2em 0.2em, center, center, column);
           box-shadow: 2px 2px 3px 0px #333333, -1px -1px 2px #858585;
 
           .edit-lyrics__select-song--shadow-inset {
@@ -179,30 +196,6 @@
 
                   .buttons_shadow-div-inset {
                     @include flexCenter(89%, 60%, 50px, center, center, row);
-                    // box-shadow: inset 2px 2px 3px 0px #4a4a4a, inset -2px -2px 3px #a3a3a3;
-
-                    // .buttons_shadow-div-outset {
-                    //   @include flexCenter(85%, 76%, 3px, center, center, row);
-                    //   background: #ec6aa0;
-                    //   border: none;
-                    //   color: white;
-                    //   box-shadow: 2px 2px 3px 0px #4f4e4e, -1px -1px 2px #c4c4c4;
-
-                    //   img {
-                    //     height: 1.6em;
-                    //     width: 1.6em;
-                    //     filter: invert(100%) sepia(3%) saturate(0%) hue-rotate(293deg) brightness(107%) contrast(103%);
-                    //   }
-                    //   &:active {
-                    //     background: initial;
-                    //     box-shadow: inset 2px 2px 3px 0px #3f3f3f, inset -1px -1px 3px #ffffff;
-
-                    //     img {
-                    //       filter: invert(42%) sepia(65%) saturate(2055%) hue-rotate(310deg) brightness(100%)
-                    //         contrast(98%);
-                    //     }
-                    //   }
-                    // }
                   }
                 }
               }

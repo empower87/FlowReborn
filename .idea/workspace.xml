@@ -1,6 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="1a68ee16-f9ae-4625-a72d-344fbb340f06" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/client/src/features/edit-lyrics/components/EditLyricsHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/features/edit-lyrics/components/EditLyricsHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/home-page/components/Details/SongDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/home-page/components/Details/SongDetails.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/styles/1-pages/_EditLyrics.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/styles/1-pages/_EditLyrics.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/styles/2-components/_Buttons.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/styles/2-components/_Buttons.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/styles/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/styles/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/styles/style.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/styles/style.css.map" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2H3CG8jWz785rofRUjbure6NEMv" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1a68ee16-f9ae-4625-a72d-344fbb340f06" name="Default Changelist" comment="" />
+      <created>1667504286309</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1667504286309</updated>
+    </task>
+    <servers />
   </component>
 </project>

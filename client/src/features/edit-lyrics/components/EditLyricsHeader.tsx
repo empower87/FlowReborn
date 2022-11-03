@@ -1,7 +1,9 @@
-import { Dispatch, SetStateAction, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
 import { SelectMenu } from "src/components/modals/SelectMenu/SelectMenu"
+import MarqueeText from "src/components/text/MarqueeText"
+import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import { useAuth } from "src/context/AuthContext"
 import { ISongTake } from "src/features/recording-booth/utils/types"
 import { ISong } from "../../../../../server/src/models"
@@ -12,10 +14,36 @@ type EditLyricsHeaderProps = {
   allSongs: ISong[] | (ISong | ISongTake)[]
 }
 
-export default function EditLyricsHeader({ currentSong, setCurrentSong, allSongs }: EditLyricsHeaderProps) {
+const Title = () => {
   const { user } = useAuth()
+  const wrapperRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!wrapperRef.current) return
+    const getWidth = wrapperRef.current.offsetHeight
+    wrapperRef.current.style.width = `${getWidth}px`
+  }, [wrapperRef.current])
+
+  return (
+    <div className="edit-lyrics__title--container">
+      <div className="edit-lyrics__title--shadow-outset">
+        <div className="edit-lyrics__profile-pic" ref={wrapperRef}>
+          <div className="edit-lyrics__profile-pic--bs-inset">
+            <div className="edit-lyrics__profile-pic--wrapper">
+              <UserPhoto photoUrl={user?.picture} username={user ? user.username : "U"} />
+            </div>
+          </div>
+        </div>
+        <p className="edit-lyrics__title">Edit Your Lyrics</p>
+      </div>
+    </div>
+  )
+}
+
+export default function EditLyricsHeader({ currentSong, setCurrentSong, allSongs }: EditLyricsHeaderProps) {
   const [showSelectSongMenu, setShowSelectSongMenu] = useState<boolean>(false)
   const navigate = useNavigate()
+
   return (
     <div className="edit-lyrics__header">
       <SelectMenu
@@ -34,18 +62,14 @@ export default function EditLyricsHeader({ currentSong, setCurrentSong, allSongs
             <Icon type={ButtonTypes.Back} options={{ color: "White" }} />
           </button>
         </div>
-        <div className="edit-lyrics__title--container">
-          <div className="edit-lyrics__title--shadow-outset">
-            <p className="edit-lyrics__title">Edit Your Lyrics</p>
-            <p className="edit-lyrics__title name">{user?.username}</p>
-          </div>
-        </div>
+        <Title />
 
         <div className="edit-lyrics__select-song">
           <div className="edit-lyrics__select-song--shadow-outset">
             <div className="edit-lyrics__select-song--shadow-inset">
               <button className="edit-lyrics__select-song-btn" onClick={() => setShowSelectSongMenu(true)}>
-                <p className="edit-lyrics__select-song-text">{currentSong?.title}</p>
+                {/* <p className="edit-lyrics__select-song-text">{currentSong?.title}</p> */}
+                <MarqueeText text={currentSong.title} />
               </button>
             </div>
           </div>
