@@ -8440,8 +8440,7 @@ button {
   color: #ff9ec7;
   font-weight: 500;
 }
-
-.marquee--animation .song-title-marquee {
+.marquee-wrapper.marquee--animation .song-title-marquee {
   -webkit-animation: floatText 5s linear infinite;
           animation: floatText 5s linear infinite;
   padding-left: 30%;

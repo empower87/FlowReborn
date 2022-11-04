@@ -68,8 +68,11 @@ export default function EditLyricsHeader({ currentSong, setCurrentSong, allSongs
           <div className="edit-lyrics__select-song--shadow-outset">
             <div className="edit-lyrics__select-song--shadow-inset">
               <button className="edit-lyrics__select-song-btn" onClick={() => setShowSelectSongMenu(true)}>
-                {/* <p className="edit-lyrics__select-song-text">{currentSong?.title}</p> */}
-                <MarqueeText text={currentSong.title} />
+                <MarqueeText
+                  text={currentSong.title}
+                  wrapperStyles={["70%", "94%", "2em"]}
+                  textStyles={["0.75rem", "white", "5%"]}
+                />
               </button>
             </div>
           </div>

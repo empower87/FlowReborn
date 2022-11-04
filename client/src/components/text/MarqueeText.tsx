@@ -1,6 +1,12 @@
 import { useLayoutEffect, useRef, useState } from "react"
 
-export default function MarqueeText({ text }: { text: any }) {
+type MarqueeTextProps = {
+  text: any
+  wrapperStyles?: [string, string, string]
+  textStyles?: [string, string, string]
+}
+
+export default function MarqueeText({ text, wrapperStyles, textStyles }: MarqueeTextProps) {
   const [isMarquee, setIsMarquee] = useState<boolean>(false)
   const titleRef = useRef<HTMLDivElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
@@ -12,22 +18,39 @@ export default function MarqueeText({ text }: { text: any }) {
     let titleWidth = parseInt(computedTitleWidth.getPropertyValue("width"))
     let wrapperWidth = parseInt(computedWrapperWidth.getPropertyValue("width"))
 
-    if (titleWidth >= wrapperWidth) setIsMarquee(true)
-    else setIsMarquee(false)
+    if (titleWidth >= wrapperWidth) {
+      setIsMarquee(true)
+    } else {
+      setIsMarquee(false)
+    }
   }, [text])
 
+  const marqueeWrapperStyles = {
+    height: wrapperStyles ? wrapperStyles[0] : "75%",
+    width: wrapperStyles ? wrapperStyles[1] : "92%",
+    borderRadius: wrapperStyles ? wrapperStyles[2] : "0em 0em 1.4em 0em",
+  }
+  const marqueeTextStyles = {
+    fontSize: textStyles ? textStyles[0] : "0.95rem",
+    color: textStyles ? textStyles[1] : "white",
+    textIndent: textStyles ? textStyles[2] : "0",
+  }
+
   return (
-    <div className={`marquee-wrapper ${isMarquee ? "marquee--animation" : ""}`} ref={wrapperRef}>
-      {/* <Paragraph ref={titleRef}>{text}</Paragraph> */}
-      <p className="song-title-marquee" ref={titleRef}>
+    <div
+      className={`marquee-wrapper ${isMarquee ? "marquee--animation" : ""}`}
+      ref={wrapperRef}
+      style={wrapperStyles ? marqueeWrapperStyles : {}}
+    >
+      <p className="song-title-marquee" ref={titleRef} style={textStyles ? marqueeTextStyles : {}}>
         {text}
-        {/* {song?.title} {String.fromCodePoint(8226)} <span>{song?.user?.username}</span> */}
       </p>
-      {isMarquee && (
-        <p className="song-title-marquee" ref={titleRef}>
+      {isMarquee ? (
+        <p className="song-title-marquee" style={textStyles ? marqueeTextStyles : {}}>
           {text}
-          {/* {song?.title} {String.fromCodePoint(8226)} <span>{song?.user?.username}</span> */}
         </p>
+      ) : (
+        <></>
       )}
     </div>
   )
