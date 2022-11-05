@@ -38,15 +38,15 @@ export default function MarqueeText({ text, wrapperStyles, textStyles }: Marquee
 
   return (
     <div
-      className={`marquee-wrapper ${isMarquee ? "marquee--animation" : ""}`}
+      className={`marquee-wrapper ${isMarquee ? "marquee-animation" : ""}`}
       ref={wrapperRef}
       style={wrapperStyles ? marqueeWrapperStyles : {}}
     >
-      <p className="song-title-marquee" ref={titleRef} style={textStyles ? marqueeTextStyles : {}}>
+      <p className="marquee-text" ref={titleRef} style={textStyles ? marqueeTextStyles : {}}>
         {text}
       </p>
       {isMarquee ? (
-        <p className="song-title-marquee" style={textStyles ? marqueeTextStyles : {}}>
+        <p className="marquee-text" style={textStyles ? marqueeTextStyles : {}}>
           {text}
         </p>
       ) : (

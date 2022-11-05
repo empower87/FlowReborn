@@ -2,18 +2,15 @@ import { useState } from "react"
 import { useParams } from "react-router"
 import { LoadingSongPage } from "src/components/loading/Skeletons/LoadingHome"
 import CommentMenu from "src/features/socialize/comments/components/CommentMenu"
-import { CommentButton, FollowButton, LikeButton } from "src/features/socialize/SocializeButtons"
-import AudioTimeSlider from "../../components/audio/AudioTimeSlider"
-import { LayoutThree, LayoutTwo } from "../../components/layouts/LayoutWrappers"
+import { LayoutTwo } from "../../components/layouts/LayoutWrappers"
+import AudioPlayer from "./components/AudioPlayer"
 import Header from "./components/Header"
+import SocialButtons, { SocialButton } from "./components/SocialButtons"
 import useSongPage from "./hooks/useSongPage"
-import { NavigationButton, PlayButton } from "./SongScreen"
 
 export default function SongScreenDisplay() {
   const { id } = useParams()
   const { songInView, songs, findCurrentSong, isLoading, isError } = useSongPage(id)
-  const [isPlaying, setIsPlaying] = useState<boolean>(false)
-  const [songScreen] = useState(`#353535`)
   const [showCommentMenu, setShowCommentMenu] = useState<boolean>(false)
 
   if (isLoading || !songInView || !songs) return <LoadingSongPage />
@@ -35,52 +32,13 @@ export default function SongScreenDisplay() {
       </LayoutTwo>
 
       <div className="songscreen__interactions--container">
-        <LayoutThree
-          classes={["songscreen__play--container", "songscreen__play--shadow-inset", "songscreen__play--shadow-outset"]}
-        >
-          <div className="songscreen__play">
-            <NavigationButton onClick={findCurrentSong} direction="Previous" />
-            <LayoutTwo classes={["songscreen__play-btn--container", "songscreen__play-btn--shadow-inset"]}>
-              <LayoutTwo classes={["songscreen__play-btn", "songscreen__play-btn--shadow-outset"]}>
-                <PlayButton isPlaying={isPlaying} onClick={setIsPlaying} />
-              </LayoutTwo>
-            </LayoutTwo>
-            <NavigationButton onClick={findCurrentSong} direction="Next" />
-          </div>
+        <AudioPlayer song={songInView} findCurrentSong={findCurrentSong} />
 
-          <LayoutThree
-            classes={[
-              "songscreen__audioslider--container",
-              "songscreen__audioslider--shadow-inset",
-              "songscreen__audioslider--shadow-outset",
-            ]}
-          >
-            <AudioTimeSlider
-              isPlaying={isPlaying}
-              setIsPlaying={setIsPlaying}
-              currentSong={songInView}
-              bgColor={songScreen}
-            />
-          </LayoutThree>
-        </LayoutThree>
-
-        <LayoutThree
-          classes={[
-            "songscreen__social-btns--container",
-            "songscreen__social-btns--shadow-outset",
-            "songscreen__social-btns--shadow-inset",
-          ]}
-        >
-          <div className="songscreen__btn--container follow">
-            <FollowButton location="Song" song={songInView} />
-          </div>
-          <div className="songscreen__btn--container like">
-            <LikeButton location="Song" song={songInView} />
-          </div>
-          <div className="songscreen__btn--container comment">
-            <CommentButton location="Song" song={songInView} onClick={() => setShowCommentMenu((prev) => !prev)} />
-          </div>
-        </LayoutThree>
+        <SocialButtons>
+          <SocialButton type="follow" song={songInView} />
+          <SocialButton type="like" song={songInView} />
+          <SocialButton type="comment" song={songInView} showComments={() => setShowCommentMenu((prev) => !prev)} />
+        </SocialButtons>
       </div>
     </LayoutTwo>
   )

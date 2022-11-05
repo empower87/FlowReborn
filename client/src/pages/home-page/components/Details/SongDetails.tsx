@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom"
-import { LayoutTwo } from "src/components/layouts/LayoutWrappers"
 import MarqueeText from "src/components/text/MarqueeText"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import useFormatDate from "src/hooks/useFormatDate"
@@ -29,21 +28,6 @@ export const UserPhotoContainer = ({ song }: { song: ISong }) => {
 }
 
 const SongTitle = ({ song }: { song: ISong }) => {
-  // const [isMarquee, setIsMarquee] = useState<boolean>(false)
-  // const titleRef = useRef<HTMLDivElement>(null)
-  // const wrapperRef = useRef<HTMLDivElement>(null)
-
-  // useLayoutEffect(() => {
-  //   if (!titleRef.current || !wrapperRef.current) throw Error("divRef is not assigned")
-  //   let computedTitleWidth = window.getComputedStyle(titleRef?.current)
-  //   let computedWrapperWidth = window.getComputedStyle(wrapperRef?.current)
-  //   let titleWidth = parseInt(computedTitleWidth.getPropertyValue("width"))
-  //   let wrapperWidth = parseInt(computedWrapperWidth.getPropertyValue("width"))
-
-  //   if (titleWidth >= wrapperWidth) setIsMarquee(true)
-  //   else setIsMarquee(false)
-  // }, [song])
-
   return (
     <div className="song-title_shadow-div-inset">
       <div className="song-title_title--container">
@@ -58,39 +42,6 @@ const SongTitle = ({ song }: { song: ISong }) => {
     </div>
   )
 }
-// const SongTitle = ({ song }: { song: ISong }) => {
-//   const [isMarquee, setIsMarquee] = useState<boolean>(false)
-//   const titleRef = useRef<HTMLDivElement>(null)
-//   const wrapperRef = useRef<HTMLDivElement>(null)
-
-//   useLayoutEffect(() => {
-//     if (!titleRef.current || !wrapperRef.current) throw Error("divRef is not assigned")
-//     let computedTitleWidth = window.getComputedStyle(titleRef?.current)
-//     let computedWrapperWidth = window.getComputedStyle(wrapperRef?.current)
-//     let titleWidth = parseInt(computedTitleWidth.getPropertyValue("width"))
-//     let wrapperWidth = parseInt(computedWrapperWidth.getPropertyValue("width"))
-
-//     if (titleWidth >= wrapperWidth) setIsMarquee(true)
-//     else setIsMarquee(false)
-//   }, [song])
-
-//   return (
-//     <div className="song-title_shadow-div-inset">
-//       <div className="song-title_title--container">
-//         <div className={`marquee-wrapper ${isMarquee ? "marquee--animation" : ""}`} ref={wrapperRef}>
-//           <p className="song-title-marquee" id="marquee-one" ref={titleRef}>
-//             {song?.title} {String.fromCodePoint(8226)} <span>{song?.user?.username}</span>
-//           </p>
-//           {isMarquee && (
-//             <p className="song-title-marquee" id="marquee-two" ref={titleRef}>
-//               {song?.title} {String.fromCodePoint(8226)} <span>{song?.user?.username}</span>
-//             </p>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
 
 const SongCaption = ({ song }: { song: ISong }) => {
   const { formatDate } = useFormatDate()
@@ -105,13 +56,17 @@ const SongCaption = ({ song }: { song: ISong }) => {
 
 export default function SongDetails({ song }: { song: ISong }) {
   return (
-    <LayoutTwo classes={["song-user-section", "song-user-container"]}>
-      <UserPhotoContainer song={song} />
+    <div className="song-user-section">
+      <div className="song-user-container">
+        <UserPhotoContainer song={song} />
 
-      <LayoutTwo classes={["song-title-container", "song-title_shadow-div-outset"]}>
-        <SongTitle song={song} />
-        <SongCaption song={song} />
-      </LayoutTwo>
-    </LayoutTwo>
+        <div className="song-title-container">
+          <div className="song-title_shadow-div-outset">
+            <SongTitle song={song} />
+            <SongCaption song={song} />
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }

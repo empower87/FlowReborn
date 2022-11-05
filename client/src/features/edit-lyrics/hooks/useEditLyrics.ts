@@ -104,13 +104,12 @@ export default function useEditLyrics({ _initialLyrics, _currentSong }: UseEditL
     [_initialLyrics]
   )
 
-  const onAddLyric = useCallback(
-    (_songId: string) => {
+  const setCurrentLyricsList = useCallback(
+    (_songId: string, _lyrics: LyricLine[]) => {
       setLyricsHistory((prev) =>
         prev.map((each) => {
           if (each.songId === _songId) {
-            let lyrics = [...each.lyrics, { id: `${each.lyrics.length + 1}`, array: [] }]
-            return { ...each, lyrics: lyrics }
+            return { ...each, lyrics: _lyrics }
           } else {
             return each
           }
@@ -120,12 +119,13 @@ export default function useEditLyrics({ _initialLyrics, _currentSong }: UseEditL
     [lyricsHistory]
   )
 
-  const setCurrentLyricsList = useCallback(
-    (_songId: string, _lyrics: LyricLine[]) => {
+  const onAddLyric = useCallback(
+    (_songId: string) => {
       setLyricsHistory((prev) =>
         prev.map((each) => {
           if (each.songId === _songId) {
-            return { ...each, lyrics: _lyrics }
+            let lyrics = [...each.lyrics, { id: `${each.lyrics.length + 1}`, array: [] }]
+            return { ...each, lyrics: lyrics }
           } else {
             return each
           }

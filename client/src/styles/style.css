@@ -6512,32 +6512,6 @@ button {
   position: relative;
   overflow: hidden;
 }
-.SongScreen .song-screen--container .songscreen__header--container .songscreen__header--shadow-outset .songscreen__header--shadow-inset .songscreen__title--container .songscreen__title--shadow-inset .songscreen__song-data--container .songscreen__song-title--container .songscreen__song-title--shadow-inset .marquee-wrapper {
-  height: 75%;
-  width: 77%;
-  border-radius: 0.2em 0.2em 0.2em 2em;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-direction: row;
-  position: absolute;
-  overflow: hidden;
-  top: 0.2em;
-  left: 0.3em;
-}
-.SongScreen .song-screen--container .songscreen__header--container .songscreen__header--shadow-outset .songscreen__header--shadow-inset .songscreen__title--container .songscreen__title--shadow-inset .songscreen__song-data--container .songscreen__song-title--container .songscreen__song-title--shadow-inset .marquee-wrapper .songscreen__song-title {
-  color: white;
-  font-weight: bold;
-  font-size: 0.9rem;
-  white-space: nowrap;
-  text-align: start;
-}
-.SongScreen .song-screen--container .songscreen__header--container .songscreen__header--shadow-outset .songscreen__header--shadow-inset .songscreen__title--container .songscreen__title--shadow-inset .songscreen__song-data--container .songscreen__song-title--container .songscreen__song-title--shadow-inset .marquee--animation .songscreen__song-title {
-  -webkit-animation: floatText 5s linear infinite;
-          animation: floatText 5s linear infinite;
-  padding-left: 35%;
-  display: inline-block;
-}
 .SongScreen .song-screen--container .songscreen__header--container .songscreen__header--shadow-outset .songscreen__header--shadow-inset .songscreen__title--container .songscreen__title--shadow-inset .songscreen__song-data--container .songscreen__song-title--container .songscreen__song-title--shadow-inset .songscreen__song-index {
   width: 20%;
   color: rgb(204, 204, 204);
@@ -8428,19 +8402,19 @@ button {
   flex-direction: row;
   overflow: hidden;
 }
-.marquee-wrapper .song-title-marquee {
+.marquee-wrapper .marquee-text {
   font-size: 0.95rem;
   color: white;
   font-weight: bold;
   white-space: nowrap;
   text-align: start;
 }
-.marquee-wrapper .song-title-marquee span {
+.marquee-wrapper .marquee-text span {
   font-size: 0.95rem;
   color: #ff9ec7;
   font-weight: 500;
 }
-.marquee-wrapper.marquee--animation .song-title-marquee {
+.marquee-wrapper.marquee-animation .marquee-text {
   -webkit-animation: floatText 5s linear infinite;
           animation: floatText 5s linear infinite;
   padding-left: 30%;

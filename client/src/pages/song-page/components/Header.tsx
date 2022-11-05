@@ -1,6 +1,6 @@
-import { useLayoutEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
+import MarqueeText from "src/components/text/MarqueeText"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import useFormatDate from "src/hooks/useFormatDate"
 import { ISong } from "../../../../../server/src/models"
@@ -38,58 +38,33 @@ const Photo = ({ photoUrl, username }: { photoUrl: string | undefined; username:
   )
 }
 
-export const SongTitle = ({ song, songs }: HeaderProps) => {
-  const [isMarquee, setIsMarquee] = useState<boolean>(false)
-  const titleRef = useRef<HTMLDivElement>(null)
-  const wrapperRef = useRef<HTMLDivElement>(null)
-
-  const getSongIndex = (array: ISong[], current: ISong): number => {
+const SongTitle = ({ song, songs }: HeaderProps) => {
+  const getSongIndex = (array: ISong[], current: string): number => {
     let getIndex: number = 0
     array.forEach((each, index) => {
-      if (each?._id === current?._id) {
+      if (each?._id === current) {
         getIndex = index + 1
       }
     })
     return getIndex
   }
 
-  useLayoutEffect(() => {
-    if (!titleRef.current || !wrapperRef.current) throw Error("divRef is not assigned")
-    let computedTitleWidth = window.getComputedStyle(titleRef?.current)
-    let computedWrapperWidth = window.getComputedStyle(wrapperRef?.current)
-    let titleWidth = parseInt(computedTitleWidth.getPropertyValue("width"))
-    let wrapperWidth = parseInt(computedWrapperWidth.getPropertyValue("width"))
-
-    if (titleWidth >= wrapperWidth) setIsMarquee(true)
-    else setIsMarquee(false)
-  }, [song])
-
   return (
-    <>
-      <div className={`marquee-wrapper ${isMarquee ? "marquee--animation" : ""}`} ref={wrapperRef}>
-        <p
-          className="songscreen__song-title"
-          id="marquee-one"
-          ref={titleRef}
-          style={isMarquee ? {} : { paddingLeft: "6%" }}
-        >
-          {song?.title}
-        </p>
-        {isMarquee && (
-          <p className="songscreen__song-title" id="marquee-two">
-            {song?.title}
-          </p>
-        )}
-      </div>
+    <div className="songscreen__song-title--shadow-inset">
+      <MarqueeText
+        text={song?.title}
+        wrapperStyles={["75%", "77%", "0.2em 0.2em 0.2em 2em"]}
+        textStyles={["0.95rem", "white", "12%"]}
+      />
       <p className="songscreen__song-index">
-        <span>{getSongIndex(songs, song)}</span>
+        <span>{getSongIndex(songs, song._id)}</span>
         of {songs?.length}
       </p>
-    </>
+    </div>
   )
 }
 
-export const SongInfo = ({ song }: Pick<HeaderProps, "song">) => {
+const SongInfo = ({ song }: Pick<HeaderProps, "song">) => {
   const { formatDate } = useFormatDate()
   return (
     <div className="songscreen__song-data">
@@ -114,9 +89,7 @@ export default function Header({ song, songs }: HeaderProps) {
 
               <div className="songscreen__song-data--container">
                 <div className="songscreen__song-title--container">
-                  <div className="songscreen__song-title--shadow-inset">
-                    <SongTitle song={song} songs={songs} />
-                  </div>
+                  <SongTitle song={song} songs={songs} />
                 </div>
 
                 <SongInfo song={song} />

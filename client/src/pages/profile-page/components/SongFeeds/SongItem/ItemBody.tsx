@@ -144,7 +144,7 @@ export const LyricsBox = ({
   return (
     <div
       className={`profile-songs__lyrics ${buttonType !== "Expand" ? "Expanded" : ""}`}
-      style={buttonType !== "Expand" ? { width: "97%" } : { width: isMe ? "85%" : "-webkit-fill-available" }}
+      style={buttonType !== "Expand" ? { width: "97%" } : { width: isMe ? "85%" : "stretch" }}
     >
       <div className="profile-songs__lyrics--bs-outset">
         <div className="profile-songs__lyrics--wrapper">
