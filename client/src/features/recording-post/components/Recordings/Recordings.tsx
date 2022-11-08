@@ -1,7 +1,9 @@
-import { Dispatch, forwardRef, SetStateAction, useEffect, useRef, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useRef } from "react"
+import { UseFormReturn } from "react-hook-form"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import { useAuth } from "src/context/AuthContext"
 import { ISongTake } from "src/features/recording-booth/utils/types"
+import { IPostSongFormInputs } from "../../hooks/useSongForm"
 import Dropdown from "./Dropdown"
 
 type RecordingsProps = {
@@ -9,58 +11,59 @@ type RecordingsProps = {
   setTake: Dispatch<SetStateAction<ISongTake | undefined>>
   takes: ISongTake[]
   deleteTake: (_id: string) => void
-  title: JSX.Element
-  caption: JSX.Element
+  methods: UseFormReturn<IPostSongFormInputs, any>
+  onSubmit: (e: any, _song: ISongTake) => Promise<void | null>
+  // title: JSX.Element
+  // caption: JSX.Element
 }
 
 type InputProps = {
   name: "title" | "caption"
   placeholder: string
-  take: ISongTake | undefined
-  setTake: Dispatch<SetStateAction<ISongTake | undefined>>
+  methods: UseFormReturn<IPostSongFormInputs, any>
 }
 
-export const Input = forwardRef(({ name, placeholder, take, setTake }: InputProps, ref: any) => {
-  const [value, setValue] = useState<string>("")
+const Input = ({ name, placeholder, methods }: InputProps) => {
+  // const [value, setValue] = useState<string>("")
 
-  useEffect(() => {
-    console.log(take, value, "lol")
-    if (take && take[name] !== "") {
-      setValue(take[name])
-    }
-  }, [take])
+  // useEffect(() => {
+  //   console.log(take, value, "lol")
+  //   if (take && take[name] !== "") {
+  //     setValue(take[name])
+  //   }
+  // }, [take])
 
-  const updateTakeValue = () => {
-    if (value !== "") {
-      setTake((prev) => {
-        if (prev) {
-          return {
-            ...prev,
-            [name]: value,
-          }
-        }
-      })
-      setValue("")
-    }
-  }
+  // const updateTakeValue = () => {
+  //   if (value !== "") {
+  //     setTake((prev) => {
+  //       if (prev) {
+  //         return {
+  //           ...prev,
+  //           [name]: value,
+  //         }
+  //       }
+  //     })
+  //     setValue("")
+  //   }
+  // }
 
   return (
     <label htmlFor={name} className={`record__select-text--container ${name}`}>
       <input
         className="record__select-text"
+        {...methods.register(name)}
         type="text"
         name={name}
-        ref={ref}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        onBlur={() => updateTakeValue()}
+        // value={value}
+        // onChange={(e) => setValue(e.target.value)}
+        // onBlur={() => updateTakeValue()}
         placeholder={placeholder}
       />
     </label>
   )
-})
+}
 
-export default function Recordings({ take, setTake, takes, deleteTake, title, caption }: RecordingsProps) {
+export default function Recordings({ take, setTake, takes, deleteTake, methods, onSubmit }: RecordingsProps) {
   const widthRef = useRef<HTMLDivElement>(null)
   const { user } = useAuth()
 
@@ -83,16 +86,23 @@ export default function Recordings({ take, setTake, takes, deleteTake, title, ca
               </div>
             </div>
           </div>
+
           <div className="record__recordings-content">
-            <div className="record__recordings-details">
+            <form
+              id="post-song-form"
+              className="record__recordings-details"
+              onSubmit={methods.handleSubmit((data, e) => onSubmit(e, take))}
+            >
               <Dropdown take={take} setTake={setTake} takes={takes}>
-                {title}
+                <Input name="title" placeholder="Add a title" methods={methods} />
               </Dropdown>
 
               <div className="record__recordings-caption">
-                <div className="record__recordings-caption--bs-outset">{caption}</div>
+                <div className="record__recordings-caption--bs-outset">
+                  <Input name="caption" placeholder="Add a caption" methods={methods} />
+                </div>
               </div>
-            </div>
+            </form>
             <div className="record__recordings-delete"></div>
           </div>
         </div>

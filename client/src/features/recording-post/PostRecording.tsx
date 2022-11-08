@@ -3,7 +3,7 @@ import ReactDOM from "react-dom"
 import { useNavigate } from "react-router-dom"
 import Header from "src/features/recording-booth/components/Header"
 import { ISongTake } from "src/features/recording-booth/utils/types"
-import Recordings, { Input } from "../../features/recording-post/components/Recordings/Recordings"
+import Recordings from "../../features/recording-post/components/Recordings/Recordings"
 import LyricsPanel from "./components/LyricsPanel"
 import MediaPlayback from "./components/MediaPlayback"
 import { ThumbnailSelector } from "./components/Thumbnail"
@@ -30,7 +30,7 @@ export default function PostRecording({
 }: PostRecordingProps) {
   const root = document.getElementById("root")!
   const navigate = useNavigate()
-  const { handleSaveSong, titleRef, captionRef } = useSongForm(recordingType)
+  const { handleSaveSong, methods } = useSongForm(recordingType)
   const [showLyrics, setShowLyrics] = useState<boolean>(false)
 
   const navigateToEditLyrics = () => {
@@ -93,24 +93,8 @@ export default function PostRecording({
               setTake={setCurrentTake}
               takes={songTakes}
               deleteTake={onDelete}
-              title={
-                <Input
-                  name="title"
-                  placeholder="Add a title"
-                  take={currentTake}
-                  setTake={setCurrentTake}
-                  ref={titleRef}
-                />
-              }
-              caption={
-                <Input
-                  name="caption"
-                  placeholder="Add a caption"
-                  take={currentTake}
-                  setTake={setCurrentTake}
-                  ref={captionRef}
-                />
-              }
+              methods={methods}
+              onSubmit={handleSaveSong}
             />
           )}
         </div>
@@ -121,11 +105,7 @@ export default function PostRecording({
               <button className="post-recording__save-btn--bs-outset Draft">Save As Draft</button>
             </div> */}
             <div className="post-recording__save-btn">
-              <button
-                className="post-recording__save-btn--bs-outset Post"
-                type="button"
-                onClick={(e) => handleSaveSong(e, currentTake)}
-              >
+              <button className="post-recording__save-btn--bs-outset Post" type="submit" form="post-song-form">
                 Save
               </button>
             </div>

@@ -12,7 +12,7 @@ import { trpc } from "./utils/trpc"
 const LazySearch = React.lazy(() => import("./pages/search-page/Search"))
 const LazyEditProfile = React.lazy(() => import("./features/edit-profile/EditProfile"))
 const LazyProfile = React.lazy(() => import("./pages/profile-page/Profile"))
-const LazySongScreen = React.lazy(() => import("./pages/song-page/SongScreenDisplay"))
+const LazySongPage = React.lazy(() => import("./pages/song-page/SongPage"))
 
 const LazyRecordingBooth = React.lazy(() => import("./features/recording-booth/RecordingBooth"))
 const LazyEditLyrics = React.lazy(() => import("./features/edit-lyrics/EditLyrics"))
@@ -49,9 +49,9 @@ function App() {
     trpc.createClient({
       url:
         process.env.NODE_ENV === "production"
-          ? // ? "https://iron-flow.herokuapp.com/api/trpc"
-            "https://flow-henna.vercel.app/api/trpc"
-          : "http://localhost:5000/api/trpc",
+          ? "https://iron-flow.herokuapp.com/api/trpc"
+          : // "https://flow-henna.vercel.app/api/trpc"
+            "http://localhost:5000/api/trpc",
       headers() {
         return { Authorization: getAuthToken() }
       },
@@ -71,7 +71,7 @@ function App() {
                   <Route path="/editProfile" element={<LazyEditProfile />} />
                   <Route path="/recording-booth/" element={<LazyRecordingBooth />} />
                   <Route path="/editLyrics" element={<LazyEditLyrics />} />
-                  <Route path="/songScreen/:id" element={<LazySongScreen />} />
+                  <Route path="/songScreen/:id" element={<LazySongPage />} />
                   <Route path="/search" element={<LazySearch />} />
                 </Route>
                 <Route element={<PublicRoutes />}>
