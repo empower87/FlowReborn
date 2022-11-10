@@ -26,12 +26,14 @@ const ThumbnailModal = ({
   isOpen,
   onClose,
   setCurrentTake,
+  setThumbnailBlob,
 }: {
   video: string | undefined
   duration: number | undefined
   isOpen: boolean
   onClose: Dispatch<SetStateAction<boolean>>
   setCurrentTake: Dispatch<SetStateAction<ISongTake | undefined>>
+  setThumbnailBlob: Dispatch<SetStateAction<Blob | undefined>>
 }) => {
   const root = document.getElementById("root")!
   const seconds = duration ? duration / 1000 : 0
@@ -63,6 +65,7 @@ const ThumbnailModal = ({
           }
         }
       })
+      setThumbnailBlob(blob)
     })
     onClose((prev) => !prev)
   }
@@ -119,9 +122,11 @@ const ThumbnailModal = ({
 export const ThumbnailSelector = ({
   currentTake,
   setCurrentTake,
+  setThumbnailBlob,
 }: {
   currentTake: ISongTake | undefined
   setCurrentTake: Dispatch<SetStateAction<ISongTake | undefined>>
+  setThumbnailBlob: Dispatch<SetStateAction<Blob | undefined>>
 }) => {
   const [showModal, setShowModal] = useState<boolean>(false)
 
@@ -133,6 +138,7 @@ export const ThumbnailSelector = ({
         isOpen={showModal}
         onClose={setShowModal}
         setCurrentTake={setCurrentTake}
+        setThumbnailBlob={setThumbnailBlob}
       />
       <div className="post-recording__choose-thumbnail--bs-inset">
         <div className="post-recording__choose-thumbnail-title">

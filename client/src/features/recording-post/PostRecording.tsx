@@ -30,7 +30,7 @@ export default function PostRecording({
 }: PostRecordingProps) {
   const root = document.getElementById("root")!
   const navigate = useNavigate()
-  const { handleSaveSong, methods } = useSongForm(recordingType)
+  const { handleSaveSong, methods, setThumbnailBlob } = useSongForm(recordingType)
   const [showLyrics, setShowLyrics] = useState<boolean>(false)
 
   const navigateToEditLyrics = () => {
@@ -53,7 +53,7 @@ export default function PostRecording({
       />
       <div className="post-recording__video-frame">
         <div className="post-recording__video-menu">
-          <ThumbnailSelector currentTake={currentTake} setCurrentTake={setCurrentTake} />
+          <ThumbnailSelector currentTake={currentTake} setCurrentTake={setCurrentTake} setThumbnailBlob={setThumbnailBlob} />
           <div className="post-recording__menu-lyrics">
             <div className="post-recording__menu-lyrics-header">
               <div className="post-recording__menu-lyrics-header--bs-outset">Lyrics</div>

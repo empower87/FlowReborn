@@ -31,14 +31,14 @@ export const uploadFileToAWS = async ({ ctx, input }: { ctx: Context; input: Upl
   const s3Params = {
     Bucket: S3_BUCKET,
     Key: fileName,
-    Expires: 30000,
+    Expires: 1000,
     ContentType: fileType,
     ACL: "public-read",
   }
 
   console.log(s3Params, fileName, fileType, "WHAT ARE THESE LOOKING?")
 
-  const signedUrl = await s3.getSignedUrl("putObject", s3Params)
+  const signedUrl = s3.getSignedUrl("putObject", s3Params)
   console.log(signedUrl, "aws signed url, potentially")
   if (!signedUrl) throw TRPCError("INTERNAL_SERVER_ERROR", "AWS failed to sign url")
 
