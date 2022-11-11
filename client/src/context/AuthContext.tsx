@@ -51,7 +51,6 @@ const useProvideAuth = () => {
     },
     onError: (err) => {
       console.log(err, "['auth.login']: onError")
-      console.log(err.message, "OMG")
       if (err.message.charAt(0) === "[") {
         const parsed = JSON.parse(err.message)
         setError(parsed[0].message)

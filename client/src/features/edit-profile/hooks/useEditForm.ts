@@ -93,31 +93,87 @@ export default function useEditForm() {
     if (nonSocialFields.picture) {
       const pic = nonSocialFields.picture
       const randomID = Math.round(Math.random() * 1000000)
-      const fileName = userId + `-${randomID}-profile-picture`
-      const fileType = "image/jpeg"
-
       const blob = convertBase64ToBlob(pic)
-      upload.mutate(
-        { fileName: fileName, fileType: fileType },
-        {
-          onSuccess: async (data) => {
-            console.log(data, "signed-s3 data BEFORE")
 
-            await axios
-              .put(data.signedUrl, blob, data.options)
-              .then((res) => console.log(res))
-              .catch((err) => console.log(err))
+      const uploadData = {
+        fileName: userId + `-${randomID}-profile-picture`,
+        fileType: "image/jpeg",
+        fileBlob: blob,
+      }
 
-            console.log(data, pic, blob, "signed-s3 data AFTER")
+      upload.mutate([uploadData], {
+        onSuccess: async (data) => {
+          console.log(data, "signed-s3 data BEFORE")
 
-            updateUser.mutate({ ...updatedUser, picture: data.url })
-          },
-        }
-      )
+          await axios
+            .put(data[0].signedUrl, blob, data[0].options)
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err))
+
+          console.log(data, pic, blob, "signed-s3 data AFTER")
+
+          updateUser.mutate({ ...updatedUser, picture: data[0].url })
+        },
+      })
     } else {
       updateUser.mutate({ ...updatedUser })
     }
   }, [])
+  // const onSubmitHandler = useCallback(async (data: IFormInputs) => {
+  //   const { dirtyFields } = methods.formState
+  //   if (dirtyFields && Object.keys(dirtyFields).length === 0) return
+
+  //   let socialFields: any = {}
+  //   let nonSocialFields: any = {}
+  //   let updatedUser: any = {}
+
+  //   for (const [key, value] of Object.entries(dirtyFields)) {
+  //     if (["instagram", "twitter", "soundCloud"].includes(key)) {
+  //       socialFields[key] = data[key as keyof IFormInputs]
+  //     } else if (value && data[key as keyof IFormInputs] !== "") {
+  //       nonSocialFields[key] = data[key as keyof IFormInputs]
+  //     }
+  //   }
+
+  //   if (socialFields && Object.keys(socialFields).length === 0) {
+  //     updatedUser = { ...nonSocialFields }
+  //   } else {
+  //     updatedUser = { ...nonSocialFields, socials: socialFields }
+  //   }
+  //   console.log(updatedUser, "UPDATE USER input")
+
+  //   if (nonSocialFields.picture) {
+  //     const pic = nonSocialFields.picture
+  //     const randomID = Math.round(Math.random() * 1000000)
+  //     const fileName = userId + `-${randomID}-profile-picture`
+  //     const fileType = "image/jpeg"
+  //     const blob = convertBase64ToBlob(pic)
+  //     const uploadData = {
+  //       fileName: userId + `-${randomID}-profile-picture`,
+  //       fileType: 'image/jpeg',
+  //       fileBlob: blob
+  //     }
+  //     upload.mutate(
+  //       { fileName: fileName, fileType: fileType },
+  //       {
+  //         onSuccess: async (data) => {
+  //           console.log(data, "signed-s3 data BEFORE")
+
+  //           await axios
+  //             .put(data.signedUrl, blob, data.options)
+  //             .then((res) => console.log(res))
+  //             .catch((err) => console.log(err))
+
+  //           console.log(data, pic, blob, "signed-s3 data AFTER")
+
+  //           updateUser.mutate({ ...updatedUser, picture: data.url })
+  //         },
+  //       }
+  //     )
+  //   } else {
+  //     updateUser.mutate({ ...updatedUser })
+  //   }
+  // }, [])
 
   const onResetHandler = () => {
     const { dirtyFields } = methods.formState

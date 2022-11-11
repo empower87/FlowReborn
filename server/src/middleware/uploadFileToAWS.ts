@@ -18,35 +18,21 @@ type SignedRequest = {
   currentSong: any
   fileBlob: any
 }
+const UploadInputObjectSchema = z.object({
+  fileName: z.string(),
+  fileType: z.string(),
+  fileBlob: z.any(),
+})
 
-export const UploadInputSchema = z.array(
-  z.object({
-    fileName: z.string(),
-    fileType: z.string(),
-    fileBlob: z.any(),
-  })
-)
-// export const UploadInputSchema = z.object({
-//   fileName: z.string(),
-//   fileType: z.string(),
-// })
+export const UploadInputSchema = z.array(UploadInputObjectSchema)
+
+type UploadInputObjectType = z.infer<typeof UploadInputObjectSchema>
 export type UploadInputType = z.infer<typeof UploadInputSchema>
 
 export const uploadFileToAWS = async ({ ctx, input }: { ctx: Context; input: UploadInputType }) => {
   const s3 = new AWS.S3()
-  // const { fileName, fileType } = input
 
-  // for (let i = 0; i < input.length; i++) {
-  //   const s3Params = {
-  //     Bucket: S3_BUCKET,
-  //     Key: input[i].fileName,
-  //     Expires: 1000,
-  //     ContentType: input[i].fileType,
-  //     ACL: "public-read",
-  //   }
-  // }
-
-  const params = (object: any) => {
+  const params = (object: UploadInputObjectType) => {
     return {
       Bucket: S3_BUCKET,
       Key: object.fileName,
@@ -66,31 +52,11 @@ export const uploadFileToAWS = async ({ ctx, input }: { ctx: Context; input: Upl
       url: `https://${S3_BUCKET}.s3.amazonaws.com/${input[i].fileName}`,
     })
   }
-  console.log(responses, response, "HELLLLLLLOOOOOOOO")
+  console.log(responses, response, "response / responses uploadFileToAWS")
+
   return response
-  // const s3Params = {
-
-  //   Bucket: S3_BUCKET,
-  //   Key: fileName,
-  //   Expires: 1000,
-  //   ContentType: fileType,
-  //   ACL: "public-read",
-  // }
-
-  // console.log(s3Params, fileName, fileType, "WHAT ARE THESE LOOKING?")
-
-  // const signedUrl = s3.getSignedUrl("putObject", s3Params)
-  // console.log(signedUrl, "aws signed url, potentially")
-  // if (!signedUrl) throw TRPCError("INTERNAL_SERVER_ERROR", "AWS failed to sign url")
-
-  // const signedRequest = {
-  //   options: { headers: { "Content-Type": fileType } },
-  //   signedUrl: signedUrl,
-  //   url: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName}`,
-  // }
-
-  // return signedRequest
 }
+
 // export const uploadFileToAWS = async ({ ctx, input }: { ctx: Context; input: UploadInputType }) => {
 //   const s3 = new AWS.S3()
 //   const { fileName, fileType } = input

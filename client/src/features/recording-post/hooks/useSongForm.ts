@@ -10,23 +10,23 @@ export interface IPostSongFormInputs {
   title: string
   caption?: string | undefined
 }
-type AwsUrls = {
-  thumbnail: string | undefined
-  song: string | undefined
-}
 
-type InputProps = {
-  fileName: string
-  fileType: string
-  fileBlob: Blob | null
+type ResponseData = {
+  options: {
+    headers: {
+      "Content-Type": string
+    }
+  }
+  signedUrl: string
+  url: string
 }
 
 export const useSongForm = (recordingType: "audio" | "video") => {
-  // const [thumbnailUrl, setThumbnailUrl] = useState<string>()
-  const [thumbnailBlob, setThumbnailBlob] = useState<Blob>()
-  const [awsUrls, setAwsUrls] = useState<AwsUrls>({ thumbnail: undefined, song: undefined })
   const upload = trpc.useMutation(["users.upload-file"])
   const createSong = trpc.useMutation(["songs.create-song"])
+
+  const [thumbnailBlob, setThumbnailBlob] = useState<Blob>()
+  const [AWSData, setAWSData] = useState<ResponseData[]>()
   const [error, setError] = useState({
     path: "",
     message: "",
@@ -75,40 +75,30 @@ export const useSongForm = (recordingType: "audio" | "video") => {
     const songFileType = recordingType === "audio" ? "audio/mpeg-3" : "video/mp4"
     const songFileBlob = songToUpload.blob
 
-    console.log(songToUpload, "LETS CHECK THIS OUT???????")
-
     if (thumbnailBlob && recordingType === "video") {
-      const thumbnailFileName = songFileName + "-thumbnail"
-      const thumbnailFileType = "image/png"
-
       let data = [
         {
-          // _type: "thumbnail" as "thumbnail",
           fileName: songFileName + "-thumbnail",
           fileType: "image/png",
           fileBlob: thumbnailBlob,
         },
         {
-          // _type: "song" as "song",
           fileName: songFileName,
           fileType: songFileType,
           fileBlob: songFileBlob,
         },
       ]
-      // for (let i = 0; i < data.length; i++) {
-      //   handleUploadToAws(data)
-      // }
-      handleUploadToAws(data)
-      // await handleUploadToAws("song", songFileName, songFileType, songFileBlob)
 
-      if (!awsUrls.song) return
+      await handleUploadToAws(data)
+
+      if (!AWSData) return
       songToUpload = {
         ...songToUpload,
-        thumbnail: awsUrls.thumbnail,
-        audio: awsUrls.song,
+        thumbnail: AWSData[0].url,
+        audio: AWSData[1].url,
       }
       // createSong.mutate({ ...songToUpload })
-      console.log(thumbnailFileName, songToUpload, thumbnailBlob, awsUrls, "WHOOOOAAAA")
+      console.log(songToUpload, thumbnailBlob, AWSData, "WHOOOOAAAA")
     } else {
       console.log("hi no thumbnail")
     }
@@ -124,18 +114,14 @@ export const useSongForm = (recordingType: "audio" | "video") => {
     // )
   }
 
-  useEffect(() => {
-    console.log(awsUrls, "HIIIIIIIIIIIIIIII")
-  }, [awsUrls])
-
-  const handleUploadToAws = (data: UploadInputType) => {
-    if (!data) return
-    console.log(data, "what deez values handleUploadToAws")
-    upload.mutate(data, {
-      onSuccess: (datas) => {
+  const handleUploadToAws = async (_data: UploadInputType) => {
+    console.log(_data, "what deez values handleUploadToAws")
+    upload.mutate(_data, {
+      onSuccess: (data) => {
         // axios.put(data.signedUrl, _fileBlob, data.options)
-        console.log(datas, "WTF")
+        console.log(data, "WTF")
         // setAwsUrls((prev) => ({ ...prev, [_type]: data.url }))
+        setAWSData(data)
       },
       onError: (err) => {
         console.log(err, "YO ERR OCCURED DOG")
