@@ -1,9 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import axios from "axios"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { ISongTake } from "src/features/recording-booth/utils/types"
 import { trpc } from "src/utils/trpc"
+import { UploadInputType } from "../../../../../server/src/middleware/uploadFileToAWS"
 import { SaveSongInputSchema } from "../utils/input-schema"
 
 export interface IPostSongFormInputs {
@@ -13,6 +13,12 @@ export interface IPostSongFormInputs {
 type AwsUrls = {
   thumbnail: string | undefined
   song: string | undefined
+}
+
+type InputProps = {
+  fileName: string
+  fileType: string
+  fileBlob: Blob | null
 }
 
 export const useSongForm = (recordingType: "audio" | "video") => {
@@ -77,22 +83,22 @@ export const useSongForm = (recordingType: "audio" | "video") => {
 
       let data = [
         {
-          _type: "thumbnail" as "thumbnail",
-          _fileName: songFileName + "-thumbnail",
-          _fileType: "image/png",
-          _fileBlob: thumbnailBlob,
+          // _type: "thumbnail" as "thumbnail",
+          fileName: songFileName + "-thumbnail",
+          fileType: "image/png",
+          fileBlob: thumbnailBlob,
         },
         {
-          _type: "song" as "song",
-          _fileName: songFileName,
-          _fileType: songFileType,
-          _fileBlob: songFileBlob,
+          // _type: "song" as "song",
+          fileName: songFileName,
+          fileType: songFileType,
+          fileBlob: songFileBlob,
         },
       ]
-      for (let i = 0; i < data.length; i++) {
-        handleUploadToAws({ ...data[i] })
-      }
-
+      // for (let i = 0; i < data.length; i++) {
+      //   handleUploadToAws(data)
+      // }
+      handleUploadToAws(data)
       // await handleUploadToAws("song", songFileName, songFileType, songFileBlob)
 
       if (!awsUrls.song) return
@@ -122,32 +128,19 @@ export const useSongForm = (recordingType: "audio" | "video") => {
     console.log(awsUrls, "HIIIIIIIIIIIIIIII")
   }, [awsUrls])
 
-  const handleUploadToAws = ({
-    _type,
-    _fileName,
-    _fileType,
-    _fileBlob,
-  }: {
-    _type: "thumbnail" | "song"
-    _fileName: string
-    _fileType: string
-    _fileBlob: Blob | null
-  }) => {
-    if (!_fileBlob) return
-    console.log(_type, _fileName, _fileType, _fileBlob, "what deez values handleUploadToAws")
-    upload.mutate(
-      { fileName: _fileName, fileType: _fileType },
-      {
-        onSuccess: async (data) => {
-          axios.put(data.signedUrl, _fileBlob, data.options)
-          console.log(_type, data, "WTF")
-          setAwsUrls((prev) => ({ ...prev, [_type]: data.url }))
-        },
-        onError: (err) => {
-          console.log(err, "YO ERR OCCURED DOG")
-        },
-      }
-    )
+  const handleUploadToAws = (data: UploadInputType) => {
+    if (!data) return
+    console.log(data, "what deez values handleUploadToAws")
+    upload.mutate(data, {
+      onSuccess: (datas) => {
+        // axios.put(data.signedUrl, _fileBlob, data.options)
+        console.log(datas, "WTF")
+        // setAwsUrls((prev) => ({ ...prev, [_type]: data.url }))
+      },
+      onError: (err) => {
+        console.log(err, "YO ERR OCCURED DOG")
+      },
+    })
   }
 
   // const handleSaveSong = async (e: any, _song: ISongTake | undefined) => {
