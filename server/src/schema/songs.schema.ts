@@ -9,6 +9,7 @@ export const SongSchema = z.object({
   lyrics: z.array(z.string().array()),
   duration: z.number(),
   audio: z.string(),
+  thumbnail: z.string().optional(),
   video: z.string().optional(),
   user: UserSchema,
   comments: z.array(CommentSchema),

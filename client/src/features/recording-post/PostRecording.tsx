@@ -30,7 +30,7 @@ export default function PostRecording({
 }: PostRecordingProps) {
   const root = document.getElementById("root")!
   const navigate = useNavigate()
-  const { handleSaveSong, methods, setThumbnailBlob } = useSongForm(recordingType)
+  const { handleSaveSong, methods, setThumbnailBlob, isSaving } = useSongForm(recordingType)
   const [showLyrics, setShowLyrics] = useState<boolean>(false)
 
   const navigateToEditLyrics = () => {
@@ -53,7 +53,11 @@ export default function PostRecording({
       />
       <div className="post-recording__video-frame">
         <div className="post-recording__video-menu">
-          <ThumbnailSelector currentTake={currentTake} setCurrentTake={setCurrentTake} setThumbnailBlob={setThumbnailBlob} />
+          <ThumbnailSelector
+            currentTake={currentTake}
+            setCurrentTake={setCurrentTake}
+            setThumbnailBlob={setThumbnailBlob}
+          />
           <div className="post-recording__menu-lyrics">
             <div className="post-recording__menu-lyrics-header">
               <div className="post-recording__menu-lyrics-header--bs-outset">Lyrics</div>
@@ -106,7 +110,7 @@ export default function PostRecording({
             </div> */}
             <div className="post-recording__save-btn">
               <button className="post-recording__save-btn--bs-outset Post" type="submit" form="post-song-form">
-                Save
+                {isSaving ? "Uploading.." : "Save"}
               </button>
             </div>
           </div>

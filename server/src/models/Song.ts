@@ -4,7 +4,7 @@ import { IUser } from "./User"
 
 export interface ISong {
   _id: string
-  caption: string
+  caption?: string
   comments: IComment[]
   duration: number
   likes: string[]
@@ -39,8 +39,8 @@ const SongSchema = new Schema<ISong>(
     title: String,
     audio: String,
     user: { type: Schema.Types.ObjectId, ref: "User" },
-    video: String,
     thumbnail: String,
+    video: String,
   },
   {
     timestamps: { createdAt: "createdOn", updatedAt: "updatedOn" },

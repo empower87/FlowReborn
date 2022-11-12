@@ -7,6 +7,8 @@ export const createSongHandler = async ({ ctx, input }: ContextWithInput<CreateS
   if (!ctx.user) throw TRPCError("UNAUTHORIZED", "user is not authorized ")
 
   const newSong = await Song.create(input)
+
+  console.log(newSong, input, "YO WHAT IS GOING ON??? WHY NO THUMBY")
   return newSong
 }
 

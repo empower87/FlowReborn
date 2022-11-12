@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import axios from "axios"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { ISongTake } from "src/features/recording-booth/utils/types"
@@ -22,15 +23,35 @@ type ResponseData = {
 }
 
 export const useSongForm = (recordingType: "audio" | "video") => {
-  const upload = trpc.useMutation(["users.upload-file"])
-  const createSong = trpc.useMutation(["songs.create-song"])
-
+  const [isSaving, setIsSaving] = useState<boolean>(false)
   const [thumbnailBlob, setThumbnailBlob] = useState<Blob>()
   const [AWSData, setAWSData] = useState<ResponseData[]>()
+  const [songToUpload, setSongToUpload] = useState<ISongTake>()
   const [error, setError] = useState({
     path: "",
     message: "",
     showError: false,
+  })
+  const upload = trpc.useMutation(["users.upload-file"], {
+    onSuccess: async (data, variables) => {
+      for (let i = 0; i < data.length; i++) {
+        console.log(data[i], i + 1, "axios.put data")
+        axios.put(data[i].signedUrl, variables[i].fileBlob, data[i].options)
+      }
+      setAWSData(data)
+    },
+  })
+  const createSong = trpc.useMutation(["songs.create-song"], {
+    onMutate: (data) => {
+      console.log(data, "OK I should see this in console if working correctly")
+    },
+    onSuccess: (data) => {
+      console.log(data, "song successfully saved")
+      setIsSaving(false)
+    },
+    onError: (err) => {
+      console.log(err, "Song unsuccessfully saved -- check the error")
+    },
   })
 
   const methods = useForm<IPostSongFormInputs>({
@@ -50,8 +71,11 @@ export const useSongForm = (recordingType: "audio" | "video") => {
     }
   }, [methods.formState])
 
+  // TODO: disable button onSave, saving animation/notification, handle error,
+  //        if no video then no thumbnail, thumbnail auto generate if not set manually,
   const handleSaveSong = async (e: any, _song: ISongTake | undefined) => {
     if (!_song) return
+    setIsSaving(true)
     e.preventDefault()
 
     if (_song.blob == null)
@@ -70,6 +94,7 @@ export const useSongForm = (recordingType: "audio" | "video") => {
       title: getTitle,
       caption: getCaption,
     }
+    setSongToUpload(songToUpload)
 
     const songFileName = userId + getTitle.replaceAll(" ", "-")
     const songFileType = recordingType === "audio" ? "audio/mpeg-3" : "video/mp4"
@@ -90,17 +115,20 @@ export const useSongForm = (recordingType: "audio" | "video") => {
       ]
 
       await handleUploadToAws(data)
-
-      if (!AWSData) return
-      songToUpload = {
-        ...songToUpload,
-        thumbnail: AWSData[0].url,
-        audio: AWSData[1].url,
-      }
+      // console.log(AWSData, "COME ON PLZS")
+      // if (!AWSData) return
+      // songToUpload = {
+      //   ...songToUpload,
+      //   thumbnail: AWSData[0].url,
+      //   audio: AWSData[1].url,
+      // }
       // createSong.mutate({ ...songToUpload })
-      console.log(songToUpload, thumbnailBlob, AWSData, "WHOOOOAAAA")
+      // console.log(songToUpload, thumbnailBlob, AWSData, "WHOOOOAAAA")
+      // setIsSaving(false)
     } else {
-      console.log("hi no thumbnail")
+      console.log(songToUpload, "hi no thumbnail")
+      // createSong.mutate({ ...songToUpload })
+      setIsSaving(false)
     }
     // upload.mutate(
     //   { fileName: fileName, fileType: fileType },
@@ -113,20 +141,36 @@ export const useSongForm = (recordingType: "audio" | "video") => {
     //   }
     // )
   }
+  useEffect(() => {
+    if (AWSData && songToUpload) {
+      let song = {
+        ...songToUpload,
+        thumbnail: AWSData[0].url,
+        audio: AWSData[1].url,
+      }
+      createSong.mutate({ ...song })
+      console.log(AWSData, song, "AGH SUCCESS????")
+    }
+  }, [AWSData])
 
   const handleUploadToAws = async (_data: UploadInputType) => {
     console.log(_data, "what deez values handleUploadToAws")
+    // let AWSData
     upload.mutate(_data, {
-      onSuccess: (data) => {
-        // axios.put(data.signedUrl, _fileBlob, data.options)
-        console.log(data, "WTF")
-        // setAwsUrls((prev) => ({ ...prev, [_type]: data.url }))
-        setAWSData(data)
-      },
-      onError: (err) => {
-        console.log(err, "YO ERR OCCURED DOG")
+      // onSuccess: async (data) => {
+      //   AWSData = data
+      //   for (let i = 0; i < data.length; i++) {
+      //     console.log(_data[i], data[i], i + 1, "axios.put data")
+      //     axios.put(data[i].signedUrl, _data[i].fileBlob, data[i].options)
+      //   }
+      //   // setAWSData(data)
+      // },
+      onSuccess: async (data) => {
+        console.log(data, "mutate onSuccess")
       },
     })
+    // console.log(AWSData, "this probs wont work")
+    // return AWSData
   }
 
   // const handleSaveSong = async (e: any, _song: ISongTake | undefined) => {
@@ -169,5 +213,5 @@ export const useSongForm = (recordingType: "audio" | "video") => {
   //   // )
   // }
 
-  return { handleSaveSong, methods, error, setError, thumbnailBlob, setThumbnailBlob }
+  return { handleSaveSong, methods, error, setError, thumbnailBlob, setThumbnailBlob, isSaving }
 }
