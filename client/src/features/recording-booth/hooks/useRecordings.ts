@@ -43,7 +43,9 @@ export default function useRecordings(selectedBeat: Beat, recordingType: "audio"
               duration: duration,
               caption: "",
               thumbnail: url,
+              thumbnailBlob: blob,
             }
+            console.log(newTake, 'OK I DIDN"T SEE THIS HAHA')
             setCurrentTake(newTake)
             setTakes((prev) => [...prev, newTake])
             resetRecording()

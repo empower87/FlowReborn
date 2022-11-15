@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react"
+import { Dispatch, SetStateAction, useRef, useState } from "react"
 import ReactDOM from "react-dom"
 import { useNavigate } from "react-router-dom"
 import Header from "src/features/recording-booth/components/Header"
@@ -30,8 +30,9 @@ export default function PostRecording({
 }: PostRecordingProps) {
   const root = document.getElementById("root")!
   const navigate = useNavigate()
-  const { handleSaveSong, methods, setThumbnailBlob, isSaving } = useSongForm(recordingType)
+  const { handleSaveSong, methods, isSaving } = useSongForm(recordingType)
   const [showLyrics, setShowLyrics] = useState<boolean>(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
 
   const navigateToEditLyrics = () => {
     navigate("/editLyrics", {
@@ -53,11 +54,7 @@ export default function PostRecording({
       />
       <div className="post-recording__video-frame">
         <div className="post-recording__video-menu">
-          <ThumbnailSelector
-            currentTake={currentTake}
-            setCurrentTake={setCurrentTake}
-            setThumbnailBlob={setThumbnailBlob}
-          />
+          <ThumbnailSelector currentTake={currentTake} setCurrentTake={setCurrentTake} />
           <div className="post-recording__menu-lyrics">
             <div className="post-recording__menu-lyrics-header">
               <div className="post-recording__menu-lyrics-header--bs-outset">Lyrics</div>
@@ -84,7 +81,7 @@ export default function PostRecording({
 
         <div className="post-recording__video">
           <LyricsPanel isOpen={showLyrics} />
-          <video id="video-recorded" className="record__video" src={currentTake?.audio} />
+          <video id="video-recorded" className="record__video" src={currentTake?.audio} ref={videoRef} />
           <div className="post-recording__playback">{currentTake && <MediaPlayback take={currentTake} />}</div>
         </div>
       </div>

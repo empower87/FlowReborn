@@ -5,35 +5,18 @@ import { BtnColorsEnum, RoundButton } from "src/components/buttons/RoundButton/R
 import { generateCanvas } from "src/features/recording-booth/utils/generateThumbnail"
 import { ISongTake } from "src/features/recording-booth/utils/types"
 
-// const generateThumbnail = async (src: HTMLVideoElement, width: number, height: number) => {
-//   return new Promise((resolve) => {
-//     const canvas = document.createElement("canvas")
-//     canvas.width = width
-//     canvas.height = height
-//     const ctx = canvas.getContext("2d")
-
-//     if (!ctx) return
-//     ctx.drawImage(src, 0, 0, canvas.width, canvas.height)
-//     ctx.canvas.toBlob((blob) => {
-//       return resolve(blob)
-//     }, "image/jpeg")
-//   })
-// }
-
 const ThumbnailModal = ({
   video,
   duration,
   isOpen,
   onClose,
   setCurrentTake,
-  setThumbnailBlob,
 }: {
   video: string | undefined
   duration: number | undefined
   isOpen: boolean
   onClose: Dispatch<SetStateAction<boolean>>
   setCurrentTake: Dispatch<SetStateAction<ISongTake | undefined>>
-  setThumbnailBlob: Dispatch<SetStateAction<Blob | undefined>>
 }) => {
   const root = document.getElementById("root")!
   const seconds = duration ? duration / 1000 : 0
@@ -62,12 +45,11 @@ const ThumbnailModal = ({
           return {
             ...prev,
             thumbnail: url,
+            thumbnailBlob: blob,
           }
         }
       })
-      setThumbnailBlob(blob)
     })
-    onClose((prev) => !prev)
   }
 
   if (!isOpen) return null
@@ -108,7 +90,13 @@ const ThumbnailModal = ({
             </div>
           </div>
           <div className="post-recording__thumbnail-select">
-            <button className="post-recording__thumbnail-select-btn" onClick={() => thumbnailHandler()}>
+            <button
+              className="post-recording__thumbnail-select-btn"
+              onClick={() => {
+                thumbnailHandler()
+                onClose((prev) => !prev)
+              }}
+            >
               Save
             </button>
           </div>
@@ -122,11 +110,9 @@ const ThumbnailModal = ({
 export const ThumbnailSelector = ({
   currentTake,
   setCurrentTake,
-  setThumbnailBlob,
 }: {
   currentTake: ISongTake | undefined
   setCurrentTake: Dispatch<SetStateAction<ISongTake | undefined>>
-  setThumbnailBlob: Dispatch<SetStateAction<Blob | undefined>>
 }) => {
   const [showModal, setShowModal] = useState<boolean>(false)
 
@@ -138,7 +124,6 @@ export const ThumbnailSelector = ({
         isOpen={showModal}
         onClose={setShowModal}
         setCurrentTake={setCurrentTake}
-        setThumbnailBlob={setThumbnailBlob}
       />
       <div className="post-recording__choose-thumbnail--bs-inset">
         <div className="post-recording__choose-thumbnail-title">
