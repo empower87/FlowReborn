@@ -33,6 +33,7 @@ export default function PostRecording({
   const { handleSaveSong, methods, isSaving } = useSongForm(recordingType)
   const [showLyrics, setShowLyrics] = useState<boolean>(false)
   const videoRef = useRef<HTMLVideoElement>(null)
+  const { isValid, isDirty } = methods.formState
 
   const navigateToEditLyrics = () => {
     navigate("/editLyrics", {
@@ -106,7 +107,12 @@ export default function PostRecording({
               <button className="post-recording__save-btn--bs-outset Draft">Save As Draft</button>
             </div> */}
             <div className="post-recording__save-btn">
-              <button className="post-recording__save-btn--bs-outset Post" type="submit" form="post-song-form">
+              <button
+                className="post-recording__save-btn--bs-outset Post"
+                type="submit"
+                form="post-song-form"
+                disabled={!isDirty || !isValid}
+              >
                 {isSaving ? "Uploading.." : "Save"}
               </button>
             </div>
