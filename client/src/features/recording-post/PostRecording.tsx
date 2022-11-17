@@ -1,13 +1,14 @@
 import { Dispatch, SetStateAction, useRef, useState } from "react"
 import ReactDOM from "react-dom"
 import { useNavigate } from "react-router-dom"
+import InputError from "src/components/errors/InputError"
 import Header from "src/features/recording-booth/components/Header"
 import { ISongTake } from "src/features/recording-booth/utils/types"
 import Recordings from "../../features/recording-post/components/Recordings/Recordings"
 import LyricsPanel from "./components/LyricsPanel"
 import MediaPlayback from "./components/MediaPlayback"
 import { ThumbnailSelector } from "./components/Thumbnail"
-import { useSongForm } from "./hooks/useSongForm"
+import { INITIAL_ERROR_STATE, useSongForm } from "./hooks/useSongForm"
 
 type PostRecordingProps = {
   isOpen: boolean
@@ -30,10 +31,11 @@ export default function PostRecording({
 }: PostRecordingProps) {
   const root = document.getElementById("root")!
   const navigate = useNavigate()
-  const { handleSaveSong, methods, isSaving } = useSongForm(recordingType)
+  const { handleSaveSong, methods, isSaving, error, setError, isDisabled, showError, setShowError } =
+    useSongForm(recordingType)
   const [showLyrics, setShowLyrics] = useState<boolean>(false)
   const videoRef = useRef<HTMLVideoElement>(null)
-  const { isValid, isDirty } = methods.formState
+  // const { isValid, isDirty } = methods.formState
 
   const navigateToEditLyrics = () => {
     navigate("/editLyrics", {
@@ -47,6 +49,12 @@ export default function PostRecording({
   if (!isOpen) return null
   return ReactDOM.createPortal(
     <div className="post-recording">
+      <InputError
+        isOpen={error.showError}
+        onClose={() => setError(INITIAL_ERROR_STATE)}
+        message={error.message}
+        options={{ position: [6, 27], size: [40, 72] }}
+      />
       <Header
         type="Back"
         opacity="1"
@@ -107,12 +115,7 @@ export default function PostRecording({
               <button className="post-recording__save-btn--bs-outset Draft">Save As Draft</button>
             </div> */}
             <div className="post-recording__save-btn">
-              <button
-                className="post-recording__save-btn--bs-outset Post"
-                type="submit"
-                form="post-song-form"
-                disabled={!isDirty || !isValid}
-              >
+              <button className="post-recording__save-btn--bs-outset Post" type="submit" form="post-song-form">
                 {isSaving ? "Uploading.." : "Save"}
               </button>
             </div>

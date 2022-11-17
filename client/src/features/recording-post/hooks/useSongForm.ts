@@ -12,40 +12,25 @@ export interface IPostSongFormInputs {
   caption?: string | undefined
 }
 
-type ResponseData = {
-  options: {
-    headers: {
-      "Content-Type": string
-    }
-  }
-  signedUrl: string
-  url: string
+export const INITIAL_ERROR_STATE = {
+  path: "",
+  message: "",
+  showError: false,
 }
 
 export const useSongForm = (recordingType: "audio" | "video") => {
   const [isSaving, setIsSaving] = useState<boolean>(false)
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
+  const [showError, setShowError] = useState<boolean>(false)
+  const [error, setError] = useState(INITIAL_ERROR_STATE)
 
-  const [AWSData, setAWSData] = useState<ResponseData[]>()
-  const [songToUpload, setSongToUpload] = useState<ISongTake>()
-  const [error, setError] = useState({
-    path: "",
-    message: "",
-    showError: false,
-  })
   const upload = trpc.useMutation(["users.upload-file"], {
-    onSuccess: async (data, variables) => {
-      // for (let i = 0; i < data.length; i++) {
-      //   console.log(data[i], variables, i + 1, "axios.put data")
-      //   axios.put(data[i].signedUrl, variables[i].fileBlob, data[i].options)
-      // }
-      // setAWSData(data)
+    onError: (err) => {
+      console.log(err)
+      setError({ path: "upload", message: err.message, showError: true })
     },
   })
   const createSong = trpc.useMutation(["songs.create-song"], {
-    onMutate: (data) => {
-      console.log(data, "OK I should see this in console if working correctly")
-    },
     onSuccess: (data) => {
       console.log(data, "song successfully saved")
       setIsSaving(false)
@@ -56,6 +41,7 @@ export const useSongForm = (recordingType: "audio" | "video") => {
     },
     onError: (err) => {
       console.log(err, "Song unsuccessfully saved -- check the error")
+      setError({ path: "create", message: err.message, showError: true })
     },
   })
   const methods = useForm<IPostSongFormInputs>({
@@ -66,6 +52,9 @@ export const useSongForm = (recordingType: "audio" | "video") => {
     },
     resolver: zodResolver(SaveSongInputSchema),
   })
+  const {
+    formState: { isDirty, isValid, errors },
+  } = methods
 
   useEffect(() => {
     const errors = methods.formState.errors
@@ -74,46 +63,49 @@ export const useSongForm = (recordingType: "audio" | "video") => {
     } else if (errors.caption?.message) {
       setError({ path: "caption", message: errors.caption.message, showError: true })
     }
-  }, [methods.formState])
+  }, [errors])
 
-  // useEffect(() => {
-  //   if (AWSData && songToUpload) {
-  //     let song = {
-  //       ...songToUpload,
-  //       thumbnail: AWSData[0].url,
-  //       audio: AWSData[1].url,
-  //     }
-  //     createSong.mutate({ ...song })
-  //     console.log(AWSData, song, "AGH SUCCESS????")
-  //   }
-  // }, [AWSData])
+  useEffect(() => {
+    if (error.message) {
+      setTimeout(() => {
+        setError(INITIAL_ERROR_STATE)
+      }, 4000)
+    }
+  }, [error])
+
+  useEffect(() => {
+    if (isDirty || isValid) {
+      setIsDisabled(false)
+    } else {
+      setIsDisabled(true)
+    }
+  }, [isDirty, isValid])
 
   // TODO: disable button onSave, saving animation/notification, handle error,
   //        if no video then no thumbnail, thumbnail auto generate if not set manually,
   const handleSaveSong = async (e: any, _song: ISongTake | undefined) => {
-    console.log(e, _song, "OH HIIIIIIIII HANDLE SAVE SONG")
-    if (!_song) return
-    setIsSaving(true)
-    e.preventDefault()
-    if (_song.blob == null)
+    if (!_song || _song.blob == null) {
       return setError({
         path: "",
         message: "You haven't yet recorded a Flow",
         showError: true,
       })
+    }
+    console.log(isDisabled, "is this true??")
+    if (isDisabled) {
+      return setError((prevError) => ({ ...prevError, message: "Must add a title", showError: true }))
+    }
+    setIsSaving(true)
 
     const userId = _song.user._id
     const getTitle = methods.getValues("title")
     const getCaption = methods.getValues("caption")
-
+    const songFileName = userId + getTitle.replaceAll(" ", "-")
     let songToUpload = {
       ..._song,
       title: getTitle,
       caption: getCaption,
     }
-    setSongToUpload(songToUpload)
-
-    const songFileName = userId + getTitle.replaceAll(" ", "-")
 
     if (_song.thumbnailBlob && recordingType === "video") {
       let data = [
@@ -128,9 +120,9 @@ export const useSongForm = (recordingType: "audio" | "video") => {
           fileBlob: _song.blob,
         },
       ]
-
       await handleUploadToAws(data, songToUpload)
     }
+    e.preventDefault()
   }
 
   const handleUploadToAws = async (_data: UploadInputType, songToUpload: ISongTake) => {
@@ -142,13 +134,12 @@ export const useSongForm = (recordingType: "audio" | "video") => {
           console.log(data[i], variables, i + 1, "axios.put data")
 
           axios.put(data[i].signedUrl, variables[i].fileBlob, data[i].options)
-          if (variables[i].fileName.includes("thumbnail")) {
+          if (variables[i].fileName.includes("-thumbnail") && variables.length > 1) {
             thumbnailUrl = data[i].url
           } else {
             songUrl = data[i].url
           }
         }
-        console.log(thumbnailUrl, songUrl, "what are these values?")
         if ((thumbnailUrl && songUrl) || (!thumbnailUrl && songUrl)) {
           songToUpload = { ...songToUpload, thumbnail: thumbnailUrl, audio: songUrl }
           createSong.mutate({ ...songToUpload })
@@ -157,5 +148,5 @@ export const useSongForm = (recordingType: "audio" | "video") => {
     })
   }
 
-  return { handleSaveSong, methods, error, setError, isSaving }
+  return { handleSaveSong, methods, error, setError, showError, setShowError, isSaving, isDisabled }
 }
