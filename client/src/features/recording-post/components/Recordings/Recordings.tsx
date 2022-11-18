@@ -54,6 +54,7 @@ const Input = ({ name, placeholder, methods }: InputProps) => {
         {...methods.register(name)}
         type="text"
         name={name}
+        autoComplete="off"
         // value={value}
         // onChange={(e) => setValue(e.target.value)}
         // onBlur={() => updateTakeValue()}

@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useRef, useState } from "react"
 import ReactDOM from "react-dom"
 import { useNavigate } from "react-router-dom"
 import InputError from "src/components/errors/InputError"
+import LoadingSpinner from "src/components/loading/LoadingSpinner"
 import Header from "src/features/recording-booth/components/Header"
 import { ISongTake } from "src/features/recording-booth/utils/types"
 import Recordings from "../../features/recording-post/components/Recordings/Recordings"
@@ -31,11 +32,9 @@ export default function PostRecording({
 }: PostRecordingProps) {
   const root = document.getElementById("root")!
   const navigate = useNavigate()
-  const { handleSaveSong, methods, isSaving, error, setError, isDisabled, showError, setShowError } =
-    useSongForm(recordingType)
+  const { handleSaveSong, methods, isSaving, error, setError } = useSongForm(recordingType, onDelete)
   const [showLyrics, setShowLyrics] = useState<boolean>(false)
   const videoRef = useRef<HTMLVideoElement>(null)
-  // const { isValid, isDirty } = methods.formState
 
   const navigateToEditLyrics = () => {
     navigate("/editLyrics", {
@@ -116,7 +115,14 @@ export default function PostRecording({
             </div> */}
             <div className="post-recording__save-btn">
               <button className="post-recording__save-btn--bs-outset Post" type="submit" form="post-song-form">
-                {isSaving ? "Uploading.." : "Save"}
+                {isSaving ? (
+                  <div className="post-recording__save-btn-saving">
+                    <LoadingSpinner />
+                    <p>Saving...</p>
+                  </div>
+                ) : (
+                  <p>Save</p>
+                )}
               </button>
             </div>
           </div>

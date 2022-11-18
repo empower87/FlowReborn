@@ -1,7 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
 import { ISongTake } from "src/features/recording-booth/utils/types"
 import { trpc } from "src/utils/trpc"
 import { UploadInputType } from "../../../../../server/src/middleware/uploadFileToAWS"
@@ -12,36 +13,30 @@ export interface IPostSongFormInputs {
   caption?: string | undefined
 }
 
+// TODO: Not sure I need the path key
 export const INITIAL_ERROR_STATE = {
   path: "",
   message: "",
   showError: false,
 }
 
-export const useSongForm = (recordingType: "audio" | "video") => {
+export const useSongForm = (recordingType: "audio" | "video", onDelete: (_id: string) => void) => {
+  const navigate = useNavigate()
   const [isSaving, setIsSaving] = useState<boolean>(false)
-  const [isDisabled, setIsDisabled] = useState<boolean>(true)
-  const [showError, setShowError] = useState<boolean>(false)
   const [error, setError] = useState(INITIAL_ERROR_STATE)
 
   const upload = trpc.useMutation(["users.upload-file"], {
     onError: (err) => {
-      console.log(err)
-      setError({ path: "upload", message: err.message, showError: true })
+      onSettledMutation(err.message)
     },
   })
   const createSong = trpc.useMutation(["songs.create-song"], {
     onSuccess: (data) => {
       console.log(data, "song successfully saved")
-      setIsSaving(false)
-      if (methods.formState.isSubmitted) {
-        console.log(methods.formState, "what does the formState look like")
-        methods.reset()
-      }
+      onSettledMutation("success", data._id)
     },
     onError: (err) => {
-      console.log(err, "Song unsuccessfully saved -- check the error")
-      setError({ path: "create", message: err.message, showError: true })
+      onSettledMutation(err.message)
     },
   })
   const methods = useForm<IPostSongFormInputs>({
@@ -57,7 +52,6 @@ export const useSongForm = (recordingType: "audio" | "video") => {
   } = methods
 
   useEffect(() => {
-    const errors = methods.formState.errors
     if (errors.title?.message) {
       setError({ path: "title", message: errors.title.message, showError: true })
     } else if (errors.caption?.message) {
@@ -73,26 +67,15 @@ export const useSongForm = (recordingType: "audio" | "video") => {
     }
   }, [error])
 
-  useEffect(() => {
-    if (isDirty || isValid) {
-      setIsDisabled(false)
-    } else {
-      setIsDisabled(true)
-    }
-  }, [isDirty, isValid])
-
-  // TODO: disable button onSave, saving animation/notification, handle error,
-  //        if no video then no thumbnail, thumbnail auto generate if not set manually,
   const handleSaveSong = async (e: any, _song: ISongTake | undefined) => {
     if (!_song || _song.blob == null) {
       return setError({
         path: "",
-        message: "You haven't yet recorded a Flow",
+        message: "No Flows to be saved",
         showError: true,
       })
     }
-    console.log(isDisabled, "is this true??")
-    if (isDisabled) {
+    if (!isDirty || !isValid) {
       return setError((prevError) => ({ ...prevError, message: "Must add a title", showError: true }))
     }
     setIsSaving(true)
@@ -130,6 +113,7 @@ export const useSongForm = (recordingType: "audio" | "video") => {
       onSuccess: async (data, variables) => {
         let thumbnailUrl
         let songUrl
+
         for (let i = 0; i < data.length; i++) {
           console.log(data[i], variables, i + 1, "axios.put data")
 
@@ -148,5 +132,20 @@ export const useSongForm = (recordingType: "audio" | "video") => {
     })
   }
 
-  return { handleSaveSong, methods, error, setError, showError, setShowError, isSaving, isDisabled }
+  const onSettledMutation = useCallback((message: string, id?: string) => {
+    setIsSaving(false)
+    if (message !== "success") {
+      if (message === "you must be logged in to access this resource") {
+        // this is not working, goes to /home
+        navigate("/auth", { replace: true })
+      }
+      setError({ path: "", message: message, showError: true })
+    } else {
+      if (!methods.formState.isSubmitted || !id) return
+      onDelete(id)
+      methods.reset()
+    }
+  }, [])
+
+  return { handleSaveSong, methods, error, setError, isSaving }
 }

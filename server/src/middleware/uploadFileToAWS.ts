@@ -1,8 +1,6 @@
-// var AWS = require('aws-sdk')
 import AWS from "aws-sdk"
-// import { Blob } from "buffer"
 import z from "zod"
-import { Context } from "../utils/trpc"
+import { Context, TRPCError } from "../utils/trpc"
 
 AWS.config.update({
   region: "us-west-1",
@@ -30,6 +28,7 @@ type UploadInputObjectType = z.infer<typeof UploadInputObjectSchema>
 export type UploadInputType = z.infer<typeof UploadInputSchema>
 
 export const uploadFileToAWS = async ({ ctx, input }: { ctx: Context; input: UploadInputType }) => {
+  if (!ctx.user) throw TRPCError("INTERNAL_SERVER_ERROR", "you must be logged in")
   const s3 = new AWS.S3()
 
   const params = (object: UploadInputObjectType) => {
