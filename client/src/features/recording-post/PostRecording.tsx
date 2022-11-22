@@ -1,11 +1,11 @@
 import { Dispatch, SetStateAction, useRef, useState } from "react"
-import ReactDOM from "react-dom"
-import { useNavigate } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 import InputError from "src/components/errors/InputError"
 import LoadingSpinner from "src/components/loading/LoadingSpinner"
 import Header from "src/features/recording-booth/components/Header"
 import { ISongTake } from "src/features/recording-booth/utils/types"
 import Recordings from "../../features/recording-post/components/Recordings/Recordings"
+import LyricsMenu from "./components/LyricsMenu"
 import LyricsPanel from "./components/LyricsPanel"
 import MediaPlayback from "./components/MediaPlayback"
 import { ThumbnailSelector } from "./components/Thumbnail"
@@ -21,32 +21,27 @@ type PostRecordingProps = {
   recordingType: "audio" | "video"
 }
 
-export default function PostRecording({
-  isOpen,
-  onClose,
-  currentTake,
-  setCurrentTake,
-  onDelete,
-  songTakes,
-  recordingType,
-}: PostRecordingProps) {
-  const root = document.getElementById("root")!
-  const navigate = useNavigate()
+// export default function PostRecording({
+//   isOpen,
+//   onClose,
+//   currentTake,
+//   setCurrentTake,
+//   onDelete,
+//   songTakes,
+//   recordingType,
+// }: PostRecordingProps) {
+export default function PostRecording() {
+  // const root = document.getElementById("root")!
+  const location = useLocation()
+  const state = location.state as PostRecordingProps
+  const { isOpen, onClose, currentTake, setCurrentTake, onDelete, songTakes, recordingType } = state
   const { handleSaveSong, methods, isSaving, error, setError } = useSongForm(recordingType, onDelete)
   const [showLyrics, setShowLyrics] = useState<boolean>(false)
   const videoRef = useRef<HTMLVideoElement>(null)
 
-  const navigateToEditLyrics = () => {
-    navigate("/editLyrics", {
-      state: {
-        allSongs: songTakes,
-        currentSong: currentTake,
-      },
-    })
-  }
-
-  if (!isOpen) return null
-  return ReactDOM.createPortal(
+  // if (!isOpen || songTakes.length === 0) return null
+  // return ReactDOM.createPortal(
+  return (
     <div className="post-recording">
       <InputError
         isOpen={error.showError}
@@ -62,33 +57,17 @@ export default function PostRecording({
       />
       <div className="post-recording__video-frame">
         <div className="post-recording__video-menu">
-          <ThumbnailSelector currentTake={currentTake} setCurrentTake={setCurrentTake} />
-          <div className="post-recording__menu-lyrics">
-            <div className="post-recording__menu-lyrics-header">
-              <div className="post-recording__menu-lyrics-header--bs-outset">Lyrics</div>
-            </div>
-            <div className="post-recording__menu-add-btn">
-              <div className="post-recording__menu-add-btn--bs-inset Show-Lyrics">
-                <button
-                  className="post-recording__menu-add-btn--bs-outset"
-                  onClick={() => setShowLyrics((prev) => !prev)}
-                >
-                  Show Lyrics
-                </button>
-              </div>
-            </div>
-            <div className="post-recording__menu-add-btn">
-              <div className="post-recording__menu-add-btn--bs-inset Edit-Lyrics">
-                <button className="post-recording__menu-add-btn--bs-outset" onClick={navigateToEditLyrics}>
-                  Edit Lyrics
-                </button>
-              </div>
-            </div>
-          </div>
+          {currentTake && currentTake.thumbnailBlob ? (
+            <ThumbnailSelector currentTake={currentTake} setCurrentTake={setCurrentTake} />
+          ) : (
+            <></>
+          )}
+          <LyricsMenu setShowLyrics={setShowLyrics} songTakes={songTakes} currentTake={currentTake} />
         </div>
 
         <div className="post-recording__video">
           <LyricsPanel isOpen={showLyrics} />
+          {/* TODO: fix so video plays on button press, doesn't currently because of audioRef and videoRef require different methods. */}
           <video id="video-recorded" className="record__video" src={currentTake?.audio} ref={videoRef} />
           <div className="post-recording__playback">{currentTake && <MediaPlayback take={currentTake} />}</div>
         </div>
@@ -128,7 +107,7 @@ export default function PostRecording({
           </div>
         </div>
       </div>
-    </div>,
-    root
+    </div>
+    // root
   )
 }

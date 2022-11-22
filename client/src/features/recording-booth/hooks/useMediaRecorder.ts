@@ -32,10 +32,14 @@ const useRecorderPermission = (recordingType: RecordRTC.Options["type"]) => {
   const [recorder, setRecorder] = useState<MediaRecorderProps>(INITIAL_STATE)
 
   useEffect(() => {
+    setRecorder(INITIAL_STATE)
+  }, [recordingType])
+
+  useEffect(() => {
     const getPermissionInitializeRecorder = async () => {
       try {
         let stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
+          video: recordingType === "video" ? true : false,
           audio: true,
         })
         let recorder = new RecordRTCPromisesHandler(stream, { type: recordingType })
@@ -65,7 +69,7 @@ const useRecorderPermission = (recordingType: RecordRTC.Options["type"]) => {
 export default function useVideoRecorder(beat: string, type: "audio" | "video") {
   const { recorder, setRecorder } = useRecorderPermission(type)
   const { isRecording, mediaStream, mediaRecorder } = recorder
-  const recordAudioRef = useRef<any>(new Audio(beat))
+  const audioRef = useRef<any>(new Audio(beat))
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -150,9 +154,9 @@ export default function useVideoRecorder(beat: string, type: "audio" | "video") 
       await mediaRecorder.startRecording()
       SpeechRecognition.startListening({ continuous: true })
 
-      var audio = recordAudioRef.current?.captureStream()
-      recordAudioRef.current.play()
-      recordAudioRef.current.loop = true
+      var audio = audioRef.current?.captureStream()
+      audioRef.current.play()
+      audioRef.current.loop = true
 
       const audioContext = new AudioContext()
       let audioIn_01 = audioContext.createMediaStreamSource(stream)
@@ -188,8 +192,8 @@ export default function useVideoRecorder(beat: string, type: "audio" | "video") 
 
     SpeechRecognition.stopListening()
 
-    recordAudioRef.current.pause()
-    recordAudioRef.current.currentTime = 0
+    audioRef.current.pause()
+    audioRef.current.currentTime = 0
 
     let blob = await mediaRecorder.getBlob()
 

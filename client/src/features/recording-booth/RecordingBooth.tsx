@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import PostRecording from "src/features/recording-post/PostRecording"
 import Header, { Title } from "./components/Header"
 import LyricsFeed from "./components/LyricsFeed"
 import { BottomButtons, RecordButton } from "./components/RecordInteractions/RecordButtons"
@@ -28,9 +27,22 @@ export default function RecordingBooth() {
 
   const [showPostRecording, setShowPostRecording] = useState<boolean>(false)
 
+  const navigateToPostRecording = () => {
+    navigate("/post-recording", {
+      state: {
+        isOpen: showPostRecording,
+        onClose: setShowPostRecording,
+        currentTake: currentTake,
+        setCurrenTake: setCurrentTake,
+        onDelete: deleteTake,
+        songTakes: takes,
+        recordingType: recordingType,
+      },
+    })
+  }
   return (
     <div className="RecordingVideo">
-      <PostRecording
+      {/* <PostRecording
         isOpen={showPostRecording}
         onClose={setShowPostRecording}
         onDelete={deleteTake}
@@ -38,7 +50,7 @@ export default function RecordingBooth() {
         setCurrentTake={setCurrentTake}
         songTakes={takes}
         recordingType={recordingType}
-      />
+      /> */}
       <div className="record__video--wrapper">
         <video id="video-recorded" ref={videoRef} className="record__video" autoPlay playsInline muted />
       </div>
@@ -62,7 +74,7 @@ export default function RecordingBooth() {
         </div>
 
         <RhymeSuggestionPanels categoryList={state.rhymeSuggestionPanels} numofRhymes={state.numOfRhymeSuggestions}>
-          <BottomButtons songTakes={takes} showPostRecording={setShowPostRecording}>
+          <BottomButtons songTakes={takes} showPostRecording={setShowPostRecording} goToPost={navigateToPostRecording}>
             <RecordButton isRecording={isRecording} startRecording={startRecording} stopRecording={stopRecording} />
           </BottomButtons>
         </RhymeSuggestionPanels>

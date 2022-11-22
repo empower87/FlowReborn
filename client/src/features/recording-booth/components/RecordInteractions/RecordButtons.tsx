@@ -22,10 +22,12 @@ const BottomButton = ({ type, size, onClick }: { type: "Undo" | "Check"; size: n
 export const BottomButtons = ({
   songTakes,
   showPostRecording,
+  goToPost,
   children,
 }: {
   songTakes: ISongTake[]
   showPostRecording: Dispatch<SetStateAction<boolean>>
+  goToPost: () => void
   children: ReactNode
 }) => {
   return (
@@ -37,7 +39,7 @@ export const BottomButtons = ({
         </div>
         {children}
         <div className="suggestions__side-btn--container">
-          {songTakes.length > 0 && <BottomButton type="Check" size={110} onClick={() => showPostRecording(true)} />}
+          {songTakes.length > 0 && <BottomButton type="Check" size={110} onClick={goToPost} />}
         </div>
       </div>
     </div>

@@ -47,32 +47,16 @@ const useProvideAuth = () => {
       localStorage.setItem("token", data)
       setIsAuthenticated(data)
       await refetchMe()
-      navigate("/")
+      navigate("/", { replace: true })
     },
-    onError: (err) => {
-      console.log(err, "['auth.login']: onError")
-      if (err.message.charAt(0) === "[") {
-        const parsed = JSON.parse(err.message)
-        setError(parsed[0].message)
-      } else {
-        setError(err.message)
-      }
-    },
+    onError: (err) => handleTRPCError(err.message),
   })
 
   const authRegister = trpc.useMutation(["auth.register"], {
     onSuccess: async (data) => {
       await login(data)
     },
-    onError: (err) => {
-      console.log(err, "['auth.register']: onError")
-      if (err.message.charAt(0) === "[") {
-        const parsed = JSON.parse(err.message)
-        setError(parsed[0].message)
-      } else {
-        setError(err.message)
-      }
-    },
+    onError: (err) => handleTRPCError(err.message),
   })
 
   const {
@@ -120,6 +104,15 @@ const useProvideAuth = () => {
 
   const register = async (credentials: RegisterInputClientType) => {
     authRegister.mutate(credentials)
+  }
+
+  const handleTRPCError = (_message: string) => {
+    if (_message.charAt(0) === "[") {
+      const parseError = JSON.parse(_message)
+      setError(parseError[0].message)
+    } else {
+      setError(_message)
+    }
   }
 
   useEffect(() => {

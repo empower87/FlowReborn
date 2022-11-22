@@ -15,29 +15,22 @@ export interface IPostSongFormInputs {
 
 // TODO: Not sure I need the path key
 export const INITIAL_ERROR_STATE = {
-  path: "",
   message: "",
   showError: false,
 }
+type Error = typeof INITIAL_ERROR_STATE
 
 export const useSongForm = (recordingType: "audio" | "video", onDelete: (_id: string) => void) => {
   const navigate = useNavigate()
   const [isSaving, setIsSaving] = useState<boolean>(false)
-  const [error, setError] = useState(INITIAL_ERROR_STATE)
+  const [error, setError] = useState<Error>(INITIAL_ERROR_STATE)
 
-  const upload = trpc.useMutation(["users.upload-file"], {
-    onError: (err) => {
-      onSettledMutation(err.message)
-    },
+  const uploadToAWS = trpc.useMutation(["users.upload-file"], {
+    onError: (err) => onSettledMutation(err.message),
   })
   const createSong = trpc.useMutation(["songs.create-song"], {
-    onSuccess: (data) => {
-      console.log(data, "song successfully saved")
-      onSettledMutation("success", data._id)
-    },
-    onError: (err) => {
-      onSettledMutation(err.message)
-    },
+    onSuccess: (data) => onSettledMutation("success", data._id),
+    onError: (err) => onSettledMutation(err.message),
   })
   const methods = useForm<IPostSongFormInputs>({
     mode: "onChange",
@@ -53,9 +46,9 @@ export const useSongForm = (recordingType: "audio" | "video", onDelete: (_id: st
 
   useEffect(() => {
     if (errors.title?.message) {
-      setError({ path: "title", message: errors.title.message, showError: true })
+      setError({ message: errors.title.message, showError: true })
     } else if (errors.caption?.message) {
-      setError({ path: "caption", message: errors.caption.message, showError: true })
+      setError({ message: errors.caption.message, showError: true })
     }
   }, [errors])
 
@@ -67,56 +60,67 @@ export const useSongForm = (recordingType: "audio" | "video", onDelete: (_id: st
     }
   }, [error])
 
-  const handleSaveSong = async (e: any, _song: ISongTake | undefined) => {
-    if (!_song || _song.blob == null) {
-      return setError({
-        path: "",
-        message: "No Flows to be saved",
-        showError: true,
-      })
-    }
-    if (!isDirty || !isValid) {
-      return setError((prevError) => ({ ...prevError, message: "Must add a title", showError: true }))
-    }
-    setIsSaving(true)
+  const handleSaveSong = useCallback(
+    async (e: any, _song: ISongTake | undefined) => {
+      if (!_song || _song.blob == null) {
+        return setError({ message: "No Flows to be saved", showError: true })
+      }
+      if (!isDirty || !isValid) {
+        return setError({ message: "Must add a title", showError: true })
+      }
 
-    const userId = _song.user._id
-    const getTitle = methods.getValues("title")
-    const getCaption = methods.getValues("caption")
-    const songFileName = userId + getTitle.replaceAll(" ", "-")
-    let songToUpload = {
-      ..._song,
-      title: getTitle,
-      caption: getCaption,
-    }
+      setIsSaving(true)
 
-    if (_song.thumbnailBlob && recordingType === "video") {
-      let data = [
-        {
-          fileName: songFileName + "-thumbnail",
-          fileType: "image/png",
-          fileBlob: _song.thumbnailBlob,
-        },
-        {
-          fileName: songFileName,
-          fileType: "video/mp4",
-          fileBlob: _song.blob,
-        },
-      ]
-      await handleUploadToAws(data, songToUpload)
-    }
-    e.preventDefault()
-  }
+      const userId = _song.user._id
+      const getTitle = methods.getValues("title")
+      const getCaption = methods.getValues("caption")
+      const songFileName = userId + getTitle.replaceAll(" ", "-")
+      let songToUpload = {
+        ..._song,
+        title: getTitle,
+        caption: getCaption,
+      }
 
-  const handleUploadToAws = async (_data: UploadInputType, songToUpload: ISongTake) => {
-    upload.mutate(_data, {
+      if (recordingType === "video") {
+        if (!_song.thumbnailBlob) return
+
+        let data = [
+          {
+            fileName: songFileName + "-thumbnail",
+            fileType: "image/png",
+            fileBlob: _song.thumbnailBlob,
+          },
+          {
+            fileName: songFileName,
+            fileType: "video/mp4",
+            fileBlob: _song.blob,
+          },
+        ]
+
+        await uploadAndCreateSongHandler(data, songToUpload)
+      } else {
+        let data = [
+          {
+            fileName: songFileName,
+            fileType: "audio/mpeg-4",
+            fileBlob: _song.blob,
+          },
+        ]
+
+        await uploadAndCreateSongHandler(data, songToUpload)
+      }
+      e.preventDefault()
+    },
+    [isDirty, isValid]
+  )
+
+  const uploadAndCreateSongHandler = async (_data: UploadInputType, songToUpload: ISongTake) => {
+    uploadToAWS.mutate(_data, {
       onSuccess: async (data, variables) => {
         let thumbnailUrl
         let songUrl
 
         for (let i = 0; i < data.length; i++) {
-          console.log(data[i], variables, i + 1, "axios.put data")
-
           axios.put(data[i].signedUrl, variables[i].fileBlob, data[i].options)
           if (variables[i].fileName.includes("-thumbnail") && variables.length > 1) {
             thumbnailUrl = data[i].url
@@ -124,7 +128,8 @@ export const useSongForm = (recordingType: "audio" | "video", onDelete: (_id: st
             songUrl = data[i].url
           }
         }
-        if ((thumbnailUrl && songUrl) || (!thumbnailUrl && songUrl)) {
+
+        if (songUrl) {
           songToUpload = { ...songToUpload, thumbnail: thumbnailUrl, audio: songUrl }
           createSong.mutate({ ...songToUpload })
         }
@@ -134,14 +139,15 @@ export const useSongForm = (recordingType: "audio" | "video", onDelete: (_id: st
 
   const onSettledMutation = useCallback((message: string, id?: string) => {
     setIsSaving(false)
-    if (message !== "success") {
-      if (message === "you must be logged in to access this resource") {
-        // this is not working, goes to /home
-        navigate("/auth", { replace: true })
-      }
-      setError({ path: "", message: message, showError: true })
+    if (message === "you must be logged in to access this resource") {
+      // this is not working, goes to /home
+      navigate("/auth")
+    } else if (message !== "success") {
+      console.log(message, "error saving song")
+      setError({ message: message, showError: true })
     } else {
       if (!methods.formState.isSubmitted || !id) return
+      console.log("song saved successfully")
       onDelete(id)
       methods.reset()
     }

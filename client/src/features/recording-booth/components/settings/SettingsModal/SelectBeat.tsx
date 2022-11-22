@@ -34,6 +34,13 @@ export const ModalHeader = ({ title, dispatch }: { title: string; dispatch: Sett
 const BeatItem = ({ beat, state, dispatch }: BeatItemProps) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
 
+  const setBeat = () => {
+    dispatch({ type: "SET_BEAT", payload: { selectBeat: beat } })
+    setTimeout(() => {
+      dispatch({ type: "SHOW_MENU", payload: { menu: "Hide" } })
+    }, 100)
+  }
+
   return (
     <Container
       specs="outset row round"
@@ -53,10 +60,7 @@ const BeatItem = ({ beat, state, dispatch }: BeatItemProps) => {
             <p>{beat.index + 1}</p>
           </div>
         </div>
-        <button
-          className="settings-modal__title-text"
-          onClick={() => dispatch({ type: "SET_BEAT", payload: { selectBeat: beat } })}
-        >
+        <button className="settings-modal__title-text" onClick={() => setBeat()}>
           <div className="settings-modal__title-text--bs-outset">
             <p>{beat.title}</p>
           </div>

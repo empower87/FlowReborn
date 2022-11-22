@@ -22,43 +22,46 @@ export default function useRecordings(selectedBeat: Beat, recordingType: "audio"
       const id = parseInt(takes.length?.toString()) + 1
       const filteredLyrics = [...lyrics].filter((lyric) => lyric.length !== 0)
       const duration = recorder.minutes * 60000 + recorder.seconds * 1000
+      var newTake = {
+        _id: `${id}`,
+        title: "",
+        blob: recorder.blob,
+        audio: recorder.src,
+        user: user,
+        lyrics: [...filteredLyrics],
+        duration: duration,
+        caption: "",
+      }
+      const video = videoRef.current
+      video.currentTime = 0
 
-      videoRef.current.currentTime = 0
-      let canvas = generateCanvas(videoRef.current, videoRef.current?.videoHeight, videoRef.current?.videoWidth)
+      if (recordingType === "video") {
+        let canvas = generateCanvas(video, videoRef.current?.videoHeight, videoRef.current?.videoWidth)
+        if (!canvas) return
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              let url = URL.createObjectURL(blob)
 
-      if (!canvas) return
+              let newTakeWithThumbnail = { ...newTake, thumbnail: url, thumbnailBlob: blob }
 
-      canvas.toBlob(
-        (blob) => {
-          if (blob) {
-            let url = URL.createObjectURL(blob)
-
-            const newTake = {
-              _id: `${id}`,
-              title: "",
-              blob: recorder.blob,
-              audio: recorder.src,
-              user: user,
-              lyrics: [...filteredLyrics],
-              duration: duration,
-              caption: "",
-              thumbnail: url,
-              thumbnailBlob: blob,
+              setCurrentTake(newTakeWithThumbnail)
+              setTakes((prev) => [...prev, newTakeWithThumbnail])
             }
-            console.log(newTake, 'OK I DIDN"T SEE THIS HAHA')
-            setCurrentTake(newTake)
-            setTakes((prev) => [...prev, newTake])
-            resetRecording()
-          }
-        },
-        "image/jpeg",
-        95
-      )
+          },
+          "image/jpeg",
+          95
+        )
+      } else {
+        setCurrentTake(newTake)
+        setTakes((prev) => [...prev, newTake])
+      }
+      resetRecording()
     }
   }, [recorder.isActive, recorder.blob])
 
   const deleteTake = (_id: string) => {
-    let filteredTakes = takes.filter((take, index) => take._id !== currentTake?._id)
+    let filteredTakes = takes.filter((take) => take._id !== currentTake?._id)
     setTakes(filteredTakes)
     setCurrentTake(filteredTakes[0])
   }

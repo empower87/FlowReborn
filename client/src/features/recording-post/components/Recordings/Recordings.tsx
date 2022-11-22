@@ -24,29 +24,6 @@ type InputProps = {
 }
 
 const Input = ({ name, placeholder, methods }: InputProps) => {
-  // const [value, setValue] = useState<string>("")
-
-  // useEffect(() => {
-  //   console.log(take, value, "lol")
-  //   if (take && take[name] !== "") {
-  //     setValue(take[name])
-  //   }
-  // }, [take])
-
-  // const updateTakeValue = () => {
-  //   if (value !== "") {
-  //     setTake((prev) => {
-  //       if (prev) {
-  //         return {
-  //           ...prev,
-  //           [name]: value,
-  //         }
-  //       }
-  //     })
-  //     setValue("")
-  //   }
-  // }
-
   return (
     <label htmlFor={name} className={`record__select-text--container ${name}`}>
       <input
