@@ -1,4 +1,4 @@
-import { Dispatch, useEffect, useState } from "react"
+import { Dispatch, useEffect, useRef, useState } from "react"
 import { useInView } from "react-intersection-observer"
 import gifsArray from "src/assets/images/gifs.json"
 import { ISong } from "../../../../../../server/src/models/Song"
@@ -13,6 +13,8 @@ type Props = {
 function Video({ feed, song, dispatch }: Props) {
   const [loadVideo, setLoadVideo] = useState<string>("")
   const gifs = [...gifsArray]
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [isPlaying, setIsPlaying] = useState<boolean>(false)
 
   const [ref, inView] = useInView({
     threshold: 0.9,
@@ -28,9 +30,41 @@ function Video({ feed, song, dispatch }: Props) {
     }
   }, [inView])
 
+  useEffect(() => {
+    if (!videoRef.current) return
+    if (isPlaying) {
+      videoRef.current.play()
+    } else {
+      videoRef.current.pause()
+    }
+    console.log(song, "what does this look like?")
+  }, [isPlaying, videoRef.current])
+
   return (
-    <li id={song?._id} ref={ref} className="video-pane" style={{ backgroundImage: `url(${loadVideo})` }}>
+    <li
+      id={song?._id}
+      ref={ref}
+      className="video-pane"
+      style={{ backgroundImage: `url(${!song.thumbnail ? loadVideo : ""})` }}
+    >
+      {song.thumbnail ? (
+        <video
+          id={song.audio}
+          className="video-pane-video"
+          ref={videoRef}
+          src={song.audio}
+          poster={song.thumbnail}
+          autoPlay
+          loop
+          playsInline
+        />
+      ) : (
+        <></>
+      )}
       {/* <div className="transparent"></div> */}
+      <button type="button" style={{ position: "absolute" }} onClick={() => setIsPlaying((prev) => !prev)}>
+        Play/Pause
+      </button>
       <div className="last-div">
         {song?.lyrics?.map((line, index) => {
           return (

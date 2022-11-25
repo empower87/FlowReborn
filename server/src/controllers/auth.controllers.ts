@@ -52,7 +52,7 @@ export const loginHandler = async ({ ctx, input }: ContextWithInput<LoginInputTy
     maxAge: 24 * 60 * 60 * 1000,
   })
 
-  return accessToken
+  return { token: accessToken, user: dbUser }
 }
 
 export const refreshHandler = async ({ ctx }: { ctx: Context }) => {

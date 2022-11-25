@@ -2,9 +2,10 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Header, { Title } from "./components/Header"
 import LyricsFeed from "./components/LyricsFeed"
-import { BottomButtons, RecordButton } from "./components/RecordInteractions/RecordButtons"
+import { ActionButtons, BottomButton, RecordButton } from "./components/RecordInteractions/RecordButtons"
 import RhymeSuggestionPanels from "./components/RecordInteractions/RhymeSuggestionPanels"
 import SideSettingsMenu from "./components/settings/SideSettingsMenu"
+import ViewFullscreenVideo from "./components/ViewFullscreenVideo"
 import useRecordings from "./hooks/useRecordings"
 import useSuggestionSettings from "./hooks/useSuggestionSettings"
 
@@ -12,48 +13,38 @@ export default function RecordingBooth() {
   const navigate = useNavigate()
   const { state, dispatch } = useSuggestionSettings()
   const { selectedBeat, recordingType } = state
-  const {
-    takes,
-    currentTake,
-    setCurrentTake,
-    startRecording,
-    stopRecording,
-    deleteTake,
-    isRecording,
-    minutes,
-    seconds,
-    videoRef,
-  } = useRecordings(selectedBeat, recordingType)
-
-  const [showPostRecording, setShowPostRecording] = useState<boolean>(false)
+  const { takes, currentTake, startRecording, stopRecording, isRecording, minutes, seconds, videoRef } = useRecordings(
+    selectedBeat,
+    recordingType
+  )
+  const [showFullscreenVideo, setShowFullscreenVideo] = useState<boolean>(false)
 
   const navigateToPostRecording = () => {
     navigate("/post-recording", {
       state: {
-        isOpen: showPostRecording,
-        onClose: setShowPostRecording,
         currentTake: currentTake,
-        setCurrenTake: setCurrentTake,
-        onDelete: deleteTake,
         songTakes: takes,
         recordingType: recordingType,
       },
     })
   }
+
+  const fullscreenVideoHandler = () => {
+    setShowFullscreenVideo(true)
+  }
+
   return (
     <div className="RecordingVideo">
-      {/* <PostRecording
-        isOpen={showPostRecording}
-        onClose={setShowPostRecording}
-        onDelete={deleteTake}
-        currentTake={currentTake}
-        setCurrentTake={setCurrentTake}
-        songTakes={takes}
-        recordingType={recordingType}
-      /> */}
       <div className="record__video--wrapper">
         <video id="video-recorded" ref={videoRef} className="record__video" autoPlay playsInline muted />
       </div>
+
+      <ViewFullscreenVideo
+        src={currentTake?.audio}
+        isOpen={showFullscreenVideo}
+        onClose={setShowFullscreenVideo}
+        onNext={navigateToPostRecording}
+      />
 
       <Header
         type="Close"
@@ -74,9 +65,14 @@ export default function RecordingBooth() {
         </div>
 
         <RhymeSuggestionPanels categoryList={state.rhymeSuggestionPanels} numofRhymes={state.numOfRhymeSuggestions}>
-          <BottomButtons songTakes={takes} showPostRecording={setShowPostRecording} goToPost={navigateToPostRecording}>
-            <RecordButton isRecording={isRecording} startRecording={startRecording} stopRecording={stopRecording} />
-          </BottomButtons>
+          <ActionButtons
+            recordButton={
+              <RecordButton isRecording={isRecording} startRecording={startRecording} stopRecording={stopRecording} />
+            }
+            postButton={
+              takes.length > 0 ? <BottomButton type="Check" size={110} onClick={fullscreenVideoHandler} /> : <></>
+            }
+          />
         </RhymeSuggestionPanels>
       </div>
     </div>

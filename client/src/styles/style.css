@@ -644,6 +644,18 @@ button {
   background-size: cover;
   background-position-x: center;
 }
+.section-1_feed .video-scroll-container .video-pane .video-pane-video {
+  height: 100%;
+  width: 100%;
+  border-radius: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  -o-object-fit: cover;
+     object-fit: cover;
+  position: absolute;
+}
 .section-1_feed .video-scroll-container .video-pane .last-div {
   height: 87%;
   width: 94%;
@@ -2332,7 +2344,7 @@ button {
   width: 100%;
   border-radius: 0;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   flex-direction: row;
 }
@@ -4028,7 +4040,8 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.recording-booth__body .suggestions .suggestions__action-btns .suggestions__action-btns--container .suggestions__side-btn--container .suggestions__side-btn--bs-inset {
+
+.suggestions__side-btn--bs-inset {
   height: 35px;
   width: 35px;
   border-radius: 100%;
@@ -4040,7 +4053,7 @@ button {
   background: #b8b8b8;
   border: 2px solid #b8b8b8;
 }
-.recording-booth__body .suggestions .suggestions__action-btns .suggestions__action-btns--container .suggestions__side-btn--container .suggestions__side-btn--bs-inset .suggestions__side-btn {
+.suggestions__side-btn--bs-inset .suggestions__side-btn {
   height: 80%;
   width: 80%;
   border-radius: 100%;
@@ -4050,8 +4063,13 @@ button {
   flex-direction: row;
   box-shadow: 1px 1px 3px #333333, -1px -1px 2px #ffffff;
 }
-.recording-booth__body .suggestions .suggestions__action-btns .suggestions__action-btns--container .suggestions__side-btn--container .suggestions__side-btn--bs-inset .suggestions__side-btn.Check {
+.suggestions__side-btn--bs-inset .suggestions__side-btn.Check {
   background: #ffffff;
+}
+.suggestions__side-btn--bs-inset .suggestions__side-btn.Forward {
+  background: #ec6aa0;
+  color: #ffffff;
+  font-size: 0.8rem;
 }
 
 .record-btn {
@@ -4306,6 +4324,63 @@ button {
 .suggestions__settings--container .suggestions__settings--bs-inset .suggestions__settings-list--container .suggestions__settings-list .suggestions__settings-item .suggestions__settings-item-btn.Selected {
   box-shadow: inset 1px 1px 3px 0px #922350, inset -1px -1px 2px #ffe5f0;
   background: #ec6aa0;
+}
+
+.fullscreen-video {
+  height: 100%;
+  width: 100%;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  position: absolute;
+  top: 0;
+  z-index: 5;
+}
+.fullscreen-video .fullscreen-video__header {
+  height: 50px;
+  width: 100%;
+  border-radius: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+}
+.fullscreen-video .fullscreen-video__header .fullscreen-video__header-btns {
+  height: 100%;
+  width: 50px;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+.fullscreen-video .fullscreen-video__header .fullscreen-video__header-btns .fullscreen-video__header-btn {
+  height: 80%;
+  width: 80%;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  background: #a7a7a7;
+  font-size: 0.9em;
+  color: #ffffff;
+}
+.fullscreen-video .fullscreen-video__video {
+  height: 100%;
+  width: 100%;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .settings-modal__background {

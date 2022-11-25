@@ -286,7 +286,7 @@
     }
 
     .profile-songs__lyrics--container {
-      @include flexCenter(40%, 100%, 0, center, center, row);
+      @include flexCenter(40%, 100%, 0, flex-start, center, row);
 
       .profile-songs__lyrics-edit {
         @include flexCenter(100%, 15%, 0, center, center, row);

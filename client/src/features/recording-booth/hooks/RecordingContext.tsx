@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { createContext, ReactNode, useContext, useEffect, useState } from "react"
 import { Beat } from "src/constants/index"
 import { useAuth } from "src/context/AuthContext"
 import { generateCanvas } from "../utils/generateThumbnail"
@@ -6,7 +6,13 @@ import { ISongTake } from "../utils/types"
 import useMediaRecorder from "./useMediaRecorder"
 import useTranscript from "./useTranscript"
 
-export default function useRecordings(selectedBeat: Beat, recordingType: "audio" | "video") {
+export type RecordingsContextType = ReturnType<typeof useRecordingsProvider>
+
+const RecordingsContext = createContext<RecordingsContextType | null>(null)
+
+const useRecordingsProvider = (selectedBeat: Beat, recordingType: "audio" | "video") => {
+  // const [selectedBeat, setSelectedBeat] = useState<Beat>(beatList[0])
+  // const [recordingType, setRecordingType] = useState<"audio" | "video">("video")
   const { user } = useAuth()
   const { recorder, startRecording, stopRecording, resetRecording, videoRef } = useMediaRecorder(
     selectedBeat.beat,
@@ -80,3 +86,22 @@ export default function useRecordings(selectedBeat: Beat, recordingType: "audio"
     videoRef,
   }
 }
+
+const RecordingsProvider = ({
+  selectedBeat,
+  recordingType,
+  children,
+}: {
+  selectedBeat: Beat
+  recordingType: "audio" | "video"
+  children: ReactNode
+}) => {
+  const values = useRecordingsProvider(selectedBeat, recordingType)
+  return <RecordingsContext.Provider value={values}>{children}</RecordingsContext.Provider>
+}
+
+function useRecordings() {
+  return useContext(RecordingsContext)
+}
+
+export { useRecordings, useRecordingsProvider, RecordingsProvider }

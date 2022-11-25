@@ -1,7 +1,7 @@
 import React, { Suspense, useEffect, useState } from "react"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { ReactQueryDevtools } from "react-query/devtools"
-import { Navigate, Outlet, Route, Routes } from "react-router-dom"
+import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom"
 import Loading from "./components/loading/Loading"
 import { AuthProvider, useAuth } from "./context/AuthContext"
 import Auth from "./pages/auth-page/Auth"
@@ -26,22 +26,10 @@ const getAuthToken = () => {
 //   if (isLoading) return <p>loading... </p>
 //   return isAuthenticated !== null ? <Outlet /> : <Navigate to="/auth" />
 // }
-type PrivateRoutes = {
-  children?: JSX.Element
-}
+
 const PrivateRoutes = () => {
-  const { user } = useAuth()
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-
-  useEffect(() => {
-    if (user) {
-      setIsAuthenticated(true)
-    } else {
-      setIsAuthenticated(false)
-    }
-  }, [user])
-
-  return isAuthenticated ? <Outlet /> : <Navigate to="/auth" replace />
+  const user = localStorage.getItem("token") == null ? false : true
+  return user ? <Outlet /> : <Navigate to="/auth" replace />
 }
 
 const PublicRoutes = () => {
@@ -83,32 +71,35 @@ function App() {
   )
 
   return (
-    <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <div className="App">
-            <Suspense fallback={<Loading margin={0.5} isLoading={true} />}>
-              <Routes>
-                {/* <Route element={<PublicRoutes />}>
+    <div className="App">
+      <BrowserRouter>
+        <trpc.Provider client={trpcClient} queryClient={queryClient}>
+          <QueryClientProvider client={queryClient}>
+            <AuthProvider>
+              <Suspense fallback={<Loading margin={0.5} isLoading={true} />}>
+                <Routes>
+                  {/* <Route element={<PublicRoutes />}>
                 </Route> */}
-                <Route element={<PrivateRoutes />}>
-                  <Route path="/" element={<Home />} />
                   <Route path="/auth" element={<Auth />} />
-                  <Route path="/profile/:id" element={<LazyProfile />} />
-                  <Route path="/editProfile" element={<LazyEditProfile />} />
-                  <Route path="/recording-booth" element={<LazyRecordingBooth />} />
-                  <Route path="/post-recording" element={<LazyPostRecording />} />
-                  <Route path="/editLyrics" element={<LazyEditLyrics />} />
-                  <Route path="/songScreen/:id" element={<LazySongPage />} />
-                  <Route path="/search" element={<LazySearch />} />
-                </Route>
-              </Routes>
-            </Suspense>
-          </div>
-        </AuthProvider>
-        <ReactQueryDevtools initialIsOpen={true} />
-      </QueryClientProvider>
-    </trpc.Provider>
+                  <Route element={<PrivateRoutes />}>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/profile/:id" element={<LazyProfile />} />
+                    <Route path="/editProfile" element={<LazyEditProfile />} />
+                    <Route path="/recording-booth" element={<LazyRecordingBooth />} />
+                    <Route path="/post-recording" element={<LazyPostRecording />} />
+
+                    <Route path="/editLyrics" element={<LazyEditLyrics />} />
+                    <Route path="/songScreen/:id" element={<LazySongPage />} />
+                    <Route path="/search" element={<LazySearch />} />
+                  </Route>
+                </Routes>
+              </Suspense>
+            </AuthProvider>
+            <ReactQueryDevtools initialIsOpen={true} />
+          </QueryClientProvider>
+        </trpc.Provider>
+      </BrowserRouter>
+    </div>
   )
 }
 

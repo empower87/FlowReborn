@@ -1,11 +1,10 @@
 import { PropsWithChildren } from "react"
 import AudioSlider from "src/components/audio/AudioSlider"
 import { PlayButton } from "src/components/buttons/PlayButton"
-import { LayoutThree, LayoutTwo } from "src/components/layouts/LayoutWrappers"
 import useAudioPlayer from "src/hooks/useAudioPlayer"
 
 type AudioPlayerProps = {
-  audio: string
+  src: string
   duration: number
 }
 
@@ -26,26 +25,35 @@ const PlaybackSlider = ({ current, end, children }: PlaybackSliderProps) => {
   )
 }
 
-export default function AudioPlayer({ audio, duration }: AudioPlayerProps) {
+export default function AudioPlayer({ src, duration }: AudioPlayerProps) {
   const { slider, time, isPlaying, setIsPlaying } = useAudioPlayer({
-    audio,
+    src,
     duration,
     bgColor: "#6d6d6d",
+    video: src,
   })
 
   return (
     <div className="song-play-section">
-      <LayoutThree classes={["play-song-container", "play-btn-container", "play-btn-container-2"]}>
-        <LayoutTwo classes={["play-btn_inset-container", "play-btn_shadow-div-inset"]}>
-          <PlayButton isPlaying={isPlaying} setIsPlaying={setIsPlaying} options={{ offset: 9 }} />
-        </LayoutTwo>
-      </LayoutThree>
+      <div className="play-song-container">
+        <div className="play-btn-container">
+          <div className="play-btn-container-2">
+            <div className="play-btn_inset-container">
+              <div className="play-btn_shadow-div-inset">
+                <PlayButton isPlaying={isPlaying} setIsPlaying={setIsPlaying} options={{ offset: 9 }} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <LayoutTwo classes={["play-bar-container", "play-bar_shadow-div-inset"]}>
-        <PlaybackSlider {...time}>
-          <AudioSlider addClass="" {...slider} />
-        </PlaybackSlider>
-      </LayoutTwo>
+      <div className="play-bar-container">
+        <div className="play-bar_shadow-div-inset">
+          <PlaybackSlider {...time}>
+            <AudioSlider addClass="" {...slider} />
+          </PlaybackSlider>
+        </div>
+      </div>
     </div>
   )
 }

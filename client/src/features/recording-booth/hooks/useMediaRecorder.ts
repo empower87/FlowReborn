@@ -39,7 +39,14 @@ const useRecorderPermission = (recordingType: RecordRTC.Options["type"]) => {
     const getPermissionInitializeRecorder = async () => {
       try {
         let stream = await navigator.mediaDevices.getUserMedia({
-          video: recordingType === "video" ? true : false,
+          video:
+            recordingType === "video"
+              ? {
+                  height: 648,
+                  width: 365,
+                  aspectRatio: 1.777777778,
+                }
+              : false,
           audio: true,
         })
         let recorder = new RecordRTCPromisesHandler(stream, { type: recordingType })

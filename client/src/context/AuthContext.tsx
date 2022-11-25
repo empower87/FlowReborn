@@ -44,10 +44,9 @@ const useProvideAuth = () => {
 
   const authLogin = trpc.useMutation(["auth.login"], {
     onSuccess: async (data) => {
-      localStorage.setItem("token", data)
-      setIsAuthenticated(data)
-      await refetchMe()
-      navigate("/", { replace: true })
+      localStorage.setItem("token", data.token)
+      setIsAuthenticated(data.token)
+      setUser(data.user)
     },
     onError: (err) => handleTRPCError(err.message),
   })
@@ -67,7 +66,7 @@ const useProvideAuth = () => {
   } = trpc.useQuery(["users.get-me"], {
     enabled: !!isAuthenticated,
     retry: 1,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       console.log(data, "['users.get-me']: onSuccess")
       setUser(data)
     },
@@ -93,7 +92,12 @@ const useProvideAuth = () => {
   })
 
   const login = async (credentials: { username: string; password: string }) => {
-    authLogin.mutate(credentials)
+    authLogin.mutate(credentials, {
+      onSuccess: (data) => {
+        console.log(data, "LOGIN MUTATE SSUCCESSS")
+        navigate("/", { replace: true })
+      },
+    })
   }
 
   const logout = () => {

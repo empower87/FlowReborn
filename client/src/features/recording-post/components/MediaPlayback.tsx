@@ -48,9 +48,10 @@ const ControlButton = ({ type, onClick }: { type: "Fullscreen" | "Volume"; onCli
 export default function MediaPlayback({ take }: { take: ISongTake }) {
   const playContainerRef = useRef<HTMLDivElement>(null)
   const { slider, time, isPlaying, setIsPlaying } = useAudioPlayer({
-    audio: take?.audio,
+    src: take?.audio,
     duration: take?.duration,
     bgColor: "#f5afcc",
+    video: take?.audio,
   })
 
   return (

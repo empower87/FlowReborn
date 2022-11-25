@@ -52,7 +52,7 @@ export default function SaveSongModal({ isOpen, onClose, currentSong, setCurrent
       </LayoutTwo>
 
       <div className="flow-controls-container">
-        <AudioPlayer audio={currentSong.audio} duration={currentSong.duration} />
+        <AudioPlayer src={currentSong.audio} duration={currentSong.duration} />
 
         <LayoutThree
           classes={[

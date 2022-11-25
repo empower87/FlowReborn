@@ -50,7 +50,7 @@ export default function HomeDisplay() {
             </>
           }
           details={<SongDetails song={songInView} />}
-          audioPlayer={<AudioPlayer audio={songInView.audio} duration={songInView.duration} />}
+          audioPlayer={<AudioPlayer src={songInView.audio} duration={songInView.duration} />}
         />
       </div>
       <Navbar isVisible={showCommentMenu} />

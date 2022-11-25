@@ -54,7 +54,7 @@ const SongTitle = ({ song, songs }: HeaderProps) => {
       <MarqueeText
         text={song?.title}
         wrapperStyles={["75%", "77%", "0.2em 0.2em 0.2em 2em"]}
-        textStyles={["0.95rem", "white", "12%"]}
+        textStyles={["0.95rem", "white", "0.5em"]}
       />
       <p className="songscreen__song-index">
         <span>{getSongIndex(songs, song._id)}</span>

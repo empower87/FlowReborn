@@ -1,36 +1,48 @@
 import { useEffect, useRef, useState } from "react"
 
 type UseAudioPlayerProps = {
-  audio: string
+  src: string
   duration: number
   bgColor: string
+  video?: string
 }
 
-export default function useAudioPlayer({ audio, duration, bgColor }: UseAudioPlayerProps) {
+export default function useAudioPlayer({ src, duration, bgColor, video }: UseAudioPlayerProps) {
   const [trackProgress, setTrackProgress] = useState(0)
   const [songDuration, setSongDuration] = useState(0)
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
-
-  const audioRef = useRef<HTMLAudioElement>(new Audio(audio))
+  const videoElement = document.getElementById(`${video}`)
+  const audioElement = new Audio(src)
   const intervalRef = useRef<ReturnType<typeof setInterval>>()
   const secondsRef = useRef<ReturnType<typeof setInterval>>()
   const currentProgressRef = useRef(0)
 
   const [currentTime, setCurrentTime] = useState<string>("0:00")
   const [endTime, setEndTime] = useState<string>("0:00")
+  const audioRef = useRef<any>(null)
 
   useEffect(() => {
+    if (video) {
+      console.log(audioRef.current, video, videoElement, "lololol wtfh are these values going to be probably null")
+      audioRef.current = videoElement
+    } else {
+      audioRef.current = audioElement
+    }
+  }, [src, video])
+
+  useEffect(() => {
+    if (!audioRef.current) return
     if (isPlaying) {
-      audioRef.current.play()
+      audioRef?.current?.play()
       startTimer()
     } else {
       if (intervalRef.current && secondsRef.current) {
         clearInterval(intervalRef.current)
         clearInterval(secondsRef.current)
       }
-      audioRef.current.pause()
+      audioRef?.current?.pause()
     }
-  }, [isPlaying])
+  }, [isPlaying, audioRef.current])
 
   useEffect(() => {
     if (currentProgressRef.current) {
@@ -45,14 +57,15 @@ export default function useAudioPlayer({ audio, duration, bgColor }: UseAudioPla
 
     const getEndTime = formatTime(filteredDuration)
     setEndTime(getEndTime)
-  }, [audio])
+  }, [src])
 
   useEffect(() => {
+    if (!audioRef.current) return
     audioRef.current.pause()
-    audioRef.current.src = audio
+    audioRef.current.src = src
     setTrackProgress(audioRef.current.currentTime)
     currentProgressRef.current = 0
-  }, [audio])
+  }, [src])
 
   const currentPercentage = songDuration ? `${(trackProgress / songDuration) * 100 + 0.02}%` : "0%"
   const trackStyling = `

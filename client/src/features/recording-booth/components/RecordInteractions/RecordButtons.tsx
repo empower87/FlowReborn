@@ -1,7 +1,5 @@
-import { Dispatch, ReactNode, SetStateAction } from "react"
 import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
 import { BtnColorsEnum, RoundButton } from "src/components/buttons/RoundButton/RoundButton"
-import { ISongTake } from "../../utils/types"
 
 type RecordButtonProps = {
   isRecording: boolean
@@ -9,27 +7,25 @@ type RecordButtonProps = {
   stopRecording: () => void
 }
 
-const BottomButton = ({ type, size, onClick }: { type: "Undo" | "Check"; size: number; onClick: () => void }) => {
+export const BottomButton = ({
+  type,
+  onClick,
+  size,
+}: {
+  type: "Undo" | "Check" | "Forward" | "Back"
+  onClick: () => void
+  size?: number
+}) => {
   return (
     <div className="suggestions__side-btn--bs-inset">
       <button className={`suggestions__side-btn ${type}`} onClick={onClick}>
-        <Icon type={ButtonTypes[type]} options={{ color: "Primary", size: size }} />
+        {type !== "Forward" ? <Icon type={ButtonTypes[type]} options={{ color: "Primary", size: size }} /> : "Next"}
       </button>
     </div>
   )
 }
 
-export const BottomButtons = ({
-  songTakes,
-  showPostRecording,
-  goToPost,
-  children,
-}: {
-  songTakes: ISongTake[]
-  showPostRecording: Dispatch<SetStateAction<boolean>>
-  goToPost: () => void
-  children: ReactNode
-}) => {
+export const ActionButtons = ({ recordButton, postButton }: { recordButton: JSX.Element; postButton: JSX.Element }) => {
   return (
     <div className="suggestions__action-btns">
       <div className="suggestions__action-btns--container">
@@ -37,10 +33,8 @@ export const BottomButtons = ({
           {/* -- used to clear rhyme suggestions, video, and currentTake -- */}
           {/* <BottomButton type="Undo" size={80} onClick={onClick} /> */}
         </div>
-        {children}
-        <div className="suggestions__side-btn--container">
-          {songTakes.length > 0 && <BottomButton type="Check" size={110} onClick={goToPost} />}
-        </div>
+        {recordButton}
+        <div className="suggestions__side-btn--container">{postButton}</div>
       </div>
     </div>
   )

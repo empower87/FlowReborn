@@ -20,7 +20,7 @@ export const INITIAL_ERROR_STATE = {
 }
 type Error = typeof INITIAL_ERROR_STATE
 
-export const useSongForm = (recordingType: "audio" | "video", onDelete: (_id: string) => void) => {
+export const useSongForm = (recordingType: "audio" | "video") => {
   const navigate = useNavigate()
   const [isSaving, setIsSaving] = useState<boolean>(false)
   const [error, setError] = useState<Error>(INITIAL_ERROR_STATE)
@@ -148,7 +148,7 @@ export const useSongForm = (recordingType: "audio" | "video", onDelete: (_id: st
     } else {
       if (!methods.formState.isSubmitted || !id) return
       console.log("song saved successfully")
-      onDelete(id)
+      // onDelete(id)
       methods.reset()
     }
   }, [])

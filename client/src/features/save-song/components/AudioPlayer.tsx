@@ -5,7 +5,7 @@ import { LayoutThree, LayoutTwo } from "src/components/layouts/LayoutWrappers"
 import useAudioPlayer from "src/hooks/useAudioPlayer"
 
 type AudioPlayerProps = {
-  audio: string
+  src: string
   duration: number
 }
 
@@ -26,8 +26,8 @@ const AudioSliderLayout = ({ current, end, children }: AudioSliderLayoutProps) =
   )
 }
 
-export default function AudioPlayer({ audio, duration }: AudioPlayerProps) {
-  const { slider, time, isPlaying, setIsPlaying } = useAudioPlayer({ audio, duration, bgColor: "#6d6d6d" })
+export default function AudioPlayer({ src, duration }: AudioPlayerProps) {
+  const { slider, time, isPlaying, setIsPlaying } = useAudioPlayer({ src, duration, bgColor: "#6d6d6d" })
 
   return (
     <div className="flow-controls-1_playback-display">

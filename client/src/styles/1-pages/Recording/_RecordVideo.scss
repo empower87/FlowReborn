@@ -354,25 +354,29 @@
 
         .suggestions__side-btn--container {
           @include flexCenter(100%, 25%, 0, center, center, row);
-
-          .suggestions__side-btn--bs-inset {
-            @include flexCenter(35px, 35px, 100%, center, center, row);
-            // box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
-            box-shadow: inset 1px 1px 3px #383838, inset -2px -2px 3px #ffffff;
-            background: #b8b8b8;
-            border: 2px solid #b8b8b8;
-
-            .suggestions__side-btn {
-              @include flexCenter(80%, 80%, 100%, center, center, row);
-              box-shadow: 1px 1px 3px #333333, -1px -1px 2px #ffffff;
-
-              &.Check {
-                background: $base-color;
-              }
-            }
-          }
         }
       }
+    }
+  }
+}
+.suggestions__side-btn--bs-inset {
+  @include flexCenter(35px, 35px, 100%, center, center, row);
+  // box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
+  box-shadow: inset 1px 1px 3px #383838, inset -2px -2px 3px #ffffff;
+  background: #b8b8b8;
+  border: 2px solid #b8b8b8;
+
+  .suggestions__side-btn {
+    @include flexCenter(80%, 80%, 100%, center, center, row);
+    box-shadow: 1px 1px 3px #333333, -1px -1px 2px #ffffff;
+
+    &.Check {
+      background: $base-color;
+    }
+    &.Forward {
+      background: $primary-color-300;
+      color: $base-color;
+      font-size: 0.8rem;
     }
   }
 }
@@ -526,5 +530,34 @@
         }
       }
     }
+  }
+}
+
+.fullscreen-video {
+  @include flexCenter(100%, 100%, 0, center, center, row);
+  position: absolute;
+  top: 0;
+  z-index: 5;
+
+  .fullscreen-video__header {
+    @include flexCenter(50px, 100%, 0, space-between, center, row);
+    position: absolute;
+    top: 0;
+    z-index: 1;
+
+    .fullscreen-video__header-btns {
+      @include flexCenter(100%, 50px, 0, center, center, row);
+
+      .fullscreen-video__header-btn {
+        @include flexCenter(80%, 80%, 100%, center, center, row);
+        background: #a7a7a7;
+        font-size: 0.9em;
+        color: $base-color;
+      }
+    }
+  }
+  .fullscreen-video__video {
+    @include flexCenter(100%, 100%, 0, center, center, row);
+    object-fit: cover;
   }
 }
