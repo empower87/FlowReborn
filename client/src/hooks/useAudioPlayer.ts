@@ -8,41 +8,41 @@ type UseAudioPlayerProps = {
 }
 
 export default function useAudioPlayer({ src, duration, bgColor, video }: UseAudioPlayerProps) {
+  const videoElement = document.getElementById(`${video}`)
+  const audio = new Audio(src)
+
   const [trackProgress, setTrackProgress] = useState(0)
   const [songDuration, setSongDuration] = useState(0)
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
-  const videoElement = document.getElementById(`${video}`)
-  const audioElement = new Audio(src)
+  const [currentTime, setCurrentTime] = useState<string>("0:00")
+  const [endTime, setEndTime] = useState<string>("0:00")
+
   const intervalRef = useRef<ReturnType<typeof setInterval>>()
   const secondsRef = useRef<ReturnType<typeof setInterval>>()
   const currentProgressRef = useRef(0)
-
-  const [currentTime, setCurrentTime] = useState<string>("0:00")
-  const [endTime, setEndTime] = useState<string>("0:00")
-  const audioRef = useRef<any>(null)
+  const srcRef = useRef<any>(null)
 
   useEffect(() => {
     if (video) {
-      console.log(audioRef.current, video, videoElement, "lololol wtfh are these values going to be probably null")
-      audioRef.current = videoElement
+      srcRef.current = videoElement
     } else {
-      audioRef.current = audioElement
+      srcRef.current = audio
     }
   }, [src, video])
 
   useEffect(() => {
-    if (!audioRef.current) return
+    if (!srcRef.current) return
     if (isPlaying) {
-      audioRef?.current?.play()
+      srcRef?.current?.play()
       startTimer()
     } else {
       if (intervalRef.current && secondsRef.current) {
         clearInterval(intervalRef.current)
         clearInterval(secondsRef.current)
       }
-      audioRef?.current?.pause()
+      srcRef?.current?.pause()
     }
-  }, [isPlaying, audioRef.current])
+  }, [isPlaying, srcRef.current])
 
   useEffect(() => {
     if (currentProgressRef.current) {
@@ -60,10 +60,10 @@ export default function useAudioPlayer({ src, duration, bgColor, video }: UseAud
   }, [src])
 
   useEffect(() => {
-    if (!audioRef.current) return
-    audioRef.current.pause()
-    audioRef.current.src = src
-    setTrackProgress(audioRef.current.currentTime)
+    if (!srcRef.current) return
+    srcRef.current.pause()
+    srcRef.current.src = src
+    setTrackProgress(srcRef.current.currentTime)
     currentProgressRef.current = 0
   }, [src])
 
@@ -73,23 +73,23 @@ export default function useAudioPlayer({ src, duration, bgColor, video }: UseAud
   `
 
   const startTimer = () => {
-    if (audioRef.current !== null) {
+    if (srcRef.current !== null) {
       if (intervalRef.current && secondsRef.current) {
         clearInterval(intervalRef.current)
         clearInterval(secondsRef.current)
       }
 
       intervalRef.current = setInterval(() => {
-        if (audioRef.current?.ended) {
+        if (srcRef.current?.ended) {
           setIsPlaying(false)
           currentProgressRef.current = 0
         } else {
-          setTrackProgress(audioRef.current?.currentTime)
+          setTrackProgress(srcRef.current?.currentTime)
         }
       }, 100)
 
       secondsRef.current = setInterval(() => {
-        if (audioRef.current?.ended) {
+        if (srcRef.current?.ended) {
         } else {
           currentProgressRef.current++
         }
@@ -104,9 +104,9 @@ export default function useAudioPlayer({ src, duration, bgColor, video }: UseAud
     }
     const numberValue: number = parseInt(value)
 
-    audioRef.current.currentTime = numberValue
+    srcRef.current.currentTime = numberValue
     currentProgressRef.current = Math.round(numberValue)
-    setTrackProgress(audioRef.current.currentTime)
+    setTrackProgress(srcRef.current.currentTime)
   }
 
   const onScrubEnd = () => {

@@ -28,37 +28,38 @@ export default function SideSettingsMenu({ state, dispatch }: SettingsProps) {
   const { toggleModal } = state
 
   return (
-    <div className="recording-booth__side-menu">
+    <>
       <SettingsModal state={state} dispatch={dispatch} />
-
-      <div className="recording-booth__side-menu--bs-inset">
-        <ul className="recording-booth__side-menu-list">
-          <SideButton
-            type="Opacity"
-            onClick={() => dispatch({ type: "SHOW_MENU", payload: { menu: "UIOpacity" } })}
-            isPressed={toggleModal === "UIOpacity"}
-            size={75}
-          />
-          <SideButton
-            type="Songs"
-            onClick={() => dispatch({ type: "SHOW_MENU", payload: { menu: "Beat" } })}
-            isPressed={toggleModal === "Beat"}
-            size={80}
-          />
-          <SideButton
-            type={state.recordingType === "video" ? "NoVideo" : "AddVideo"}
-            onClick={() => dispatch({ type: "TOGGLE_VIDEO", payload: {} })}
-            isPressed={state.recordingType === "video"}
-            size={65}
-          />
-          <SideButton
-            type="Settings"
-            onClick={() => dispatch({ type: "SHOW_MENU", payload: { menu: "Rhymes" } })}
-            isPressed={toggleModal === "Rhymes"}
-            size={70}
-          />
-        </ul>
+      <div className="recording-booth__side-menu">
+        <div className="recording-booth__side-menu--bs-inset">
+          <ul className="recording-booth__side-menu-list">
+            <SideButton
+              type="Opacity"
+              onClick={() => dispatch({ type: "SHOW_MENU", payload: { menu: "UIOpacity" } })}
+              isPressed={toggleModal === "UIOpacity"}
+              size={75}
+            />
+            <SideButton
+              type="Songs"
+              onClick={() => dispatch({ type: "SHOW_MENU", payload: { menu: "Beat" } })}
+              isPressed={toggleModal === "Beat"}
+              size={80}
+            />
+            <SideButton
+              type={state.recordingType === "video" ? "NoVideo" : "AddVideo"}
+              onClick={() => dispatch({ type: "TOGGLE_VIDEO", payload: {} })}
+              isPressed={state.recordingType === "video"}
+              size={65}
+            />
+            <SideButton
+              type="Settings"
+              onClick={() => dispatch({ type: "SHOW_MENU", payload: { menu: "Rhymes" } })}
+              isPressed={toggleModal === "Rhymes"}
+              size={70}
+            />
+          </ul>
+        </div>
       </div>
-    </div>
+    </>
   )
 }

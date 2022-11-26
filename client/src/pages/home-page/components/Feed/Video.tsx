@@ -61,10 +61,6 @@ function Video({ feed, song, dispatch }: Props) {
       ) : (
         <></>
       )}
-      {/* <div className="transparent"></div> */}
-      <button type="button" style={{ position: "absolute" }} onClick={() => setIsPlaying((prev) => !prev)}>
-        Play/Pause
-      </button>
       <div className="last-div">
         {song?.lyrics?.map((line, index) => {
           return (

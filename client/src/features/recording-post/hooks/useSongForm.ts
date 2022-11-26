@@ -140,7 +140,6 @@ export const useSongForm = (recordingType: "audio" | "video") => {
   const onSettledMutation = useCallback((message: string, id?: string) => {
     setIsSaving(false)
     if (message === "you must be logged in to access this resource") {
-      // this is not working, goes to /home
       navigate("/auth")
     } else if (message !== "success") {
       console.log(message, "error saving song")
@@ -148,7 +147,6 @@ export const useSongForm = (recordingType: "audio" | "video") => {
     } else {
       if (!methods.formState.isSubmitted || !id) return
       console.log("song saved successfully")
-      // onDelete(id)
       methods.reset()
     }
   }, [])

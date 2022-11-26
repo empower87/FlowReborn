@@ -383,9 +383,6 @@
 
 .record-btn {
   @include flexCenter(55px, 55px, 100vh, center, center, row);
-  // position: absolute;
-  // top: -4.5em;
-  // right: 0.4em;
   background: #b8b8b8;
   border: 2px solid $secondary-color-400;
 

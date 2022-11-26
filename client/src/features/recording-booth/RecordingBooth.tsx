@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Header, { Title } from "./components/Header"
 import LyricsFeed from "./components/LyricsFeed"
-import { ActionButtons, BottomButton, RecordButton } from "./components/RecordInteractions/RecordButtons"
+import { ActionButton, ActionButtons, RecordButton } from "./components/RecordInteractions/ActionButtons"
 import RhymeSuggestionPanels from "./components/RecordInteractions/RhymeSuggestionPanels"
 import SideSettingsMenu from "./components/settings/SideSettingsMenu"
 import ViewFullscreenVideo from "./components/ViewFullscreenVideo"
@@ -27,10 +27,6 @@ export default function RecordingBooth() {
         recordingType: recordingType,
       },
     })
-  }
-
-  const fullscreenVideoHandler = () => {
-    setShowFullscreenVideo(true)
   }
 
   return (
@@ -70,7 +66,11 @@ export default function RecordingBooth() {
               <RecordButton isRecording={isRecording} startRecording={startRecording} stopRecording={stopRecording} />
             }
             postButton={
-              takes.length > 0 ? <BottomButton type="Check" size={110} onClick={fullscreenVideoHandler} /> : <></>
+              takes.length > 0 ? (
+                <ActionButton type="Check" size={110} onClick={() => setShowFullscreenVideo(true)} />
+              ) : (
+                <></>
+              )
             }
           />
         </RhymeSuggestionPanels>

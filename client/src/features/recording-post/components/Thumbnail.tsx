@@ -62,7 +62,7 @@ const ThumbnailModal = ({
               type={ButtonTypes.Close}
               btnOptions={{ bgColor: BtnColorsEnum.Primary }}
               iconOptions={{ color: "White" }}
-              onClick={() => onClose((prev) => !prev)}
+              onClick={() => onClose(false)}
             />
           </div>
           <div className="post-recording__thumbnail-header-title">
@@ -127,10 +127,7 @@ export const ThumbnailSelector = ({
       />
       <div className="post-recording__choose-thumbnail--bs-inset">
         <div className="post-recording__choose-thumbnail-title">
-          <button
-            className="post-recording__choose-thumbnail-title--bs-outset"
-            onClick={() => setShowModal((prev) => !prev)}
-          >
+          <button className="post-recording__choose-thumbnail-title--bs-outset" onClick={() => setShowModal(true)}>
             Pick Thumbnail
           </button>
         </div>

@@ -38,6 +38,33 @@ const LiveTranscript = ({ transcript }: { transcript: string }) => {
   )
 }
 
+const LyricLine = ({ row, index }: { row: string[]; index: number }) => {
+  return (
+    <li className="record__lyrics-item" key={`${row}_${index}`}>
+      <div className="record__item-num">
+        <p className="record__item-num-text">{`${index + 1}`}</p>
+      </div>
+      <div className="record__item-words">
+        {row.map((word, index) => {
+          return (
+            <p className="record__item-words-text" key={`${index}_${word}`}>
+              {word}
+            </p>
+          )
+        })}
+      </div>
+    </li>
+  )
+}
+
+const LyricPrompt = ({ children }: { children: ReactNode }) => (
+  <li className="record__lyrics-item">
+    <div className="record__item-words">
+      <p className="record__item-words-text initial-prompt">{children}</p>
+    </div>
+  </li>
+)
+
 export default function LyricsFeed({ isRecording, children }: LyricsFeedProps) {
   const { lyrics, transcript } = useTranscript()
   const [feedLyrics, setFeedLyrics] = useState<string[][]>([])
@@ -90,30 +117,3 @@ export default function LyricsFeed({ isRecording, children }: LyricsFeedProps) {
     </div>
   )
 }
-
-const LyricLine = ({ row, index }: { row: string[]; index: number }) => {
-  return (
-    <li className="record__lyrics-item" key={`${row}_${index}`}>
-      <div className="record__item-num">
-        <p className="record__item-num-text">{`${index + 1}`}</p>
-      </div>
-      <div className="record__item-words">
-        {row.map((word, index) => {
-          return (
-            <p className="record__item-words-text" key={`${index}_${word}`}>
-              {word}
-            </p>
-          )
-        })}
-      </div>
-    </li>
-  )
-}
-
-const LyricPrompt = ({ children }: { children: ReactNode }) => (
-  <li className="record__lyrics-item">
-    <div className="record__item-words">
-      <p className="record__item-words-text initial-prompt">{children}</p>
-    </div>
-  </li>
-)
