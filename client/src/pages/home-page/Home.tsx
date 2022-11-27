@@ -1,10 +1,8 @@
 import { useState } from "react"
 import LoadingHome from "src/components/loading/Skeletons/LoadingHome"
-import { CommentButton, FollowButton, LikeButton } from "src/features/socialize/SocializeButtons"
+import { SideButton, SideButtonMenu } from "src/components/ui/SideButtonMenu"
 import Navbar from "../../components/navbar/Navbar"
 import CommentMenu from "../../features/socialize/comments/components/CommentMenu"
-import AudioPlayer from "./components/Details/AudioPlayer"
-import DetailsLayout from "./components/Details/DetailsLayout"
 import SongDetails from "./components/Details/SongDetails"
 import { Feed } from "./components/Feed/Feed"
 import { FeedToggleButton, FeedToggleHeader } from "./components/Header/HomeHeader"
@@ -40,7 +38,14 @@ export default function HomeDisplay() {
 
         <Feed songs={feedSongs} feedInView={feedInView} dispatch={dispatch} />
 
-        <DetailsLayout
+        <SideButtonMenu>
+          <SideButton type="Like" isPressed={false} onClick={() => console.log("lol")} size={75} />
+          <SideButton type="Comment" isPressed={false} onClick={() => console.log("lol")} size={60} />
+          <SideButton type="Follow" isPressed={false} onClick={() => console.log("lol")} size={100} />
+          <SideButton type="Songs" isPressed={false} onClick={() => console.log("lol")} size={80} />
+        </SideButtonMenu>
+        <SongDetails song={songInView} />
+        {/* <DetailsLayout
           buttons={
             <>
               <FollowButton location="Home" song={songInView} />
@@ -50,7 +55,7 @@ export default function HomeDisplay() {
           }
           details={<SongDetails song={songInView} />}
           audioPlayer={<AudioPlayer src={songInView.audio} duration={songInView.duration} />}
-        />
+        /> */}
       </div>
       <Navbar isVisible={showCommentMenu} />
     </div>
