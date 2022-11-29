@@ -1,9 +1,9 @@
 .side-btn-menu__menu--container {
-  @include flexCenter(60%, 16%, 0, center, flex-end, column);
+  @include flexCenter(43%, 16%, 0, center, flex-end, column);
   // @include flexCenter(100%, 16%, 0, flex-start, flex-start, column);
   position: absolute;
   right: 0;
-  top: 20%;
+  top: 39%;
 
   .side-btn-menu__menu--bs-inset {
     @include flexCenter(90%, 80%, 3em, center, center, column);
@@ -15,7 +15,7 @@
     margin-top: 0.5em;
 
     .side-btn-menu__menu-list {
-      @include flexCenter(97%, 88%, 3em, flex-start, center, column);
+      @include flexCenter(98%, 88%, 3em, flex-start, center, column);
       position: relative;
 
       .side-btn-menu__menu-item {
@@ -40,33 +40,10 @@
           }
         }
         .side-btn-menu__menu-item-text {
-          font-size: 0.8rem;
-          color: $primary-color-200;
+          font-size: 0.75rem;
+          color: $base-color;
         }
       }
     }
   }
 }
-
-// .recording-booth__side-menu-item {
-//   @include flexCenter(40px, 100%, 3em, center, center, column);
-
-//   .recording-booth__side-menu-btn {
-//     @include flexCenter(90%, 90%, 3em, center, center, column);
-//     box-shadow: 2px 2px 3px #5e5e5e, -1px -1px 3px #f6f6f6;
-//     color: $base-color;
-//     font-size: 0.7em;
-
-//     &.Pressed {
-//       box-shadow: inset 1px 1px 3px #61273f, inset -1px -1px 3px #fffafc;
-//       background: $primary-color-200;
-//     }
-//     &:hover {
-//       background: $primary-color-200;
-//     }
-//     &:active {
-//       box-shadow: inset 1px 1px 3px #61273f, inset -1px -1px 3px #fffafc;
-//       background: $primary-color-200;
-//     }
-//   }
-// }

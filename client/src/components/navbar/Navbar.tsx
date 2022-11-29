@@ -1,8 +1,6 @@
-import { Link, useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { useAuth } from "../../context/AuthContext"
-import { ButtonTypes } from "../buttons/Icon/Icon"
-import { BtnColorsEnum, RoundButton } from "../buttons/RoundButton/RoundButton"
-import { LayoutTwo } from "../layouts/LayoutWrappers"
+import { ButtonTypes, Icon } from "../buttons/Icon/Icon"
 
 type Props = {
   pageClass?: String
@@ -12,17 +10,37 @@ type Props = {
 export default function Navbar({ pageClass, isVisible }: Props) {
   const { user } = useAuth()
   const location = useLocation()
+  const navigate = useNavigate()
   const path = location.pathname
 
+  const navigateToPage = (to: string) => {
+    navigate(to)
+  }
+
   return (
-    <LayoutTwo classes={[`NavBar ${pageClass}`, "navbar_section"]}>
-      <LayoutTwo classes={["navbar_shadow-div-outset", "navbar_shadow-div-inset"]}>
-        <NavBarButton state={{}} path={"/"} selected={path} />
-        <NavBarButton state={{}} path={"/recording-booth"} selected={path} />
-        <NavBarButton state={{}} path={"/search"} selected={path} />
-        <NavBarButton state={{}} path={user?._id ? `/profile/${user?._id}` : "/auth"} selected={path} />
-      </LayoutTwo>
-    </LayoutTwo>
+    <div className={`Navbar ${pageClass}`}>
+      <div className="navbar__upper">
+        <div className="navbar__upper--bs-outset">
+          <div className="navbar__upper--bs-inset">
+            <NavbarButton onClick={navigateToPage} path={"/"} selected={path} size={80} />
+            <NavbarButton onClick={navigateToPage} path={"/recording-booth"} selected={path} size={70} />
+            <NavbarButton onClick={navigateToPage} path={"/search"} selected={path} size={80} />
+            <NavbarButton
+              onClick={navigateToPage}
+              path={user?._id ? `/profile/${user?._id}` : "/auth"}
+              selected={path}
+              size={75}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="navbar__lower">
+        <NavbarButtonTitle title="Home" />
+        <NavbarButtonTitle title="Record" />
+        <NavbarButtonTitle title="Search" />
+        <NavbarButtonTitle title="Profile" />
+      </div>
+    </div>
   )
 }
 
@@ -39,20 +57,33 @@ const getButtonType = (path: string) => {
   }
 }
 
-const NavBarButton = ({ state = {}, path, selected }: { state: {}; path: string; selected: string }) => {
+const NavbarButtonTitle = ({ title }: { title: string }) => {
+  return (
+    <div className="navbar__lower-title">
+      <p className="navbar__lower-title-text">{title}</p>
+    </div>
+  )
+}
+
+const NavbarButton = ({
+  path,
+  onClick,
+  selected,
+  size,
+}: {
+  path: string
+  onClick: any
+  selected: string
+  size?: number
+}) => {
   const type = getButtonType(path)
-  const isSelected = path === selected ? "btn-selected" : "btn-unselected"
+  const isSelected = path === selected ? "btn-selected" : ""
 
   return (
-    <Link to={path} className={`navbar-btn-container ${type}--navbar ${isSelected}`} state={state}>
-      <div className="navbar-btn_shadow-div-inset">
-        <RoundButton
-          type={type}
-          btnOptions={{ bgColor: BtnColorsEnum.Initial, offset: 8 }}
-          iconOptions={{ color: "White", size: 75 }}
-        />
-      </div>
-      <div className="navbar-btn-text">{type}</div>
-    </Link>
+    <div className="navbar-btn-container">
+      <button className={`navbar-btn_shadow-div-inset ${isSelected}`} onClick={() => onClick(path)}>
+        <Icon type={ButtonTypes[type]} options={{ color: "Primary", size: size }} />
+      </button>
+    </div>
   )
 }

@@ -92,9 +92,10 @@
 
   .video-scroll-container {
     position: absolute;
-    height: 60%;
+    height: 100%;
+    // height: 60%;
     width: 100%;
-    margin-top: 8%;
+    // margin-top: 8%;
     scroll-snap-type: y mandatory;
     // scroll-behavior: smooth;
     will-change: transform;
@@ -115,10 +116,23 @@
       }
 
       .last-div {
-        @include flexCenter(87%, 94%, 5px, flex-start, flex-start, column);
-        background: #0000008a;
+        @include flexCenter(100%, 100%, 0, flex-start, flex-start, column);
+        // background: #0000008a;
+        background: linear-gradient(
+          0deg,
+          black,
+          rgba(0, 0, 0, 0.5882352941),
+          rgba(0, 0, 0, 0.4),
+          rgba(0, 0, 0, 0.2784313725),
+          transparent,
+          transparent,
+          transparent,
+          rgb(0 0 0 / 26%),
+          black
+        );
         margin-bottom: 3%;
         overflow-y: scroll;
+        position: absolute;
 
         .each-lyric-container {
           @include flexCenter(initial, 100%, 0px, flex-start, flex-start, row);

@@ -1,9 +1,7 @@
 import { useState } from "react"
 import LoadingHome from "src/components/loading/Skeletons/LoadingHome"
-import { SideButton, SideButtonMenu } from "src/components/ui/SideButtonMenu"
 import Navbar from "../../components/navbar/Navbar"
 import CommentMenu from "../../features/socialize/comments/components/CommentMenu"
-import SongDetails from "./components/Details/SongDetails"
 import { Feed } from "./components/Feed/Feed"
 import { FeedToggleButton, FeedToggleHeader } from "./components/Header/HomeHeader"
 import useSongFeeds from "./hooks/useSongFeeds"
@@ -37,14 +35,15 @@ export default function HomeDisplay() {
         </FeedToggleHeader>
 
         <Feed songs={feedSongs} feedInView={feedInView} dispatch={dispatch} />
-
+        {/* 
         <SideButtonMenu>
           <SideButton type="Like" isPressed={false} onClick={() => console.log("lol")} size={75} />
           <SideButton type="Comment" isPressed={false} onClick={() => console.log("lol")} size={60} />
           <SideButton type="Follow" isPressed={false} onClick={() => console.log("lol")} size={100} />
           <SideButton type="Songs" isPressed={false} onClick={() => console.log("lol")} size={80} />
         </SideButtonMenu>
-        <SongDetails song={songInView} />
+        
+        <SongDetails song={songInView} /> */}
         {/* <DetailsLayout
           buttons={
             <>

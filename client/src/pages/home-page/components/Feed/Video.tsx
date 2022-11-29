@@ -1,8 +1,13 @@
 import { Dispatch, useEffect, useRef, useState } from "react"
 import { useInView } from "react-intersection-observer"
 import gifsArray from "src/assets/images/gifs.json"
+import { SideButton, SideButtonMenu } from "src/components/ui/SideButtonMenu"
+import useFollow from "src/features/socialize/follow/useFollow"
+import useLike from "src/features/socialize/like/useLike"
+import { IComment, IUser } from "../../../../../../server/src/models"
 import { ISong } from "../../../../../../server/src/models/Song"
 import { Action, Feeds } from "../../hooks/songFeedReducer"
+import SongDetails from "../Details/SongDetails"
 
 type Props = {
   feed: Feeds
@@ -76,8 +81,54 @@ function Video({ feed, song, dispatch }: Props) {
             </div>
           )
         })}
+        <SideButtonMenu>
+          {/* <SideButton
+            type="Like"
+            text={`${song.likes.length}`}
+            isPressed={false}
+            onClick={() => console.log("lol")}
+            size={75}
+          /> */}
+          <LikeButton data={song} />
+          <SideButton
+            type="Comment"
+            text={`${song.comments.length}`}
+            isPressed={false}
+            onClick={() => console.log("lol")}
+            size={60}
+          />
+          {/* <SideButton
+            type="Follow"
+            text={`${song.user.followers.length}`}
+            isPressed={false}
+            onClick={() => console.log("lol")}
+            size={100}
+          /> */}
+          <FollowButton data={song.user} />
+          <SideButton type="Songs" text={"Lyrics"} isPressed={false} onClick={() => console.log("lol")} size={80} />
+        </SideButtonMenu>
+
+        <SongDetails song={song} />
       </div>
     </li>
+  )
+}
+
+const LikeButton = ({ data }: { data: ISong | IComment }) => {
+  const likes = useLike(data, "Song")
+  return <SideButton type="Like" text={`${likes.total}`} isPressed={likes.hasUser} onClick={likes.onClick} size={75} />
+}
+
+const FollowButton = ({ data }: { data: IUser }) => {
+  const follows = useFollow(data)
+  return (
+    <SideButton
+      type="Follow"
+      text={`${follows.total}`}
+      isPressed={follows.hasUser}
+      onClick={follows.onClick}
+      size={110}
+    />
   )
 }
 
