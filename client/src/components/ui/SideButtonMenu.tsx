@@ -7,16 +7,20 @@ type SideButtonMenuProps = {
 type SideButtonProps = {
   type: "Opacity" | "Songs" | "AddVideo" | "NoVideo" | "Settings" | "Like" | "Comment" | "Follow"
   text: string
-  isPressed: boolean
+  hasUser: boolean
   onClick: React.MouseEventHandler<HTMLButtonElement>
+  isPressed?: boolean
   size?: number
 }
 
-export const SideButton = ({ type, text, isPressed, onClick, size }: SideButtonProps) => {
+export const SideButton = ({ type, text, hasUser, onClick, isPressed, size }: SideButtonProps) => {
   return (
     <li className="side-btn-menu__menu-item">
-      <button className={`side-btn-menu__menu-item-btn ${isPressed ? "Pressed" : ""}`} onClick={onClick}>
-        <Icon type={ButtonTypes[type]} options={{ color: "Primary", size: size }} />
+      <button
+        className={`side-btn-menu__menu-item-btn ${hasUser ? "HasUser" : ""} ${isPressed ? "Pressed" : ""}`}
+        onClick={onClick}
+      >
+        <Icon type={ButtonTypes[type]} options={{ color: hasUser ? "White" : "Primary", size: size }} />
       </button>
       <p className="side-btn-menu__menu-item-text">{text}</p>
     </li>

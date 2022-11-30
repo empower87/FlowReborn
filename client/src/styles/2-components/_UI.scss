@@ -3,7 +3,7 @@
   // @include flexCenter(100%, 16%, 0, flex-start, flex-start, column);
   position: absolute;
   right: 0;
-  top: 39%;
+  top: 32%;
 
   .side-btn-menu__menu--bs-inset {
     @include flexCenter(90%, 80%, 3em, center, center, column);
@@ -26,6 +26,10 @@
           box-shadow: 2px 2px 3px #5e5e5e, -1px -1px 3px #f6f6f6;
           color: $base-color;
           font-size: 0.7em;
+
+          &.HasUser {
+            background: $primary-color-300;
+          }
 
           &.Pressed {
             box-shadow: inset 1px 1px 3px #61273f, inset -1px -1px 3px #fffafc;

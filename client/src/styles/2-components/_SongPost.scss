@@ -2,7 +2,8 @@
   @include flexCenter(50px, 100%, 0, center, center, row);
   background: linear-gradient(323deg, #808080 0%, #b8b8b8 100%);
   position: absolute;
-  bottom: 10%;
+  // bottom: 10%;
+  bottom: 16%;
   z-index: 1;
 
   .song-user-container {
@@ -13,7 +14,7 @@
       @include flexCenter(100%, 20%, 0, flex-start, center, row);
 
       .user-pic_shadow-div-outset {
-        @include flexCenter(85%, 85%, 45px 4px 4px 45px, flex-start, center, row);
+        @include flexCenter(80%, 85%, 45px 4px 4px 45px, flex-start, center, row);
         box-shadow: 2px 2px 3px #595858, -1px -1px 3px 0px #ffffff;
         margin-left: 8%;
 
@@ -42,7 +43,7 @@
       @include flexCenter(100%, 80%, 0, flex-start, center, row);
 
       .song-title_shadow-div-outset {
-        @include flexCenter(85%, 98%, 0.5vh 0.5vh 4vh 0.5vh, center, center, column);
+        @include flexCenter(80%, 98%, 0.5vh 0.5vh 4vh 0.5vh, center, center, column);
         box-shadow: 2px 2px 3px #595858, -1px -1px 3px 0px #ffffff;
 
         .song-title_shadow-div-inset {
