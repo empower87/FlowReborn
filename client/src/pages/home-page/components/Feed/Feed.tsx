@@ -1,7 +1,7 @@
 import { Dispatch, useEffect } from "react"
 import { ISong } from "../../../../../../server/src/models"
 import { Action, Feeds } from "../../hooks/songFeedReducer"
-import Video from "./Video"
+import SongPost from "./SongPost"
 
 type FeedProps = {
   songs: ISong[]
@@ -19,10 +19,10 @@ export const Feed = ({ songs, feedInView, dispatch }: FeedProps) => {
   useEffect(() => {}, [])
 
   return (
-    <ul className="video-scroll-container" style={{ overflowY: "scroll" }}>
+    <ul className="video-scroll-container">
       {/* <Loading isLoading={isLoading} /> */}
       {songs?.map((item, index) => {
-        return <Video key={`${item._id}_${index}`} feed={feedInView} song={item} dispatch={dispatch} />
+        return <SongPost key={`${item._id}_${index}`} feed={feedInView} song={item} dispatch={dispatch} />
       })}
     </ul>
   )

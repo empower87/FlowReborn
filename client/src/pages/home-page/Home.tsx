@@ -1,7 +1,6 @@
 import { useState } from "react"
 import LoadingHome from "src/components/loading/Skeletons/LoadingHome"
 import Navbar from "../../components/navbar/Navbar"
-import CommentMenu from "../../features/socialize/comments/components/CommentMenu"
 import { Feed } from "./components/Feed/Feed"
 import { FeedToggleButton, FeedToggleHeader } from "./components/Header/HomeHeader"
 import useSongFeeds from "./hooks/useSongFeeds"
@@ -14,13 +13,13 @@ export default function HomeDisplay() {
   if (isLoading) return <LoadingHome />
   return (
     <div className="Home" id="Home">
-      <CommentMenu song={songInView} page="home" isOpen={showCommentMenu} onClose={setShowCommentMenu} />
+      {/* <CommentMenu song={songInView} page="home" isOpen={showCommentMenu} onClose={setShowCommentMenu} /> */}
       <div className="section-1_feed">
         <FeedToggleHeader showMenu={showCommentMenu}>
           <FeedToggleButton
-            feed={"Home"}
+            feed={"ForYou"}
             selectedFeed={feedInView}
-            onClick={() => dispatch({ type: "Home", payload: { feed: "Home" } })}
+            onClick={() => dispatch({ type: "ForYou", payload: { feed: "ForYou" } })}
           />
           <FeedToggleButton
             feed={"Trending"}

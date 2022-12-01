@@ -5,7 +5,7 @@ type State = {
   feedInView: Feeds
   feedSongs: ISong[]
   feedSongInView: ISong | undefined
-  Home: { _id: string; songs: ISong[] }
+  ForYou: { _id: string; songs: ISong[] }
   Trending: { _id: string; songs: ISong[] }
   Following: { _id: string; songs: ISong[] }
 }
@@ -16,35 +16,35 @@ export type Action = {
     feed?: Feeds
     songId?: string
     songs?: {
-      Home: ISong[]
+      ForYou: ISong[]
       Trending: ISong[]
       Following: ISong[]
     }
   }
 }
 
-export type Feeds = "Home" | "Trending" | "Following"
+export type Feeds = "ForYou" | "Trending" | "Following"
 export type SongReducer = {
   state: State
   dispatch: Dispatch<Action>
 }
 export const INITIAL_STATE: State = {
-  feedInView: "Home",
+  feedInView: "ForYou",
   feedSongs: [],
   feedSongInView: undefined,
-  Home: { _id: "", songs: [] },
+  ForYou: { _id: "", songs: [] },
   Trending: { _id: "", songs: [] },
   Following: { _id: "", songs: [] },
 }
 
 export const songFeedReducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case "Home":
-      const homeSong = state.Home.songs.filter((song) => song._id === state.Home._id)
+    case "ForYou":
+      const homeSong = state.ForYou.songs.filter((song) => song._id === state.ForYou._id)
       return {
         ...state,
-        feedInView: "Home",
-        feedSongs: state.Home.songs,
+        feedInView: "ForYou",
+        feedSongs: state.ForYou.songs,
         feedSongInView: homeSong[0],
       }
     case "Trending":
@@ -65,10 +65,10 @@ export const songFeedReducer = (state: State, action: Action): State => {
       }
     case "SET_FEED_SONGS":
       if (!action.payload.songs) return state
-      const { Home, Trending, Following } = action.payload.songs
+      const { ForYou, Trending, Following } = action.payload.songs
       return {
         ...state,
-        Home: { ...state["Home"], songs: Home },
+        ForYou: { ...state["ForYou"], songs: ForYou },
         Trending: { ...state["Trending"], songs: Trending },
         Following: { ...state["Following"], songs: Following },
       }

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useReducer, useState } from "react"
+import gifArray from "src/assets/images/gifs.json"
 import { useAuth } from "src/context/AuthContext"
 import { trpc } from "src/utils/trpc"
 import { ISong } from "../../../../../server/src/models"
@@ -14,13 +15,17 @@ export default function useSongFeeds() {
 
   useEffect(() => {
     if (!songs.data || !user) return
-    const allSongs = songs.data
+    const songsData = songs.data
+    const allSongs = songsData.map((each) => {
+      if (!each.thumbnail) return { ...each, video: gifArray[Math.floor(Math.random() * 10)].url }
+      else return { ...each }
+    })
     dispatch({
       type: "SET_FEED_SONGS",
       payload: {
         feed: "Following",
         songs: {
-          Home: [...allSongs].reverse(),
+          ForYou: [...allSongs].reverse(),
           Trending: getTrendingSongs([...allSongs]),
           Following: getFollowingSongs([...allSongs], user._id),
         },
@@ -38,7 +43,7 @@ export default function useSongFeeds() {
     if (state.feedSongs && state.feedSongs.length !== 0) {
       setFeedSongs(state.feedSongs)
     } else {
-      setFeedSongs(state.Home.songs)
+      setFeedSongs(state.ForYou.songs)
     }
   }, [state])
 

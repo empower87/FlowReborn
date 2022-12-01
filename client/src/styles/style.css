@@ -527,45 +527,44 @@ button {
   position: relative;
 }
 .section-1_feed .section-1a_toggle-feed {
-  height: 6%;
+  height: 5%;
   width: 100%;
-  border-radius: 0em 0em 1.4em 1.4em;
+  border-radius: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  background: linear-gradient(327deg, #959595 0%, #cdcdcd 100%);
+  background: rgba(0, 0, 0, 0.5411764706);
   position: absolute;
   z-index: 2;
 }
 .section-1_feed .section-1a_toggle-feed .toggle-feed-container {
   height: 100%;
-  width: 99%;
+  width: 100%;
   border-radius: 0;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   flex-direction: row;
 }
 .section-1_feed .section-1a_toggle-feed .toggle-feed-container .each-feed_shadow-div-inset {
   height: 80%;
-  width: 32%;
-  border-radius: 0.25em;
+  width: 25%;
+  border-radius: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  box-shadow: inset 2px 2px 3px #484747, inset -2px -2px 2px #ffffff;
 }
 .section-1_feed .section-1a_toggle-feed .toggle-feed-container .each-feed_shadow-div-inset .each-feed_shadow-div-outset {
-  height: 75%;
-  width: 90%;
-  border-radius: 0.4vh;
+  height: 76%;
+  width: 92%;
+  border-radius: 2em;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  box-shadow: 2px 2px 4px #505050, -2px -2px 2px #ffffff;
+  box-shadow: 2px 2px 3px #323232, -2px -2px 3px #404040;
 }
 .section-1_feed .section-1a_toggle-feed .toggle-feed-container .each-feed_shadow-div-inset .each-feed_shadow-div-outset .each-feed_shadow-div-inset-2 {
   height: 77%;
@@ -575,51 +574,20 @@ button {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  box-shadow: inset 1px 1px 3px #545454, inset -1px -1px 3px #ffffff;
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: #ec6aa0;
-  font-weight: bolder;
 }
 .section-1_feed .section-1a_toggle-feed .toggle-feed-container .each-feed_shadow-div-inset .each-feed_shadow-div-outset:hover {
   background: #f3b9c3;
-  box-shadow: 3px 3px 4px #6e5a62, -2px -2px 2px 0px #ffe5e5;
 }
 .section-1_feed .section-1a_toggle-feed .toggle-feed-container .each-feed_shadow-div-inset .each-feed_shadow-div-outset:hover .each-feed_shadow-div-inset-2 {
-  box-shadow: inset 1px 1px 2px #6e5a62, inset -1px -1px 2px 0px #ffffff;
-  color: white;
+  color: #ffffff;
 }
-.section-1_feed .section-1a_toggle-feed .toggle-feed-container .each-feed_shadow-div-inset .toggle-feed {
-  height: 76%;
-  width: 92%;
-  background: #e24f8c;
-  box-shadow: inset 2px 2px 3px #813052, inset -2px -2px 2px #fedeeb;
-  transition: background 0.3s ease-in;
+.section-1_feed .section-1a_toggle-feed .toggle-feed-container .each-feed_shadow-div-inset .each-feed_shadow-div-outset.active {
+  background: #ec6aa0;
 }
-.section-1_feed .section-1a_toggle-feed .toggle-feed-container .each-feed_shadow-div-inset .toggle-feed .toggle-feed-2 {
-  height: 68%;
-  width: 91%;
-  box-shadow: inset 1px 1px 3px #6c2341, inset -1px -1px 3px #eab4ca;
-  color: white;
-}
-.section-1_feed .section-1a_toggle-feed .toggle-feed-container .each-feed_shadow-div-inset .toggle-feed:hover {
-  background: #f3b9c3;
-  box-shadow: inset 2px 2px 3px #8e5b71, inset -2px -2px 2px #fef2f7;
-}
-.section-1_feed .section-1a_toggle-feed .toggle-feed-container .each-feed_shadow-div-inset .toggle-feed:hover .each-feed_shadow-div-inset-2 {
-  box-shadow: inset 2px 2px 3px #8e5b71, inset -2px -2px 2px #fef2f7;
-  color: white;
-}
-.section-1_feed .section-1a_toggle-feed .toggle-feed-container .each-feed_shadow-div-inset.Home {
-  border-radius: 0.3vh 0.3vh 0.3vh 2.5vh;
-}
-.section-1_feed .section-1a_toggle-feed .toggle-feed-container .each-feed_shadow-div-inset.Home .each-feed_shadow-div-inset {
-  border-radius: 4vh 0.2vh 0.2vh 4vh;
-}
-.section-1_feed .section-1a_toggle-feed .toggle-feed-container .each-feed_shadow-div-inset.Following {
-  border-radius: 0.3vh 0.3vh 2.5vh 0.3vh;
-}
-.section-1_feed .section-1a_toggle-feed .toggle-feed-container .each-feed_shadow-div-inset.Following .each-feed_shadow-div-inset {
-  border-radius: 0.2vh 4vh 4vh 0.2vh;
+.section-1_feed .section-1a_toggle-feed .toggle-feed-container .each-feed_shadow-div-inset .each-feed_shadow-div-outset.active .each-feed_shadow-div-inset-2 {
+  color: #ffffff;
 }
 .section-1_feed .video-scroll-container {
   position: absolute;
@@ -627,6 +595,7 @@ button {
   width: 100%;
   -ms-scroll-snap-type: y mandatory;
       scroll-snap-type: y mandatory;
+  overflow-y: auto;
   will-change: transform;
   z-index: 1;
 }

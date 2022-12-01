@@ -1,6 +1,5 @@
-import { Dispatch, useEffect, useRef, useState } from "react"
+import { Dispatch, useEffect, useState } from "react"
 import { useInView } from "react-intersection-observer"
-import gifsArray from "src/assets/images/gifs.json"
 import AudioSlider from "src/components/audio/AudioSlider"
 import { PlayButton } from "src/components/buttons/PlayButton"
 import { SideButton, SideButtonMenu } from "src/components/ui/SideButtonMenu"
@@ -19,12 +18,42 @@ type Props = {
   dispatch: Dispatch<Action>
 }
 
+const LikeButton = ({ data }: { data: ISong | IComment }) => {
+  const { total, hasUser, onClick } = useLike(data, "Song")
+  return <SideButton type="Like" text={`${total}`} hasUser={hasUser} onClick={onClick} size={75} />
+}
+
+const FollowButton = ({ data }: { data: IUser }) => {
+  const { total, hasUser, onClick } = useFollow(data)
+  return <SideButton type="Follow" text={`${total}`} hasUser={hasUser} onClick={onClick} size={110} />
+}
+
+const ShowLyrics = ({ lyrics, isOpen }: { lyrics: string[][]; isOpen: boolean }) => {
+  return (
+    <div className={`lyrics-popup ${isOpen ? "Open" : "Closed"}`} style={{ visibility: isOpen ? "visible" : "hidden" }}>
+      {lyrics.map((line, index) => {
+        return (
+          <div className="each-lyric-container" key={`${index}_${line}_songlyrics`}>
+            <p className="each-lyric-no">{index + 1}</p>
+            {line.map((lyric, i) => {
+              return (
+                <p key={`${i}_${lyric}`} className="each-lyric-line">
+                  {lyric}
+                </p>
+              )
+            })}
+          </div>
+        )
+      })}
+    </div>
+  )
+}
 const MediaPlayer = ({ song }: { song: ISong }) => {
   const { slider, time, isPlaying, setIsPlaying } = useAudioPlayer({
     src: song.audio,
     duration: song.duration,
     bgColor: "#eeb2cb",
-    video: song.audio,
+    video: song.thumbnail ? song.audio : undefined,
   })
 
   return (
@@ -47,11 +76,7 @@ const MediaPlayer = ({ song }: { song: ISong }) => {
   )
 }
 
-function Video({ feed, song, dispatch }: Props) {
-  const [loadVideo, setLoadVideo] = useState<string>("")
-  const gifs = [...gifsArray]
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const [isPlaying, setIsPlaying] = useState<boolean>(false)
+export default function SongPost({ feed, song, dispatch }: Props) {
   const [showComments, setShowComments] = useState<boolean>(false)
   const [toggleLyrics, setToggleLyrics] = useState<boolean>(false)
 
@@ -62,29 +87,19 @@ function Video({ feed, song, dispatch }: Props) {
   })
 
   useEffect(() => {
-    const video = gifs[Math.floor(Math.random() * 10)].url
+    // const video = gifs[Math.floor(Math.random() * 10)].url
     if (inView) {
       dispatch({ type: "SET_SONG_INDEX", payload: { songId: song._id, feed: feed } })
-      if (loadVideo === "") setLoadVideo(video)
+      // if (loadVideo === "") setLoadVideo(video)
     }
   }, [inView])
-
-  useEffect(() => {
-    if (!videoRef.current) return
-    if (isPlaying) {
-      videoRef.current.play()
-    } else {
-      videoRef.current.pause()
-    }
-    console.log(song, "what does this look like?")
-  }, [isPlaying, videoRef.current])
 
   return (
     <li
       id={song?._id}
       ref={ref}
       className="video-pane"
-      style={{ backgroundImage: `url(${!song.thumbnail ? loadVideo : ""})` }}
+      style={{ backgroundImage: `url(${song.video ? song.video : ""})` }}
     >
       <CommentMenu song={song} page={"Home"} isOpen={showComments} onClose={setShowComments} />
 
@@ -92,11 +107,10 @@ function Video({ feed, song, dispatch }: Props) {
         <video
           id={song.audio}
           className="video-pane-video"
-          ref={videoRef}
           src={song.audio}
           poster={song.thumbnail}
-          autoPlay
-          loop
+          autoPlay={inView}
+          loop={inView}
           playsInline
         />
       ) : (
@@ -132,35 +146,3 @@ function Video({ feed, song, dispatch }: Props) {
     </li>
   )
 }
-
-const LikeButton = ({ data }: { data: ISong | IComment }) => {
-  const { total, hasUser, onClick } = useLike(data, "Song")
-  return <SideButton type="Like" text={`${total}`} hasUser={hasUser} onClick={onClick} size={75} />
-}
-
-const FollowButton = ({ data }: { data: IUser }) => {
-  const { total, hasUser, onClick } = useFollow(data)
-  return <SideButton type="Follow" text={`${total}`} hasUser={hasUser} onClick={onClick} size={110} />
-}
-
-const ShowLyrics = ({ lyrics, isOpen }: { lyrics: string[][]; isOpen: boolean }) => {
-  return (
-    <div className={`lyrics-popup ${isOpen ? "Open" : "Closed"}`} style={{ visibility: isOpen ? "visible" : "hidden" }}>
-      {lyrics.map((line, index) => {
-        return (
-          <div className="each-lyric-container" key={`${index}_${line}_songlyrics`}>
-            <p className="each-lyric-no">{index + 1}</p>
-            {line.map((lyric, i) => {
-              return (
-                <p key={`${i}_${lyric}`} className="each-lyric-line">
-                  {lyric}
-                </p>
-              )
-            })}
-          </div>
-        )
-      })}
-    </div>
-  )
-}
-export default Video

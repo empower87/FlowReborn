@@ -7,7 +7,7 @@ type FeedToggle = PropsWithChildren<{
 
 export const FeedToggleHeader = ({ showMenu, children }: FeedToggle) => {
   return (
-    <div className="section-1a_toggle-feed" style={showMenu ? { height: "0%", visibility: "hidden" } : {}}>
+    <div className="section-1a_toggle-feed">
       <div className="toggle-feed-container">{children}</div>
     </div>
   )
@@ -20,16 +20,13 @@ type FeedButton = {
 }
 
 export const FeedToggleButton = ({ feed, selectedFeed, onClick }: FeedButton) => {
-  const bRadius1 = feed === "Home" ? "0.3vh 0.3vh 0.3vh 2.5vh" : feed === "Following" ? ".3vh .3vh 2.5vh .3vh" : ""
-  const bRadius2 = feed === "Home" ? "4vh .2vh .2vh 4vh" : feed === "Following" ? ".2vh 4vh 4vh .2vh" : ""
   return (
-    <div className="each-feed_shadow-div-inset" style={{ borderRadius: bRadius1 }}>
+    <div className="each-feed_shadow-div-inset">
       <button
-        className={`each-feed_shadow-div-outset ${feed === selectedFeed ? "toggle-feed" : ""}`}
+        className={`each-feed_shadow-div-outset ${feed === selectedFeed ? "active" : ""}`}
         onClick={() => onClick(feed)}
-        style={{ borderRadius: bRadius2 }}
       >
-        <div className={`each-feed_shadow-div-inset-2 ${feed === selectedFeed ? "toggle-feed-2" : ""}`}>{feed}</div>
+        <div className="each-feed_shadow-div-inset-2">{feed === "ForYou" ? "For You" : feed}</div>
       </button>
     </div>
   )

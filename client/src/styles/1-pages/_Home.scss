@@ -18,72 +18,42 @@
   position: relative;
 
   .section-1a_toggle-feed {
-    @include flexCenter(6%, 100%, 0em 0em 1.4em 1.4em, center, center, row);
-    background: linear-gradient(327deg, #959595 0%, #cdcdcd 100%);
+    @include flexCenter(5%, 100%, 0, center, center, row);
+    // background: linear-gradient(327deg, #959595 0%, #cdcdcd 100%);
+    background: #0000008a;
     position: absolute;
     z-index: 2;
 
     .toggle-feed-container {
-      @include flexCenter(100%, 99%, 0, space-around, center, row);
+      @include flexCenter(100%, 100%, 0, center, center, row);
 
       .each-feed_shadow-div-inset {
-        @include flexCenter(80%, 32%, 0.25em, center, center, row);
-        box-shadow: inset 2px 2px 3px #484747, inset -2px -2px 2px #ffffff;
+        @include flexCenter(80%, 25%, 0, center, center, row);
+        // box-shadow: inset 2px 2px 3px #484747, inset -2px -2px 2px #ffffff;
 
         .each-feed_shadow-div-outset {
-          @include flexCenter(75%, 90%, 0.4vh, center, center, column);
-          box-shadow: 2px 2px 4px #505050, -2px -2px 2px #ffffff;
+          @include flexCenter(76%, 92%, 2em, center, center, column);
+          // box-shadow: 2px 2px 4px #505050, -2px -2px 2px #ffffff;
+          box-shadow: 2px 2px 3px #323232, -2px -2px 3px #404040;
 
           .each-feed_shadow-div-inset-2 {
             @include flexCenter(77%, 93%, 65px, center, center, column);
-            box-shadow: inset 1px 1px 3px #545454, inset -1px -1px 3px #ffffff;
-            font-size: 1rem;
+            // box-shadow: inset 1px 1px 3px #545454, inset -1px -1px 3px #ffffff;
+            font-size: 0.9rem;
             color: $primary-color-300;
-            font-weight: bolder;
+            // font-weight: bolder;
           }
           &:hover {
             background: #f3b9c3;
-            box-shadow: 3px 3px 4px #6e5a62, -2px -2px 2px 0px #ffe5e5;
             .each-feed_shadow-div-inset-2 {
-              box-shadow: inset 1px 1px 2px #6e5a62, inset -1px -1px 2px 0px #ffffff;
-              color: white;
+              color: $base-color;
             }
           }
-        }
-        // classes to apply to toggle feed button when clicked
-        .toggle-feed {
-          height: 76%;
-          width: 92%;
-          background: $primary-color-400;
-          box-shadow: inset 2px 2px 3px #813052, inset -2px -2px 2px #fedeeb;
-          transition: background 0.3s ease-in;
-
-          .toggle-feed-2 {
-            height: 68%;
-            width: 91%;
-            box-shadow: inset 1px 1px 3px #6c2341, inset -1px -1px 3px #eab4ca;
-            color: white;
-          }
-          &:hover {
-            background: #f3b9c3;
-            box-shadow: inset 2px 2px 3px #8e5b71, inset -2px -2px 2px #fef2f7;
+          &.active {
+            background: $primary-color-300;
             .each-feed_shadow-div-inset-2 {
-              box-shadow: inset 2px 2px 3px #8e5b71, inset -2px -2px 2px #fef2f7;
-              color: white;
+              color: $base-color;
             }
-          }
-        }
-
-        &.Home {
-          border-radius: 0.3vh 0.3vh 0.3vh 2.5vh;
-          .each-feed_shadow-div-inset {
-            border-radius: 4vh 0.2vh 0.2vh 4vh;
-          }
-        }
-        &.Following {
-          border-radius: 0.3vh 0.3vh 2.5vh 0.3vh;
-          .each-feed_shadow-div-inset {
-            border-radius: 0.2vh 4vh 4vh 0.2vh;
           }
         }
       }
@@ -98,6 +68,7 @@
     // margin-top: 8%;
     scroll-snap-type: y mandatory;
     // scroll-behavior: smooth;
+    overflow-y: auto;
     will-change: transform;
     z-index: 1;
 
