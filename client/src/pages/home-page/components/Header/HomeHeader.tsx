@@ -1,11 +1,7 @@
-import { PropsWithChildren } from "react"
+import { ReactNode } from "react"
 import { Feeds } from "../../hooks/songFeedReducer"
 
-type FeedToggle = PropsWithChildren<{
-  showMenu: boolean
-}>
-
-export const FeedToggleHeader = ({ showMenu, children }: FeedToggle) => {
+export const FeedToggleHeader = ({ children }: { children: ReactNode }) => {
   return (
     <div className="section-1a_toggle-feed">
       <div className="toggle-feed-container">{children}</div>

@@ -57,6 +57,7 @@ export default function useAudioPlayer({ src, duration, bgColor, video }: UseAud
 
     const getEndTime = formatTime(filteredDuration)
     setEndTime(getEndTime)
+    setCurrentTime("0:00")
   }, [src])
 
   useEffect(() => {

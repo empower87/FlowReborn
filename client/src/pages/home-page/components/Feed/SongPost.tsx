@@ -1,5 +1,4 @@
-import { Dispatch, useEffect, useState } from "react"
-import { useInView } from "react-intersection-observer"
+import { useEffect, useRef, useState } from "react"
 import AudioSlider from "src/components/audio/AudioSlider"
 import { PlayButton } from "src/components/buttons/PlayButton"
 import { SideButton, SideButtonMenu } from "src/components/ui/SideButtonMenu"
@@ -7,16 +6,10 @@ import CommentMenu from "src/features/socialize/comments/components/CommentMenu"
 import useFollow from "src/features/socialize/follow/useFollow"
 import useLike from "src/features/socialize/like/useLike"
 import useAudioPlayer from "src/hooks/useAudioPlayer"
+import { useIntersectionObserver } from "src/hooks/useIntersectionObserver"
 import { IComment, IUser } from "../../../../../../server/src/models"
 import { ISong } from "../../../../../../server/src/models/Song"
-import { Action, Feeds } from "../../hooks/songFeedReducer"
 import SongDetails from "../Details/SongDetails"
-
-type Props = {
-  feed: Feeds
-  song: ISong
-  dispatch: Dispatch<Action>
-}
 
 const LikeButton = ({ data }: { data: ISong | IComment }) => {
   const { total, hasUser, onClick } = useLike(data, "Song")
@@ -48,24 +41,36 @@ const ShowLyrics = ({ lyrics, isOpen }: { lyrics: string[][]; isOpen: boolean })
     </div>
   )
 }
-const MediaPlayer = ({ song }: { song: ISong }) => {
-  const { slider, time, isPlaying, setIsPlaying } = useAudioPlayer({
+
+const MediaPlayer = ({ song, autoPlay }: { song: ISong; autoPlay: boolean }) => {
+  const {
+    slider,
+    time: { current, end },
+    isPlaying,
+    setIsPlaying,
+  } = useAudioPlayer({
     src: song.audio,
     duration: song.duration,
     bgColor: "#eeb2cb",
     video: song.thumbnail ? song.audio : undefined,
   })
 
+  useEffect(() => {
+    if (autoPlay) {
+      setIsPlaying(true)
+    }
+  }, [autoPlay])
+
   return (
     <div className="audio-player">
       <div className="audio-player__slider">
-        <div className="audio-player__playback-text Start">{time.current}</div>
+        <div className="audio-player__playback-text Start">{current}</div>
         <div className="audio-player__slider">
           <div className="audio-player__slider--bs-inset">
             <AudioSlider addClass="" {...slider} />
           </div>
         </div>
-        <div className="audio-player__playback-text End">{time.end}</div>
+        <div className="audio-player__playback-text End">{end}</div>
       </div>
       <div className="audio-player__play">
         <div className="audio-player__play-btn">
@@ -76,48 +81,40 @@ const MediaPlayer = ({ song }: { song: ISong }) => {
   )
 }
 
-export default function SongPost({ feed, song, dispatch }: Props) {
+export default function SongPost({ song }: { song: ISong }) {
   const [showComments, setShowComments] = useState<boolean>(false)
   const [toggleLyrics, setToggleLyrics] = useState<boolean>(false)
-
-  const [ref, inView] = useInView({
+  const itemRef = useRef<HTMLLIElement>(null)
+  const isIntersecting = useIntersectionObserver(itemRef, {
     threshold: 0.9,
     root: document.querySelector(".video-scroll-container"),
     rootMargin: "0px 0px 200px 0px",
   })
 
-  useEffect(() => {
-    // const video = gifs[Math.floor(Math.random() * 10)].url
-    if (inView) {
-      dispatch({ type: "SET_SONG_INDEX", payload: { songId: song._id, feed: feed } })
-      // if (loadVideo === "") setLoadVideo(video)
-    }
-  }, [inView])
-
   return (
     <li
       id={song?._id}
-      ref={ref}
+      ref={itemRef}
       className="video-pane"
-      style={{ backgroundImage: `url(${song.video ? song.video : ""})` }}
+      style={{ backgroundImage: `url(${song.video && isIntersecting ? song.video : ""})` }}
     >
       <CommentMenu song={song} page={"Home"} isOpen={showComments} onClose={setShowComments} />
 
-      {song.thumbnail ? (
+      {song.thumbnail && isIntersecting ? (
         <video
           id={song.audio}
           className="video-pane-video"
           src={song.audio}
           poster={song.thumbnail}
-          autoPlay={inView}
-          loop={inView}
+          autoPlay
+          loop
           playsInline
         />
       ) : (
         <></>
       )}
       <div className="last-div">
-        <MediaPlayer song={song} />
+        <MediaPlayer song={song} autoPlay={isIntersecting} />
 
         <SideButtonMenu>
           <LikeButton data={song} />

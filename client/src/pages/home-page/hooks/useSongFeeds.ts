@@ -3,14 +3,12 @@ import gifArray from "src/assets/images/gifs.json"
 import { useAuth } from "src/context/AuthContext"
 import { trpc } from "src/utils/trpc"
 import { ISong } from "../../../../../server/src/models"
-import { tempMockSong } from "../initialData"
 import { INITIAL_STATE, songFeedReducer } from "./songFeedReducer"
 
 export default function useSongFeeds() {
   const { user } = useAuth()
   const songs = trpc.useQuery(["songs.all-songs"])
   const [state, dispatch] = useReducer(songFeedReducer, INITIAL_STATE)
-  const [songInView, setSongInView] = useState<ISong>(tempMockSong)
   const [feedSongs, setFeedSongs] = useState<ISong[]>([])
 
   useEffect(() => {
@@ -34,12 +32,6 @@ export default function useSongFeeds() {
   }, [songs.data, user])
 
   useEffect(() => {
-    if (state.feedSongInView) {
-      setSongInView(state.feedSongInView)
-    }
-  }, [state.feedSongInView])
-
-  useEffect(() => {
     if (state.feedSongs && state.feedSongs.length !== 0) {
       setFeedSongs(state.feedSongs)
     } else {
@@ -59,7 +51,6 @@ export default function useSongFeeds() {
 
   return {
     isLoading: songs.isLoading,
-    songInView,
     feedInView: state.feedInView,
     feedSongs,
     dispatch,

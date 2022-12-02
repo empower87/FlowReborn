@@ -1,4 +1,3 @@
-import { useState } from "react"
 import LoadingHome from "src/components/loading/Skeletons/LoadingHome"
 import Navbar from "../../components/navbar/Navbar"
 import { Feed } from "./components/Feed/Feed"
@@ -7,15 +6,13 @@ import useSongFeeds from "./hooks/useSongFeeds"
 
 // TODO: redesign for Layout, will create a post/song item component
 export default function HomeDisplay() {
-  const { isLoading, songInView, feedInView, feedSongs, dispatch } = useSongFeeds()
-  const [showCommentMenu, setShowCommentMenu] = useState<boolean>(false)
+  const { isLoading, feedInView, feedSongs, dispatch } = useSongFeeds()
 
   if (isLoading) return <LoadingHome />
   return (
     <div className="Home" id="Home">
-      {/* <CommentMenu song={songInView} page="home" isOpen={showCommentMenu} onClose={setShowCommentMenu} /> */}
       <div className="section-1_feed">
-        <FeedToggleHeader showMenu={showCommentMenu}>
+        <FeedToggleHeader>
           <FeedToggleButton
             feed={"ForYou"}
             selectedFeed={feedInView}
@@ -33,32 +30,13 @@ export default function HomeDisplay() {
           />
         </FeedToggleHeader>
 
-        <Feed songs={feedSongs} feedInView={feedInView} dispatch={dispatch} />
-        {/* 
-        <SideButtonMenu>
-          <SideButton type="Like" isPressed={false} onClick={() => console.log("lol")} size={75} />
-          <SideButton type="Comment" isPressed={false} onClick={() => console.log("lol")} size={60} />
-          <SideButton type="Follow" isPressed={false} onClick={() => console.log("lol")} size={100} />
-          <SideButton type="Songs" isPressed={false} onClick={() => console.log("lol")} size={80} />
-        </SideButtonMenu>
-        
-        <SongDetails song={songInView} /> */}
-        {/* <DetailsLayout
-          buttons={
-            <>
-              <FollowButton location="Home" song={songInView} />
-              <LikeButton location="Home" song={songInView} />
-              <CommentButton location="Home" song={songInView} onClick={() => setShowCommentMenu(!showCommentMenu)} />
-            </>
-          }
-          details={<SongDetails song={songInView} />}
-          audioPlayer={<AudioPlayer src={songInView.audio} duration={songInView.duration} />}
-        /> */}
+        <Feed songs={feedSongs} />
       </div>
-      <Navbar isVisible={showCommentMenu} />
+      <Navbar isVisible={true} />
     </div>
   )
 }
+
 // import { useRef, useState } from "react"
 // import LoadingHome from "src/components/loading/Skeletons/LoadingHome"
 // import { CommentButton, FollowButton, LikeButton } from "src/features/socialize/SocializeButtons"
