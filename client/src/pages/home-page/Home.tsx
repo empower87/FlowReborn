@@ -1,3 +1,4 @@
+import { useState } from "react"
 import LoadingHome from "src/components/loading/Skeletons/LoadingHome"
 import Navbar from "../../components/navbar/Navbar"
 import { Feed } from "./components/Feed/Feed"
@@ -7,12 +8,13 @@ import useSongFeeds from "./hooks/useSongFeeds"
 // TODO: redesign for Layout, will create a post/song item component
 export default function HomeDisplay() {
   const { isLoading, feedInView, feedSongs, dispatch } = useSongFeeds()
+  const [isVideoFullscreen, setIsVideoFullscreen] = useState<boolean>(false)
 
   if (isLoading) return <LoadingHome />
   return (
     <div className="Home" id="Home">
       <div className="section-1_feed">
-        <FeedToggleHeader>
+        <FeedToggleHeader isVideoFullscreen={isVideoFullscreen}>
           <FeedToggleButton
             feed={"ForYou"}
             selectedFeed={feedInView}
@@ -30,9 +32,9 @@ export default function HomeDisplay() {
           />
         </FeedToggleHeader>
 
-        <Feed songs={feedSongs} />
+        <Feed songs={feedSongs} isVideoFullscreen={isVideoFullscreen} setIsVideoFullscreen={setIsVideoFullscreen} />
       </div>
-      <Navbar isVisible={true} />
+      <Navbar isVisible={isVideoFullscreen} />
     </div>
   )
 }

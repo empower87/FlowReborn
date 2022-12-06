@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 import AudioSlider from "src/components/audio/AudioSlider"
 import { PlayButton } from "src/components/buttons/PlayButton"
 import { SideButton, SideButtonMenu } from "src/components/ui/SideButtonMenu"
@@ -81,7 +81,17 @@ const MediaPlayer = ({ song, autoPlay }: { song: ISong; autoPlay: boolean }) => 
   )
 }
 
-export default function SongPost({ song }: { song: ISong }) {
+export default function SongPost({
+  song,
+  isVideoFullscreen,
+  setIsVideoFullscreen,
+  setOnShowCommentMenu,
+}: {
+  song: ISong
+  isVideoFullscreen: boolean
+  setIsVideoFullscreen: Dispatch<SetStateAction<boolean>>
+  setOnShowCommentMenu: Dispatch<SetStateAction<boolean>>
+}) {
   const [showComments, setShowComments] = useState<boolean>(false)
   const [toggleLyrics, setToggleLyrics] = useState<boolean>(false)
   const itemRef = useRef<HTMLLIElement>(null)
@@ -90,6 +100,14 @@ export default function SongPost({ song }: { song: ISong }) {
     root: document.querySelector(".video-scroll-container"),
     rootMargin: "0px 0px 200px 0px",
   })
+
+  useEffect(() => {
+    if (showComments) {
+      setOnShowCommentMenu(true)
+    } else {
+      setOnShowCommentMenu(false)
+    }
+  }, [showComments])
 
   return (
     <li
@@ -109,11 +127,20 @@ export default function SongPost({ song }: { song: ISong }) {
           autoPlay
           loop
           playsInline
+          onClick={() => setIsVideoFullscreen(false)}
         />
       ) : (
         <></>
       )}
-      <div className="last-div">
+      <div
+        className="last-div"
+        style={{ visibility: isVideoFullscreen ? "hidden" : "visible" }}
+        onClick={(e) => {
+          if (e.currentTarget === e.target) {
+            setIsVideoFullscreen(true)
+          }
+        }}
+      >
         <MediaPlayer song={song} autoPlay={isIntersecting} />
 
         <SideButtonMenu>

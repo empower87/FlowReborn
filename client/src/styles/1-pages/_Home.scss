@@ -19,7 +19,6 @@
 
   .section-1a_toggle-feed {
     @include flexCenter(5%, 100%, 0, center, center, row);
-    // background: linear-gradient(327deg, #959595 0%, #cdcdcd 100%);
     background: #0000008a;
     position: absolute;
     z-index: 2;
@@ -29,19 +28,15 @@
 
       .each-feed_shadow-div-inset {
         @include flexCenter(80%, 25%, 0, center, center, row);
-        // box-shadow: inset 2px 2px 3px #484747, inset -2px -2px 2px #ffffff;
 
         .each-feed_shadow-div-outset {
           @include flexCenter(76%, 92%, 2em, center, center, column);
-          // box-shadow: 2px 2px 4px #505050, -2px -2px 2px #ffffff;
           box-shadow: 2px 2px 3px #323232, -2px -2px 3px #404040;
 
           .each-feed_shadow-div-inset-2 {
             @include flexCenter(77%, 93%, 65px, center, center, column);
-            // box-shadow: inset 1px 1px 3px #545454, inset -1px -1px 3px #ffffff;
             font-size: 0.9rem;
             color: $primary-color-300;
-            // font-weight: bolder;
           }
           &:hover {
             background: #f3b9c3;
@@ -63,18 +58,14 @@
   .video-scroll-container {
     position: absolute;
     height: 100%;
-    // height: 60%;
     width: 100%;
-    // margin-top: 8%;
     scroll-snap-type: y mandatory;
-    // scroll-behavior: smooth;
     overflow-y: auto;
     will-change: transform;
     z-index: 1;
 
     .video-pane {
       @include flexCenter(100%, 100%, 0px, center, center, column);
-
       scroll-snap-align: start;
       scroll-snap-stop: always;
       background-size: cover;
@@ -88,7 +79,6 @@
 
       .last-div {
         @include flexCenter(100%, 100%, 0, flex-start, flex-start, column);
-        // background: #0000008a;
         background: linear-gradient(
           0deg,
           black,
@@ -110,10 +100,6 @@
           background: linear-gradient(323deg, #808080 0%, #b8b8b8 100%);
           position: absolute;
           bottom: 84px;
-          // @include flexCenter(25px, 96%, 5px, center, flex-end, row);
-          // background: linear-gradient(323deg, #808080 0%, #b8b8b8 100%);
-          // position: absolute;
-          // top: 80px;
 
           .audio-player__play {
             @include flexCenter(35px, 45px, 0em 0em 2em 2em, center, center, row);
@@ -121,23 +107,6 @@
             position: absolute;
             bottom: -30px;
             left: 44%;
-            // @include flexCenter(40px, 40px, 2em, center, center, row);
-            // background: black;
-            // position: absolute;
-            // top: -30px;
-            // left: 45%;
-
-            // .audio-player__play-btn-border {
-            //   position: absolute;
-            //   bottom: 0;
-            //   left: 0;
-            //   background: transparent;
-            //   border-top-right-radius: 20px;
-            //   box-shadow: 0px -10px 0 0 black;
-            //   &.Right {
-            //     right: 0;
-            //   }
-            // }
 
             &::before {
               content: "";

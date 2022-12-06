@@ -1,5 +1,5 @@
 .comments__list {
-  @include flexCenter(93%, 97%, 0.4em 0.4em 0.4em 2.6em, flex-start, center, column);
+  @include flexCenter(97%, 98%, 0.4em 0.4em 0.4em 2.6em, flex-start, center, column);
   overflow-y: scroll;
   background: linear-gradient(313deg, #383737, #767676);
   box-shadow: inset 3px 3px 3px #303030, inset -2px -2px 2px 0px #303030;

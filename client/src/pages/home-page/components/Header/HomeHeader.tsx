@@ -1,9 +1,15 @@
 import { ReactNode } from "react"
 import { Feeds } from "../../hooks/songFeedReducer"
 
-export const FeedToggleHeader = ({ children }: { children: ReactNode }) => {
+export const FeedToggleHeader = ({
+  isVideoFullscreen,
+  children,
+}: {
+  isVideoFullscreen: boolean
+  children: ReactNode
+}) => {
   return (
-    <div className="section-1a_toggle-feed">
+    <div className={`section-1a_toggle-feed`} style={{ visibility: isVideoFullscreen ? "hidden" : "visible" }}>
       <div className="toggle-feed-container">{children}</div>
     </div>
   )

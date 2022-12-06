@@ -1,21 +1,26 @@
 /* ------------------------------ Comment Pop Up menu ------------------------------------------*/
 .CommentMenu {
-  @include flexCenter(0%, 100%, 0, flex-start, center, column);
+  @include flexCenter(80%, 100%, 1.5em 0em 0em 0em, flex-start, center, column);
+  // @include flexCenter(0%, 100%, 0, flex-start, center, column);
   background: linear-gradient(0deg, #a09e9e 0%, #b9b9b9 100%);
   box-shadow: 0px 10px 10px #000000a3;
-  position: relative;
-  top: 0;
-  transition: height 0.5s ease-out;
+  position: absolute;
+  // position: relative;
+  // top: 0;
+  bottom: 0;
+  z-index: 2;
+  // transition: height 0.5s ease-out;
 
   .comments__list--container {
-    @include flexCenter(83%, 100%, 0, flex-end, center, column);
+    // 91% height
+    @include flexCenter(80%, 100%, 0, flex-start, center, column);
 
     .comments__list--shadow-outset {
       @include flexCenter(98%, 97%, 0.5em 0.5em 0.5em 3em, center, center, column);
       box-shadow: 2px 3px 4px #414141, -2px -2px 3px #ffffff;
 
       .comments__list--shadow-inset {
-        @include flexCenter(97%, 97.5%, 0.4em 0.4em 0.4em 2.9em, center, center, column);
+        @include flexCenter(98%, 97%, 0.4em 0.4em 0.4em 2.9em, center, center, column);
         box-shadow: inset 2px 2px 3px #3d3f3f, inset -2px -3px 2px #ffffff;
         overflow: hidden;
 
@@ -25,100 +30,128 @@
   }
 
   .comments__header--container {
-    @include flexCenter(17%, 100%, 0, center, center, column);
+    @include flexCenter(20%, 100%, 0, center, center, column);
 
-    .comments__header--shadow-outset {
-      @include flexCenter(76%, 97%, 5em 0.5em 0.5em 5em, center, center, row);
-      box-shadow: 2px 2px 3px #414141, -1px -1px 3px #ffffff;
+    .comments__header {
+      // height 9%
+      @include flexCenter(35%, 100%, 0, center, center, column);
 
-      .comments__header--shadow-inset {
-        @include flexCenter(83%, 98%, 100vh, center, center, row);
-        box-shadow: inset 2px 2px 3px #3d3f3f, inset -2px -3px 2px #ffffff;
+      .comments__header--shadow-outset {
+        @include flexCenter(76%, 97%, 5em 0.5em 0.5em 5em, center, center, row);
+        box-shadow: 2px 2px 3px #414141, -1px -1px 3px #ffffff;
 
-        .comments__header-btn--container {
-          @include flexCenter(100%, 18%, 0, center, center, row);
+        .comments__header--shadow-inset {
+          @include flexCenter(83%, 98%, 100vh, center, center, row);
+          box-shadow: inset 2px 2px 3px #3d3f3f, inset -2px -3px 2px #ffffff;
 
-          .comments__header-btn {
-            @include flexCenter(68%, 80%, 10em 1em 1em 10em, center, center, row);
-            box-shadow: 2px 2px 3px #414141, -1px -1px 3px #ffffff;
+          .comments__header-btn--container {
+            @include flexCenter(100%, 10%, 0, center, center, row);
 
-            &.Back {
-              img {
-                height: 90%;
-                width: 90%;
-              }
-            }
-            &.Comment {
-              width: 84%;
-              border-radius: 10em;
-              background: #ec6aa0;
+            .comments__header-btn {
+              @include flexCenter(68%, 80%, 10em, center, center, row);
+              box-shadow: 2px 2px 3px #414141, -1px -1px 3px #ffffff;
 
-              .comments__header-icon {
-                @include flexCenter(70%, 70%, 0, center, center, row);
+              &.Close {
                 img {
-                  filter: invert(100%) sepia(3%) saturate(0%) hue-rotate(293deg) brightness(107%) contrast(103%);
+                  height: 90%;
+                  width: 90%;
                 }
               }
-              // p {
-              //   color: white;
-              //   font-size: 0.8rem;
-              //   line-height: 1;
-              // }
-            }
-            &:active {
-              box-shadow: inset 2px 2px 3px #434343, inset -2px -3px 2px #dfdfdf;
-            }
-            &:hover {
-              background: #e6a8c3;
-              img {
-                filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg) brightness(102%) contrast(102%);
+              &.Comment {
+                width: 84%;
+                border-radius: 10em;
+                background: #ec6aa0;
+
+                .comments__header-icon {
+                  @include flexCenter(70%, 70%, 0, center, center, row);
+                  img {
+                    filter: invert(100%) sepia(3%) saturate(0%) hue-rotate(293deg) brightness(107%) contrast(103%);
+                  }
+                }
+                // p {
+                //   color: white;
+                //   font-size: 0.8rem;
+                //   line-height: 1;
+                // }
+              }
+              &:active {
+                box-shadow: inset 2px 2px 3px #434343, inset -2px -3px 2px #dfdfdf;
+              }
+              &:hover {
+                background: #e6a8c3;
+                img {
+                  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg) brightness(102%) contrast(102%);
+                }
               }
             }
           }
-        }
 
-        .comments__back-btn--container {
-          @include flexCenter(100%, 18%, 0, center, center, row);
+          .comments__back-btn--container {
+            @include flexCenter(100%, 18%, 0, center, center, row);
 
-          .comments__back-btn {
-            @include flexCenter(68%, 80%, 10em 1em 1em 10em, center, center, row);
-            box-shadow: 2px 2px 3px #414141, -1px -1px 3px #ffffff;
+            .comments__back-btn {
+              @include flexCenter(68%, 80%, 10em, center, center, row);
+              box-shadow: 2px 2px 3px #414141, -1px -1px 3px #ffffff;
 
-            &:active {
-              box-shadow: inset 2px 2px 3px #434343, inset -2px -3px 2px #dfdfdf;
-            }
-            &:hover {
-              background: #e6a8c3;
-              img {
-                filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg) brightness(102%) contrast(102%);
+              &:active {
+                box-shadow: inset 2px 2px 3px #434343, inset -2px -3px 2px #dfdfdf;
+              }
+              &:hover {
+                background: #e6a8c3;
+                img {
+                  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg) brightness(102%) contrast(102%);
+                }
               }
             }
           }
-        }
 
-        .comments__title--container {
-          @include flexCenter(100%, 64%, 0, flex-start, center, row);
+          .comments__title--container {
+            @include flexCenter(100%, 90%, 0, center, center, row);
 
-          .comments__title--shadow-outset {
-            @include flexCenter(68%, 99%, 1em 10em 10em 1em, flex-start, center, row);
-            box-shadow: 2px 2px 3px #414141, -1px -1px 3px #ffffff;
+            .comments__title--shadow-outset {
+              @include flexCenter(68%, 97%, 10em, flex-start, center, row);
+              box-shadow: 2px 2px 3px #414141, -1px -1px 3px #ffffff;
+              position: relative;
 
-            .comments__text {
-              // width: 32%;
-              color: white;
-              text-align: start;
-              font-size: 13px;
-              font-weight: 500;
-              margin: 0% 5%;
-            }
+              .comments__text {
+                // width: 32%;
+                color: white;
+                text-align: start;
+                font-size: 13px;
+                font-weight: 500;
+                margin: 0% 3%;
+              }
 
-            p {
-              font-size: 12px;
-              color: #efbfbf;
+              p {
+                font-size: 12px;
+                color: #efbfbf;
+              }
+              .comments__header-toggle-fullscreen {
+                @include flexCenter(14px, 70px, 0, center, center, row);
+                position: absolute;
+                top: -2px;
+                left: 40%;
+
+                .comments__header-toggle-fullscreen--bs-inset {
+                  @include flexCenter(80%, 100%, 0em 0em 1em 1em, center, center, row);
+                  box-shadow: inset 1px 1px 2px #353434, inset -1px -1px 2px #ffffff;
+                  background: #a4a4a4;
+
+                  .comments__header-toggle-fullscreen-btn {
+                    @include flexCenter(30%, 80%, 10em, center, center, row);
+                    box-shadow: 1px 1px 2px #414141, -1px -1px 2px #ffffff;
+                    background: #b9b9b9;
+                  }
+                }
+              }
             }
           }
         }
       }
+    }
+
+    .comments__header-actions {
+      @include flexCenter(65%, 100%, 0, center, center, column);
     }
   }
 }
