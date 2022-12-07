@@ -9,7 +9,6 @@ import { commentInputMenuReducer, INITIAL_STATE } from "../hooks/commentInputMen
 import Item from "./CommentItem/Item"
 import ReplyList from "./CommentList/ReplyList"
 import TextBox from "./TextBox"
-
 type InputType = "Comment" | "Edit" | "Reply" | "Hide"
 type CommentMenuProps = {
   song: ISong
@@ -65,6 +64,19 @@ const Photo = () => {
   )
 }
 
+const Input = ({ onFocus }: { onFocus: () => void }) => {
+  return (
+    <div className="comments__header-actions-input--container">
+      <input
+        type="text"
+        className="comments__header-actions-input"
+        placeholder="Add a comment"
+        onFocus={onFocus}
+      ></input>
+    </div>
+  )
+}
+
 export default function CommentMenu({ song, page, isOpen, onClose }: CommentMenuProps) {
   const root = document.getElementById("root")!
   const comments = song.comments
@@ -103,7 +115,14 @@ export default function CommentMenu({ song, page, isOpen, onClose }: CommentMenu
           </div>
         </div>
         <div className="comments__header-actions">
-          <Photo />
+          <div className="comments__header-actions-sort"></div>
+          <div className="comments__header-actions-text">
+            <div className="comments__header-actions-text--bs-outset">
+              <Photo />
+
+              <Input onFocus={() => dispatch({ type: "COMMENT", payload: { selectedComment: null } })} />
+            </div>
+          </div>
         </div>
       </div>
 

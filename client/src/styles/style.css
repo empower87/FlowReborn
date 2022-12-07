@@ -7669,7 +7669,7 @@ button {
   width: 100%;
   border-radius: 0;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   flex-direction: column;
 }
@@ -7882,6 +7882,114 @@ button {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-sort {
+  height: 35%;
+  width: 100%;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-text {
+  height: 65%;
+  width: 100%;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-text .comments__header-actions-text--bs-outset {
+  height: 90%;
+  width: 97%;
+  border-radius: 2em 3em 0.2em 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  box-shadow: 2px 2px 3px #636363, -1px -1px 2px #ffffff;
+}
+.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-text .comments__header-actions-text--bs-outset .comment-input__input-photo {
+  height: auto;
+  width: 11%;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-text .comments__header-actions-text--bs-outset .comment-input__input-photo .comment-input__input-photo--bs-inset {
+  height: 32px;
+  width: 32px;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  box-shadow: 2px 2px 3px #636363, -1px -1px 2px #ffffff;
+}
+.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-text .comments__header-actions-text--bs-outset .comment-input__input-photo .comment-input__input-photo--bs-inset .comment-input__input-photo--bs-outset {
+  height: 90%;
+  width: 90%;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  box-shadow: inset 1px 1px 3px #4a4a4a, inset -2px -2px 2px #ffffff;
+}
+.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-text .comments__header-actions-text--bs-outset .comment-input__input-photo .comment-input__input-photo--bs-inset .comment-input__input-photo--bs-outset .comment-input__input-photo--wrapper {
+  height: 75%;
+  width: 75%;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  overflow: hidden;
+}
+.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-text .comments__header-actions-text--bs-outset .comments__header-actions-input--container {
+  height: 100%;
+  width: 89%;
+  border-radius: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+}
+.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-text .comments__header-actions-text--bs-outset .comments__header-actions-input--container .comments__header-actions-input {
+  height: 75%;
+  width: 96%;
+  border-radius: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: inset 2px 2px 3px #4d4d4d, inset -1px -1px 2px #ffffff;
+  background: linear-gradient(307deg, #666666, #878787);
+  text-indent: 4%;
+}
+.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-text .comments__header-actions-text--bs-outset .comments__header-actions-input--container .comments__header-actions-input::-moz-placeholder {
+  color: #cbcbcb;
+  font-size: 0.85rem;
+  text-indent: 4%;
+}
+.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-text .comments__header-actions-text--bs-outset .comments__header-actions-input--container .comments__header-actions-input:-ms-input-placeholder {
+  color: #cbcbcb;
+  font-size: 0.85rem;
+  text-indent: 4%;
+}
+.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-text .comments__header-actions-text--bs-outset .comments__header-actions-input--container .comments__header-actions-input::placeholder {
+  color: #cbcbcb;
+  font-size: 0.85rem;
+  text-indent: 4%;
+}
+.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-text .comments__header-actions-text--bs-outset .comments__header-actions-input--container .comments__header-actions-input:focus {
+  outline: none;
+  color: #ec6aa0;
+  border: 2px solid #ff9ec7;
 }
 
 .show-menu {
