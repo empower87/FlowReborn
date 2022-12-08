@@ -116,7 +116,7 @@ export default function SongPost({
       className="video-pane"
       style={{ backgroundImage: `url(${song.video && isIntersecting ? song.video : ""})` }}
     >
-      <CommentMenu song={song} page={"Home"} isOpen={showComments} onClose={setShowComments} />
+      <CommentMenu song={song} isOpen={showComments} onClose={setShowComments} />
 
       {song.thumbnail && isIntersecting ? (
         <video

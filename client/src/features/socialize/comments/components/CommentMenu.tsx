@@ -12,7 +12,6 @@ import TextBox from "./TextBox"
 type InputType = "Comment" | "Edit" | "Reply" | "Hide"
 type CommentMenuProps = {
   song: ISong
-  page: string
   isOpen: boolean
   onClose: Dispatch<SetStateAction<boolean>>
 }
@@ -28,6 +27,25 @@ const Button = ({ onClick, type }: CommentMenuButtonProps) => {
     <div className="comments__header-btn--container">
       <button className={`comments__header-btn ${type}`} type="button" onClick={onClick}>
         <Icon type={ButtonTypes[type]} options={{ color: color, size: size }} />
+      </button>
+    </div>
+  )
+}
+
+const SortButton = ({
+  type,
+  selected,
+  onClick,
+}: {
+  type: "Top" | "Newest"
+  selected: "Top" | "Newest"
+  onClick: () => void
+}) => {
+  const isSelected = type === selected ? "selected" : ""
+  return (
+    <div className="comments__header-actions-sort-btn--container">
+      <button className={`comments__header-actions-sort-btn ${isSelected}`} type="button" onClick={onClick}>
+        {type}
       </button>
     </div>
   )
@@ -71,16 +89,17 @@ const Input = ({ onFocus }: { onFocus: () => void }) => {
         type="text"
         className="comments__header-actions-input"
         placeholder="Add a comment"
-        onFocus={onFocus}
+        onClick={onFocus}
       ></input>
     </div>
   )
 }
 
-export default function CommentMenu({ song, page, isOpen, onClose }: CommentMenuProps) {
+export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps) {
   const root = document.getElementById("root")!
   const comments = song.comments
   const [selectedComment, setSelectedComment] = useState<IComment | undefined>()
+  const [toggleSort, setToggleSort] = useState<"Top" | "Newest">("Top")
   const [state, dispatch] = useReducer(commentInputMenuReducer, INITIAL_STATE)
 
   const handleCloseMenu = () => {
@@ -94,11 +113,7 @@ export default function CommentMenu({ song, page, isOpen, onClose }: CommentMenu
 
   if (!isOpen) return null
   return ReactDOM.createPortal(
-    <div
-      // className={`CommentMenu ${isOpen ? "show-menu" : "hide-menu"}`}
-      className="CommentMenu"
-      // style={page === "home" && isOpen ? { marginBottom: "-8%" } : { marginBottom: "0%" }}
-    >
+    <div className="CommentMenu">
       <div className="comments__header--container">
         <div className="comments__header">
           <div className="comments__header--shadow-outset">
@@ -115,7 +130,10 @@ export default function CommentMenu({ song, page, isOpen, onClose }: CommentMenu
           </div>
         </div>
         <div className="comments__header-actions">
-          <div className="comments__header-actions-sort"></div>
+          <div className="comments__header-actions-sort">
+            <SortButton type="Top" selected={toggleSort} onClick={() => setToggleSort("Top")} />
+            <SortButton type="Newest" selected={toggleSort} onClick={() => setToggleSort("Newest")} />
+          </div>
           <div className="comments__header-actions-text">
             <div className="comments__header-actions-text--bs-outset">
               <Photo />

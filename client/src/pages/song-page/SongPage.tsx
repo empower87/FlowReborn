@@ -17,7 +17,7 @@ export default function SongPage() {
   return (
     <div className="SongScreen">
       <div className="song-screen--container">
-        <CommentMenu song={songInView} page="songScreen" isOpen={showCommentMenu} onClose={setShowCommentMenu} />
+        <CommentMenu song={songInView} isOpen={showCommentMenu} onClose={setShowCommentMenu} />
 
         <Header song={songInView} songs={songs} />
 
