@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { useParams } from "react-router"
 import { LoadingSongPage } from "src/components/loading/Skeletons/LoadingHome"
-import CommentMenu from "src/features/socialize/comments/components/CommentMenu"
 import AudioPlayer from "./components/AudioPlayer"
 import Header from "./components/Header"
 import SocialButtons, { SocialButton } from "./components/SocialButtons"
@@ -17,7 +16,7 @@ export default function SongPage() {
   return (
     <div className="SongScreen">
       <div className="song-screen--container">
-        <CommentMenu song={songInView} isOpen={showCommentMenu} onClose={setShowCommentMenu} />
+        {/* <CommentMenu song={songInView} isOpen={showCommentMenu} onClose={setShowCommentMenu} /> */}
 
         <Header song={songInView} songs={songs} />
 

@@ -7659,7 +7659,7 @@ button {
   align-items: center;
   flex-direction: column;
   background: linear-gradient(0deg, #a09e9e 0%, #b9b9b9 100%);
-  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.6392156863);
+  box-shadow: 0px -10px 15px rgba(0, 0, 0, 0.64);
   position: absolute;
   bottom: 0;
   z-index: 2;
@@ -7695,7 +7695,7 @@ button {
   overflow: hidden;
 }
 .CommentMenu .comments__header--container {
-  height: 23%;
+  height: 8%;
   width: 100%;
   border-radius: 0;
   display: flex;
@@ -7704,7 +7704,7 @@ button {
   flex-direction: column;
 }
 .CommentMenu .comments__header--container .comments__header {
-  height: 32%;
+  height: 95%;
   width: 100%;
   border-radius: 0;
   display: flex;
@@ -7874,8 +7874,8 @@ button {
   box-shadow: 1px 1px 2px #414141, -1px -1px 2px #ffffff;
   background: #b9b9b9;
 }
-.CommentMenu .comments__header--container .comments__header-actions {
-  height: 68%;
+.CommentMenu .comments__header-actions {
+  height: 15%;
   width: 100%;
   border-radius: 0;
   display: flex;
@@ -7883,7 +7883,17 @@ button {
   align-items: center;
   flex-direction: column;
 }
-.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-sort {
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset {
+  height: 96%;
+  width: 97%;
+  border-radius: 0.2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 2px 2px 3px #595959, -1px -1px 2px #ffffff;
+}
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-sort {
   height: 45%;
   width: 97%;
   border-radius: 0;
@@ -7893,7 +7903,7 @@ button {
   flex-direction: row;
   padding-left: 3%;
 }
-.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-sort .comments__header-actions-sort-btn--container {
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-sort .comments__header-actions-sort-btn--container {
   height: 100%;
   width: auto;
   border-radius: 0;
@@ -7903,7 +7913,7 @@ button {
   flex-direction: row;
   margin-right: 2%;
 }
-.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-sort .comments__header-actions-sort-btn--container .comments__header-actions-sort-btn {
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-sort .comments__header-actions-sort-btn--container .comments__header-actions-sort-btn {
   height: auto;
   width: auto;
   border-radius: 2em;
@@ -7916,11 +7926,11 @@ button {
   font-size: 0.8rem;
   padding: 0.5em;
 }
-.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-sort .comments__header-actions-sort-btn--container .comments__header-actions-sort-btn.selected {
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-sort .comments__header-actions-sort-btn--container .comments__header-actions-sort-btn.selected {
   background: #ec6aa0;
-  box-shadow: inset 1px 1px 3px #595959, inset -1px -1px 2px #ffffff;
+  box-shadow: inset 1px 1px 3px #633a4b, inset -1px -1px 2px #ffe2ee;
 }
-.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-text {
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-text {
   height: 55%;
   width: 100%;
   border-radius: 0;
@@ -7929,7 +7939,7 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-text .comments__header-actions-text--bs-outset {
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-text .comments__header-actions-text--bs-outset {
   height: 90%;
   width: 97%;
   border-radius: 2em 3em 0.2em 2em;
@@ -7939,7 +7949,7 @@ button {
   flex-direction: row;
   box-shadow: 2px 2px 3px #636363, -1px -1px 2px #ffffff;
 }
-.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-text .comments__header-actions-text--bs-outset .comment-input__input-photo {
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-text .comments__header-actions-text--bs-outset .comment-input__input-photo {
   height: auto;
   width: 11%;
   border-radius: 0;
@@ -7948,7 +7958,7 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-text .comments__header-actions-text--bs-outset .comment-input__input-photo .comment-input__input-photo--bs-inset {
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-text .comments__header-actions-text--bs-outset .comment-input__input-photo .comment-input__input-photo--bs-inset {
   height: 32px;
   width: 32px;
   border-radius: 100%;
@@ -7958,7 +7968,7 @@ button {
   flex-direction: row;
   box-shadow: 2px 2px 3px #636363, -1px -1px 2px #ffffff;
 }
-.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-text .comments__header-actions-text--bs-outset .comment-input__input-photo .comment-input__input-photo--bs-inset .comment-input__input-photo--bs-outset {
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-text .comments__header-actions-text--bs-outset .comment-input__input-photo .comment-input__input-photo--bs-inset .comment-input__input-photo--bs-outset {
   height: 90%;
   width: 90%;
   border-radius: 100%;
@@ -7968,7 +7978,7 @@ button {
   flex-direction: row;
   box-shadow: inset 1px 1px 3px #4a4a4a, inset -2px -2px 2px #ffffff;
 }
-.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-text .comments__header-actions-text--bs-outset .comment-input__input-photo .comment-input__input-photo--bs-inset .comment-input__input-photo--bs-outset .comment-input__input-photo--wrapper {
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-text .comments__header-actions-text--bs-outset .comment-input__input-photo .comment-input__input-photo--bs-inset .comment-input__input-photo--bs-outset .comment-input__input-photo--wrapper {
   height: 75%;
   width: 75%;
   border-radius: 100%;
@@ -7978,7 +7988,7 @@ button {
   flex-direction: row;
   overflow: hidden;
 }
-.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-text .comments__header-actions-text--bs-outset .comments__header-actions-input--container {
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-text .comments__header-actions-text--bs-outset .comments__header-actions-input--container {
   height: 100%;
   width: 89%;
   border-radius: 0;
@@ -7987,7 +7997,7 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-text .comments__header-actions-text--bs-outset .comments__header-actions-input--container .comments__header-actions-input {
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-text .comments__header-actions-text--bs-outset .comments__header-actions-input--container .comments__header-actions-input {
   height: 75%;
   width: 96%;
   border-radius: 2em;
@@ -7999,22 +8009,22 @@ button {
   background: linear-gradient(307deg, #666666, #878787);
   text-indent: 4%;
 }
-.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-text .comments__header-actions-text--bs-outset .comments__header-actions-input--container .comments__header-actions-input::-moz-placeholder {
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-text .comments__header-actions-text--bs-outset .comments__header-actions-input--container .comments__header-actions-input::-moz-placeholder {
   color: #cbcbcb;
   font-size: 0.85rem;
   text-indent: 4%;
 }
-.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-text .comments__header-actions-text--bs-outset .comments__header-actions-input--container .comments__header-actions-input:-ms-input-placeholder {
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-text .comments__header-actions-text--bs-outset .comments__header-actions-input--container .comments__header-actions-input:-ms-input-placeholder {
   color: #cbcbcb;
   font-size: 0.85rem;
   text-indent: 4%;
 }
-.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-text .comments__header-actions-text--bs-outset .comments__header-actions-input--container .comments__header-actions-input::placeholder {
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-text .comments__header-actions-text--bs-outset .comments__header-actions-input--container .comments__header-actions-input::placeholder {
   color: #cbcbcb;
   font-size: 0.85rem;
   text-indent: 4%;
 }
-.CommentMenu .comments__header--container .comments__header-actions .comments__header-actions-text .comments__header-actions-text--bs-outset .comments__header-actions-input--container .comments__header-actions-input:focus {
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-text .comments__header-actions-text--bs-outset .comments__header-actions-input--container .comments__header-actions-input:focus {
   outline: none;
   color: #ec6aa0;
   border: 2px solid #ff9ec7;
@@ -8216,7 +8226,8 @@ button {
   box-shadow: inset 3px 3px 3px #303030, inset -2px -2px 2px 0px #303030;
   padding-bottom: 2%;
 }
-.comments__list .comments__item {
+
+.comments__item {
   width: 96%;
   border-radius: 0.4em;
   display: flex;
@@ -8226,7 +8237,7 @@ button {
   margin-top: 2%;
   box-shadow: inset 2px 2px 4px #313131, inset -2px -2px 3px #777777;
 }
-.comments__list .comments__item .comment-list-inner {
+.comments__item .comment-list-inner {
   height: auto;
   width: 100%;
   border-radius: 0;
@@ -8235,7 +8246,7 @@ button {
   align-items: flex-start;
   flex-direction: row;
 }
-.comments__list .comments__item .comment-list-inner .comment-list-photo {
+.comments__item .comment-list-inner .comment-list-photo {
   height: 100%;
   width: 18%;
   border-radius: 0;
@@ -8244,7 +8255,7 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.comments__list .comments__item .comment-list-inner .comment-list-photo .comment-photo-inner {
+.comments__item .comment-list-inner .comment-list-photo .comment-photo-inner {
   height: 86%;
   width: 86%;
   border-radius: 0.3em 2em 2em 2em;
@@ -8254,7 +8265,7 @@ button {
   flex-direction: column;
   box-shadow: inset 2px 2px 3px #2f2f2f, inset -1px -1px 3px #c4c4c4;
 }
-.comments__list .comments__item .comment-list-inner .comment-list-photo .comment-photo-inner .comment-photo-outer {
+.comments__item .comment-list-inner .comment-list-photo .comment-photo-inner .comment-photo-outer {
   height: 77%;
   width: 77%;
   border-radius: 100%;
@@ -8264,7 +8275,7 @@ button {
   flex-direction: row;
   box-shadow: 1px 1px 3px #232323, -1px -1px 2px #c4c4c4;
 }
-.comments__list .comments__item .comment-list-inner .comment-list-photo .comment-photo-inner .comment-photo-outer .comment-photo__photo--wrapper {
+.comments__item .comment-list-inner .comment-list-photo .comment-photo-inner .comment-photo-outer .comment-photo__photo--wrapper {
   height: 95%;
   width: 95%;
   border-radius: 100vh;
@@ -8276,10 +8287,10 @@ button {
   -o-object-fit: contain;
      object-fit: contain;
 }
-.comments__list .comments__item .comment-list-inner .comment-list-photo .comment-photo-inner .comment-photo-outer .comment-photo__photo--wrapper img {
+.comments__item .comment-list-inner .comment-list-photo .comment-photo-inner .comment-photo-outer .comment-photo__photo--wrapper img {
   border-radius: 100%;
 }
-.comments__list .comments__item .comment-list-inner .comments__text--container {
+.comments__item .comment-list-inner .comments__text--container {
   height: auto;
   width: 82%;
   border-radius: 0;
@@ -8288,7 +8299,7 @@ button {
   align-items: flex-start;
   flex-direction: column;
 }
-.comments__list .comments__item .comment-list-inner .comments__text--container .comments__text--shadow-outset {
+.comments__item .comment-list-inner .comments__text--container .comments__text--shadow-outset {
   height: auto;
   width: 97%;
   border-radius: 2em 0.3em 2em 0.5em;
@@ -8299,7 +8310,7 @@ button {
   box-shadow: 2px 2px 3px #2f2f2f, -1px -1px 3px #9b9b9b;
   margin-top: 3%;
 }
-.comments__list .comments__item .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__user-details {
+.comments__item .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__user-details {
   height: 18px;
   width: 100%;
   border-radius: 0;
@@ -8309,7 +8320,7 @@ button {
   flex-direction: row;
   margin: 1% 0% 1% 0%;
 }
-.comments__list .comments__item .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__user-details .comments__user-details--bs-inset {
+.comments__item .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__user-details .comments__user-details--bs-inset {
   height: 100%;
   width: 100%;
   border-radius: 1em 0.2em 1em 0.2em;
@@ -8319,7 +8330,7 @@ button {
   flex-direction: row;
   margin-left: 1.2em;
 }
-.comments__list .comments__item .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__user-details .comments__user-details--bs-inset .comments__user-title--container {
+.comments__item .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__user-details .comments__user-details--bs-inset .comments__user-title--container {
   height: 85%;
   width: auto;
   border-radius: 3em 0.2em 5em 3em;
@@ -8329,7 +8340,7 @@ button {
   flex-direction: row;
   padding-left: 3%;
 }
-.comments__list .comments__item .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__user-details .comments__user-details--bs-inset .comments__user-title--container .comments__user-title {
+.comments__item .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__user-details .comments__user-details--bs-inset .comments__user-title--container .comments__user-title {
   height: 85%;
   width: auto;
   border-radius: 1em 0.2em 1em 0.2em;
@@ -8340,7 +8351,7 @@ button {
   color: #ec6aa0;
   margin: 0% 2% 0% 2%;
 }
-.comments__list .comments__item .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__user-details .comments__user-details--bs-inset .comments__user-title--container .comments__user-title-icon {
+.comments__item .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__user-details .comments__user-details--bs-inset .comments__user-title--container .comments__user-title-icon {
   height: 90%;
   width: 2em;
   border-radius: 1em 0.2em 1em 0.2em;
@@ -8349,15 +8360,15 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.comments__list .comments__item .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__user-details .comments__user-details--bs-inset .comments__user-title--container.Author {
+.comments__item .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__user-details .comments__user-details--bs-inset .comments__user-title--container.Author {
   box-shadow: inset 2px 2px 3px #823756, inset -1px -1px 2px #ffd6e7;
   background: #ec6aa0;
   padding-left: 5%;
 }
-.comments__list .comments__item .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__user-details .comments__user-details--bs-inset .comments__user-title--container.Author .comments__user-title {
+.comments__item .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__user-details .comments__user-details--bs-inset .comments__user-title--container.Author .comments__user-title {
   color: #ffffff;
 }
-.comments__list .comments__item .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__user-details .comments__user-details--bs-inset .comments__date {
+.comments__item .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__user-details .comments__user-details--bs-inset .comments__date {
   width: 90%;
   margin-left: 2%;
   font-size: 0.7rem;
@@ -8365,7 +8376,7 @@ button {
   text-align: start;
   line-height: 1;
 }
-.comments__list .comments__item .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__comment {
+.comments__item .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__comment {
   height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
@@ -8377,7 +8388,7 @@ button {
   line-height: 1;
   margin: 0.3em 0em 0.4em 0em;
 }
-.comments__list .comments__item .comments__actions--container {
+.comments__item .comments__actions--container {
   height: 1.7em;
   width: 100%;
   border-radius: 0;
@@ -8387,7 +8398,7 @@ button {
   flex-direction: row;
   margin: 2% 0% 2% 0%;
 }
-.comments__list .comments__item .comments__actions--container .space-filler {
+.comments__item .comments__actions--container .space-filler {
   height: 100%;
   width: 18%;
   border-radius: 0;
@@ -8396,7 +8407,7 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.comments__list .comments__item .comments__actions--container .comments__actions {
+.comments__item .comments__actions--container .comments__actions {
   height: 100%;
   width: 82%;
   border-radius: 0;
@@ -8405,7 +8416,7 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset {
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset {
   height: 100%;
   width: 97%;
   border-radius: 30px 5px 5px 30px;
@@ -8415,7 +8426,7 @@ button {
   flex-direction: row;
   box-shadow: inset 2px 2px 4px #2b2b2b, inset -2px -2px 2px #858484;
 }
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container {
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container {
   height: 100%;
   width: 25%;
   border-radius: 0px;
@@ -8424,7 +8435,7 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn {
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn {
   height: 70%;
   width: 91%;
   border-radius: 2px;
@@ -8434,7 +8445,7 @@ button {
   flex-direction: row;
   box-shadow: 2px 2px 3px #303030, -1px -1px 3px #909090;
 }
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn .comments__btn-icon {
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn .comments__btn-icon {
   height: 100%;
   width: 45%;
   border-radius: 0;
@@ -8443,29 +8454,29 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn .comments__btn-icon img.Reply {
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn .comments__btn-icon img.Reply {
   height: 0.9rem;
 }
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn .comments__btn-icon img.Like {
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn .comments__btn-icon img.Like {
   height: 1.2rem;
 }
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn .comments__btn-icon img.Edit {
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn .comments__btn-icon img.Edit {
   height: 1.2rem;
   width: 1.2rem;
 }
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn .comments__btn-icon img.Delete {
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn .comments__btn-icon img.Delete {
   height: 1.3rem;
   width: 1.3rem;
 }
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn:active {
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn:active {
   background: #606060;
   box-shadow: inset 2px 2px 3px #353535, inset -2px -2px 2px #858585;
 }
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn:hover {
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn:hover {
   background: #6f6f6f;
   box-shadow: 2px 2px 3px #383838, -1px -1px 3px #b3b3b3;
 }
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn .comments__btn-text--container {
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn .comments__btn-text--container {
   height: 100%;
   width: 55%;
   border-radius: 0;
@@ -8474,11 +8485,11 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn .comments__btn-text--container .comments__btn-text {
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn .comments__btn-text--container .comments__btn-text {
   color: pink;
   font-size: 0.55rem;
 }
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn .comments__btn-text--container .comments__btn-reply-icon {
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn .comments__btn-text--container .comments__btn-reply-icon {
   height: 100%;
   width: 45%;
   border-radius: 0;
@@ -8488,33 +8499,33 @@ button {
   flex-direction: row;
   margin-left: 0.3em;
 }
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn.Like {
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn.Like {
   margin-left: 7%;
   width: 85%;
 }
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn.isLiked {
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn.isLiked {
   background: #ec6aa0;
   box-shadow: 2px 2px 3px #303030, -1px -1px 3px #c6c6c6;
 }
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn.isLiked .comments__btn-icon img {
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn.isLiked .comments__btn-icon img {
   filter: invert(100%) sepia(3%) saturate(0%) hue-rotate(293deg) brightness(107%) contrast(103%);
 }
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comment-like-btn-pressed {
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comment-like-btn-pressed {
   box-shadow: 2px 2px 3px #3e2c33, -2px -2px 2px #ffcae0;
   background: #ec6aa0;
 }
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comment-like-btn-pressed .comments__btn-icon img {
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comment-like-btn-pressed .comments__btn-icon img {
   filter: invert(100%) sepia(3%) saturate(0%) hue-rotate(293deg) brightness(107%) contrast(103%);
 }
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comment-like-btn-pressed:active {
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comment-like-btn-pressed:active {
   background: #606060;
   box-shadow: inset 2px 2px 3px #353535, inset -2px -2px 2px #858585;
   transition: all 0.3s ease-in;
 }
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .clc-2 {
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .clc-2 {
   justify-content: flex-start;
 }
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comment-popout-container {
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comment-popout-container {
   height: auto;
   width: 30%;
   border-radius: 8px;
@@ -8525,10 +8536,10 @@ button {
   box-shadow: 0px 0px 0px #686a6b, 0px 0px 0px #686a6b;
   position: relative;
 }
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comment-popout-container .clc-3 .clb-3,
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comment-popout-container .clc-3 .clb-4,
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comment-popout-container .clc-4 .clb-3,
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comment-popout-container .clc-4 .clb-4 {
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comment-popout-container .clc-3 .clb-3,
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comment-popout-container .clc-3 .clb-4,
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comment-popout-container .clc-4 .clb-3,
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comment-popout-container .clc-4 .clb-4 {
   height: 26px;
   width: 26px;
   border-radius: 50px;
@@ -8537,7 +8548,7 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comment-popout-container .dot-menu {
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comment-popout-container .dot-menu {
   height: 100%;
   width: 30px;
   border-radius: 0px;
@@ -8548,47 +8559,48 @@ button {
   position: absolute;
   right: 11px;
 }
-.comments__list .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comment-popout-container .dot-menu .dots {
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comment-popout-container .dot-menu .dots {
   height: 9px;
   width: 9px;
   border-radius: 50px;
   box-shadow: inset 2px 2px 1px #3b3b3b, inset -2px -2px 1px #949292;
 }
-.comments__list .highlight {
+
+.highlight {
   background: #e24f8c;
   box-shadow: inset 2px 2px 4px #7a3250, inset -2px -2px 3px #ffbdd9;
 }
-.comments__list .highlight .comment-list-inner .comment-list-photo .comment-photo-inner {
+.highlight .comment-list-inner .comment-list-photo .comment-photo-inner {
   box-shadow: inset 2px 2px 4px #7a3250, inset -2px -2px 3px #ffbdd9;
 }
-.comments__list .highlight .comment-list-inner .comment-list-photo .comment-photo-inner .comment-photo-outer {
+.highlight .comment-list-inner .comment-list-photo .comment-photo-inner .comment-photo-outer {
   box-shadow: 2px 2px 4px #7a3250, -2px -2px 3px #ffbdd9;
 }
-.comments__list .highlight .comment-list-inner .comments__text--container .comments__text--shadow-outset {
+.highlight .comment-list-inner .comments__text--container .comments__text--shadow-outset {
   box-shadow: 2px 2px 4px #7a3250, -2px -2px 3px #fba3c8;
 }
-.comments__list .highlight .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__user-details .comments__username {
+.highlight .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__user-details .comments__username {
   color: #ffbdd9;
 }
-.comments__list .highlight .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__user-details .comments__username span {
+.highlight .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__user-details .comments__username span {
   color: #fe83b6;
 }
-.comments__list .highlight .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__comment {
+.highlight .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__comment {
   color: #fe83b6;
 }
-.comments__list .highlight .comments__actions--container .comments__actions .comments__actions--shadow-inset {
+.highlight .comments__actions--container .comments__actions .comments__actions--shadow-inset {
   box-shadow: inset 2px 2px 4px #7a3250, inset -2px -2px 3px #ffbdd9;
 }
-.comments__list .highlight .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn {
+.highlight .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn {
   box-shadow: 2px 2px 4px #7a3250, -1px -1px 3px #ffbdd9;
 }
-.comments__list .highlight .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn .comments__btn-icon img {
+.highlight .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn .comments__btn-icon img {
   filter: invert(100%) sepia(3%) saturate(0%) hue-rotate(293deg) brightness(107%) contrast(103%);
 }
-.comments__list .highlight .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn .comments__btn-text--container .comments__btn-text {
+.highlight .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn .comments__btn-text--container .comments__btn-text {
   color: #ff9fc7;
 }
-.comments__list .highlight .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn.Edit {
+.highlight .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn.Edit {
   background: #d43a7a;
   box-shadow: inset 2px 2px 4px #7a3250, inset -1px -1px 3px #ffbdd9;
 }

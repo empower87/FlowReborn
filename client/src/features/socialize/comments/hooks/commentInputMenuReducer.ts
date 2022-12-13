@@ -27,6 +27,8 @@ export const INITIAL_STATE: State = {
 }
 
 export type CommentInputReducerType = { state: State; dispatch: Dispatch<Action> }
+export type CommentDispatch = Dispatch<Action>
+export type CommentState = State
 
 export const commentInputMenuReducer: Reducer<State, Action> = (state, action) => {
   switch (action.type) {

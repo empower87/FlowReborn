@@ -5,19 +5,20 @@ import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import { useAuth } from "src/context/AuthContext"
 import { IComment } from "../../../../../../server/src/models/Comment"
 import { ISong } from "../../../../../../server/src/models/Song"
-import { commentInputMenuReducer, INITIAL_STATE } from "../hooks/commentInputMenuReducer"
+import { CommentDispatch, commentInputMenuReducer, CommentState, INITIAL_STATE } from "../hooks/commentInputMenuReducer"
 import Item from "./CommentItem/Item"
-import ReplyList from "./CommentList/ReplyList"
-import TextBox from "./TextBox"
+
 type InputType = "Comment" | "Edit" | "Reply" | "Hide"
 type CommentMenuProps = {
+  menu: "Comments" | "Replies"
   song: ISong
   isOpen: boolean
   onClose: Dispatch<SetStateAction<boolean>>
+  comment?: IComment
 }
 type CommentMenuButtonProps = {
   onClick: MouseEventHandler<HTMLButtonElement>
-  type: "Close" | "Comment"
+  type: "Close" | "Comment" | "Back"
 }
 
 const Button = ({ onClick, type }: CommentMenuButtonProps) => {
@@ -95,7 +96,7 @@ const Input = ({ onFocus }: { onFocus: () => void }) => {
   )
 }
 
-export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps) {
+export default function CommentMenu({ menu, song, isOpen, onClose, comment }: CommentMenuProps) {
   const root = document.getElementById("root")!
   const comments = song.comments
   const [selectedComment, setSelectedComment] = useState<IComment | undefined>()
@@ -113,70 +114,223 @@ export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps)
 
   if (!isOpen) return null
   return ReactDOM.createPortal(
-    <div className="CommentMenu">
-      <div className="comments__header--container">
-        <div className="comments__header">
-          <div className="comments__header--shadow-outset">
-            <div className="comments__header--shadow-inset">
-              {state.showReplies ? (
-                <Header title={"Replies"} count={selectedComment ? selectedComment.replies.length : 0} />
-              ) : (
-                <Header title={"Comments"} count={comments.length} />
-              )}
-
-              <Button onClick={handleCloseMenu} type="Close" />
-              {/* <Button onClick={() => dispatch({ type: "COMMENT", payload: { selectedComment: null } })} type="Comment" /> */}
-            </div>
-          </div>
-        </div>
-        <div className="comments__header-actions">
-          <div className="comments__header-actions-sort">
-            <SortButton type="Top" selected={toggleSort} onClick={() => setToggleSort("Top")} />
-            <SortButton type="Newest" selected={toggleSort} onClick={() => setToggleSort("Newest")} />
-          </div>
-          <div className="comments__header-actions-text">
-            <div className="comments__header-actions-text--bs-outset">
-              <Photo />
-
-              <Input onFocus={() => dispatch({ type: "COMMENT", payload: { selectedComment: null } })} />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="comments__list--container">
-        <div className="comments__list--shadow-outset">
-          <div className="comments__list--shadow-inset">
-            {state.showReplies ? (
-              <ul className="comments__list">
-                <ReplyList song={song} reducer={{ state: state, dispatch: dispatch }} />
-              </ul>
-            ) : (
-              <ul className="comments__list">
-                {comments?.map((item, index) => {
-                  let isLast = false
-                  if (comments.length - 1 === index) isLast = true
-                  return (
-                    <Item
-                      key={item._id}
-                      comment={item}
-                      song={song}
-                      reducer={{ state: state, dispatch: dispatch }}
-                      isLast={isLast}
-                    />
-                  )
-                })}
-              </ul>
-            )}
-          </div>
-        </div>
-      </div>
-
-      <TextBox type={state.showInput} songId={song._id} comment={state.selectedComment} />
-    </div>,
+    <CommentMenuUI
+      menu={menu}
+      list={<CommentList song={song} state={state} dispatch={dispatch} comments={comments} />}
+      comments={comments}
+      handleCloseMenu={handleCloseMenu}
+      actions={
+        menu === "Replies" && comment ? (
+          <Item comment={comment} song={song} reducer={{ state: state, dispatch: dispatch }} />
+        ) : (
+          <CommentActions toggleSort={toggleSort} setToggleSort={setToggleSort} dispatch={dispatch} />
+        )
+      }
+      // toggleSort={toggleSort}
+      // setToggleSort={setToggleSort}
+      // dispatch={dispatch}
+    />,
     root
   )
 }
+
+const CommentActions = ({
+  toggleSort,
+  setToggleSort,
+  dispatch,
+}: {
+  toggleSort: "Top" | "Newest"
+  setToggleSort: Dispatch<SetStateAction<"Top" | "Newest">>
+  dispatch: CommentDispatch
+}) => {
+  return (
+    <>
+      <div className="comments__header-actions-sort">
+        <SortButton type="Top" selected={toggleSort} onClick={() => setToggleSort("Top")} />
+        <SortButton type="Newest" selected={toggleSort} onClick={() => setToggleSort("Newest")} />
+      </div>
+      <div className="comments__header-actions-text">
+        <div className="comments__header-actions-text--bs-outset">
+          <Photo />
+
+          <Input onFocus={() => dispatch({ type: "COMMENT", payload: { selectedComment: null } })} />
+        </div>
+      </div>
+    </>
+  )
+}
+
+export const CommentList = ({
+  song,
+  state,
+  dispatch,
+  comments,
+}: {
+  song: ISong
+  state: CommentState
+  dispatch: CommentDispatch
+  comments: IComment[]
+}) => {
+  return (
+    <div className="comments__list--shadow-outset">
+      <div className="comments__list--shadow-inset">
+        <ul className="comments__list">
+          {comments?.map((item, index) => {
+            let isLast = false
+            if (comments.length - 1 === index) isLast = true
+            return (
+              <Item
+                key={item._id}
+                comment={item}
+                song={song}
+                reducer={{ state: state, dispatch: dispatch }}
+                isLast={isLast}
+              />
+            )
+          })}
+        </ul>
+      </div>
+    </div>
+  )
+}
+
+export const CommentHeader = ({
+  menu,
+  comments,
+  handleCloseMenu,
+}: {
+  menu: "Comments" | "Replies"
+  comments: IComment[]
+  handleCloseMenu: () => void
+}) => {
+  return (
+    <div className="comments__header">
+      <div className="comments__header--shadow-outset">
+        <div className="comments__header--shadow-inset">
+          {menu === "Replies" ? <Button onClick={handleCloseMenu} type="Back" /> : null}
+          <Header title={menu} count={comments.length} />
+          <Button onClick={handleCloseMenu} type="Close" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+type CommentMenuUIProps = {
+  menu: "Comments" | "Replies"
+  list: JSX.Element
+  comments: IComment[]
+  handleCloseMenu: () => void
+  // toggleSort: "Top" | "Newest"
+  // setToggleSort: Dispatch<SetStateAction<"Top" | "Newest">>
+  // dispatch: CommentDispatch
+  actions: JSX.Element
+}
+
+export const CommentMenuUI = ({ menu, list, comments, handleCloseMenu, actions }: CommentMenuUIProps) => {
+  return (
+    <div className="CommentMenu">
+      <div className="comments__header--container">
+        <CommentHeader menu={menu} comments={comments} handleCloseMenu={handleCloseMenu} />
+      </div>
+
+      <div className="comments__header-actions">
+        <div className="comments__header-actions--bs-outset">{actions}</div>
+      </div>
+
+      <div className="comments__list--container">{list}</div>
+
+      {/* <TextBox type={state.showInput} songId={song._id} comment={state.selectedComment} /> */}
+    </div>
+  )
+}
+
+// export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps) {
+//   const root = document.getElementById("root")!
+//   const comments = song.comments
+//   const [selectedComment, setSelectedComment] = useState<IComment | undefined>()
+//   const [toggleSort, setToggleSort] = useState<"Top" | "Newest">("Top")
+//   const [state, dispatch] = useReducer(commentInputMenuReducer, INITIAL_STATE)
+
+//   const handleCloseMenu = () => {
+//     onClose(false)
+//     dispatch({ type: "HIDE", payload: { selectedComment: null } })
+//   }
+
+//   useEffect(() => {
+//     dispatch({ type: "HIDE", payload: { selectedComment: null } })
+//   }, [song])
+
+//   if (!isOpen) return null
+//   return ReactDOM.createPortal(
+//     <div className="CommentMenu">
+//       <div className="comments__header--container">
+//         <div className="comments__header">
+//           <div className="comments__header--shadow-outset">
+//             <div className="comments__header--shadow-inset">
+//               {state.showReplies ? (
+//                 <Header title={"Replies"} count={selectedComment ? selectedComment.replies.length : 0} />
+//               ) : (
+//                 <Header title={"Comments"} count={comments.length} />
+//               )}
+
+//               <Button onClick={handleCloseMenu} type="Close" />
+//               {/* <Button onClick={() => dispatch({ type: "COMMENT", payload: { selectedComment: null } })} type="Comment" /> */}
+//             </div>
+//           </div>
+//         </div>
+
+//         <div className="comments__header-actions">
+//           <div className="comments__header-actions--bs-outset">
+//             <div className="comments__header-actions-sort">
+//               <SortButton type="Top" selected={toggleSort} onClick={() => setToggleSort("Top")} />
+//               <SortButton type="Newest" selected={toggleSort} onClick={() => setToggleSort("Newest")} />
+//             </div>
+//             <div className="comments__header-actions-text">
+//               <div className="comments__header-actions-text--bs-outset">
+//                 <Photo />
+
+//                 <Input onFocus={() => dispatch({ type: "COMMENT", payload: { selectedComment: null } })} />
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+
+//       <div className="comments__list--container">
+//         <div className="comments__list--shadow-outset">
+//           <div className="comments__list--shadow-inset">
+//             {state.showReplies ? (
+//               <ul className="comments__list">
+//                 <ReplyList song={song} reducer={{ state: state, dispatch: dispatch }} />
+//               </ul>
+//             ) : (
+//               <ul className="comments__list">
+//                 {comments?.map((item, index) => {
+//                   let isLast = false
+//                   if (comments.length - 1 === index) isLast = true
+//                   return (
+//                     <Item
+//                       key={item._id}
+//                       comment={item}
+//                       song={song}
+//                       reducer={{ state: state, dispatch: dispatch }}
+//                       isLast={isLast}
+//                     />
+//                   )
+//                 })}
+//               </ul>
+//             )}
+//           </div>
+//         </div>
+//       </div>
+
+//       <TextBox type={state.showInput} songId={song._id} comment={state.selectedComment} />
+//     </div>,
+//     root
+//   )
+// }
+
 // export default function CommentMenu({ song, page, isOpen, onClose }: CommentMenuProps) {
 //   const comments = song.comments
 //   const [selectedComment, setSelectedComment] = useState<IComment | undefined>()
