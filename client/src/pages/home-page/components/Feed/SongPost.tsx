@@ -117,11 +117,11 @@ export default function SongPost({
       style={{ backgroundImage: `url(${song.video && isIntersecting ? song.video : ""})` }}
     >
       <CommentMenu
-        menu="Replies"
+        menu="Comments"
         song={song}
         isOpen={showComments}
         onClose={setShowComments}
-        comment={song.comments[0]}
+        // comment={song.comments[0]}
       />
 
       {song.thumbnail && isIntersecting ? (

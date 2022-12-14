@@ -52,7 +52,7 @@ const SortButton = ({
   )
 }
 
-const Header = ({ title, count }: { title: string; count: number }) => {
+const Title = ({ title, count }: { title: string; count: number }) => {
   return (
     <div className="comments__title--container">
       <div className="comments__title--shadow-outset">
@@ -83,19 +83,6 @@ const Photo = () => {
   )
 }
 
-const Input = ({ onFocus }: { onFocus: () => void }) => {
-  return (
-    <div className="comments__header-actions-input--container">
-      <input
-        type="text"
-        className="comments__header-actions-input"
-        placeholder="Add a comment"
-        onClick={onFocus}
-      ></input>
-    </div>
-  )
-}
-
 export default function CommentMenu({ menu, song, isOpen, onClose, comment }: CommentMenuProps) {
   const root = document.getElementById("root")!
   const comments = song.comments
@@ -121,7 +108,10 @@ export default function CommentMenu({ menu, song, isOpen, onClose, comment }: Co
       handleCloseMenu={handleCloseMenu}
       actions={
         menu === "Replies" && comment ? (
-          <Item comment={comment} song={song} reducer={{ state: state, dispatch: dispatch }} />
+          <>
+            <Item comment={comment} song={song} reducer={{ state: state, dispatch: dispatch }} />
+            <CommentInput dispatch={dispatch} />
+          </>
         ) : (
           <CommentActions toggleSort={toggleSort} setToggleSort={setToggleSort} dispatch={dispatch} />
         )
@@ -131,6 +121,24 @@ export default function CommentMenu({ menu, song, isOpen, onClose, comment }: Co
       // dispatch={dispatch}
     />,
     root
+  )
+}
+
+const CommentInput = ({ dispatch }: { dispatch: CommentDispatch }) => {
+  return (
+    <div className="comments__header-actions-text">
+      <div className="comments__header-actions-text--bs-outset">
+        <Photo />
+        <div className="comments__header-actions-input--container">
+          <input
+            type="text"
+            className="comments__header-actions-input"
+            placeholder="Add a comment"
+            onClick={() => dispatch({ type: "COMMENT", payload: { selectedComment: null } })}
+          ></input>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -149,13 +157,7 @@ const CommentActions = ({
         <SortButton type="Top" selected={toggleSort} onClick={() => setToggleSort("Top")} />
         <SortButton type="Newest" selected={toggleSort} onClick={() => setToggleSort("Newest")} />
       </div>
-      <div className="comments__header-actions-text">
-        <div className="comments__header-actions-text--bs-outset">
-          <Photo />
-
-          <Input onFocus={() => dispatch({ type: "COMMENT", payload: { selectedComment: null } })} />
-        </div>
-      </div>
+      <CommentInput dispatch={dispatch} />
     </>
   )
 }
@@ -208,7 +210,7 @@ export const CommentHeader = ({
       <div className="comments__header--shadow-outset">
         <div className="comments__header--shadow-inset">
           {menu === "Replies" ? <Button onClick={handleCloseMenu} type="Back" /> : null}
-          <Header title={menu} count={comments.length} />
+          <Title title={menu} count={comments.length} />
           <Button onClick={handleCloseMenu} type="Close" />
         </div>
       </div>
@@ -221,9 +223,6 @@ type CommentMenuUIProps = {
   list: JSX.Element
   comments: IComment[]
   handleCloseMenu: () => void
-  // toggleSort: "Top" | "Newest"
-  // setToggleSort: Dispatch<SetStateAction<"Top" | "Newest">>
-  // dispatch: CommentDispatch
   actions: JSX.Element
 }
 
