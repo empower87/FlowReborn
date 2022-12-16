@@ -9,6 +9,8 @@ import { CommentDispatch, commentInputMenuReducer, CommentState, INITIAL_STATE }
 import Item from "./CommentItem/Item"
 
 type InputType = "Comment" | "Edit" | "Reply" | "Hide"
+type SortType = "Top" | "Newest"
+
 type CommentMenuProps = {
   menu: "Comments" | "Replies"
   song: ISong
@@ -33,15 +35,7 @@ const Button = ({ onClick, type }: CommentMenuButtonProps) => {
   )
 }
 
-const SortButton = ({
-  type,
-  selected,
-  onClick,
-}: {
-  type: "Top" | "Newest"
-  selected: "Top" | "Newest"
-  onClick: () => void
-}) => {
+const SortButton = ({ type, selected, onClick }: { type: SortType; selected: SortType; onClick: () => void }) => {
   const isSelected = type === selected ? "selected" : ""
   return (
     <div className="comments__header-actions-sort-btn--container">
@@ -87,7 +81,7 @@ export default function CommentMenu({ menu, song, isOpen, onClose, comment }: Co
   const root = document.getElementById("root")!
   const comments = song.comments
   const [selectedComment, setSelectedComment] = useState<IComment | undefined>()
-  const [toggleSort, setToggleSort] = useState<"Top" | "Newest">("Top")
+  const [toggleSort, setToggleSort] = useState<SortType>("Top")
   const [state, dispatch] = useReducer(commentInputMenuReducer, INITIAL_STATE)
 
   const handleCloseMenu = () => {
@@ -109,7 +103,9 @@ export default function CommentMenu({ menu, song, isOpen, onClose, comment }: Co
       actions={
         menu === "Replies" && comment ? (
           <>
-            <Item comment={comment} song={song} reducer={{ state: state, dispatch: dispatch }} />
+            <div className="comments__item--reply-wrapper">
+              <Item comment={comment} song={song} reducer={{ state: state, dispatch: dispatch }} />
+            </div>
             <CommentInput dispatch={dispatch} />
           </>
         ) : (
@@ -147,8 +143,8 @@ const CommentActions = ({
   setToggleSort,
   dispatch,
 }: {
-  toggleSort: "Top" | "Newest"
-  setToggleSort: Dispatch<SetStateAction<"Top" | "Newest">>
+  toggleSort: SortType
+  setToggleSort: Dispatch<SetStateAction<SortType>>
   dispatch: CommentDispatch
 }) => {
   return (
@@ -206,13 +202,11 @@ export const CommentHeader = ({
   handleCloseMenu: () => void
 }) => {
   return (
-    <div className="comments__header">
-      <div className="comments__header--shadow-outset">
-        <div className="comments__header--shadow-inset">
-          {menu === "Replies" ? <Button onClick={handleCloseMenu} type="Back" /> : null}
-          <Title title={menu} count={comments.length} />
-          <Button onClick={handleCloseMenu} type="Close" />
-        </div>
+    <div className="comments__header--shadow-outset">
+      <div className="comments__header--shadow-inset">
+        {menu === "Replies" ? <Button onClick={handleCloseMenu} type="Back" /> : null}
+        <Title title={menu} count={comments.length} />
+        <Button onClick={handleCloseMenu} type="Close" />
       </div>
     </div>
   )
