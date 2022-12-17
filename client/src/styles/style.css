@@ -7897,9 +7897,26 @@ button {
   align-items: center;
   flex-direction: column;
 }
-.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__item--reply-wrapper li {
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__item--reply-wrapper .comments__item {
   width: 97%;
   margin: 1% 0% 1% 0%;
+  border-radius: 0.2em;
+  box-shadow: inset 1px 1px 3px #343434, inset -1px -1px 3px #ffffff;
+}
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__item--reply-wrapper .comments__item .comment-list-inner .comment-list-photo .comment-photo-inner {
+  box-shadow: inset 1px 1px 3px #343434, inset -1px -1px 3px #ffffff;
+}
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__item--reply-wrapper .comments__item .comment-list-inner .comment-list-photo .comment-photo-inner .comment-photo-outer {
+  box-shadow: 1px 1px 3px #343434, -1px -1px 3px #ffffff;
+}
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__item--reply-wrapper .comments__item .comment-list-inner .comments__text--container .comments__text--shadow-outset {
+  box-shadow: 1px 1px 3px #343434, -1px -1px 3px #ffffff;
+}
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__item--reply-wrapper .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset {
+  box-shadow: inset 1px 1px 3px #343434, inset -1px -1px 3px #ffffff;
+}
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__item--reply-wrapper .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn {
+  box-shadow: 1px 1px 3px #343434, -1px -1px 3px #ffffff;
 }
 .CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-sort {
   height: 45%;

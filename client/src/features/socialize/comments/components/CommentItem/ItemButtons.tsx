@@ -16,32 +16,30 @@ type ItemButtonProps = {
 
 const ItemButton = ({ type, onClick, total, isLiked }: ItemButtonProps) => {
   return (
-    <button
-      className={`comments__btn ${type} ${isLiked ? "isLiked" : ""}`}
-      style={type === "Like" ? { borderRadius: "40px 3px 3px 40px" } : {}}
-      onClick={onClick}
-    >
-      <div className={`comments__btn-icon ${type}`}>
-        <Icon type={ButtonTypes[type]} options={{ color: "Primary", size: type === "Reply" ? 70 : undefined }} />
-      </div>
-      <div className="comments__btn-text--container">
-        <p className={`comments__btn-text ${type}`}>{type === "Like" || type === "Reply" ? total : type}</p>
-        {type === "Reply" && total !== 0 && (
-          <div className="comments__btn-reply-icon">
-            <Icon type={ButtonTypes.Down} options={{ color: "Primary" }} />
-          </div>
-        )}
-      </div>
-    </button>
+    <div className="comments__btn--container">
+      <button
+        className={`comments__btn ${type} ${isLiked ? "isLiked" : ""}`}
+        style={type === "Like" ? { borderRadius: "40px 3px 3px 40px" } : {}}
+        onClick={onClick}
+      >
+        <div className={`comments__btn-icon ${type}`}>
+          <Icon type={ButtonTypes[type]} options={{ color: "Primary", size: type === "Reply" ? 70 : undefined }} />
+        </div>
+        <div className="comments__btn-text--container">
+          <p className={`comments__btn-text ${type}`}>{type === "Like" || type === "Reply" ? total : type}</p>
+          {type === "Reply" && total !== 0 && (
+            <div className="comments__btn-reply-icon">
+              <Icon type={ButtonTypes.Down} options={{ color: "Primary" }} />
+            </div>
+          )}
+        </div>
+      </button>
+    </div>
   )
 }
 
 export const EditButton = ({ onClick }: { onClick: OnClick }) => {
-  return (
-    <div className="comments__btn--container">
-      <ItemButton type={"Edit"} onClick={onClick} />
-    </div>
-  )
+  return <ItemButton type={"Edit"} onClick={onClick} />
 }
 
 export const DeleteButton = ({ songId, commentId }: { songId: string; commentId: string }) => {
@@ -53,7 +51,7 @@ export const DeleteButton = ({ songId, commentId }: { songId: string; commentId:
   }
 
   return (
-    <div className="comments__btn--container">
+    <>
       <ItemButton type={"Delete"} onClick={() => setIsDelete(true)} />
       <ContinueModal
         title="Delete Comment"
@@ -63,23 +61,19 @@ export const DeleteButton = ({ songId, commentId }: { songId: string; commentId:
         onClose={setIsDelete}
         onExit={handleOnDelete}
       />
-    </div>
+    </>
   )
 }
 
 export const LikeButton = ({ comment }: { comment: IComment }) => {
   const { hasUser, total, onClick, loading } = useLike(comment, "Comment")
-  return (
-    <div className="comments__btn--container">
-      <ItemButton type={"Like"} onClick={() => onClick()} total={total} isLiked={hasUser} />
-    </div>
-  )
+  return <ItemButton type={"Like"} onClick={() => onClick()} total={total} isLiked={hasUser} />
 }
 
 export const ReplyButton = ({ onClick, total }: { onClick: OnClick; total: number }) => {
   return (
-    <div className="comments__btn--container">
+    <>
       <ItemButton type={"Reply"} onClick={onClick} total={total} />
-    </div>
+    </>
   )
 }

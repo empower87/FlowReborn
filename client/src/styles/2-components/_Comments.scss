@@ -157,9 +157,39 @@
       .comments__item--reply-wrapper {
         @include flexCenter(auto, 100%, 0, center, center, column);
 
-        li {
+        // comment item styles for reply menu
+        .comments__item {
           width: 97%;
           margin: 1% 0% 1% 0%;
+          border-radius: 0.2em;
+          box-shadow: inset 1px 1px 3px #343434, inset -1px -1px 3px #ffffff;
+          .comment-list-inner {
+            .comment-list-photo {
+              .comment-photo-inner {
+                box-shadow: inset 1px 1px 3px #343434, inset -1px -1px 3px #ffffff;
+                .comment-photo-outer {
+                  box-shadow: 1px 1px 3px #343434, -1px -1px 3px #ffffff;
+                }
+              }
+            }
+            .comments__text--container {
+              .comments__text--shadow-outset {
+                box-shadow: 1px 1px 3px #343434, -1px -1px 3px #ffffff;
+              }
+            }
+          }
+          .comments__actions--container {
+            .comments__actions {
+              .comments__actions--shadow-inset {
+                box-shadow: inset 1px 1px 3px #343434, inset -1px -1px 3px #ffffff;
+                .comments__btn--container {
+                  .comments__btn {
+                    box-shadow: 1px 1px 3px #343434, -1px -1px 3px #ffffff;
+                  }
+                }
+              }
+            }
+          }
         }
       }
 

@@ -115,13 +115,14 @@ export default function SongPost({
       ref={itemRef}
       className="video-pane"
       style={{ backgroundImage: `url(${song.video && isIntersecting ? song.video : ""})` }}
+      onClick={() => setIsVideoFullscreen(false)}
     >
       <CommentMenu
-        menu="Replies"
+        menu="Comments"
         song={song}
         isOpen={showComments}
         onClose={setShowComments}
-        comment={song.comments[0]}
+        // comment={song.comments[0]}
       />
 
       {song.thumbnail && isIntersecting ? (
@@ -143,7 +144,7 @@ export default function SongPost({
         style={{ visibility: isVideoFullscreen ? "hidden" : "visible" }}
         onClick={(e) => {
           if (e.currentTarget === e.target) {
-            setIsVideoFullscreen(true)
+            setIsVideoFullscreen((prev) => !prev)
           }
         }}
       >

@@ -1,4 +1,4 @@
-import { MouseEventHandler, useLayoutEffect, useRef } from "react"
+import { MouseEventHandler, useLayoutEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
@@ -6,6 +6,7 @@ import { useAuth } from "src/context/AuthContext"
 import useFormatDate from "src/hooks/useFormatDate"
 import { IComment, ISong } from "../../../../../../../server/src/models/index"
 import { CommentInputReducerType } from "../../hooks/commentInputMenuReducer"
+import CommentMenu from "../CommentMenu"
 import { DeleteButton, EditButton, LikeButton, ReplyButton } from "./ItemButtons"
 
 type InputType = "Comment" | "Edit" | "Reply" | "Hide"
@@ -74,7 +75,7 @@ const Date = ({ createdOn, editedOn }: { createdOn: Date | undefined; editedOn?:
 export default function Item({ song, comment, reducer, isLast }: ItemProps) {
   const navigate = useNavigate()
   const { user } = useAuth()
-
+  const [showReplies, setShowReplies] = useState<boolean>(false)
   // const [isEditing, setIsEditing] = useState<boolean>(false)
   const isAuthor = song.user._id === comment.user._id ? true : false
   const isUser = user && user._id === comment.user._id ? true : false
@@ -97,6 +98,7 @@ export default function Item({ song, comment, reducer, isLast }: ItemProps) {
       className={`comments__item ${comment._id === reducer.state.isEditingId ? "highlight" : ""}`}
       style={isLast ? { borderRadius: "0.4em 0.4em 0.4em 2.2em" } : {}}
     >
+      <CommentMenu menu="Replies" song={song} isOpen={showReplies} onClose={setShowReplies} comment={comment} />
       <div className="comment-list-inner">
         <Photo
           username={comment.user.username}
@@ -123,7 +125,8 @@ export default function Item({ song, comment, reducer, isLast }: ItemProps) {
           <div className="comments__actions--shadow-inset">
             <LikeButton comment={comment} />
             <ReplyButton
-              onClick={() => reducer.dispatch({ type: "REPLY", payload: { selectedComment: comment } })}
+              onClick={() => setShowReplies(true)}
+              // onClick={() => reducer.dispatch({ type: "REPLY", payload: { selectedComment: comment } })}
               total={comment.replies.length}
             />
             {isUser && (
