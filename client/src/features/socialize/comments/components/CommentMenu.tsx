@@ -3,10 +3,12 @@ import ReactDOM from "react-dom"
 import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import { useAuth } from "src/context/AuthContext"
+import { trpc } from "src/utils/trpc"
 import { IComment } from "../../../../../../server/src/models/Comment"
 import { ISong } from "../../../../../../server/src/models/Song"
 import { CommentDispatch, commentInputMenuReducer, CommentState, INITIAL_STATE } from "../hooks/commentInputMenuReducer"
 import Item from "./CommentItem/Item"
+import TextBox from "./TextBox"
 
 type InputType = "Comment" | "Edit" | "Reply" | "Hide"
 type SortType = "Top" | "Newest"
@@ -80,7 +82,6 @@ const Photo = () => {
 export default function CommentMenu({ menu, song, isOpen, onClose, comment }: CommentMenuProps) {
   const root = document.getElementById("root")!
   const comments = song.comments
-  const [selectedComment, setSelectedComment] = useState<IComment | undefined>()
   const [toggleSort, setToggleSort] = useState<SortType>("Top")
   const [state, dispatch] = useReducer(commentInputMenuReducer, INITIAL_STATE)
 
@@ -95,32 +96,40 @@ export default function CommentMenu({ menu, song, isOpen, onClose, comment }: Co
 
   if (!isOpen) return null
   return ReactDOM.createPortal(
-    <CommentMenuUI
-      menu={menu}
-      list={<CommentList song={song} state={state} dispatch={dispatch} comments={comments} />}
-      comments={comments}
-      handleCloseMenu={handleCloseMenu}
-      actions={
-        menu === "Replies" && comment ? (
-          <>
-            <div className="comments__item--reply-wrapper">
-              <Item comment={comment} song={song} reducer={{ state: state, dispatch: dispatch }} />
-            </div>
-            <CommentInput dispatch={dispatch} />
-          </>
-        ) : (
-          <CommentActions toggleSort={toggleSort} setToggleSort={setToggleSort} dispatch={dispatch} />
-        )
-      }
-      // toggleSort={toggleSort}
-      // setToggleSort={setToggleSort}
-      // dispatch={dispatch}
-    />,
+    <>
+      <TextBox type={state.showInput} songId={song._id} comment={state.selectedComment} />
+      <CommentMenuUI
+        menu={menu}
+        list={
+          <CommentList
+            song={song}
+            state={state}
+            dispatch={dispatch}
+            comments={menu === "Replies" && comment ? comment?.replies : comments}
+            replyId={menu === "Replies" && comment ? comment._id : undefined}
+          />
+        }
+        comments={comments}
+        handleCloseMenu={handleCloseMenu}
+        actions={
+          menu === "Replies" && comment ? (
+            <>
+              <div className="comments__item--reply-wrapper">
+                <Item comment={comment} song={song} reducer={{ state: state, dispatch: dispatch }} />
+              </div>
+              <CommentInput dispatch={() => dispatch({ type: "REPLY", payload: { selectedComment: comment } })} />
+            </>
+          ) : (
+            <CommentActions toggleSort={toggleSort} setToggleSort={setToggleSort} dispatch={dispatch} />
+          )
+        }
+      />
+    </>,
     root
   )
 }
 
-const CommentInput = ({ dispatch }: { dispatch: CommentDispatch }) => {
+const CommentInput = ({ dispatch }: { dispatch: () => void }) => {
   return (
     <div className="comments__header-actions-text">
       <div className="comments__header-actions-text--bs-outset">
@@ -130,10 +139,12 @@ const CommentInput = ({ dispatch }: { dispatch: CommentDispatch }) => {
             type="text"
             className="comments__header-actions-input"
             placeholder="Add a comment"
-            onClick={() => dispatch({ type: "COMMENT", payload: { selectedComment: null } })}
+            onClick={dispatch}
           ></input>
         </div>
       </div>
+
+      {/* <TextBox type={state.showInput} songId={song._id} comment={state.selectedComment} /> */}
     </div>
   )
 }
@@ -153,7 +164,7 @@ const CommentActions = ({
         <SortButton type="Top" selected={toggleSort} onClick={() => setToggleSort("Top")} />
         <SortButton type="Newest" selected={toggleSort} onClick={() => setToggleSort("Newest")} />
       </div>
-      <CommentInput dispatch={dispatch} />
+      <CommentInput dispatch={() => dispatch({ type: "COMMENT", payload: { selectedComment: null } })} />
     </>
   )
 }
@@ -163,19 +174,34 @@ export const CommentList = ({
   state,
   dispatch,
   comments,
+  replyId,
 }: {
   song: ISong
   state: CommentState
   dispatch: CommentDispatch
   comments: IComment[]
+  replyId?: string
 }) => {
+  const [list, setList] = useState<IComment[]>([])
+  const replies = trpc.useQuery(["comments.get-comment", { _id: replyId ? replyId : "" }])
+
+  useEffect(() => {
+    if (replyId && replies.data) {
+      console.log(replies.data, "wtf")
+      setList(replies.data.replies)
+    } else {
+      setList(comments)
+    }
+  }, [replyId, replies, comments])
+
+  console.log(list, comments, "check this shit son")
   return (
     <div className="comments__list--shadow-outset">
       <div className="comments__list--shadow-inset">
         <ul className="comments__list">
-          {comments?.map((item, index) => {
+          {list?.map((item, index) => {
             let isLast = false
-            if (comments.length - 1 === index) isLast = true
+            if (list.length - 1 === index) isLast = true
             return (
               <Item
                 key={item._id}

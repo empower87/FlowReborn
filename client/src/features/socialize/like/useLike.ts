@@ -39,8 +39,8 @@ export default function useLike(parent: ISong | IComment, type: "Song" | "Commen
     const rerender = stopInvalidatedQueriesFromRerendering()
     if (!rerender) return
 
-    const likes = parent.likes
-    setTotalLikes(likes.length)
+    const likes = parent?.likes
+    setTotalLikes(likes?.length)
 
     if (!user) return
     if (likes.includes(user._id)) {

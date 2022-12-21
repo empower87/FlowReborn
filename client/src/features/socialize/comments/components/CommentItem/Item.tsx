@@ -40,7 +40,7 @@ const Photo = ({ username, picture, onClick }: Omit<HeaderProps, "isAuthor">) =>
       <div className="comment-photo-inner">
         <button className="comment-photo-outer" onClick={onClick}>
           <div className="comment-photo__photo--wrapper">
-            <UserPhoto photoUrl={picture} username={username} />
+            <UserPhoto photoUrl={picture} username={username ? username : "A"} />
           </div>
         </button>
       </div>
@@ -77,8 +77,8 @@ export default function Item({ song, comment, reducer, isLast }: ItemProps) {
   const { user } = useAuth()
   const [showReplies, setShowReplies] = useState<boolean>(false)
   // const [isEditing, setIsEditing] = useState<boolean>(false)
-  const isAuthor = song.user._id === comment.user._id ? true : false
-  const isUser = user && user._id === comment.user._id ? true : false
+  const isAuthor = song.user._id === comment?.user?._id ? true : false
+  const isUser = user && user._id === comment?.user?._id ? true : false
 
   // useEffect(() => {
   //   if (comment._id === editId) {
@@ -89,20 +89,20 @@ export default function Item({ song, comment, reducer, isLast }: ItemProps) {
   // }, [editId])
 
   const navigateToProfilePage = () => {
-    navigate(`/profile/${comment.user._id}`)
+    navigate(`/profile/${comment?.user?._id}`)
   }
 
   return (
     <li
       id={comment?._id}
-      className={`comments__item ${comment._id === reducer.state.isEditingId ? "highlight" : ""}`}
+      className={`comments__item ${comment?._id === reducer.state.isEditingId ? "highlight" : ""}`}
       style={isLast ? { borderRadius: "0.4em 0.4em 0.4em 2.2em" } : {}}
     >
       <CommentMenu menu="Replies" song={song} isOpen={showReplies} onClose={setShowReplies} comment={comment} />
       <div className="comment-list-inner">
         <Photo
-          username={comment.user.username}
-          picture={comment.user?.picture}
+          username={comment?.user?.username}
+          picture={comment?.user?.picture}
           onClick={() => navigateToProfilePage()}
         />
 
@@ -110,7 +110,7 @@ export default function Item({ song, comment, reducer, isLast }: ItemProps) {
           <div className="comments__text--shadow-outset">
             <div className="comments__user-details">
               <div className="comments__user-details--bs-inset">
-                <Title username={comment.user.username} isAuthor={isAuthor} onClick={() => navigateToProfilePage()} />
+                <Title username={comment?.user?.username} isAuthor={isAuthor} onClick={() => navigateToProfilePage()} />
                 <Date createdOn={comment?.createdOn} editedOn={comment?.editedOn} />
               </div>
             </div>
@@ -127,12 +127,12 @@ export default function Item({ song, comment, reducer, isLast }: ItemProps) {
             <ReplyButton
               onClick={() => setShowReplies(true)}
               // onClick={() => reducer.dispatch({ type: "REPLY", payload: { selectedComment: comment } })}
-              total={comment.replies.length}
+              total={comment?.replies?.length}
             />
             {isUser && (
               <EditButton onClick={() => reducer.dispatch({ type: "EDIT", payload: { selectedComment: comment } })} />
             )}
-            {isUser && <DeleteButton songId={song._id} commentId={comment._id} />}
+            {isUser && <DeleteButton songId={song._id} commentId={comment?._id} />}
           </div>
         </div>
       </div>

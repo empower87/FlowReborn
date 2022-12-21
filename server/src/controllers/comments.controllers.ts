@@ -7,6 +7,7 @@ export const getComment = async ({ ctx, input }: ContextWithInput<GetCommentById
   const getComment = await Comment.findOne({ _id: input._id })
     .populate<{ user: IUser }>("user")
     .populate<{ replies: IComment["replies"] }>({ path: "replies", populate: "user" })
+  console.log(getComment, "is this hydrated???")
   return getComment
 }
 
