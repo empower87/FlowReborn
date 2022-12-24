@@ -1,36 +1,53 @@
-import { IComment } from "../../../../../../../server/src/models/Comment"
+import { useEffect, useState } from "react"
+import { trpc } from "src/utils/trpc"
+import { IComment, ISong } from "../../../../../../../server/src/models"
+import { CommentDispatch, CommentState } from "../../hooks/commentInputMenuReducer"
+import Item from "../CommentItem/Item"
 
-export default function CommentList({ showReplies, songComments }: { showReplies: boolean; songComments: IComment[] }) {
+export const CommentList = ({
+  song,
+  state,
+  dispatch,
+  comments,
+  replyId,
+}: {
+  song: ISong
+  state: CommentState
+  dispatch: CommentDispatch
+  comments: IComment[]
+  replyId?: string
+}) => {
+  const [list, setList] = useState<IComment[]>([])
+  const replies = trpc.useQuery(["comments.get-comment", { _id: replyId ? replyId : "" }])
+
+  useEffect(() => {
+    if (replyId && replies.data) {
+      console.log(replies.data, "wtf")
+      setList(replies.data.replies)
+    } else {
+      setList(comments)
+    }
+  }, [replyId, replies, comments])
+
+  console.log(list, comments, "check this shit son")
   return (
-    <div className="comments__list--container">
-      <div className="comments__list--shadow-outset">
-        <div className="comments__list--shadow-inset">
-          <ul className="comments__list">
-            {/* {showReplies ? (
-              <ul className="comments__list">
-                <ReplyList comment={selectedComment} test={songComments} />
-              </ul>
-            ) : (
-              <ul className="comments__list">
-                {songComments?.map((item, index) => {
-                  let isLast = false
-                  if (songComments.length - 1 === index) isLast = true
-                  return (
-                    <CommentItem
-                      key={item._id}
-                      comment={item}
-                      setComment={setSelectedComment}
-                      song={currentSong}
-                      openInputModal={toggleInputModalHandler}
-                      editId={editId}
-                      isLast={isLast}
-                    />
-                  )
-                })}
-              </ul>
-            )} */}
-          </ul>
-        </div>
+    <div className="comments__list--shadow-outset">
+      <div className="comments__list--shadow-inset">
+        <ul className="comments__list">
+          {list?.map((item, index) => {
+            let isLast = false
+            if (list.length - 1 === index) isLast = true
+            return (
+              <Item
+                key={item._id}
+                comment={item}
+                song={song}
+                reducer={{ state: state, dispatch: dispatch }}
+                isLast={isLast}
+              />
+            )
+          })}
+        </ul>
       </div>
     </div>
   )
