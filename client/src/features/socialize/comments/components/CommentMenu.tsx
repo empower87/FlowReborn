@@ -3,7 +3,7 @@ import ReactDOM from "react-dom"
 import { IComment } from "../../../../../../server/src/models/Comment"
 import { ISong } from "../../../../../../server/src/models/Song"
 import { commentInputMenuReducer, INITIAL_STATE } from "../hooks/commentInputMenuReducer"
-import { Com, CommentActions, Rep } from "./CommentActions"
+import { CommentActions, CommentInput, ReplyActions } from "./CommentActions"
 import { CommentHeader } from "./CommentHeader"
 import { CommentList } from "./CommentList/CommentList"
 import TextBox from "./TextBox"
@@ -60,13 +60,21 @@ export default function CommentMenu({ menu, song, isOpen, onClose, comment }: Co
         handleCloseMenu={handleCloseMenu}
         actions={
           menu === "Replies" && comment ? (
-            <CommentActions dispatch={dispatch}>
-              <Rep comment={comment} song={song} state={state} dispatch={dispatch} />
-            </CommentActions>
+            <>
+              <ReplyActions comment={comment} song={song} state={state} dispatch={dispatch} />
+              <CommentInput
+                placeholder="Add a reply"
+                dispatch={() => dispatch({ type: "REPLY", payload: { selectedComment: comment } })}
+              />
+            </>
           ) : (
-            <CommentActions dispatch={dispatch}>
-              <Com toggleSort={toggleSort} setToggleSort={setToggleSort} />
-            </CommentActions>
+            <>
+              <CommentActions toggleSort={toggleSort} setToggleSort={setToggleSort} />
+              <CommentInput
+                placeholder="Add a comment"
+                dispatch={() => dispatch({ type: "COMMENT", payload: { selectedComment: null } })}
+              />
+            </>
           )
         }
       />

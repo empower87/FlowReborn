@@ -1,4 +1,4 @@
-import { Dispatch, ReactNode, SetStateAction } from "react"
+import { Dispatch, SetStateAction } from "react"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import { useAuth } from "src/context/AuthContext"
 import { IComment, ISong } from "../../../../../../server/src/models"
@@ -33,7 +33,7 @@ const SortButton = ({ type, selected, onClick }: { type: SortType; selected: Sor
   )
 }
 
-const CommentInput = ({ dispatch }: { dispatch: () => void }) => {
+export const CommentInput = ({ placeholder, dispatch }: { placeholder: string; dispatch: () => void }) => {
   return (
     <div className="comments__header-actions-text">
       <div className="comments__header-actions-text--bs-outset">
@@ -42,7 +42,7 @@ const CommentInput = ({ dispatch }: { dispatch: () => void }) => {
           <input
             type="text"
             className="comments__header-actions-input"
-            placeholder="Add a comment"
+            placeholder={placeholder}
             onClick={dispatch}
           ></input>
         </div>
@@ -51,7 +51,7 @@ const CommentInput = ({ dispatch }: { dispatch: () => void }) => {
   )
 }
 
-export const Com = ({
+export const CommentActions = ({
   toggleSort,
   setToggleSort,
 }: {
@@ -66,7 +66,7 @@ export const Com = ({
   )
 }
 
-export const Rep = ({
+export const ReplyActions = ({
   comment,
   song,
   state,
@@ -84,11 +84,11 @@ export const Rep = ({
   )
 }
 
-export const CommentActions = ({ dispatch, children }: { dispatch: CommentDispatch; children: ReactNode }) => {
-  return (
-    <>
-      {children}
-      <CommentInput dispatch={() => dispatch({ type: "COMMENT", payload: { selectedComment: null } })} />
-    </>
-  )
-}
+// export const CommentActions = ({ type, dispatch, children }: { type: "COMMENT" | "REPLY", dispatch: CommentDispatch; children: ReactNode }) => {
+//   return (
+//     <>
+//       {children}
+//       <CommentInput dispatch={() => dispatch({ type: type, payload: { selectedComment: null } })} />
+//     </>
+//   )
+// }

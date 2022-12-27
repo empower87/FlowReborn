@@ -43,7 +43,7 @@ export default function useLike(parent: ISong | IComment, type: "Song" | "Commen
     setTotalLikes(likes?.length)
 
     if (!user) return
-    if (likes.includes(user._id)) {
+    if (likes?.includes(user._id)) {
       setIsLiked(true)
     } else {
       setIsLiked(false)

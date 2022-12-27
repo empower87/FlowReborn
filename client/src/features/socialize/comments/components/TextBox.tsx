@@ -5,6 +5,7 @@ import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import { useAuth } from "src/context/AuthContext"
 import useMobileKeyboardHandler from "src/hooks/useMobileKeyboardHandler"
 import { IComment } from "../../../../../../server/src/models/Comment"
+import { CommentDispatch } from "../hooks/commentInputMenuReducer"
 import useComments from "../hooks/useComments"
 
 type InputType = "Comment" | "Edit" | "Reply" | "Hide"
@@ -16,6 +17,7 @@ interface ITextAreaProps {
 
 interface ITextInputModalProps extends ITextAreaProps {
   songId: string
+  dispatch: CommentDispatch
 }
 
 const Photo = () => {
@@ -106,7 +108,7 @@ const TextArea = forwardRef(({ type, comment }: ITextAreaProps, ref: any) => {
   )
 })
 
-export default function TextBox({ type, songId, comment }: ITextInputModalProps) {
+export default function TextBox({ type, songId, comment, dispatch }: ITextInputModalProps) {
   const root = document.getElementById("root")!
   const { addComment, editComment } = useComments()
   const inputRef = useRef<HTMLTextAreaElement>(null)
@@ -125,15 +127,18 @@ export default function TextBox({ type, songId, comment }: ITextInputModalProps)
 
   if (type === "Hide") return null
   return ReactDOM.createPortal(
-    <div
-      className="CommentInputModal"
-      style={type ? { position: "fixed", display: "flex" } : { position: "relative", display: "none" }}
-    >
-      <form className="comment-input__form">
-        <Photo />
-        <TextArea type={type} comment={comment} ref={inputRef} />
-        <Button onClick={(e) => onSubmit(e)} />
-      </form>
+    <div className="CommentInputModal">
+      <div
+        className="comment-input__form--container"
+        onClick={() => dispatch({ type: "HIDE", payload: { selectedComment: null } })}
+        // style={type ? { position: "fixed", display: "flex" } : { position: "relative", display: "none" }}
+      >
+        <form className="comment-input__form">
+          <Photo />
+          <TextArea type={type} comment={comment} ref={inputRef} />
+          <Button onClick={(e) => onSubmit(e)} />
+        </form>
+      </div>
     </div>,
     root
   )
