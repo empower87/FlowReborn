@@ -7920,13 +7920,13 @@ button {
 }
 .CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-sort {
   height: 45%;
-  width: 97%;
+  width: 96%;
   border-radius: 0;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   flex-direction: row;
-  padding-left: 3%;
+  padding: 1%;
 }
 .CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-sort .comments__header-actions-sort-btn--container {
   height: 100%;

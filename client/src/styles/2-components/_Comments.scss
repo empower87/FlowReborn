@@ -194,8 +194,8 @@
       }
 
       .comments__header-actions-sort {
-        @include flexCenter(45%, 97%, 0, flex-start, center, row);
-        padding-left: 3%;
+        @include flexCenter(45%, 96%, 0, flex-start, center, row);
+        padding: 1%;
 
         .comments__header-actions-sort-btn--container {
           @include flexCenter(100%, auto, 0, center, center, row);

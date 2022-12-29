@@ -26,6 +26,10 @@ type CommentMenuUIProps = {
   actions: JSX.Element
 }
 
+function ReplyMenu() {
+  return <></>
+}
+
 export default function CommentMenu({ menu, song, isOpen, onClose, comment }: CommentMenuProps) {
   const root = document.getElementById("root")!
   const comments = song.comments
@@ -44,7 +48,7 @@ export default function CommentMenu({ menu, song, isOpen, onClose, comment }: Co
   if (!isOpen) return null
   return ReactDOM.createPortal(
     <>
-      <TextBox type={state.showInput} songId={song._id} comment={state.selectedComment} />
+      <TextBox type={state.showInput} songId={song._id} comment={state.selectedComment} dispatch={dispatch} />
       <CommentMenuUI
         menu={menu}
         list={
@@ -95,8 +99,6 @@ export const CommentMenuUI = ({ menu, list, comments, handleCloseMenu, actions }
       </div>
 
       <div className="comments__list--container">{list}</div>
-
-      {/* <TextBox type={state.showInput} songId={song._id} comment={state.selectedComment} /> */}
     </div>
   )
 }

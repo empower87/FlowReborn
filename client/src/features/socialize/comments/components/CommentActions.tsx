@@ -79,7 +79,7 @@ export const ReplyActions = ({
 }) => {
   return (
     <div className="comments__item--reply-wrapper">
-      <Item comment={comment} song={song} reducer={{ state: state, dispatch: dispatch }} />
+      <Item comment={comment} song={song} reducer={{ state: state, dispatch: dispatch }} isReply={true} />
     </div>
   )
 }

@@ -17,6 +17,7 @@ type ItemProps = {
   // openInputModal: (type: InputType, editId?: string, comment?: IComment) => void
   reducer: CommentInputReducerType
   isLast?: boolean
+  isReply?: boolean
 }
 
 type HeaderProps = {
@@ -72,7 +73,7 @@ const Date = ({ createdOn, editedOn }: { createdOn: Date | undefined; editedOn?:
   )
 }
 
-export default function Item({ song, comment, reducer, isLast }: ItemProps) {
+export default function Item({ song, comment, reducer, isLast, isReply }: ItemProps) {
   const navigate = useNavigate()
   const { user } = useAuth()
   const [showReplies, setShowReplies] = useState<boolean>(false)
@@ -87,6 +88,14 @@ export default function Item({ song, comment, reducer, isLast }: ItemProps) {
   //     setIsEditing(false)
   //   }
   // }, [editId])
+
+  const replyButtonOnClick = () => {
+    if (isReply) {
+      return reducer.dispatch({ type: "REPLY", payload: { selectedComment: comment } })
+    } else {
+      return setShowReplies(true)
+    }
+  }
 
   const navigateToProfilePage = () => {
     navigate(`/profile/${comment?.user?._id}`)
@@ -125,7 +134,7 @@ export default function Item({ song, comment, reducer, isLast }: ItemProps) {
           <div className="comments__actions--shadow-inset">
             <LikeButton comment={comment} />
             <ReplyButton
-              onClick={() => setShowReplies(true)}
+              onClick={replyButtonOnClick}
               // onClick={() => reducer.dispatch({ type: "REPLY", payload: { selectedComment: comment } })}
               total={comment?.replies?.length}
             />
