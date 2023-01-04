@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useReducer, useState } from "react"
 import ReactDOM from "react-dom"
-import { IComment } from "../../../../../../server/src/models/Comment"
-import { ISong } from "../../../../../../server/src/models/Song"
+import { trpc } from "src/utils/trpc"
+import { IComment, ISong } from "../../../../../../server/src/models"
 import { commentInputMenuReducer, INITIAL_STATE } from "../hooks/commentInputMenuReducer"
 import { CommentActions, CommentInput, ReplyActions } from "./CommentActions"
 import { CommentHeader } from "./CommentHeader"
@@ -26,11 +26,59 @@ type CommentMenuUIProps = {
   actions: JSX.Element
 }
 
-function ReplyMenu() {
-  return <></>
+export function ReplyMenu({
+  menu,
+  song,
+  comment,
+  isOpen,
+  onClose,
+}: {
+  menu: "Comments" | "Replies"
+  song: ISong
+  comment: IComment
+  isOpen: boolean
+  onClose: () => void
+}) {
+  const root = document.getElementById("root")!
+  const [state, dispatch] = useReducer(commentInputMenuReducer, INITIAL_STATE)
+  const getReplies = trpc.useQuery(["comments.get-comment", { _id: comment._id }])
+
+  // const handleCloseMenu = () => {
+  //   onClose(false)
+  //   dispatch({ type: "HIDE", payload: { selectedComment: null } })
+  // }
+
+  if (!isOpen) return null
+  return ReactDOM.createPortal(
+    <>
+      <TextBox type={state.showInput} songId={song._id} comment={state.selectedComment} dispatch={dispatch} />
+      <CommentMenuUI
+        menu={menu}
+        list={
+          !getReplies.isLoading && getReplies.data ? (
+            <CommentList song={song} state={state} dispatch={dispatch} comments={getReplies.data.replies} />
+          ) : (
+            <p>loading..</p>
+          )
+        }
+        comments={comment.replies}
+        handleCloseMenu={onClose}
+        actions={
+          <>
+            <ReplyActions comment={comment} song={song} state={state} dispatch={dispatch} />
+            <CommentInput
+              placeholder="Add a reply"
+              dispatch={() => dispatch({ type: "REPLY", payload: { selectedComment: comment } })}
+            />
+          </>
+        }
+      />
+    </>,
+    root
+  )
 }
 
-export default function CommentMenu({ menu, song, isOpen, onClose, comment }: CommentMenuProps) {
+export default function CommentMenu({ menu, song, isOpen, onClose }: CommentMenuProps) {
   const root = document.getElementById("root")!
   const comments = song.comments
   const [toggleSort, setToggleSort] = useState<SortType>("Top")
@@ -56,30 +104,21 @@ export default function CommentMenu({ menu, song, isOpen, onClose, comment }: Co
             song={song}
             state={state}
             dispatch={dispatch}
-            comments={menu === "Replies" && comment ? comment?.replies : comments}
-            replyId={menu === "Replies" && comment ? comment._id : undefined}
+            comments={comments}
+            onClose={handleCloseMenu}
+            // replyId={menu === "Replies" && comment ? comment?._id : undefined}
           />
         }
         comments={comments}
         handleCloseMenu={handleCloseMenu}
         actions={
-          menu === "Replies" && comment ? (
-            <>
-              <ReplyActions comment={comment} song={song} state={state} dispatch={dispatch} />
-              <CommentInput
-                placeholder="Add a reply"
-                dispatch={() => dispatch({ type: "REPLY", payload: { selectedComment: comment } })}
-              />
-            </>
-          ) : (
-            <>
-              <CommentActions toggleSort={toggleSort} setToggleSort={setToggleSort} />
-              <CommentInput
-                placeholder="Add a comment"
-                dispatch={() => dispatch({ type: "COMMENT", payload: { selectedComment: null } })}
-              />
-            </>
-          )
+          <>
+            <CommentActions toggleSort={toggleSort} setToggleSort={setToggleSort} />
+            <CommentInput
+              placeholder="Add a comment"
+              dispatch={() => dispatch({ type: "COMMENT", payload: { selectedComment: null } })}
+            />
+          </>
         }
       />
     </>,

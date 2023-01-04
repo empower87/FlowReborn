@@ -6,7 +6,7 @@ import { useAuth } from "src/context/AuthContext"
 import useFormatDate from "src/hooks/useFormatDate"
 import { IComment, ISong } from "../../../../../../../server/src/models/index"
 import { CommentInputReducerType } from "../../hooks/commentInputMenuReducer"
-import CommentMenu from "../CommentMenu"
+import { ReplyMenu } from "../CommentMenu"
 import { DeleteButton, EditButton, LikeButton, ReplyButton } from "./ItemButtons"
 
 type InputType = "Comment" | "Edit" | "Reply" | "Hide"
@@ -18,6 +18,7 @@ type ItemProps = {
   reducer: CommentInputReducerType
   isLast?: boolean
   isReply?: boolean
+  onClose?: () => void
 }
 
 type HeaderProps = {
@@ -73,21 +74,13 @@ const Date = ({ createdOn, editedOn }: { createdOn: Date | undefined; editedOn?:
   )
 }
 
-export default function Item({ song, comment, reducer, isLast, isReply }: ItemProps) {
+export default function Item({ song, comment, reducer, isLast, isReply, onClose }: ItemProps) {
   const navigate = useNavigate()
   const { user } = useAuth()
   const [showReplies, setShowReplies] = useState<boolean>(false)
   // const [isEditing, setIsEditing] = useState<boolean>(false)
   const isAuthor = song.user._id === comment?.user?._id ? true : false
   const isUser = user && user._id === comment?.user?._id ? true : false
-
-  // useEffect(() => {
-  //   if (comment._id === editId) {
-  //     setIsEditing(true)
-  //   } else {
-  //     setIsEditing(false)
-  //   }
-  // }, [editId])
 
   const replyButtonOnClick = () => {
     if (isReply) {
@@ -97,6 +90,12 @@ export default function Item({ song, comment, reducer, isLast, isReply }: ItemPr
     }
   }
 
+  const closeMenus = () => {
+    if (onClose) {
+      onClose()
+      setShowReplies(false)
+    }
+  }
   const navigateToProfilePage = () => {
     navigate(`/profile/${comment?.user?._id}`)
   }
@@ -107,7 +106,7 @@ export default function Item({ song, comment, reducer, isLast, isReply }: ItemPr
       className={`comments__item ${comment?._id === reducer.state.isEditingId ? "highlight" : ""}`}
       style={isLast ? { borderRadius: "0.4em 0.4em 0.4em 2.2em" } : {}}
     >
-      <CommentMenu menu="Replies" song={song} isOpen={showReplies} onClose={setShowReplies} comment={comment} />
+      <ReplyMenu menu="Replies" song={song} isOpen={showReplies} onClose={closeMenus} comment={comment} />
       <div className="comment-list-inner">
         <Photo
           username={comment?.user?.username}
@@ -133,11 +132,7 @@ export default function Item({ song, comment, reducer, isLast, isReply }: ItemPr
         <div className="comments__actions">
           <div className="comments__actions--shadow-inset">
             <LikeButton comment={comment} />
-            <ReplyButton
-              onClick={replyButtonOnClick}
-              // onClick={() => reducer.dispatch({ type: "REPLY", payload: { selectedComment: comment } })}
-              total={comment?.replies?.length}
-            />
+            <ReplyButton onClick={replyButtonOnClick} total={comment?.replies?.length} />
             {isUser && (
               <EditButton onClick={() => reducer.dispatch({ type: "EDIT", payload: { selectedComment: comment } })} />
             )}
