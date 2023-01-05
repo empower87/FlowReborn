@@ -1,6 +1,5 @@
 import { MouseEventHandler } from "react"
 import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
-import { IComment } from "../../../../../../server/src/models"
 
 type CommentMenuButtonProps = {
   onClick: MouseEventHandler<HTMLButtonElement>
@@ -19,7 +18,7 @@ const Button = ({ onClick, type }: CommentMenuButtonProps) => {
   )
 }
 
-const Title = ({ title, count }: { title: string; count: number }) => {
+const Title = ({ title, count }: { title: string; count: number | undefined }) => {
   return (
     <div className="comments__title--container">
       <div className="comments__title--shadow-outset">
@@ -39,17 +38,19 @@ export const CommentHeader = ({
   menu,
   comments,
   handleCloseMenu,
+  handleCloseBothMenus,
 }: {
   menu: "Comments" | "Replies"
-  comments: IComment[]
+  comments: number | undefined
   handleCloseMenu: () => void
+  handleCloseBothMenus?: () => void
 }) => {
   return (
     <div className="comments__header--shadow-outset">
       <div className="comments__header--shadow-inset">
         {menu === "Replies" ? <Button onClick={handleCloseMenu} type="Back" /> : null}
-        <Title title={menu} count={comments.length} />
-        <Button onClick={handleCloseMenu} type="Close" />
+        <Title title={menu} count={comments} />
+        <Button onClick={handleCloseBothMenus ? handleCloseBothMenus : handleCloseMenu} type="Close" />
       </div>
     </div>
   )

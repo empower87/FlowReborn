@@ -106,7 +106,14 @@ export default function Item({ song, comment, reducer, isLast, isReply, onClose 
       className={`comments__item ${comment?._id === reducer.state.isEditingId ? "highlight" : ""}`}
       style={isLast ? { borderRadius: "0.4em 0.4em 0.4em 2.2em" } : {}}
     >
-      <ReplyMenu menu="Replies" song={song} isOpen={showReplies} onClose={closeMenus} comment={comment} />
+      <ReplyMenu
+        menu="Replies"
+        song={song}
+        isOpen={showReplies}
+        onClose={() => setShowReplies(false)}
+        onCloseBothMenus={closeMenus}
+        comment={comment}
+      />
       <div className="comment-list-inner">
         <Photo
           username={comment?.user?.username}

@@ -18,8 +18,8 @@ type CommentMenuProps = {
   onClose: Dispatch<SetStateAction<boolean>>
   comment?: IComment
 }
-type CommentMenuUIProps = {
-  menu: "Comments" | "Replies"
+type CommentMenuLayoutProps = {
+  header: JSX.Element
   list: JSX.Element
   comments: IComment[]
   handleCloseMenu: () => void
@@ -32,12 +32,14 @@ export function ReplyMenu({
   comment,
   isOpen,
   onClose,
+  onCloseBothMenus,
 }: {
   menu: "Comments" | "Replies"
   song: ISong
   comment: IComment
   isOpen: boolean
   onClose: () => void
+  onCloseBothMenus?: () => void
 }) {
   const root = document.getElementById("root")!
   const [state, dispatch] = useReducer(commentInputMenuReducer, INITIAL_STATE)
@@ -52,8 +54,15 @@ export function ReplyMenu({
   return ReactDOM.createPortal(
     <>
       <TextBox type={state.showInput} songId={song._id} comment={state.selectedComment} dispatch={dispatch} />
-      <CommentMenuUI
-        menu={menu}
+      <CommentMenuLayout
+        header={
+          <CommentHeader
+            menu={menu}
+            comments={undefined}
+            handleCloseMenu={onClose}
+            handleCloseBothMenus={onCloseBothMenus}
+          />
+        }
         list={
           !getReplies.isLoading && getReplies.data ? (
             <CommentList song={song} state={state} dispatch={dispatch} comments={getReplies.data.replies} />
@@ -97,8 +106,8 @@ export default function CommentMenu({ menu, song, isOpen, onClose }: CommentMenu
   return ReactDOM.createPortal(
     <>
       <TextBox type={state.showInput} songId={song._id} comment={state.selectedComment} dispatch={dispatch} />
-      <CommentMenuUI
-        menu={menu}
+      <CommentMenuLayout
+        header={<CommentHeader menu={menu} comments={comments.length} handleCloseMenu={handleCloseMenu} />}
         list={
           <CommentList
             song={song}
@@ -126,12 +135,10 @@ export default function CommentMenu({ menu, song, isOpen, onClose }: CommentMenu
   )
 }
 
-export const CommentMenuUI = ({ menu, list, comments, handleCloseMenu, actions }: CommentMenuUIProps) => {
+export const CommentMenuLayout = ({ header, list, comments, handleCloseMenu, actions }: CommentMenuLayoutProps) => {
   return (
     <div className="CommentMenu">
-      <div className="comments__header--container">
-        <CommentHeader menu={menu} comments={comments} handleCloseMenu={handleCloseMenu} />
-      </div>
+      <div className="comments__header--container">{header}</div>
 
       <div className="comments__header-actions">
         <div className="comments__header-actions--bs-outset">{actions}</div>
