@@ -6,7 +6,7 @@ type CommentMenuButtonProps = {
   type: "Close" | "Comment" | "Back"
 }
 
-const Button = ({ onClick, type }: CommentMenuButtonProps) => {
+export const CommentHeaderButton = ({ onClick, type }: CommentMenuButtonProps) => {
   const color = type === "Comment" ? "White" : "Primary"
   const size = type === "Comment" ? 75 : 100
   return (
@@ -37,20 +37,23 @@ const Title = ({ title, count }: { title: string; count: number | undefined }) =
 export const CommentHeader = ({
   menu,
   comments,
-  handleCloseMenu,
-  handleCloseBothMenus,
-}: {
+  onClose,
+  replyBackButton,
+}: // handleCloseBothMenus,
+{
   menu: "Comments" | "Replies"
   comments: number | undefined
-  handleCloseMenu: () => void
-  handleCloseBothMenus?: () => void
+  onClose: () => void
+  replyBackButton?: JSX.Element
+  // handleCloseBothMenus?: () => void
 }) => {
   return (
     <div className="comments__header--shadow-outset">
       <div className="comments__header--shadow-inset">
-        {menu === "Replies" ? <Button onClick={handleCloseMenu} type="Back" /> : null}
+        {/* {menu === "Replies" ? <Button onClick={handleCloseMenu} type="Back" /> : null} */}
+        {replyBackButton}
         <Title title={menu} count={comments} />
-        <Button onClick={handleCloseBothMenus ? handleCloseBothMenus : handleCloseMenu} type="Close" />
+        <CommentHeaderButton onClick={onClose} type="Close" />
       </div>
     </div>
   )

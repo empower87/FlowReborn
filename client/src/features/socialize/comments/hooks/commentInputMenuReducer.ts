@@ -10,6 +10,7 @@ type Payload = {
 type State = {
   showInput: InputTypes
   showReplies: boolean
+  showComments: boolean
   isEditingId: string | null
   selectedComment: IComment | null
 }
@@ -22,6 +23,7 @@ type Action = {
 export const INITIAL_STATE: State = {
   showInput: "Hide",
   showReplies: false,
+  showComments: false,
   isEditingId: null,
   selectedComment: null,
 }
@@ -69,6 +71,7 @@ export const commentInputMenuReducer: Reducer<State, Action> = (state, action) =
         return {
           ...state,
           showInput: "Reply",
+          showReplies: true,
           selectedComment: action.payload.selectedComment,
         }
       }

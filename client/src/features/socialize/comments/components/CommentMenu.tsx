@@ -4,7 +4,8 @@ import { trpc } from "src/utils/trpc"
 import { IComment, ISong } from "../../../../../../server/src/models"
 import { commentInputMenuReducer, INITIAL_STATE } from "../hooks/commentInputMenuReducer"
 import { CommentActions, CommentInput, ReplyActions } from "./CommentActions"
-import { CommentHeader } from "./CommentHeader"
+import { CommentHeader, CommentHeaderButton } from "./CommentHeader"
+import Item from "./CommentItem/Item"
 import { CommentList } from "./CommentList/CommentList"
 import TextBox from "./TextBox"
 
@@ -20,10 +21,8 @@ type CommentMenuProps = {
 }
 type CommentMenuLayoutProps = {
   header: JSX.Element
-  list: JSX.Element
-  comments: IComment[]
-  handleCloseMenu: () => void
   actions: JSX.Element
+  list: JSX.Element
 }
 
 export function ReplyMenu({
@@ -32,23 +31,18 @@ export function ReplyMenu({
   comment,
   isOpen,
   onClose,
-  onCloseBothMenus,
+  onGoBack,
 }: {
   menu: "Comments" | "Replies"
   song: ISong
   comment: IComment
   isOpen: boolean
   onClose: () => void
-  onCloseBothMenus?: () => void
+  onGoBack: () => void
 }) {
   const root = document.getElementById("root")!
   const [state, dispatch] = useReducer(commentInputMenuReducer, INITIAL_STATE)
   const getReplies = trpc.useQuery(["comments.get-comment", { _id: comment._id }])
-
-  // const handleCloseMenu = () => {
-  //   onClose(false)
-  //   dispatch({ type: "HIDE", payload: { selectedComment: null } })
-  // }
 
   if (!isOpen) return null
   return ReactDOM.createPortal(
@@ -59,19 +53,10 @@ export function ReplyMenu({
           <CommentHeader
             menu={menu}
             comments={undefined}
-            handleCloseMenu={onClose}
-            handleCloseBothMenus={onCloseBothMenus}
+            onClose={onClose}
+            replyBackButton={<CommentHeaderButton onClick={() => onGoBack()} type="Back" />}
           />
         }
-        list={
-          !getReplies.isLoading && getReplies.data ? (
-            <CommentList song={song} state={state} dispatch={dispatch} comments={getReplies.data.replies} />
-          ) : (
-            <p>loading..</p>
-          )
-        }
-        comments={comment.replies}
-        handleCloseMenu={onClose}
         actions={
           <>
             <ReplyActions comment={comment} song={song} state={state} dispatch={dispatch} />
@@ -80,6 +65,29 @@ export function ReplyMenu({
               dispatch={() => dispatch({ type: "REPLY", payload: { selectedComment: comment } })}
             />
           </>
+        }
+        list={
+          !getReplies.isLoading && getReplies.data ? (
+            <CommentList>
+              {getReplies.data.replies?.map((item, index) => {
+                let isLast = false
+                if (getReplies?.data?.replies && getReplies.data.replies.length - 1 === index) isLast = true
+                return (
+                  <Item
+                    key={item._id}
+                    comment={item}
+                    song={song}
+                    reducer={{ state: state, dispatch: dispatch }}
+                    isLast={isLast}
+                  />
+                )
+              })}
+            </CommentList>
+          ) : (
+            <CommentList>
+              <p>loading..</p>
+            </CommentList>
+          )
         }
       />
     </>,
@@ -107,19 +115,7 @@ export default function CommentMenu({ menu, song, isOpen, onClose }: CommentMenu
     <>
       <TextBox type={state.showInput} songId={song._id} comment={state.selectedComment} dispatch={dispatch} />
       <CommentMenuLayout
-        header={<CommentHeader menu={menu} comments={comments.length} handleCloseMenu={handleCloseMenu} />}
-        list={
-          <CommentList
-            song={song}
-            state={state}
-            dispatch={dispatch}
-            comments={comments}
-            onClose={handleCloseMenu}
-            // replyId={menu === "Replies" && comment ? comment?._id : undefined}
-          />
-        }
-        comments={comments}
-        handleCloseMenu={handleCloseMenu}
+        header={<CommentHeader menu={menu} comments={comments.length} onClose={handleCloseMenu} />}
         actions={
           <>
             <CommentActions toggleSort={toggleSort} setToggleSort={setToggleSort} />
@@ -129,13 +125,40 @@ export default function CommentMenu({ menu, song, isOpen, onClose }: CommentMenu
             />
           </>
         }
+        list={
+          <CommentList>
+            {comments.map((item, index) => {
+              let isLast = false
+              if (comments.length - 1 === index) isLast = true
+              return (
+                <Item
+                  key={item._id}
+                  comment={item}
+                  song={song}
+                  reducer={{ state: state, dispatch: dispatch }}
+                  isLast={isLast}
+                  isReply={true}
+                >
+                  <ReplyMenu
+                    menu="Replies"
+                    song={song}
+                    isOpen={state.showReplies}
+                    onClose={() => dispatch({ type: "HIDE", payload: { selectedComment: null } })}
+                    onGoBack={handleCloseMenu}
+                    comment={item}
+                  />
+                </Item>
+              )
+            })}
+          </CommentList>
+        }
       />
     </>,
     root
   )
 }
 
-export const CommentMenuLayout = ({ header, list, comments, handleCloseMenu, actions }: CommentMenuLayoutProps) => {
+export const CommentMenuLayout = ({ header, actions, list }: CommentMenuLayoutProps) => {
   return (
     <div className="CommentMenu">
       <div className="comments__header--container">{header}</div>

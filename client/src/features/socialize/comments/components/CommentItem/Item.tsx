@@ -1,4 +1,4 @@
-import { MouseEventHandler, useLayoutEffect, useRef, useState } from "react"
+import { MouseEventHandler, ReactNode, useLayoutEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
@@ -6,7 +6,6 @@ import { useAuth } from "src/context/AuthContext"
 import useFormatDate from "src/hooks/useFormatDate"
 import { IComment, ISong } from "../../../../../../../server/src/models/index"
 import { CommentInputReducerType } from "../../hooks/commentInputMenuReducer"
-import { ReplyMenu } from "../CommentMenu"
 import { DeleteButton, EditButton, LikeButton, ReplyButton } from "./ItemButtons"
 
 type InputType = "Comment" | "Edit" | "Reply" | "Hide"
@@ -18,7 +17,7 @@ type ItemProps = {
   reducer: CommentInputReducerType
   isLast?: boolean
   isReply?: boolean
-  onClose?: () => void
+  children?: ReactNode
 }
 
 type HeaderProps = {
@@ -74,7 +73,7 @@ const Date = ({ createdOn, editedOn }: { createdOn: Date | undefined; editedOn?:
   )
 }
 
-export default function Item({ song, comment, reducer, isLast, isReply, onClose }: ItemProps) {
+export default function Item({ song, comment, reducer, isLast, isReply, children }: ItemProps) {
   const navigate = useNavigate()
   const { user } = useAuth()
   const [showReplies, setShowReplies] = useState<boolean>(false)
@@ -90,12 +89,6 @@ export default function Item({ song, comment, reducer, isLast, isReply, onClose 
     }
   }
 
-  const closeMenus = () => {
-    if (onClose) {
-      onClose()
-      setShowReplies(false)
-    }
-  }
   const navigateToProfilePage = () => {
     navigate(`/profile/${comment?.user?._id}`)
   }
@@ -106,14 +99,7 @@ export default function Item({ song, comment, reducer, isLast, isReply, onClose 
       className={`comments__item ${comment?._id === reducer.state.isEditingId ? "highlight" : ""}`}
       style={isLast ? { borderRadius: "0.4em 0.4em 0.4em 2.2em" } : {}}
     >
-      <ReplyMenu
-        menu="Replies"
-        song={song}
-        isOpen={showReplies}
-        onClose={() => setShowReplies(false)}
-        onCloseBothMenus={closeMenus}
-        comment={comment}
-      />
+      {children}
       <div className="comment-list-inner">
         <Photo
           username={comment?.user?.username}
