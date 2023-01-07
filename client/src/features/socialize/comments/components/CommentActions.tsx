@@ -3,7 +3,7 @@ import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import { useAuth } from "src/context/AuthContext"
 import { IComment, ISong } from "../../../../../../server/src/models"
 import { CommentDispatch } from "../hooks/commentInputMenuReducer"
-import Item from "./CommentItem/Item"
+import Item from "./CommentItem/CommentItem"
 
 type SortType = "Top" | "Newest"
 

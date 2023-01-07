@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { trpc } from "src/utils/trpc"
 import { IComment, ISong } from "../../../../../../../server/src/models/index"
 import { CommentInputReducerType } from "../../hooks/commentInputMenuReducer"
-import Item from "../CommentItem/Item"
+import Item from "../CommentItem/CommentItem"
 
 type InputType = "Comment" | "Edit" | "Reply" | "Hide"
 

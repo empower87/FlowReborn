@@ -5,7 +5,7 @@ import { IComment, ISong } from "../../../../../../server/src/models"
 import { commentInputMenuReducer, INITIAL_STATE } from "../hooks/commentInputMenuReducer"
 import { CommentActions, CommentInput, ReplyActions } from "./CommentActions"
 import { CommentHeader, CommentHeaderButton } from "./CommentHeader"
-import Item from "./CommentItem/Item"
+import Item from "./CommentItem/CommentItem"
 import { CommentList } from "./CommentList/CommentList"
 import TextBox from "./TextBox"
 
