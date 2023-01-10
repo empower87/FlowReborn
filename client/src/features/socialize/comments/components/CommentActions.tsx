@@ -3,7 +3,7 @@ import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import { useAuth } from "src/context/AuthContext"
 import { IComment, ISong } from "../../../../../../server/src/models"
 import { CommentDispatch } from "../hooks/commentInputMenuReducer"
-import Item from "./CommentItem/CommentItem"
+import CommentItem from "./CommentItem/CommentItem"
 
 type SortType = "Top" | "Newest"
 
@@ -79,7 +79,13 @@ export const ReplyActions = ({
 }) => {
   return (
     <div className="comments__item--reply-wrapper">
-      <Item comment={comment} song={song} reducer={{ state: state, dispatch: dispatch }} isReply={true} />
+      <CommentItem
+        comment={comment}
+        song={song}
+        reducer={{ state: state, dispatch: dispatch }}
+        isLast={false}
+        isReply={true}
+      ></CommentItem>
     </div>
   )
 }

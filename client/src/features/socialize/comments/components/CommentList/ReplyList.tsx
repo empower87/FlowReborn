@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import { trpc } from "src/utils/trpc"
 import { IComment, ISong } from "../../../../../../../server/src/models/index"
 import { CommentInputReducerType } from "../../hooks/commentInputMenuReducer"
-import Item from "../CommentItem/CommentItem"
 
 type InputType = "Comment" | "Edit" | "Reply" | "Hide"
 
@@ -30,7 +29,7 @@ export default function ReplyList({
 
   return (
     <>
-      <div className="comments__item-reply">
+      {/* <div className="comments__item-reply">
         {reducer.state.selectedComment && (
           <Item song={song} comment={reducer.state.selectedComment} reducer={reducer} />
         )}
@@ -39,7 +38,7 @@ export default function ReplyList({
         {replies?.map((reply, index) => {
           return <Item key={`${reply._id}_${index}`} song={song} comment={reply} reducer={reducer} />
         })}
-      </ul>
+      </ul> */}
     </>
   )
 }

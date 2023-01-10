@@ -78,7 +78,7 @@ export const commentInputMenuReducer: Reducer<State, Action> = (state, action) =
       return {
         ...state,
         showInput: "Reply",
-        // showReplies: true,
+        showReplies: true,
         isEditingId: null,
         selectedComment: action.payload.selectedComment,
       }

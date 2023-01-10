@@ -1,11 +1,13 @@
 import { Dispatch, SetStateAction, useEffect, useReducer, useState } from "react"
 import ReactDOM from "react-dom"
+import { useAuth } from "src/context/AuthContext"
 import { trpc } from "src/utils/trpc"
 import { IComment, ISong } from "../../../../../../server/src/models"
 import { commentInputMenuReducer, INITIAL_STATE } from "../hooks/commentInputMenuReducer"
 import { CommentActions, CommentInput, ReplyActions } from "./CommentActions"
 import { CommentHeader, CommentHeaderButton } from "./CommentHeader"
-import Item from "./CommentItem/CommentItem"
+import CommentItem from "./CommentItem/CommentItem"
+import { DeleteButton, EditButton, LikeButton, ReplyButton } from "./CommentItem/ItemButtons"
 import { CommentList } from "./CommentList/CommentList"
 import TextBox from "./TextBox"
 
@@ -41,6 +43,7 @@ export function ReplyMenu({
   onGoBack: () => void
 }) {
   const root = document.getElementById("root")!
+  const { user } = useAuth()
   const [state, dispatch] = useReducer(commentInputMenuReducer, INITIAL_STATE)
   const getReplies = trpc.useQuery(["comments.get-comment", { _id: comment._id }])
 
@@ -71,15 +74,26 @@ export function ReplyMenu({
             <CommentList>
               {getReplies.data.replies?.map((item, index) => {
                 let isLast = false
+                let isUser = false
+                if (user && item.user?._id === user._id) isUser = true
                 if (getReplies?.data?.replies && getReplies.data.replies.length - 1 === index) isLast = true
                 return (
-                  <Item
+                  <CommentItem
                     key={item._id}
                     comment={item}
                     song={song}
                     reducer={{ state: state, dispatch: dispatch }}
                     isLast={isLast}
-                  />
+                  >
+                    <LikeButton comment={item} />
+                    {/* <ReplyButton onClick={replyButtonOnClick} total={comment?.replies?.length} /> */}
+                    {isUser ? (
+                      <>
+                        <EditButton onClick={() => dispatch({ type: "EDIT", payload: { selectedComment: comment } })} />
+                        <DeleteButton songId={song._id} commentId={comment?._id} />
+                      </>
+                    ) : null}
+                  </CommentItem>
                 )
               })}
             </CommentList>
@@ -97,6 +111,7 @@ export function ReplyMenu({
 
 export default function CommentMenu({ menu, song, isOpen, onClose }: CommentMenuProps) {
   const root = document.getElementById("root")!
+  const { user } = useAuth()
   const comments = song.comments
   const [toggleSort, setToggleSort] = useState<SortType>("Top")
   const [state, dispatch] = useReducer(commentInputMenuReducer, INITIAL_STATE)
@@ -129,9 +144,11 @@ export default function CommentMenu({ menu, song, isOpen, onClose }: CommentMenu
           <CommentList>
             {comments.map((item, index) => {
               let isLast = false
+              let isUser = false
+              if (user && item.user?._id === user?._id) isUser = true
               if (comments.length - 1 === index) isLast = true
               return (
-                <Item
+                <CommentItem
                   key={item._id}
                   comment={item}
                   song={song}
@@ -147,7 +164,18 @@ export default function CommentMenu({ menu, song, isOpen, onClose }: CommentMenu
                     onGoBack={handleCloseMenu}
                     comment={item}
                   />
-                </Item>
+                  <LikeButton comment={item} />
+                  <ReplyButton
+                    onClick={() => dispatch({ type: "REPLY", payload: { selectedComment: item } })}
+                    total={item?.replies?.length}
+                  />
+                  {isUser ? (
+                    <>
+                      <EditButton onClick={() => dispatch({ type: "EDIT", payload: { selectedComment: item } })} />
+                      <DeleteButton songId={song._id} commentId={item?._id} />
+                    </>
+                  ) : null}
+                </CommentItem>
               )
             })}
           </CommentList>
