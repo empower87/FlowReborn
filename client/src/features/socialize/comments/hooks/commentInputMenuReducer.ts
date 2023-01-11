@@ -1,7 +1,7 @@
 import { Dispatch, Reducer } from "react"
 import { IComment } from "../../../../../../server/src/models"
 
-type InputTypes = "Comment" | "Edit" | "Reply" | "Hide"
+export type InputTypes = "COMMENT" | "EDIT" | "REPLY" | "OPEN_REPLY_MENU" | "CLOSE_REPLY_MENU" | "HIDE" | "CLOSE"
 
 type Payload = {
   selectedComment: IComment | null
@@ -9,20 +9,20 @@ type Payload = {
 
 type State = {
   showInput: InputTypes
-  showReplies: boolean
+  isReplyMenuOpen: boolean
   showComments: boolean
   isEditingId: string | null
   selectedComment: IComment | null
 }
 
 type Action = {
-  type: "COMMENT" | "EDIT" | "REPLY" | "HIDE"
+  type: InputTypes
   payload: Payload
 }
 
 export const INITIAL_STATE: State = {
-  showInput: "Hide",
-  showReplies: false,
+  showInput: "HIDE",
+  isReplyMenuOpen: false,
   showComments: false,
   isEditingId: null,
   selectedComment: null,
@@ -35,18 +35,18 @@ export type CommentState = State
 export const commentInputMenuReducer: Reducer<State, Action> = (state, action) => {
   switch (action.type) {
     case "COMMENT":
-      if (state.showInput === "Comment") {
+      if (state.showInput === "COMMENT") {
         return INITIAL_STATE
       } else {
         return {
           ...INITIAL_STATE,
-          showInput: "Comment",
+          showInput: "COMMENT",
         }
       }
     case "EDIT":
       if (!action.payload.selectedComment) return state
       if (
-        state.showInput === "Edit" &&
+        state.showInput === "EDIT" &&
         action.payload.selectedComment &&
         state.isEditingId &&
         state.isEditingId === action.payload.selectedComment._id
@@ -55,12 +55,12 @@ export const commentInputMenuReducer: Reducer<State, Action> = (state, action) =
       }
       return {
         ...state,
-        showInput: "Edit",
+        showInput: "EDIT",
         isEditingId: action.payload.selectedComment._id,
         selectedComment: action.payload.selectedComment,
       }
     case "REPLY":
-      if (state.showInput === "Reply") {
+      if (state.showInput === "REPLY") {
         if (
           state.selectedComment &&
           action.payload.selectedComment &&
@@ -70,19 +70,27 @@ export const commentInputMenuReducer: Reducer<State, Action> = (state, action) =
         }
         return {
           ...state,
-          showInput: "Reply",
-          showReplies: true,
+          showInput: "REPLY",
           selectedComment: action.payload.selectedComment,
         }
       }
       return {
         ...state,
-        showInput: "Reply",
-        showReplies: true,
+        showInput: "REPLY",
         isEditingId: null,
         selectedComment: action.payload.selectedComment,
       }
+    case "OPEN_REPLY_MENU":
+      if (action.payload.selectedComment) {
+        return { ...state, isReplyMenuOpen: true, showInput: "REPLY", selectedComment: action.payload.selectedComment }
+      } else {
+        return state
+      }
+    case "CLOSE_REPLY_MENU":
+      return { ...state, isReplyMenuOpen: false }
     case "HIDE":
+      return { ...state, showInput: "HIDE", isEditingId: null }
+    case "CLOSE":
       return INITIAL_STATE
     default:
       return state

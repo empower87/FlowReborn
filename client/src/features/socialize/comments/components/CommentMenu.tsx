@@ -7,8 +7,7 @@ import { commentInputMenuReducer, INITIAL_STATE } from "../hooks/commentInputMen
 import { CommentActions, CommentInput, ReplyActions } from "./CommentActions"
 import { CommentHeader, CommentHeaderButton } from "./CommentHeader"
 import CommentItem from "./CommentItem/CommentItem"
-import { DeleteButton, EditButton, LikeButton, ReplyButton } from "./CommentItem/ItemButtons"
-import { CommentList } from "./CommentList/CommentList"
+import { LikeButton, ReplyButton, UsersCommentButtons } from "./CommentItem/ItemButtons"
 import TextBox from "./TextBox"
 
 type InputType = "Comment" | "Edit" | "Reply" | "Hide"
@@ -24,7 +23,27 @@ type CommentMenuProps = {
 type CommentMenuLayoutProps = {
   header: JSX.Element
   actions: JSX.Element
-  list: JSX.Element
+  items: JSX.Element
+}
+
+function CommentMenuLayout({ header, actions, items }: CommentMenuLayoutProps) {
+  return (
+    <div className="CommentMenu">
+      <div className="comments__header--container">{header}</div>
+
+      <div className="comments__header-actions">
+        <div className="comments__header-actions--bs-outset">{actions}</div>
+      </div>
+
+      <div className="comments__list--container">
+        <div className="comments__list--shadow-outset">
+          <div className="comments__list--shadow-inset">
+            <ul className="comments__list">{items}</ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export function ReplyMenu({
@@ -69,9 +88,9 @@ export function ReplyMenu({
             />
           </>
         }
-        list={
+        items={
           !getReplies.isLoading && getReplies.data ? (
-            <CommentList>
+            <>
               {getReplies.data.replies?.map((item, index) => {
                 let isLast = false
                 let isUser = false
@@ -86,21 +105,15 @@ export function ReplyMenu({
                     isLast={isLast}
                   >
                     <LikeButton comment={item} />
-                    {/* <ReplyButton onClick={replyButtonOnClick} total={comment?.replies?.length} /> */}
-                    {isUser ? (
-                      <>
-                        <EditButton onClick={() => dispatch({ type: "EDIT", payload: { selectedComment: comment } })} />
-                        <DeleteButton songId={song._id} commentId={comment?._id} />
-                      </>
-                    ) : null}
+                    <UsersCommentButtons songId={song._id} comment={item} dispatch={dispatch} />
                   </CommentItem>
                 )
               })}
-            </CommentList>
+            </>
           ) : (
-            <CommentList>
+            <>
               <p>loading..</p>
-            </CommentList>
+            </>
           )
         }
       />
@@ -118,11 +131,11 @@ export default function CommentMenu({ menu, song, isOpen, onClose }: CommentMenu
 
   const handleCloseMenu = () => {
     onClose(false)
-    dispatch({ type: "HIDE", payload: { selectedComment: null } })
+    dispatch({ type: "CLOSE", payload: { selectedComment: null } })
   }
 
   useEffect(() => {
-    dispatch({ type: "HIDE", payload: { selectedComment: null } })
+    dispatch({ type: "CLOSE", payload: { selectedComment: null } })
   }, [song])
 
   if (!isOpen) return null
@@ -140,8 +153,8 @@ export default function CommentMenu({ menu, song, isOpen, onClose }: CommentMenu
             />
           </>
         }
-        list={
-          <CommentList>
+        items={
+          <>
             {comments.map((item, index) => {
               let isLast = false
               let isUser = false
@@ -154,202 +167,28 @@ export default function CommentMenu({ menu, song, isOpen, onClose }: CommentMenu
                   song={song}
                   reducer={{ state: state, dispatch: dispatch }}
                   isLast={isLast}
-                  isReply={true}
                 >
                   <ReplyMenu
                     menu="Replies"
                     song={song}
-                    isOpen={state.showReplies}
-                    onClose={() => dispatch({ type: "HIDE", payload: { selectedComment: null } })}
-                    onGoBack={handleCloseMenu}
+                    isOpen={state.isReplyMenuOpen}
+                    onClose={handleCloseMenu}
+                    onGoBack={() => dispatch({ type: "CLOSE_REPLY_MENU", payload: { selectedComment: null } })}
                     comment={item}
                   />
                   <LikeButton comment={item} />
                   <ReplyButton
-                    onClick={() => dispatch({ type: "REPLY", payload: { selectedComment: item } })}
+                    onClick={() => dispatch({ type: "OPEN_REPLY_MENU", payload: { selectedComment: item } })}
                     total={item?.replies?.length}
                   />
-                  {isUser ? (
-                    <>
-                      <EditButton onClick={() => dispatch({ type: "EDIT", payload: { selectedComment: item } })} />
-                      <DeleteButton songId={song._id} commentId={item?._id} />
-                    </>
-                  ) : null}
+                  <UsersCommentButtons songId={song._id} comment={item} dispatch={dispatch} />
                 </CommentItem>
               )
             })}
-          </CommentList>
+          </>
         }
       />
     </>,
     root
   )
 }
-
-export const CommentMenuLayout = ({ header, actions, list }: CommentMenuLayoutProps) => {
-  return (
-    <div className="CommentMenu">
-      <div className="comments__header--container">{header}</div>
-
-      <div className="comments__header-actions">
-        <div className="comments__header-actions--bs-outset">{actions}</div>
-      </div>
-
-      <div className="comments__list--container">{list}</div>
-    </div>
-  )
-}
-
-// export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps) {
-//   const root = document.getElementById("root")!
-//   const comments = song.comments
-//   const [selectedComment, setSelectedComment] = useState<IComment | undefined>()
-//   const [toggleSort, setToggleSort] = useState<"Top" | "Newest">("Top")
-//   const [state, dispatch] = useReducer(commentInputMenuReducer, INITIAL_STATE)
-
-//   const handleCloseMenu = () => {
-//     onClose(false)
-//     dispatch({ type: "HIDE", payload: { selectedComment: null } })
-//   }
-
-//   useEffect(() => {
-//     dispatch({ type: "HIDE", payload: { selectedComment: null } })
-//   }, [song])
-
-//   if (!isOpen) return null
-//   return ReactDOM.createPortal(
-//     <div className="CommentMenu">
-//       <div className="comments__header--container">
-//         <div className="comments__header">
-//           <div className="comments__header--shadow-outset">
-//             <div className="comments__header--shadow-inset">
-//               {state.showReplies ? (
-//                 <Header title={"Replies"} count={selectedComment ? selectedComment.replies.length : 0} />
-//               ) : (
-//                 <Header title={"Comments"} count={comments.length} />
-//               )}
-
-//               <Button onClick={handleCloseMenu} type="Close" />
-//               {/* <Button onClick={() => dispatch({ type: "COMMENT", payload: { selectedComment: null } })} type="Comment" /> */}
-//             </div>
-//           </div>
-//         </div>
-
-//         <div className="comments__header-actions">
-//           <div className="comments__header-actions--bs-outset">
-//             <div className="comments__header-actions-sort">
-//               <SortButton type="Top" selected={toggleSort} onClick={() => setToggleSort("Top")} />
-//               <SortButton type="Newest" selected={toggleSort} onClick={() => setToggleSort("Newest")} />
-//             </div>
-//             <div className="comments__header-actions-text">
-//               <div className="comments__header-actions-text--bs-outset">
-//                 <Photo />
-
-//                 <Input onFocus={() => dispatch({ type: "COMMENT", payload: { selectedComment: null } })} />
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-
-//       <div className="comments__list--container">
-//         <div className="comments__list--shadow-outset">
-//           <div className="comments__list--shadow-inset">
-//             {state.showReplies ? (
-//               <ul className="comments__list">
-//                 <ReplyList song={song} reducer={{ state: state, dispatch: dispatch }} />
-//               </ul>
-//             ) : (
-//               <ul className="comments__list">
-//                 {comments?.map((item, index) => {
-//                   let isLast = false
-//                   if (comments.length - 1 === index) isLast = true
-//                   return (
-//                     <Item
-//                       key={item._id}
-//                       comment={item}
-//                       song={song}
-//                       reducer={{ state: state, dispatch: dispatch }}
-//                       isLast={isLast}
-//                     />
-//                   )
-//                 })}
-//               </ul>
-//             )}
-//           </div>
-//         </div>
-//       </div>
-
-//       <TextBox type={state.showInput} songId={song._id} comment={state.selectedComment} />
-//     </div>,
-//     root
-//   )
-// }
-
-// export default function CommentMenu({ song, page, isOpen, onClose }: CommentMenuProps) {
-//   const comments = song.comments
-//   const [selectedComment, setSelectedComment] = useState<IComment | undefined>()
-//   const [state, dispatch] = useReducer(commentInputMenuReducer, INITIAL_STATE)
-
-//   const handleCloseMenu = () => {
-//     onClose(false)
-//     dispatch({ type: "HIDE", payload: { selectedComment: null } })
-//   }
-
-//   useEffect(() => {
-//     dispatch({ type: "HIDE", payload: { selectedComment: null } })
-//   }, [song])
-
-//   return (
-//     <div
-//       className={`CommentMenu ${isOpen ? "show-menu" : "hide-menu"}`}
-//       style={page === "home" && isOpen ? { marginBottom: "-8%" } : { marginBottom: "0%" }}
-//     >
-//       <div className="comments__list--container">
-//         <div className="comments__list--shadow-outset">
-//           <div className="comments__list--shadow-inset">
-//             {state.showReplies ? (
-//               <ul className="comments__list">
-//                 <ReplyList song={song} reducer={{ state: state, dispatch: dispatch }} />
-//               </ul>
-//             ) : (
-//               <ul className="comments__list">
-//                 {comments?.map((item, index) => {
-//                   let isLast = false
-//                   if (comments.length - 1 === index) isLast = true
-//                   return (
-//                     <Item
-//                       key={item._id}
-//                       comment={item}
-//                       song={song}
-//                       reducer={{ state: state, dispatch: dispatch }}
-//                       isLast={isLast}
-//                     />
-//                   )
-//                 })}
-//               </ul>
-//             )}
-//           </div>
-//         </div>
-//       </div>
-
-//       <div className="comments__header--container">
-//         <div className="comments__header--shadow-outset">
-//           <div className="comments__header--shadow-inset">
-//             <Button onClick={handleCloseMenu} type="Back" />
-
-//             {state.showReplies ? (
-//               <Header title={"Replies"} count={selectedComment ? selectedComment.replies.length : 0} />
-//             ) : (
-//               <Header title={"Comments"} count={comments.length} />
-//             )}
-
-//             <Button onClick={() => dispatch({ type: "COMMENT", payload: { selectedComment: null } })} type="Comment" />
-//           </div>
-//         </div>
-//       </div>
-
-//       <TextBox type={state.showInput} songId={song._id} comment={state.selectedComment} />
-//     </div>
-//   )
-// }

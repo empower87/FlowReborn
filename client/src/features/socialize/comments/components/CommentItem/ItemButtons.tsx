@@ -1,8 +1,10 @@
 import { MouseEventHandler, useState } from "react"
 import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
 import ContinueModal from "src/components/modals/ContinueModal"
+import { useAuth } from "src/context/AuthContext"
 import { IComment } from "../../../../../../../server/src/models/index"
 import useLike from "../../../like/useLike"
+import { CommentDispatch } from "../../hooks/commentInputMenuReducer"
 import useComments from "../../hooks/useComments"
 
 type OnClick = MouseEventHandler<HTMLButtonElement>
@@ -12,6 +14,11 @@ type ItemButtonProps = {
   onClick: OnClick
   total?: number
   isLiked?: boolean
+}
+type UsersCommentButtonsProps = {
+  songId: string
+  comment: IComment
+  dispatch: CommentDispatch
 }
 
 const ItemButton = ({ type, onClick, total, isLiked }: ItemButtonProps) => {
@@ -38,11 +45,24 @@ const ItemButton = ({ type, onClick, total, isLiked }: ItemButtonProps) => {
   )
 }
 
-export const EditButton = ({ onClick }: { onClick: OnClick }) => {
-  return <ItemButton type={"Edit"} onClick={onClick} />
+export const LikeButton = ({ comment }: { comment: IComment }) => {
+  const { hasUser, total, onClick, loading } = useLike(comment, "Comment")
+  return <ItemButton type={"Like"} onClick={() => onClick()} total={total} isLiked={hasUser} />
 }
 
-export const DeleteButton = ({ songId, commentId }: { songId: string; commentId: string }) => {
+export const ReplyButton = ({ onClick, total }: { onClick: OnClick; total: number }) => {
+  return (
+    <>
+      <ItemButton type={"Reply"} onClick={onClick} total={total} />
+    </>
+  )
+}
+
+const EditButton = ({ onClick }: { onClick: OnClick }) => {
+  return <ItemButton type="Edit" onClick={onClick} />
+}
+
+const DeleteButton = ({ songId, commentId }: { songId: string; commentId: string }) => {
   const { deleteComment } = useComments()
   const [isDelete, setIsDelete] = useState<boolean>(false)
 
@@ -52,7 +72,7 @@ export const DeleteButton = ({ songId, commentId }: { songId: string; commentId:
 
   return (
     <>
-      <ItemButton type={"Delete"} onClick={() => setIsDelete(true)} />
+      <ItemButton type="Delete" onClick={() => setIsDelete(true)} />
       <ContinueModal
         title="Delete Comment"
         text="Are you sure you want to delete this comment?"
@@ -65,15 +85,14 @@ export const DeleteButton = ({ songId, commentId }: { songId: string; commentId:
   )
 }
 
-export const LikeButton = ({ comment }: { comment: IComment }) => {
-  const { hasUser, total, onClick, loading } = useLike(comment, "Comment")
-  return <ItemButton type={"Like"} onClick={() => onClick()} total={total} isLiked={hasUser} />
-}
+export const UsersCommentButtons = ({ songId, comment, dispatch }: UsersCommentButtonsProps) => {
+  const { user } = useAuth()
 
-export const ReplyButton = ({ onClick, total }: { onClick: OnClick; total: number }) => {
+  if (user && user._id !== comment.user._id) return null
   return (
     <>
-      <ItemButton type={"Reply"} onClick={onClick} total={total} />
+      <EditButton onClick={() => dispatch({ type: "EDIT", payload: { selectedComment: comment } })} />
+      <DeleteButton songId={songId} commentId={comment?._id} />
     </>
   )
 }

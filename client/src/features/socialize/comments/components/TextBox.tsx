@@ -5,13 +5,13 @@ import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import { useAuth } from "src/context/AuthContext"
 import useMobileKeyboardHandler from "src/hooks/useMobileKeyboardHandler"
 import { IComment } from "../../../../../../server/src/models/Comment"
-import { CommentDispatch } from "../hooks/commentInputMenuReducer"
+import { CommentDispatch, InputTypes } from "../hooks/commentInputMenuReducer"
 import useComments from "../hooks/useComments"
 
-type InputType = "Comment" | "Edit" | "Reply" | "Hide"
+// type InputType = "Comment" | "Edit" | "Reply" | "Hide"
 
 interface ITextAreaProps {
-  type: InputType
+  type: InputTypes
   comment: IComment | undefined | null
 }
 
@@ -58,7 +58,7 @@ const TextArea = forwardRef(({ type, comment }: ITextAreaProps, ref: any) => {
 
   useEffect(() => {
     // TODO: Fix bug where on setting of different input type Textarea remains size of previous input
-    if (type === "Edit" && ref.current) {
+    if (type === "EDIT" && ref.current) {
       const height = ref.current.scrollHeight
       const fontPixels = 16 * 0.95 + 1
       ref.current.style.height = `${height - fontPixels}px`
@@ -67,17 +67,17 @@ const TextArea = forwardRef(({ type, comment }: ITextAreaProps, ref: any) => {
 
   useEffect(() => {
     switch (type) {
-      case "Edit":
+      case "EDIT":
         if (!comment) return
         setText(comment.text)
         setPlaceholder("")
         break
-      case "Reply":
+      case "REPLY":
         if (!comment) return
         setText("")
         setPlaceholder(`Reply to ${comment.user.username}..`)
         break
-      case "Comment":
+      case "COMMENT":
         setText("")
         setPlaceholder("Leave A Comment..")
         break
@@ -115,9 +115,9 @@ export default function TextBox({ type, songId, comment, dispatch }: ITextInputM
 
   const onSubmit = (e: MouseEvent<HTMLButtonElement>) => {
     if (!inputRef.current) return
-    if (type === "Edit" && comment) {
+    if (type === "EDIT" && comment) {
       editComment(comment._id, inputRef.current.value)
-    } else if (type === "Reply" && comment) {
+    } else if (type === "REPLY" && comment) {
       addComment(comment._id, inputRef.current.value)
     } else {
       addComment(songId, inputRef.current.value)
@@ -125,7 +125,7 @@ export default function TextBox({ type, songId, comment, dispatch }: ITextInputM
     e.preventDefault()
   }
 
-  if (type === "Hide") return null
+  if (type === "HIDE") return null
   return ReactDOM.createPortal(
     <div className="CommentInputModal" onClick={() => dispatch({ type: "HIDE", payload: { selectedComment: null } })}>
       <div className="comment-input__form--container">
