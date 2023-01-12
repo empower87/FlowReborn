@@ -39,18 +39,15 @@ export const CommentHeader = ({
   comments,
   onClose,
   replyBackButton,
-}: // handleCloseBothMenus,
-{
+}: {
   menu: "Comments" | "Replies"
   comments: number | undefined
   onClose: () => void
   replyBackButton?: JSX.Element
-  // handleCloseBothMenus?: () => void
 }) => {
   return (
     <div className="comments__header--shadow-outset">
       <div className="comments__header--shadow-inset">
-        {/* {menu === "Replies" ? <Button onClick={handleCloseMenu} type="Back" /> : null} */}
         {replyBackButton}
         <Title title={menu} count={comments} />
         <CommentHeaderButton onClick={onClose} type="Close" />

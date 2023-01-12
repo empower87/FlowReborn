@@ -7960,20 +7960,21 @@ button {
   width: 100%;
   border-radius: 0;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   flex-direction: row;
   margin-bottom: 1%;
 }
 .CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-text .comments__header-actions-text--bs-outset {
   height: 90%;
-  width: 97%;
+  width: 92%;
   border-radius: 2em 3em 0.2em 2em;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
   box-shadow: 2px 2px 3px #636363, -1px -1px 2px #ffffff;
+  margin-right: 2%;
 }
 .CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-text .comments__header-actions-text--bs-outset .comment-input__input-photo {
   height: auto;

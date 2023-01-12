@@ -2,8 +2,9 @@ import { Dispatch, SetStateAction } from "react"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import { useAuth } from "src/context/AuthContext"
 import { IComment, ISong } from "../../../../../../server/src/models"
-import { CommentDispatch } from "../hooks/commentInputMenuReducer"
+import { CommentDispatch, CommentState } from "../hooks/commentInputMenuReducer"
 import CommentItem from "./CommentItem/CommentItem"
+import { LikeButton, ReplyButton, UsersCommentButtons } from "./CommentItem/ItemButtons"
 
 type SortType = "Top" | "Newest"
 
@@ -74,27 +75,21 @@ export const ReplyActions = ({
 }: {
   comment: IComment
   song: ISong
-  state: any
+  state: CommentState
   dispatch: CommentDispatch
 }) => {
+  const isAuthor = song.user._id === comment.user._id ? true : false
+  const isEditing = state.isEditingId && state.isEditingId === comment._id ? true : false
   return (
     <div className="comments__item--reply-wrapper">
-      <CommentItem
-        comment={comment}
-        song={song}
-        reducer={{ state: state, dispatch: dispatch }}
-        isLast={false}
-        isReply={true}
-      ></CommentItem>
+      <CommentItem comment={comment} authorId={song.user._id} editId={state.isEditingId} lastItemId={comment._id}>
+        <LikeButton comment={comment} />
+        <ReplyButton
+          onClick={() => dispatch({ type: "OPEN_REPLY_MENU", payload: { selectedComment: comment } })}
+          total={comment?.replies?.length}
+        />
+        <UsersCommentButtons songId={song._id} comment={comment} dispatch={dispatch} />
+      </CommentItem>
     </div>
   )
 }
-
-// export const CommentActions = ({ type, dispatch, children }: { type: "COMMENT" | "REPLY", dispatch: CommentDispatch; children: ReactNode }) => {
-//   return (
-//     <>
-//       {children}
-//       <CommentInput dispatch={() => dispatch({ type: type, payload: { selectedComment: null } })} />
-//     </>
-//   )
-// }

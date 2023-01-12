@@ -117,7 +117,7 @@ export default function SongPost({
       style={{ backgroundImage: `url(${song.video && isIntersecting ? song.video : ""})` }}
       onClick={() => setIsVideoFullscreen(false)}
     >
-      <CommentMenu menu="Comments" song={song} isOpen={showComments} onClose={setShowComments} />
+      <CommentMenu song={song} isOpen={showComments} onClose={setShowComments} />
 
       {song.thumbnail && isIntersecting ? (
         <video
