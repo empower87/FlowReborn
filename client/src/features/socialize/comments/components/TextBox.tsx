@@ -127,7 +127,7 @@ export default function TextBox({ type, songId, comment, dispatch }: ITextInputM
 
   if (type === "HIDE") return null
   return ReactDOM.createPortal(
-    <div className="CommentInputModal" onClick={() => dispatch({ type: "HIDE", payload: { selectedComment: null } })}>
+    <div className="CommentInputModal" onClick={() => dispatch({ type: "HIDE" })}>
       <div className="comment-input__form--container">
         <form className="comment-input__form">
           <Photo />

@@ -78,16 +78,11 @@ export const ReplyActions = ({
   state: CommentState
   dispatch: CommentDispatch
 }) => {
-  const isAuthor = song.user._id === comment.user._id ? true : false
-  const isEditing = state.isEditingId && state.isEditingId === comment._id ? true : false
   return (
     <div className="comments__item--reply-wrapper">
       <CommentItem comment={comment} authorId={song.user._id} editId={state.isEditingId} lastItemId={comment._id}>
         <LikeButton comment={comment} />
-        <ReplyButton
-          onClick={() => dispatch({ type: "OPEN_REPLY_MENU", payload: { selectedComment: comment } })}
-          total={comment?.replies?.length}
-        />
+        <ReplyButton reply={comment} onClick={dispatch} total={comment?.replies?.length} />
         <UsersCommentButtons songId={song._id} comment={comment} dispatch={dispatch} />
       </CommentItem>
     </div>

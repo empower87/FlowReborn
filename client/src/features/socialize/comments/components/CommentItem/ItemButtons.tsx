@@ -50,10 +50,25 @@ export const LikeButton = ({ comment }: { comment: IComment }) => {
   return <ItemButton type={"Like"} onClick={() => onClick()} total={total} isLiked={hasUser} />
 }
 
-export const ReplyButton = ({ onClick, total }: { onClick: OnClick; total: number }) => {
+export const ReplyButton = ({
+  reply,
+  onClick,
+  total,
+}: {
+  reply: IComment
+  onClick: CommentDispatch
+  total: number
+}) => {
   return (
     <>
-      <ItemButton type={"Reply"} onClick={onClick} total={total} />
+      <ItemButton
+        type={"Reply"}
+        onClick={() => {
+          onClick({ type: "OPEN_REPLY_MENU", payload: { reply: reply } })
+          console.log(reply, "CLICKED REPLY BUTTON WHAT REPLY??")
+        }}
+        total={total}
+      />
     </>
   )
 }
@@ -91,7 +106,7 @@ export const UsersCommentButtons = ({ songId, comment, dispatch }: UsersCommentB
   if (user && user._id !== comment.user._id) return null
   return (
     <>
-      <EditButton onClick={() => dispatch({ type: "EDIT", payload: { selectedComment: comment } })} />
+      <EditButton onClick={() => dispatch({ type: "EDIT", payload: { editComment: comment } })} />
       <DeleteButton songId={songId} commentId={comment?._id} />
     </>
   )

@@ -64,6 +64,7 @@ function ReplyMenu({
   const root = document.getElementById("root")!
   const getReplies = trpc.useQuery(["comments.get-comment", { _id: comment._id }])
   const lastReply = getReplies.data && getReplies.data.replies[getReplies.data.replies.length - 1]?._id
+
   if (!isOpen) return null
   return ReactDOM.createPortal(
     <CommentMenuLayout
@@ -80,7 +81,7 @@ function ReplyMenu({
           <ReplyActions comment={comment} song={song} state={state} dispatch={dispatch} />
           <CommentInput
             placeholder="Add a reply"
-            dispatch={() => dispatch({ type: "REPLY", payload: { selectedComment: comment } })}
+            dispatch={() => dispatch({ type: "REPLY", payload: { reply: comment } })}
           />
         </>
       }
@@ -88,8 +89,6 @@ function ReplyMenu({
         !getReplies.isLoading && getReplies.data ? (
           <>
             {getReplies.data.replies?.map((item, index) => {
-              let isLast = false
-              if (getReplies?.data?.replies && getReplies.data.replies.length - 1 === index) isLast = true
               return (
                 <CommentItem
                   key={item._id}
@@ -119,16 +118,17 @@ export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps)
   const root = document.getElementById("root")!
   const comments = song.comments
   const lastCommentId = comments[comments.length - 1]?._id
+
   const [toggleSort, setToggleSort] = useState<SortType>("Top")
   const [state, dispatch] = useReducer(commentInputMenuReducer, INITIAL_STATE)
 
   const handleCloseMenu = () => {
+    dispatch({ type: "CLOSE" })
     onClose(false)
-    dispatch({ type: "CLOSE", payload: { selectedComment: null } })
   }
 
   useEffect(() => {
-    dispatch({ type: "CLOSE", payload: { selectedComment: null } })
+    dispatch({ type: "CLOSE" })
   }, [song])
 
   if (!isOpen) return null
@@ -140,41 +140,36 @@ export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps)
         actions={
           <>
             <CommentActions toggleSort={toggleSort} setToggleSort={setToggleSort} />
-            <CommentInput
-              placeholder="Add a comment"
-              dispatch={() => dispatch({ type: "COMMENT", payload: { selectedComment: null } })}
-            />
+            <CommentInput placeholder="Add a comment" dispatch={() => dispatch({ type: "COMMENT" })} />
           </>
         }
         items={
           <>
-            {comments.map((item, index) => {
-              let isLast
-              if (comments.length - 1 === index) isLast = item._id
+            {comments.map((item) => {
               return (
-                <CommentItem
-                  key={item._id}
-                  comment={item}
-                  authorId={song.user._id}
-                  editId={state.isEditingId}
-                  lastItemId={lastCommentId}
-                >
+                <>
                   <ReplyMenu
                     song={song}
                     state={state}
                     dispatch={dispatch}
                     isOpen={state.isReplyMenuOpen}
                     onClose={handleCloseMenu}
-                    onGoBack={() => dispatch({ type: "CLOSE_REPLY_MENU", payload: { selectedComment: null } })}
+                    onGoBack={() => dispatch({ type: "CLOSE_REPLY_MENU" })}
+                    comment={state.replyComment ? state.replyComment : item}
+                  />
+
+                  <CommentItem
+                    key={item._id}
                     comment={item}
-                  />
-                  <LikeButton comment={item} />
-                  <ReplyButton
-                    onClick={() => dispatch({ type: "OPEN_REPLY_MENU", payload: { selectedComment: item } })}
-                    total={item?.replies?.length}
-                  />
-                  <UsersCommentButtons songId={song._id} comment={item} dispatch={dispatch} />
-                </CommentItem>
+                    authorId={song.user._id}
+                    editId={state.isEditingId}
+                    lastItemId={lastCommentId}
+                  >
+                    <LikeButton comment={item} />
+                    <ReplyButton reply={item} onClick={dispatch} total={item?.replies?.length} />
+                    <UsersCommentButtons songId={song._id} comment={item} dispatch={dispatch} />
+                  </CommentItem>
+                </>
               )
             })}
           </>

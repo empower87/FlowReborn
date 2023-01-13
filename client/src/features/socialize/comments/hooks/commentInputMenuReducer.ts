@@ -4,26 +4,29 @@ import { IComment } from "../../../../../../server/src/models"
 export type InputTypes = "COMMENT" | "EDIT" | "REPLY" | "OPEN_REPLY_MENU" | "CLOSE_REPLY_MENU" | "HIDE" | "CLOSE"
 
 type Payload = {
-  selectedComment: IComment | null
+  // selectedComment: IComment | null
+  comment?: IComment
+  reply?: IComment
+  editComment?: IComment
 }
 
 type State = {
   showInput: InputTypes
   isReplyMenuOpen: boolean
-  showComments: boolean
+  replyComment: IComment | null
   isEditingId: string | null
   selectedComment: IComment | null
 }
 
 type Action = {
   type: InputTypes
-  payload: Payload
+  payload?: Payload
 }
 
 export const INITIAL_STATE: State = {
   showInput: "HIDE",
   isReplyMenuOpen: false,
-  showComments: false,
+  replyComment: null,
   isEditingId: null,
   selectedComment: null,
 }
@@ -44,50 +47,35 @@ export const commentInputMenuReducer: Reducer<State, Action> = (state, action) =
         }
       }
     case "EDIT":
-      if (!action.payload.selectedComment) return state
-      if (
-        state.showInput === "EDIT" &&
-        action.payload.selectedComment &&
-        state.isEditingId &&
-        state.isEditingId === action.payload.selectedComment._id
-      ) {
-        return INITIAL_STATE
-      }
+      if (!action.payload?.editComment) return state
       return {
         ...state,
         showInput: "EDIT",
-        isEditingId: action.payload.selectedComment._id,
-        selectedComment: action.payload.selectedComment,
+        isEditingId: action.payload.editComment._id,
+        selectedComment: action.payload.editComment,
       }
     case "REPLY":
-      if (state.showInput === "REPLY") {
-        if (
-          state.selectedComment &&
-          action.payload.selectedComment &&
-          state.selectedComment._id === action.payload.selectedComment._id
-        ) {
-          return INITIAL_STATE
-        }
-        return {
-          ...state,
-          showInput: "REPLY",
-          selectedComment: action.payload.selectedComment,
-        }
-      }
+      if (!action.payload?.reply) return state
       return {
         ...state,
         showInput: "REPLY",
         isEditingId: null,
-        selectedComment: action.payload.selectedComment,
+        selectedComment: action.payload.reply,
       }
     case "OPEN_REPLY_MENU":
-      if (action.payload.selectedComment) {
-        return { ...state, isReplyMenuOpen: true, showInput: "REPLY", selectedComment: action.payload.selectedComment }
+      if (action.payload && action.payload.reply) {
+        return {
+          ...state,
+          isReplyMenuOpen: true,
+          showInput: "REPLY",
+          isEditingId: null,
+          replyComment: action.payload.reply,
+        }
       } else {
         return state
       }
     case "CLOSE_REPLY_MENU":
-      return { ...state, isReplyMenuOpen: false }
+      return { ...state, isReplyMenuOpen: false, isEditingId: null }
     case "HIDE":
       return { ...state, showInput: "HIDE", isEditingId: null }
     case "CLOSE":
