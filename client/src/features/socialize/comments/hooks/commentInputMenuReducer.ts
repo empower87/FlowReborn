@@ -4,18 +4,9 @@ import { IComment } from "../../../../../../server/src/models"
 export type InputTypes = "COMMENT" | "EDIT" | "REPLY" | "OPEN_REPLY_MENU" | "CLOSE_REPLY_MENU" | "HIDE" | "CLOSE"
 
 type Payload = {
-  // selectedComment: IComment | null
   comment?: IComment
   reply?: IComment
   editComment?: IComment
-}
-
-type State = {
-  showInput: InputTypes
-  isReplyMenuOpen: boolean
-  replyComment: IComment | null
-  isEditingId: string | null
-  selectedComment: IComment | null
 }
 
 type Action = {
@@ -23,7 +14,17 @@ type Action = {
   payload?: Payload
 }
 
-export const INITIAL_STATE: State = {
+export type CommentState = {
+  showInput: InputTypes
+  isReplyMenuOpen: boolean
+  replyComment: IComment | null
+  isEditingId: string | null
+  selectedComment: IComment | null
+}
+export type CommentInputReducerType = { state: CommentState; dispatch: Dispatch<Action> }
+export type CommentDispatch = Dispatch<Action>
+
+export const INITIAL_STATE: CommentState = {
   showInput: "HIDE",
   isReplyMenuOpen: false,
   replyComment: null,
@@ -31,11 +32,7 @@ export const INITIAL_STATE: State = {
   selectedComment: null,
 }
 
-export type CommentInputReducerType = { state: State; dispatch: Dispatch<Action> }
-export type CommentDispatch = Dispatch<Action>
-export type CommentState = State
-
-export const commentInputMenuReducer: Reducer<State, Action> = (state, action) => {
+export const commentInputMenuReducer: Reducer<CommentState, Action> = (state, action) => {
   switch (action.type) {
     case "COMMENT":
       if (state.showInput === "COMMENT") {
@@ -63,16 +60,13 @@ export const commentInputMenuReducer: Reducer<State, Action> = (state, action) =
         selectedComment: action.payload.reply,
       }
     case "OPEN_REPLY_MENU":
-      if (action.payload && action.payload.reply) {
-        return {
-          ...state,
-          isReplyMenuOpen: true,
-          showInput: "REPLY",
-          isEditingId: null,
-          replyComment: action.payload.reply,
-        }
-      } else {
-        return state
+      if (!action.payload?.reply) return state
+      return {
+        ...state,
+        isReplyMenuOpen: true,
+        showInput: "REPLY",
+        isEditingId: null,
+        replyComment: action.payload.reply,
       }
     case "CLOSE_REPLY_MENU":
       return { ...state, isReplyMenuOpen: false, isEditingId: null }

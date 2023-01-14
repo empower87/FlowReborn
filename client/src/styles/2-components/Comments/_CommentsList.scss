@@ -5,6 +5,7 @@
   box-shadow: inset 3px 3px 3px #303030, inset -2px -2px 2px 0px #303030;
   padding-bottom: 2%;
 }
+
 .comments__item {
   width: 96%;
   border-radius: 0.4em;
@@ -158,12 +159,17 @@
             }
 
             &:active {
-              background: #606060;
+              background: #979797;
               box-shadow: inset 2px 2px 3px #353535, inset -2px -2px 2px #858585;
             }
             &:hover {
-              background: #6f6f6f;
-              box-shadow: 2px 2px 3px #383838, -1px -1px 3px #b3b3b3;
+              background: #979797;
+              box-shadow: 1px 1px 3px #494949, -1px -1px 2px #ffffff;
+              .comments__btn-text--container {
+                .comments__btn-text {
+                  color: white;
+                }
+              }
             }
 
             .comments__btn-text--container {

@@ -7916,7 +7916,10 @@ button {
   box-shadow: inset 1px 1px 3px #343434, inset -1px -1px 3px #ffffff;
 }
 .CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__item--reply-wrapper .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn {
-  box-shadow: 1px 1px 3px #343434, -1px -1px 3px #ffffff;
+  box-shadow: 1px 1px 3px #515151, -1px -1px 2px #ffffff;
+}
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__item--reply-wrapper .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn:hover {
+  background: #a0a0a0;
 }
 .CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-sort {
   height: 45%;
@@ -8507,12 +8510,15 @@ button {
   width: 1.3rem;
 }
 .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn:active {
-  background: #606060;
+  background: #979797;
   box-shadow: inset 2px 2px 3px #353535, inset -2px -2px 2px #858585;
 }
 .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn:hover {
-  background: #6f6f6f;
-  box-shadow: 2px 2px 3px #383838, -1px -1px 3px #b3b3b3;
+  background: #979797;
+  box-shadow: 1px 1px 3px #494949, -1px -1px 2px #ffffff;
+}
+.comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn:hover .comments__btn-text--container .comments__btn-text {
+  color: white;
 }
 .comments__item .comments__actions--container .comments__actions .comments__actions--shadow-inset .comments__btn--container .comments__btn .comments__btn-text--container {
   height: 100%;

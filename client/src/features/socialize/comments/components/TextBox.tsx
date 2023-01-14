@@ -1,6 +1,7 @@
 import { forwardRef, MouseEvent, MouseEventHandler, useCallback, useEffect, useRef, useState } from "react"
 import ReactDOM from "react-dom"
 import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
+import LoadingSpinner from "src/components/loading/LoadingSpinner"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import { useAuth } from "src/context/AuthContext"
 import useMobileKeyboardHandler from "src/hooks/useMobileKeyboardHandler"
@@ -18,6 +19,7 @@ interface ITextAreaProps {
 interface ITextInputModalProps extends ITextAreaProps {
   songId: string
   dispatch: CommentDispatch
+  update: (type: "Comment" | "Edit" | "Delete", data: IComment | undefined) => void
 }
 
 const Photo = () => {
@@ -35,12 +37,12 @@ const Photo = () => {
   )
 }
 
-const Button = ({ onClick }: { onClick: MouseEventHandler<HTMLButtonElement> }) => {
+const Button = ({ onClick, isLoading }: { onClick: MouseEventHandler<HTMLButtonElement>; isLoading: boolean }) => {
   return (
     <div className="comment-input__header">
       <div className="comment-input__btn">
         <button className="comment-input__btn--submit" type="submit" onClick={onClick}>
-          <Icon type={ButtonTypes.Forward} options={{ color: "White", size: 80 }} />
+          {isLoading ? <LoadingSpinner /> : <Icon type={ButtonTypes.Forward} options={{ color: "White", size: 80 }} />}
         </button>
       </div>
     </div>
@@ -77,6 +79,11 @@ const TextArea = forwardRef(({ type, comment }: ITextAreaProps, ref: any) => {
         setText("")
         setPlaceholder(`Reply to ${comment.user.username}..`)
         break
+      case "OPEN_REPLY_MENU":
+        if (!comment) return
+        setText("")
+        setPlaceholder(`Reply to ${comment.user.username}..`)
+        break
       case "COMMENT":
         setText("")
         setPlaceholder("Leave A Comment..")
@@ -108,31 +115,39 @@ const TextArea = forwardRef(({ type, comment }: ITextAreaProps, ref: any) => {
   )
 })
 
-export default function TextBox({ type, songId, comment, dispatch }: ITextInputModalProps) {
+export default function TextBox({ type, songId, comment, dispatch, update }: ITextInputModalProps) {
   const root = document.getElementById("root")!
-  const { addComment, editComment } = useComments()
+  const { addComment, editComment, error, isLoading, data } = useComments()
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
   const onSubmit = (e: MouseEvent<HTMLButtonElement>) => {
     if (!inputRef.current) return
     if (type === "EDIT" && comment) {
       editComment(comment._id, inputRef.current.value)
+      update("Edit", data)
     } else if (type === "REPLY" && comment) {
       addComment(comment._id, inputRef.current.value)
     } else {
       addComment(songId, inputRef.current.value)
+      update("Comment", data)
     }
     e.preventDefault()
   }
 
+  const onClose = (e: MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      dispatch({ type: "HIDE" })
+    }
+  }
+
   if (type === "HIDE") return null
   return ReactDOM.createPortal(
-    <div className="CommentInputModal" onClick={() => dispatch({ type: "HIDE" })}>
+    <div className="CommentInputModal" onClick={(e) => onClose(e)}>
       <div className="comment-input__form--container">
         <form className="comment-input__form">
           <Photo />
           <TextArea type={type} comment={comment} ref={inputRef} />
-          <Button onClick={(e) => onSubmit(e)} />
+          <Button onClick={(e) => onSubmit(e)} isLoading={isLoading} />
         </form>
       </div>
     </div>,

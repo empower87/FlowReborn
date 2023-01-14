@@ -131,10 +131,41 @@ export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps)
     dispatch({ type: "CLOSE" })
   }, [song])
 
+  const updateMenuComments = (type: "Comment" | "Edit" | "Delete", data: IComment | undefined) => {
+    if (!data) return
+    switch (type) {
+      case "Comment":
+        comments.push(data)
+
+        break
+      case "Edit":
+        comments.map((comment) => {
+          if (comment._id === data._id) {
+            return data
+          } else {
+            return comment
+          }
+        })
+
+        break
+      case "Delete":
+        comments.filter((comment) => comment._id !== data._id)
+
+        break
+      default:
+    }
+  }
+
   if (!isOpen) return null
   return ReactDOM.createPortal(
     <>
-      <TextBox type={state.showInput} songId={song._id} comment={state.selectedComment} dispatch={dispatch} />
+      <TextBox
+        type={state.showInput}
+        songId={song._id}
+        comment={state.selectedComment}
+        dispatch={dispatch}
+        update={updateMenuComments}
+      />
       <CommentMenuLayout
         header={<CommentHeader menu="Comments" comments={comments.length} onClose={handleCloseMenu} />}
         actions={
