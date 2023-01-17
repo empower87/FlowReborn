@@ -6,10 +6,8 @@ import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import { useAuth } from "src/context/AuthContext"
 import useMobileKeyboardHandler from "src/hooks/useMobileKeyboardHandler"
 import { IComment } from "../../../../../../server/src/models/Comment"
-import { CommentDispatch, InputTypes } from "../hooks/commentInputMenuReducer"
+import { InputTypes } from "../hooks/commentInputMenuReducer"
 import useComments from "../hooks/useComments"
-
-// type InputType = "Comment" | "Edit" | "Reply" | "Hide"
 
 interface ITextAreaProps {
   type: InputTypes
@@ -17,9 +15,11 @@ interface ITextAreaProps {
 }
 
 interface ITextInputModalProps extends ITextAreaProps {
-  songId: string
-  dispatch: CommentDispatch
-  update: (type: "Comment" | "Edit" | "Delete", data: IComment | undefined) => void
+  // songId: string
+  // dispatch: CommentDispatch
+  // update: (type: "Comment" | "Edit" | "Delete", data: IComment | undefined) => void
+  onClose: (e: MouseEvent<HTMLDivElement>) => void
+  onSubmit: (e: MouseEvent<HTMLButtonElement>, text: string | undefined) => void
 }
 
 const Photo = () => {
@@ -115,30 +115,30 @@ const TextArea = forwardRef(({ type, comment }: ITextAreaProps, ref: any) => {
   )
 })
 
-export default function TextBox({ type, songId, comment, dispatch, update }: ITextInputModalProps) {
+export default function TextBox({ type, comment, onClose, onSubmit }: ITextInputModalProps) {
   const root = document.getElementById("root")!
   const { addComment, editComment, error, isLoading, data } = useComments()
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
-  const onSubmit = (e: MouseEvent<HTMLButtonElement>) => {
-    if (!inputRef.current) return
-    if (type === "EDIT" && comment) {
-      editComment(comment._id, inputRef.current.value)
-      update("Edit", data)
-    } else if (type === "REPLY" && comment) {
-      addComment(comment._id, inputRef.current.value)
-    } else {
-      addComment(songId, inputRef.current.value)
-      update("Comment", data)
-    }
-    e.preventDefault()
-  }
+  // const onSubmit = (e: MouseEvent<HTMLButtonElement>) => {
+  //   if (!inputRef.current) return
+  //   if (type === "EDIT" && comment) {
+  //     editComment(comment._id, inputRef.current.value)
+  //     update("Edit", data)
+  //   } else if (type === "REPLY" && comment) {
+  //     addComment(comment._id, inputRef.current.value)
+  //   } else {
+  //     addComment(songId, inputRef.current.value)
+  //     update("Comment", data)
+  //   }
+  //   e.preventDefault()
+  // }
 
-  const onClose = (e: MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) {
-      dispatch({ type: "HIDE" })
-    }
-  }
+  // const onClose = (e: MouseEvent<HTMLDivElement>) => {
+  //   if (e.target === e.currentTarget) {
+  //     dispatch({ type: "HIDE" })
+  //   }
+  // }
 
   if (type === "HIDE") return null
   return ReactDOM.createPortal(
@@ -147,7 +147,7 @@ export default function TextBox({ type, songId, comment, dispatch, update }: ITe
         <form className="comment-input__form">
           <Photo />
           <TextArea type={type} comment={comment} ref={inputRef} />
-          <Button onClick={(e) => onSubmit(e)} isLoading={isLoading} />
+          <Button onClick={(e) => onSubmit(e, inputRef.current?.value)} isLoading={isLoading} />
         </form>
       </div>
     </div>,

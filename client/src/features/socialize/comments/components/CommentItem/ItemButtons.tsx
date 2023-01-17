@@ -15,7 +15,7 @@ type ItemButtonProps = {
   total?: number
   isLiked?: boolean
 }
-type UsersCommentButtonsProps = {
+type EditDeleteButtonsProps = {
   songId: string
   comment: IComment
   dispatch: CommentDispatch
@@ -100,7 +100,7 @@ const DeleteButton = ({ songId, commentId }: { songId: string; commentId: string
   )
 }
 
-export const UsersCommentButtons = ({ songId, comment, dispatch }: UsersCommentButtonsProps) => {
+export const EditDeleteButtons = ({ songId, comment, dispatch }: EditDeleteButtonsProps) => {
   const { user } = useAuth()
 
   if (user && user._id !== comment.user._id) return null

@@ -34,6 +34,9 @@ export const createCommentHandler = async ({ ctx, input }: ContextWithInput<Crea
 
 export const editCommentHandler = async ({ ctx, input }: ContextWithInput<EditCommentType>) => {
   if (!ctx.user) throw TRPCError("UNAUTHORIZED", "user not authorized to comment")
+  const getComment = await Comment.findById(input._id)
+
+  if (getComment && getComment.text === input.text) return TRPCError("BAD_REQUEST", "comment hasn't been edited")
   const updatedComment = await Comment.findByIdAndUpdate(input._id, {
     $set: { text: input.text, editedOn: new Date() },
   })

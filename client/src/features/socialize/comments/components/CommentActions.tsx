@@ -4,7 +4,7 @@ import { useAuth } from "src/context/AuthContext"
 import { IComment, ISong } from "../../../../../../server/src/models"
 import { CommentDispatch, CommentState } from "../hooks/commentInputMenuReducer"
 import CommentItem from "./CommentItem/CommentItem"
-import { LikeButton, ReplyButton, UsersCommentButtons } from "./CommentItem/ItemButtons"
+import { EditDeleteButtons, LikeButton, ReplyButton } from "./CommentItem/ItemButtons"
 
 type SortType = "Top" | "Newest"
 
@@ -83,7 +83,7 @@ export const ReplyActions = ({
       <CommentItem comment={comment} authorId={song.user._id} editId={state.isEditingId} lastItemId={comment._id}>
         <LikeButton comment={comment} />
         <ReplyButton reply={comment} onClick={dispatch} total={comment?.replies?.length} />
-        <UsersCommentButtons songId={song._id} comment={comment} dispatch={dispatch} />
+        <EditDeleteButtons songId={song._id} comment={comment} dispatch={dispatch} />
       </CommentItem>
     </div>
   )
