@@ -4,7 +4,6 @@ import ContinueModal from "src/components/modals/ContinueModal"
 import { useAuth } from "src/context/AuthContext"
 import { IComment } from "../../../../../../../server/src/models/index"
 import useLike from "../../../like/useLike"
-import { CommentDispatch } from "../../hooks/commentInputMenuReducer"
 import useComments from "../../hooks/useComments"
 
 type OnClick = MouseEventHandler<HTMLButtonElement>
@@ -18,7 +17,7 @@ type ItemButtonProps = {
 type EditDeleteButtonsProps = {
   songId: string
   comment: IComment
-  dispatch: CommentDispatch
+  dispatch: (type: any, data?: IComment | undefined) => void
 }
 
 const ItemButton = ({ type, onClick, total, isLiked }: ItemButtonProps) => {
@@ -47,7 +46,17 @@ const ItemButton = ({ type, onClick, total, isLiked }: ItemButtonProps) => {
 
 export const LikeButton = ({ comment }: { comment: IComment }) => {
   const { hasUser, total, onClick, loading } = useLike(comment, "Comment")
-  return <ItemButton type={"Like"} onClick={() => onClick()} total={total} isLiked={hasUser} />
+  return (
+    <ItemButton
+      type={"Like"}
+      onClick={() => {
+        onClick()
+        console.log("CLICKED LIKE BUTTON", comment.text, comment._id)
+      }}
+      total={total}
+      isLiked={hasUser}
+    />
+  )
 }
 
 export const ReplyButton = ({
@@ -56,7 +65,7 @@ export const ReplyButton = ({
   total,
 }: {
   reply: IComment
-  onClick: CommentDispatch
+  onClick: (type: any, data?: IComment | undefined) => void
   total: number
 }) => {
   return (
@@ -64,8 +73,8 @@ export const ReplyButton = ({
       <ItemButton
         type={"Reply"}
         onClick={() => {
-          onClick({ type: "OPEN_REPLY_MENU", payload: { reply: reply } })
-          console.log(reply, "CLICKED REPLY BUTTON WHAT REPLY??")
+          onClick("OPEN_REPLY_MENU", reply)
+          console.log("CLICKED REPLY BUTTON", reply.text, reply._id)
         }}
         total={total}
       />
@@ -106,7 +115,12 @@ export const EditDeleteButtons = ({ songId, comment, dispatch }: EditDeleteButto
   if (user && user._id !== comment.user._id) return null
   return (
     <>
-      <EditButton onClick={() => dispatch({ type: "EDIT", payload: { editComment: comment } })} />
+      <EditButton
+        onClick={() => {
+          dispatch("EDIT", comment)
+          console.log("CLICKED EDIT BUTTON", comment.text, comment._id)
+        }}
+      />
       <DeleteButton songId={songId} commentId={comment?._id} />
     </>
   )

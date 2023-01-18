@@ -2,7 +2,7 @@ import { Dispatch, MouseEvent, SetStateAction, useEffect, useReducer, useState }
 import ReactDOM from "react-dom"
 import { trpc } from "src/utils/trpc"
 import { IComment, ISong } from "../../../../../../server/src/models"
-import { CommentDispatch, commentInputMenuReducer, CommentState, INITIAL_STATE } from "../hooks/commentInputMenuReducer"
+import { commentInputMenuReducer, CommentState, INITIAL_STATE } from "../hooks/commentInputMenuReducer"
 import useComments from "../hooks/useComments"
 import { CommentActions, CommentInput, ReplyActions } from "./CommentActions"
 import { CommentHeader, CommentHeaderButton } from "./CommentHeader"
@@ -47,25 +47,28 @@ function CommentMenuLayout({ header, actions, items }: CommentMenuLayoutProps) {
 function ReplyMenu({
   song,
   state,
-  dispatch,
-  comment,
+  // dispatch,
+  toggleInput,
+  parentComment,
   isOpen,
   onClose,
   onGoBack,
 }: {
   song: ISong
   state: CommentState
-  dispatch: CommentDispatch
-  comment: IComment
+  // dispatch: CommentDispatch
+  toggleInput: (type: any, data?: IComment | undefined) => void
+  parentComment: IComment | null
   isOpen: boolean
   onClose: () => void
   onGoBack: () => void
 }) {
   const root = document.getElementById("root")!
-  const getReplies = trpc.useQuery(["comments.get-comment", { _id: comment._id }])
+  if (!parentComment || !isOpen) return null
+
+  const getReplies = trpc.useQuery(["comments.get-comment", { _id: parentComment._id }])
   const lastReply = getReplies.data && getReplies.data.replies[getReplies.data.replies.length - 1]?._id
 
-  if (!isOpen) return null
   return ReactDOM.createPortal(
     <CommentMenuLayout
       header={
@@ -78,11 +81,20 @@ function ReplyMenu({
       }
       actions={
         <>
-          <ReplyActions comment={comment} song={song} state={state} dispatch={dispatch} />
-          <CommentInput
-            placeholder="Add a reply"
-            dispatch={() => dispatch({ type: "REPLY", payload: { reply: comment } })}
-          />
+          {/* <ReplyActions comment={parentComment} song={song} state={state} dispatch={dispatch} /> */}
+          <ReplyActions>
+            <CommentItem
+              comment={parentComment}
+              authorId={song.user._id}
+              editId={state.isEditingId}
+              lastItemId={parentComment._id}
+            >
+              <LikeButton comment={parentComment} />
+              <ReplyButton reply={parentComment} onClick={toggleInput} total={parentComment?.replies?.length} />
+              <EditDeleteButtons songId={song._id} comment={parentComment} dispatch={toggleInput} />
+            </CommentItem>
+          </ReplyActions>
+          <CommentInput placeholder="Add a reply" dispatch={() => toggleInput("REPLY", parentComment)} />
         </>
       }
       items={
@@ -98,7 +110,7 @@ function ReplyMenu({
                   lastItemId={lastReply}
                 >
                   <LikeButton comment={item} />
-                  <EditDeleteButtons songId={song._id} comment={item} dispatch={dispatch} />
+                  <EditDeleteButtons songId={song._id} comment={item} dispatch={toggleInput} />
                 </CommentItem>
               )
             })}
@@ -144,59 +156,87 @@ const useCommentss = (songId: string, _comments: IComment[], onClose: Dispatch<S
   const [comments, setComments] = useState<IComment[]>([])
   const { addComment, editComment, error, isLoading, data } = useComments()
   const [state, dispatch] = useReducer(commentInputMenuReducer, INITIAL_STATE)
-  const [updateComments, setUpdateComments] = useState<"Comment" | "Edit" | "Delete" | "None">("None")
 
   useEffect(() => {
     setComments(_comments)
   }, [_comments])
 
   useEffect(() => {
-    if (updateComments === "None" || !data) return
-    switch (updateComments) {
-      case "Comment":
-        setComments((prev) => [...prev, data])
+    if ((data && !data.data) || (data && !data.target)) return
+    switch (data?.target) {
+      case "ADD":
+        if (!data || typeof data.data === "undefined" || data.target !== "ADD") return
+        setComments((prev) => [...prev, data.data])
         break
-      case "Edit":
-        setComments((prev) =>
-          prev.map((prevComment) => {
-            if (prevComment._id === data._id) {
-              return data
-            } else {
-              return prevComment
-            }
-          })
-        )
+      case "EDIT":
+        if (!data || typeof data.data === "undefined" || data.target !== "EDIT") return
+        const hasComment = comments.some((comment) => comment._id === data.data._id)
+        if (hasComment) {
+          setComments((prev) =>
+            prev.map((prevComment) => {
+              if (prevComment._id === data.data._id) {
+                return data.data
+              } else {
+                return prevComment
+              }
+            })
+          )
+        } else {
+          dispatch({ type: "UPDATE_REPLY_MENU", payload: { editComment: data.data } })
+          // setComments((prev) =>
+          //   prev.map((prevComment) => {
+          //     return {
+          //       ...prevComment,
+          //       replies: prevComment.replies.map((reply) => {
+          //         if (reply._id === data.data._id) return data.data
+          //         else return reply
+          //       }),
+          //     }
+          //   })
+          // )
+        }
         break
-      case "Delete":
-        setComments((prev) => prev.filter((prevComment) => prevComment._id !== data._id))
+      case "DELETE":
+        if (!data || typeof data.data === "undefined" || data.target !== "DELETE") return
+        setComments((prev) => prev.filter((prevComment) => prevComment._id !== data.data._id))
         break
       default:
         return
     }
-    setUpdateComments("None")
-  }, [updateComments])
+    console.log(data, "Did Comments update?")
+  }, [data])
 
   const handleCloseCommentMenu = () => {
     dispatch({ type: "CLOSE" })
     onClose(false)
   }
 
-  const handleToggleInput = (type: "EDIT" | "REPLY" | "COMMENT", data: IComment | undefined) => {
-    switch(type) {
+  const handleToggleInput = (
+    type: "EDIT" | "REPLY" | "COMMENT" | "OPEN_REPLY_MENU" | "CLOSE_REPLY_MENU",
+    data?: IComment | undefined
+  ) => {
+    switch (type) {
       case "EDIT":
         dispatch({ type: "EDIT", payload: { editComment: data } })
-        break;
+        console.log("TOGGLE EDIT INPUT", data?.text, state.selectedComment?.text)
+        break
       case "REPLY":
-        dispatch({ type: "REPLY", payload: { reply: data }})
-        break;
+        dispatch({ type: "REPLY", payload: { reply: data } })
+        console.log("TOGGLE REPLY INPUT", data?.text, state.selectedComment?.text)
+        break
+      case "OPEN_REPLY_MENU":
+        dispatch({ type: "OPEN_REPLY_MENU", payload: { reply: data } })
+        console.log("TOGGLE OPEN_REPLY INPUT", data?.text, state.selectedComment?.text)
+        break
+      case "CLOSE_REPLY_MENU":
+        dispatch({ type: "CLOSE_REPLY_MENU" })
+        console.log("TOGGLE CLOSE REPLY INPUT", data?.text, state.selectedComment?.text)
+        break
       case "COMMENT":
         dispatch({ type: "COMMENT" })
-        break;
+        console.log("TOGGLE COMMENT INPUT", data?.text, state.selectedComment?.text)
+        break
     }
-  }
-
-  const handleToggleReplyMenu = (toggle: "OPEN_REPLY_MENU" | "CLOSE_REPLY_MENU") => {
-    dispatch({ type: toggle })
   }
 
   const handleCloseInput = (e: MouseEvent<HTMLDivElement>) => {
@@ -211,16 +251,13 @@ const useCommentss = (songId: string, _comments: IComment[], onClose: Dispatch<S
       case "EDIT":
         if (!state.selectedComment) return
         editComment(state.selectedComment._id, text)
-        setUpdateComments("Edit")
         break
       case "REPLY":
         if (!state.selectedComment) return
         addComment(state.selectedComment._id, text)
-        setUpdateComments("Comment")
         break
       case "COMMENT":
         addComment(songId, text)
-        setUpdateComments("Comment")
         break
       default:
         return
@@ -238,79 +275,36 @@ const useCommentss = (songId: string, _comments: IComment[], onClose: Dispatch<S
   return {
     comments,
     state,
-    updateComments,
     handleCloseCommentMenu,
     handleToggleInput,
     handleCloseInput,
-    handleToggleReplyMenu,
     onSubmit,
   }
 }
 
 export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps) {
   const root = document.getElementById("root")!
-  const comments = song.comments
-  const lastCommentId = comments[comments.length - 1]?._id
-
   const [toggleSort, setToggleSort] = useState<SortType>("Top")
-  // const [state, dispatch] = useReducer(commentInputMenuReducer, INITIAL_STATE)
 
-  const {
-    comments: lol,
-    state,
-    handleCloseInput,
-    handleToggleInput,
-    onSubmit,
-    handleToggleReplyMenu,
-    handleCloseCommentMenu,
-  } = useCommentss(song._id, song.comments, onClose)
+  const { comments, state, handleCloseInput, handleToggleInput, onSubmit, handleCloseCommentMenu } = useCommentss(
+    song._id,
+    song.comments,
+    onClose
+  )
 
-  // useEffect(() => {
-  //   dispatch({ type: "CLOSE" })
-  // }, [song])
-
-  // const updateMenuComments = (type: "Comment" | "Edit" | "Delete", data: IComment | undefined) => {
-  //   if (!data) return
-  //   switch (type) {
-  //     case "Comment":
-  //       comments.push(data)
-  //       break
-  //     case "Edit":
-  //       comments.map((comment) => {
-  //         if (comment._id === data._id) {
-  //           return data
-  //         } else {
-  //           return comment
-  //         }
-  //       })
-  //       break
-  //     case "Delete":
-  //       comments.filter((comment) => comment._id !== data._id)
-  //       break
-  //     default:
-  //   }
-  // }
+  const lastCommentId = comments[comments.length - 1]?._id
 
   if (!isOpen) return null
   return ReactDOM.createPortal(
     <>
-      <TextBox
-        type={state.showInput}
-        // songId={song._id}
-        comment={state.selectedComment}
-        // dispatch={dispatch}
-        // update={updateMenuComments}
-        onClose={handleCloseInput}
-        onSubmit={onSubmit}
-      />
+      <TextBox type={state.showInput} comment={state.selectedComment} onClose={handleCloseInput} onSubmit={onSubmit} />
 
       <CommentMenuLayout
         header={<CommentHeader menu="Comments" comments={comments.length} onClose={handleCloseCommentMenu} />}
         actions={
           <>
             <CommentActions toggleSort={toggleSort} setToggleSort={setToggleSort} />
-            <CommentInput placeholder="Add a comment" dispatch={() => handleToggleInput("COMMENT", data: undefined)} />
-            {/* <CommentInput placeholder="Add a comment" dispatch={() => dispatch({ type: "COMMENT" })} /> */}
+            <CommentInput placeholder="Add a comment" dispatch={() => handleToggleInput("COMMENT", undefined)} />
           </>
         }
         items={
@@ -321,11 +315,11 @@ export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps)
                   <ReplyMenu
                     song={song}
                     state={state}
-                    dispatch={dispatch}
+                    toggleInput={handleToggleInput}
                     isOpen={state.isReplyMenuOpen}
                     onClose={handleCloseCommentMenu}
-                    onGoBack={() => handleToggleReplyMenu("CLOSE_REPLY_MENU")}
-                    comment={state.replyComment ? state.replyComment : item}
+                    onGoBack={() => handleToggleInput("CLOSE_REPLY_MENU")}
+                    parentComment={state.replyComment}
                   />
 
                   <CommentItem
@@ -336,8 +330,8 @@ export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps)
                     lastItemId={lastCommentId}
                   >
                     <LikeButton comment={item} />
-                    <ReplyButton reply={item} onClick={dispatch} total={item?.replies?.length} />
-                    <EditDeleteButtons songId={song._id} comment={item} dispatch={dispatch} />
+                    <ReplyButton reply={item} onClick={handleToggleInput} total={item?.replies?.length} />
+                    <EditDeleteButtons songId={song._id} comment={item} dispatch={handleToggleInput} />
                   </CommentItem>
                 </>
               )

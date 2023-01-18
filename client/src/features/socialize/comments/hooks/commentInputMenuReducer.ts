@@ -1,7 +1,15 @@
 import { Dispatch, Reducer } from "react"
 import { IComment } from "../../../../../../server/src/models"
 
-export type InputTypes = "COMMENT" | "EDIT" | "REPLY" | "OPEN_REPLY_MENU" | "CLOSE_REPLY_MENU" | "HIDE" | "CLOSE"
+export type InputTypes =
+  | "COMMENT"
+  | "EDIT"
+  | "REPLY"
+  | "OPEN_REPLY_MENU"
+  | "CLOSE_REPLY_MENU"
+  | "HIDE"
+  | "CLOSE"
+  | "UPDATE_REPLY_MENU"
 
 type Payload = {
   comment?: IComment
@@ -67,6 +75,7 @@ export const commentInputMenuReducer: Reducer<CommentState, Action> = (state, ac
         showInput: "REPLY",
         isEditingId: null,
         replyComment: action.payload.reply,
+        selectedComment: action.payload.reply,
       }
     case "CLOSE_REPLY_MENU":
       return { ...state, isReplyMenuOpen: false, isEditingId: null }
@@ -74,6 +83,9 @@ export const commentInputMenuReducer: Reducer<CommentState, Action> = (state, ac
       return { ...state, showInput: "HIDE", isEditingId: null }
     case "CLOSE":
       return INITIAL_STATE
+    case "UPDATE_REPLY_MENU":
+      if (!action.payload?.editComment) return state
+      return { ...state, selectedComment: action.payload.editComment }
     default:
       return state
   }

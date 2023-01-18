@@ -18,13 +18,13 @@ export default function useComments() {
   const queryClient = useQueryClient()
   const [error, setError] = useState<ErrorType>(ERROR_STATE)
   const [isLoading, setIsLoading] = useState(false)
-  const [data, setData] = useState<IComment | undefined>()
+  const [data, setData] = useState<{ target: "EDIT" | "ADD" | "DELETE"; data: IComment }>()
 
   const add = trpc.useMutation(["comments.create"], {
     onSuccess: (data) => {
       console.log(data, "success: added a comment")
       invalidateQueries()
-      setData(data as IComment)
+      setData({ target: "ADD", data: data as IComment })
     },
     onError: (err) => {
       setError({ target: "Create", message: err.message })
@@ -35,7 +35,7 @@ export default function useComments() {
     onSuccess: (data) => {
       invalidateQueries()
       console.log(data, "success: edited a comment")
-      setData(data as IComment)
+      setData({ target: "EDIT", data: data as IComment })
     },
     onError: (err) => {
       setError({ target: "Edit", message: err.message })

@@ -1,10 +1,6 @@
-import { Dispatch, SetStateAction } from "react"
+import { Dispatch, ReactNode, SetStateAction } from "react"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import { useAuth } from "src/context/AuthContext"
-import { IComment, ISong } from "../../../../../../server/src/models"
-import { CommentDispatch, CommentState } from "../hooks/commentInputMenuReducer"
-import CommentItem from "./CommentItem/CommentItem"
-import { EditDeleteButtons, LikeButton, ReplyButton } from "./CommentItem/ItemButtons"
 
 type SortType = "Top" | "Newest"
 
@@ -68,23 +64,26 @@ export const CommentActions = ({
 }
 
 export const ReplyActions = ({
-  comment,
-  song,
-  state,
-  dispatch,
+  // comment,
+  // song,
+  // state,
+  // dispatch,
+  children,
 }: {
-  comment: IComment
-  song: ISong
-  state: CommentState
-  dispatch: CommentDispatch
+  children: ReactNode
+  // comment: IComment
+  // song: ISong
+  // state: CommentState
+  // dispatch: CommentDispatch
 }) => {
   return (
     <div className="comments__item--reply-wrapper">
-      <CommentItem comment={comment} authorId={song.user._id} editId={state.isEditingId} lastItemId={comment._id}>
+      {children}
+      {/* <CommentItem comment={comment} authorId={song.user._id} editId={state.isEditingId} lastItemId={comment._id}>
         <LikeButton comment={comment} />
         <ReplyButton reply={comment} onClick={dispatch} total={comment?.replies?.length} />
         <EditDeleteButtons songId={song._id} comment={comment} dispatch={dispatch} />
-      </CommentItem>
+      </CommentItem> */}
     </div>
   )
 }
