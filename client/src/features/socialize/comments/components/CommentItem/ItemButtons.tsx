@@ -15,7 +15,7 @@ type ItemButtonProps = {
   isLiked?: boolean
 }
 type EditDeleteButtonsProps = {
-  songId: string
+  // songId: string
   comment: IComment
   dispatch: (type: any, data?: IComment | undefined) => void
 }
@@ -86,17 +86,24 @@ const EditButton = ({ onClick }: { onClick: OnClick }) => {
   return <ItemButton type="Edit" onClick={onClick} />
 }
 
-const DeleteButton = ({ songId, commentId }: { songId: string; commentId: string }) => {
+const DeleteButton = ({ songId, comment }: { songId: string; comment: IComment }) => {
   const { deleteComment } = useComments()
   const [isDelete, setIsDelete] = useState<boolean>(false)
 
+  const parentId = comment.parent._id ? comment.parent._id : (comment.parent as unknown as string)
   const handleOnDelete = () => {
-    deleteComment(commentId, songId)
+    deleteComment(comment._id, parentId)
   }
 
   return (
     <>
-      <ItemButton type="Delete" onClick={() => setIsDelete(true)} />
+      <ItemButton
+        type="Delete"
+        onClick={() => {
+          setIsDelete(true)
+          console.log(comment, "what's this commentId")
+        }}
+      />
       <ContinueModal
         title="Delete Comment"
         text="Are you sure you want to delete this comment?"
@@ -109,9 +116,9 @@ const DeleteButton = ({ songId, commentId }: { songId: string; commentId: string
   )
 }
 
-export const EditDeleteButtons = ({ songId, comment, dispatch }: EditDeleteButtonsProps) => {
+export const EditDeleteButtons = ({ comment, dispatch }: EditDeleteButtonsProps) => {
   const { user } = useAuth()
-
+  const parentId = comment.parent._id ? comment.parent._id : (comment.parent as unknown as string)
   if (user && user._id !== comment.user._id) return null
   return (
     <>
@@ -121,7 +128,7 @@ export const EditDeleteButtons = ({ songId, comment, dispatch }: EditDeleteButto
           console.log("CLICKED EDIT BUTTON", comment.text, comment._id)
         }}
       />
-      <DeleteButton songId={songId} commentId={comment?._id} />
+      <DeleteButton songId={parentId} comment={comment} />
     </>
   )
 }

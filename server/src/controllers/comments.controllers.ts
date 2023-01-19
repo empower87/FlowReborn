@@ -19,12 +19,12 @@ export const createCommentHandler = async ({ ctx, input }: ContextWithInput<Crea
   let commentPush = await Comment.findOne({ _id: input.parent })
 
   if (songPush) {
-    songPush.update({ $push: { comments: comment } }).exec()
+    songPush.update({ $push: { comments: comment } }, { new: true }).exec()
     await songPush.save()
     console.log(songPush, "SONGPUSH: MUST HAVE ADDED A COMMENT")
     return songPush
   } else if (commentPush) {
-    commentPush.update({ $push: { replies: comment } }).exec()
+    commentPush.update({ $push: { replies: comment } }, { new: true }).exec()
     await commentPush.save()
     console.log(commentPush, "COMMENTPUSH: MUST HAVE REPLIED TO A COMMENT")
 
@@ -53,12 +53,47 @@ export const editCommentHandler = async ({ ctx, input }: ContextWithInput<EditCo
 export const deleteCommentHandler = async ({ ctx, input }: ContextWithInput<DeleteCommentType>) => {
   if (!ctx.user) throw TRPCError("UNAUTHORIZED", "user not authorized to comment")
   const deletedComment = await Comment.findOneAndDelete({ _id: input._id })
-  const updatedSong = await Song.findByIdAndUpdate(
-    input.parent,
-    { $pull: { comments: { _id: input._id } } },
-    { new: true }
-  )
-    .populate<{ user: IUser }>("user")
-    .populate<{ comments: ISong["comments"] }>({ path: "comments", populate: "user" })
-  return updatedSong
+
+  const song = await Song.findById(input.parent)
+  if (song) {
+    song
+      .update({ $pull: { comments: { _id: input._id } } }, { new: true })
+      .populate<{ user: IUser }>("user")
+      .populate<{ comments: ISong["comments"] }>({ path: "comments", populate: "user" })
+    console.log(song, "ok so it was a comment")
+    return song
+  } else {
+    const comment = await Comment.findByIdAndUpdate(
+      input.parent,
+      { $pull: { replies: { _id: input._id } } },
+      { new: true }
+    )
+      .populate<{ user: IUser }>("user")
+      .populate<{ replies: IComment["replies"] }>({ path: "replies", populate: "user" })
+    if (comment) {
+      const id = comment.parent._id ? comment.parent._id : (comment.parent as unknown as string)
+      const updateSong = await Song.findById(id).populate<{ comments: ISong["comments"] }>("comments")
+      if (updateSong) {
+        const updatedComments = updateSong.comments.map((each) => {
+          if (each._id === comment?._id) {
+            return comment
+          } else {
+            return each
+          }
+        })
+        console.log(updateSong, updatedComments, "DID WE FIND THE PARENT SONG?????")
+        updateSong.update({ comments: updatedComments }, { new: true })
+      }
+      console.log(comment, updateSong, "ok so it was a reply")
+      return updateSong
+    }
+  }
+  // const updatedSong = await Song.findByIdAndUpdate(
+  //   input.parent,
+  //   { $pull: { comments: { _id: input._id } } },
+  //   { new: true }
+  // )
+  //   .populate<{ user: IUser }>("user")
+  //   .populate<{ comments: ISong["comments"] }>({ path: "comments", populate: "user" })
+  // return updatedSong
 }
