@@ -1,4 +1,4 @@
-import { Dispatch, MouseEvent, SetStateAction, useEffect, useReducer, useState } from "react"
+import { Dispatch, MouseEvent, SetStateAction, useCallback, useEffect, useReducer, useState } from "react"
 import { IComment } from "../../../../../../server/src/models"
 import { commentInputMenuReducer, INITIAL_STATE } from "../hooks/commentInputMenuReducer"
 import useComments from "../hooks/useComments"
@@ -9,7 +9,7 @@ export default function useCommentMenu(
   onClose: Dispatch<SetStateAction<boolean>>
 ) {
   const [comments, setComments] = useState<IComment[]>([])
-  const { addComment, editComment, error, isLoading, data } = useComments()
+  const { addComment, editComment, deleteComment, error, isLoading, data } = useComments()
   const [state, dispatch] = useReducer(commentInputMenuReducer, INITIAL_STATE)
   const [sortComments, setSortComments] = useState<"Top" | "Newest">("Newest")
 
@@ -46,37 +46,44 @@ export default function useCommentMenu(
     console.log(data, "Did Comments update?")
   }, [data])
 
-  const handleToggleInput = (
-    type: "EDIT" | "REPLY" | "COMMENT" | "OPEN_REPLY_MENU" | "CLOSE_REPLY_MENU" | "CLOSE",
-    data?: IComment | undefined
-  ) => {
-    switch (type) {
-      case "EDIT":
-        dispatch({ type: "EDIT", payload: { editComment: data } })
-        console.log("TOGGLE EDIT INPUT", data?.text, state.selectedComment?.text)
-        break
-      case "REPLY":
-        dispatch({ type: "REPLY", payload: { reply: data } })
-        console.log("TOGGLE REPLY INPUT", data?.text, state.selectedComment?.text)
-        break
-      case "OPEN_REPLY_MENU":
-        dispatch({ type: "OPEN_REPLY_MENU", payload: { reply: data } })
-        console.log("TOGGLE OPEN_REPLY INPUT", data?.text, state.selectedComment?.text)
-        break
-      case "CLOSE_REPLY_MENU":
-        dispatch({ type: "CLOSE_REPLY_MENU" })
-        console.log("TOGGLE CLOSE REPLY INPUT", data?.text, state.selectedComment?.text)
-        break
-      case "COMMENT":
-        dispatch({ type: "COMMENT" })
-        console.log("TOGGLE COMMENT INPUT", data?.text, state.selectedComment?.text)
-        break
-      case "CLOSE":
-        dispatch({ type: "CLOSE" })
-        onClose(false)
-        break
-    }
-  }
+  const handleToggleInput = useCallback(
+    (
+      type: "EDIT" | "REPLY" | "COMMENT" | "OPEN_REPLY_MENU" | "CLOSE_REPLY_MENU" | "CLOSE" | "DELETE",
+      data?: IComment | undefined
+    ) => {
+      switch (type) {
+        case "EDIT":
+          dispatch({ type: "EDIT", payload: { editComment: data } })
+          console.log("TOGGLE EDIT INPUT", data?.text, state.selectedComment?.text)
+          break
+        case "REPLY":
+          dispatch({ type: "REPLY", payload: { reply: data } })
+          console.log("TOGGLE REPLY INPUT", data?.text, state.selectedComment?.text)
+          break
+        case "OPEN_REPLY_MENU":
+          dispatch({ type: "OPEN_REPLY_MENU", payload: { reply: data } })
+          console.log("TOGGLE OPEN_REPLY INPUT", data?.text, state.selectedComment?.text)
+          break
+        case "CLOSE_REPLY_MENU":
+          dispatch({ type: "CLOSE_REPLY_MENU" })
+          console.log("TOGGLE CLOSE REPLY INPUT", data?.text, state.selectedComment?.text)
+          break
+        case "COMMENT":
+          dispatch({ type: "COMMENT" })
+          console.log("TOGGLE COMMENT INPUT", data?.text, state.selectedComment?.text)
+          break
+        case "CLOSE":
+          dispatch({ type: "CLOSE" })
+          onClose(false)
+          break
+        case "DELETE":
+          if (!data) return
+          const parentId = data.parent._id ? data.parent._id : (data.parent as unknown as string)
+          deleteComment(data._id, parentId, songId)
+      }
+    },
+    []
+  )
 
   const handleCloseInput = (e: MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {

@@ -86,13 +86,22 @@ const EditButton = ({ onClick }: { onClick: OnClick }) => {
   return <ItemButton type="Edit" onClick={onClick} />
 }
 
-const DeleteButton = ({ songId, comment }: { songId: string; comment: IComment }) => {
+const DeleteButton = ({
+  songId,
+  comment,
+  onClick,
+}: {
+  songId: string
+  comment: IComment
+  onClick: (type: any, data?: IComment | undefined) => void
+}) => {
   const { deleteComment } = useComments()
   const [isDelete, setIsDelete] = useState<boolean>(false)
 
   const parentId = comment.parent._id ? comment.parent._id : (comment.parent as unknown as string)
   const handleOnDelete = () => {
-    deleteComment(comment._id, parentId)
+    onClick("DELETE", comment)
+    // deleteComment(comment._id, parentId)
   }
 
   return (
@@ -128,7 +137,7 @@ export const EditDeleteButtons = ({ comment, dispatch }: EditDeleteButtonsProps)
           console.log("CLICKED EDIT BUTTON", comment.text, comment._id)
         }}
       />
-      <DeleteButton songId={parentId} comment={comment} />
+      <DeleteButton songId={parentId} comment={comment} onClick={dispatch} />
     </>
   )
 }

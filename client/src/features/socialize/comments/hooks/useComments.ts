@@ -46,6 +46,7 @@ export default function useComments() {
     onSuccess: (data) => {
       invalidateQueries()
       console.log(data, "success: deleted a comment")
+      setData({ target: "DELETE", data: data as IComment })
     },
     onError: (err) => {
       setError({ target: "Delete", message: err.message })
@@ -61,8 +62,8 @@ export default function useComments() {
     edit.mutate({ _id, text })
   }, [])
 
-  const deleteComment = useCallback((_id: string, parent: string) => {
-    del.mutate({ _id, parent })
+  const deleteComment = useCallback((_id: string, parent: string, songId: string) => {
+    del.mutate({ _id, parent, songId })
   }, [])
 
   const invalidateQueries = () => {

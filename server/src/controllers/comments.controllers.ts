@@ -1,4 +1,5 @@
-import { Comment, IComment, ISong, IUser, Song } from "../models/index"
+import mongoose from "mongoose"
+import { Comment, IComment, IUser, Song } from "../models/index"
 import { CreateCommentType, DeleteCommentType, EditCommentType, GetCommentByIdType } from "../schema/comments.schema"
 import { ContextWithInput, TRPCError } from "../utils/trpc"
 
@@ -52,42 +53,85 @@ export const editCommentHandler = async ({ ctx, input }: ContextWithInput<EditCo
 
 export const deleteCommentHandler = async ({ ctx, input }: ContextWithInput<DeleteCommentType>) => {
   if (!ctx.user) throw TRPCError("UNAUTHORIZED", "user not authorized to comment")
+  // const deletedComment = await Comment.findOneAndDelete({ _id: input._id })
   const deletedComment = await Comment.findOneAndDelete({ _id: input._id })
 
-  const song = await Song.findById(input.parent)
+  const song = await Song.findById(input.songId)
+  // .populate("comments")
+  // .populate({ path: "comments", populate: "replies" })
+
   if (song) {
-    song
-      .update({ $pull: { comments: { _id: input._id } } }, { new: true })
-      .populate<{ user: IUser }>("user")
-      .populate<{ comments: ISong["comments"] }>({ path: "comments", populate: "user" })
-    console.log(song, "ok so it was a comment")
-    return song
-  } else {
-    const comment = await Comment.findByIdAndUpdate(
-      input.parent,
-      { $pull: { replies: { _id: input._id } } },
-      { new: true }
-    )
-      .populate<{ user: IUser }>("user")
-      .populate<{ replies: IComment["replies"] }>({ path: "replies", populate: "user" })
-    if (comment) {
-      const id = comment.parent._id ? comment.parent._id : (comment.parent as unknown as string)
-      const updateSong = await Song.findById(id).populate<{ comments: ISong["comments"] }>("comments")
-      if (updateSong) {
-        const updatedComments = updateSong.comments.map((each) => {
-          if (each._id === comment?._id) {
-            return comment
-          } else {
-            return each
-          }
-        })
-        console.log(updateSong, updatedComments, "DID WE FIND THE PARENT SONG?????")
-        updateSong.update({ comments: updatedComments }, { new: true })
-      }
-      console.log(comment, updateSong, "ok so it was a reply")
-      return updateSong
+    const isComment = song.comments.find((each) => each._id === input.parent)
+    console.log(isComment, song, "OK SONG SHOULD NOT BE UPDATED")
+    if (isComment) {
+      // console.log(isComment, song, "ITS A COMMENT")
+      song.update({ $pull: { "comments._id": input._id } }).exec()
+      song.save()
+    } else {
+      // console.log(isComment, song, "ITS A REPLY")
+      const id = new mongoose.Types.ObjectId(input._id)
+      const updateComment = await Comment.findByIdAndUpdate(input.parent, { $pull: { replies: id } }, { new: true })
+
+      if (!updateComment) return
+      song.update({ comments: updateComment._id }, { $set: updateComment }).exec()
+      song.save()
+      console.log(updateComment, song, "FUCUUCUCKCKKC")
     }
+
+    console.log(isComment, song, "OK SONG SHOULD BE UPDATED")
+    return deletedComment
+
+    // song.update({ $pull: { comments: { _id: input._id } } }, { new: true }).exec()
+    // song.save()
+    // console.log(song, "ok so it was a comment")
+    // return deletedComment
   }
+  // else {
+  // const comment = await Comment.findById(input.parent)
+  // if (comment) {
+  //   comment.update({ $pull: { replies: { _id: input._id } } }, { new: true }).exec()
+  //   comment.save()
+  // }
+
+  // const comment = await Comment.findByIdAndUpdate(
+  //   input.parent,
+  //   { $pull: { replies: { _id: input._id } } },
+  //   { new: true }
+  // )
+  //   .populate<{ user: IUser }>("user")
+  //   .populate<{ replies: IComment["replies"] }>({ path: "replies", populate: "user" })
+
+  // console.log(comment, "OK I AWAITED AND GOT A COMMENT")
+  // if (comment) {
+  //   const updateSong = await Song.findByIdAndUpdate(
+  //     comment.parent._id,
+  //     { $pull: { ["comments.replies"]: { _id: input._id } } },
+  //     { new: true }
+  //   )
+  //   console.log(updateSong, "HI HIH HIJFSID F_#@(#@R_ RF_(SEFW_($ $#F_(I$F_(WIEKFI_OEWF  _(#W")
+  //   return comment
+  // }
+
+  // if (comment) {
+  //   const id = comment.parent._id ? comment.parent._id : (comment.parent as unknown as string)
+  //   const updateSong = await Song.findById(id).populate<{ comments: ISong["comments"] }>("comments")
+  //   if (updateSong) {
+  //     const updatedComments = updateSong.comments.map((each) => {
+  //       if (each._id === comment?._id) {
+  //         return comment
+  //       } else {
+  //         return each
+  //       }
+  //     })
+  //     console.log(updateSong, updatedComments, "DID WE FIND THE PARENT SONG?????")
+  //     updateSong.update({ $i: { comments: { $pull: { replies: { _id: input._id } } } } }, { new: true }).exec()
+  //     updateSong.save()
+  //   }
+
+  //   console.log(comment, deletedComment, "ok so it was a reply")
+  //   return comment
+  // }
+
   // const updatedSong = await Song.findByIdAndUpdate(
   //   input.parent,
   //   { $pull: { comments: { _id: input._id } } },
