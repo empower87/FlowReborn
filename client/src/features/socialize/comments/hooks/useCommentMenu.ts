@@ -18,18 +18,19 @@ export default function useCommentMenu(
   }, [_comments])
 
   useEffect(() => {
-    if ((data && !data.data) || (data && !data.target)) return
+    if (!data) return
+    if (!data.data || !data.target) return
+    const validData = data.data
+
     switch (data?.target) {
-      case "ADD":
-        if (!data || typeof data.data === "undefined" || data.target !== "ADD") return
-        setComments((prev) => [...prev, data.data])
+      case "CREATE":
+        setComments((prev) => [...prev, validData])
         break
       case "EDIT":
-        if (!data || typeof data.data === "undefined" || data.target !== "EDIT") return
         setComments((prev) =>
           prev.map((prevComment) => {
-            if (prevComment._id === data.data._id) {
-              return data.data
+            if (prevComment._id === validData._id) {
+              return validData
             } else {
               return prevComment
             }
@@ -37,14 +38,44 @@ export default function useCommentMenu(
         )
         break
       case "DELETE":
-        if (!data || typeof data.data === "undefined" || data.target !== "DELETE") return
-        setComments((prev) => prev.filter((prevComment) => prevComment._id !== data.data._id))
+        if (data.deleteReply && data.deleteReply === true) {
+          setComments((prev) =>
+            prev.map((comment) => {
+              if (comment._id === validData.parent._id) {
+                console.log(comment, validData, "MUST BE A COMMENT REPLY NOT A SONG COMMENT")
+                return {
+                  ...comment,
+                  replies: comment.replies.filter((reply) => reply._id !== validData._id),
+                }
+              } else {
+                return comment
+              }
+            })
+          )
+        } else {
+          setComments((prev) =>
+            prev.map((prevComment) => {
+              if (prevComment._id === validData._id) {
+                console.log(prevComment, validData, "MUST HAVE BEEN A SONG COMMENT NOT A REPLY")
+                return validData
+              } else {
+                return prevComment
+              }
+            })
+          )
+        }
         break
       default:
         return
     }
-    console.log(data, "Did Comments update?")
+    console.log(data, validData, "Did Comments update?")
   }, [data])
+
+  // useEffect(() => {
+  //   if (data && data.target === "DELETE") {
+  //     console.log(comments, data, "did it change the replY?")
+  //   }
+  // }, [data])
 
   const handleToggleInput = useCallback(
     (
@@ -96,14 +127,14 @@ export default function useCommentMenu(
     switch (state.showInput) {
       case "EDIT":
         if (!state.selectedComment) return
-        editComment(state.selectedComment._id, text)
+        editComment(state.selectedComment._id, text, songId)
         break
       case "REPLY":
         if (!state.selectedComment) return
-        addComment(state.selectedComment._id, text)
+        addComment(state.selectedComment._id, text, songId)
         break
       case "COMMENT":
-        addComment(songId, text)
+        addComment(songId, text, songId)
         break
       default:
         return

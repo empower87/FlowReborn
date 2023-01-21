@@ -4,62 +4,77 @@ import { trpc } from "src/utils/trpc"
 import { IComment } from "../../../../../../server/src/models"
 import { useAuth } from "../../../../context/AuthContext"
 
+type MutationType = "CREATE" | "EDIT" | "DELETE"
 type ErrorType = {
-  target: "Create" | "Edit" | "Delete" | undefined
+  target: MutationType | undefined
   message: string
 }
+type DataType = {
+  target: MutationType | undefined
+  data: IComment | null
+  deleteReply?: boolean
+}
+
 const ERROR_STATE: ErrorType = {
   target: undefined,
   message: "",
+}
+const DATA_STATE: DataType = {
+  target: undefined,
+  data: null,
+  deleteReply: false,
 }
 
 export default function useComments() {
   const { user } = useAuth()
   const queryClient = useQueryClient()
-  const [error, setError] = useState<ErrorType>(ERROR_STATE)
   const [isLoading, setIsLoading] = useState(false)
-  const [data, setData] = useState<{ target: "EDIT" | "ADD" | "DELETE"; data: IComment }>()
+  const [error, setError] = useState<ErrorType>(ERROR_STATE)
+  const [data, setData] = useState<DataType>(DATA_STATE)
 
   const add = trpc.useMutation(["comments.create"], {
-    onSuccess: (data) => {
-      console.log(data, "success: added a comment")
+    onSuccess: (data, variables) => {
+      console.log(data, "SUCCESS: created a comment")
       invalidateQueries()
-      setData({ target: "ADD", data: data as IComment })
+
+      setData({ target: "CREATE", data: data })
     },
     onError: (err) => {
-      setError({ target: "Create", message: err.message })
+      setError({ target: "CREATE", message: err.message })
     },
   })
 
   const edit = trpc.useMutation(["comments.edit"], {
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
+      console.log(data, "SUCCESS: edited a comment")
       invalidateQueries()
-      console.log(data, "success: edited a comment")
-      setData({ target: "EDIT", data: data as IComment })
+      setData({ target: "EDIT", data: data })
     },
     onError: (err) => {
-      setError({ target: "Edit", message: err.message })
+      setError({ target: "EDIT", message: err.message })
     },
   })
 
   const del = trpc.useMutation(["comments.delete"], {
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
+      console.log(data, "SUCCESS: deleted a comment")
       invalidateQueries()
-      console.log(data, "success: deleted a comment")
-      setData({ target: "DELETE", data: data as IComment })
+      let isReply = false
+      if (data && data.parent._id !== variables.songId) isReply = true
+      setData({ target: "DELETE", data: data, deleteReply: isReply })
     },
     onError: (err) => {
-      setError({ target: "Delete", message: err.message })
+      setError({ target: "DELETE", message: err.message })
     },
   })
 
-  const addComment = useCallback((parent: string, text: string) => {
+  const addComment = useCallback((parent: string, text: string, songId: string) => {
     if (!user) return
-    add.mutate({ parent, text, user })
+    add.mutate({ parent, text, user, songId })
   }, [])
 
-  const editComment = useCallback((_id: string, text: string) => {
-    edit.mutate({ _id, text })
+  const editComment = useCallback((_id: string, text: string, songId: string) => {
+    edit.mutate({ _id, text, songId })
   }, [])
 
   const deleteComment = useCallback((_id: string, parent: string, songId: string) => {

@@ -18,16 +18,18 @@ export const CreateCommentSchema = CommentSchema.omit({
   replies: true,
   createdOn: true,
   updatedOn: true,
-})
-
-export const DeleteCommentSchema = z.object({
-  _id: z.string(),
-  parent: z.string(),
+}).extend({
   songId: z.string(),
 })
 
-export const EditCommentSchema = CommentSchema.pick({ _id: true, text: true })
-// export const DeleteCommentSchema = CommentSchema.pick({ _id: true, parent: true, songId: z.string() })
+export const DeleteCommentSchema = CommentSchema.pick({
+  _id: true,
+  parent: true,
+}).extend({
+  songId: z.string(),
+})
+
+export const EditCommentSchema = CommentSchema.pick({ _id: true, text: true }).extend({ songId: z.string() })
 export const GetCommentByIdSchema = CommentSchema.pick({ _id: true })
 
 export type CreateCommentType = z.infer<typeof CreateCommentSchema>
