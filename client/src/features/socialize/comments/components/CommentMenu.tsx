@@ -69,6 +69,7 @@ function ReplyMenu({
   const lastReply = getReplies.data && getReplies.data.replies[getReplies.data.replies.length - 1]?._id
 
   const songId = parentComment.parent._id ? parentComment.parent._id : (parentComment.parent as unknown as string)
+  if (getReplies.data) console.log(getReplies.data, "WTF IS GOING ON WITH REPLIES MAN")
   return ReactDOM.createPortal(
     <CommentMenuLayout
       header={
@@ -85,7 +86,11 @@ function ReplyMenu({
           <ReplyActions>
             <CommentItem comment={parentComment} authorId={songId} editId={editingId} lastItemId={parentComment._id}>
               <LikeButton comment={parentComment} />
-              <ReplyButton reply={parentComment} onClick={toggleInput} total={parentComment?.replies?.length} />
+              <ReplyButton
+                reply={parentComment}
+                onClick={toggleInput}
+                total={getReplies?.data?.replies?.length ? getReplies.data.replies.length : 0}
+              />
               <EditDeleteButtons comment={parentComment} dispatch={toggleInput} />
             </CommentItem>
           </ReplyActions>
@@ -133,6 +138,7 @@ export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps)
   } = useCommentMenu(song._id, song.comments, onClose)
   const lastCommentId = comments[comments.length - 1]?._id
 
+  console.log(comments, song.comments, "YO WHAT THE FUCK MAN WHAT THE FUCCKKCKCCKCK")
   if (!isOpen) return null
   return ReactDOM.createPortal(
     <>
@@ -160,6 +166,7 @@ export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps)
         items={
           <>
             {comments.map((item) => {
+              const total = item.replies?.length
               return (
                 <CommentItem
                   key={item._id}
@@ -169,7 +176,7 @@ export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps)
                   lastItemId={lastCommentId}
                 >
                   <LikeButton comment={item} />
-                  <ReplyButton reply={item} onClick={handleToggleInput} total={item?.replies?.length} />
+                  <ReplyButton reply={item} onClick={handleToggleInput} total={total} />
                   <EditDeleteButtons comment={item} dispatch={handleToggleInput} />
                 </CommentItem>
               )

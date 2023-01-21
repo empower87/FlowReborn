@@ -4,7 +4,6 @@ import ContinueModal from "src/components/modals/ContinueModal"
 import { useAuth } from "src/context/AuthContext"
 import { IComment } from "../../../../../../../server/src/models/index"
 import useLike from "../../../like/useLike"
-import useComments from "../../hooks/useComments"
 
 type OnClick = MouseEventHandler<HTMLButtonElement>
 
@@ -95,7 +94,7 @@ const DeleteButton = ({
   comment: IComment
   onClick: (type: any, data?: IComment | undefined) => void
 }) => {
-  const { deleteComment } = useComments()
+  // const { deleteComment } = useComments()
   const [isDelete, setIsDelete] = useState<boolean>(false)
 
   const parentId = comment.parent._id ? comment.parent._id : (comment.parent as unknown as string)
