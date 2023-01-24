@@ -5,7 +5,7 @@ import { IComment } from "../../../../../../server/src/models"
 import { useAuth } from "../../../../context/AuthContext"
 
 type MutationType = "CREATE" | "EDIT" | "DELETE"
-type ErrorType = {
+export type ErrorType = {
   target: MutationType | undefined
   message: string
 }
@@ -85,6 +85,10 @@ export default function useComments() {
     queryClient.invalidateQueries(["songs.all-songs"])
   }
 
+  const resetError = () => {
+    setError(ERROR_STATE)
+  }
+
   useEffect(() => {
     if (add.isLoading || edit.isLoading || del.isLoading) {
       setIsLoading(true)
@@ -93,5 +97,5 @@ export default function useComments() {
     }
   }, [add, edit, del])
 
-  return { addComment, editComment, deleteComment, error, isLoading, data }
+  return { addComment, editComment, deleteComment, error, resetError, isLoading, data }
 }

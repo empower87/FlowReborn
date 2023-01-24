@@ -85,7 +85,7 @@ function ReplyMenu({
               <EditDeleteButtons comment={parentComment} dispatch={toggleInput} />
             </CommentItem>
           </ReplyActions>
-          <CommentInput placeholder="Add a reply" dispatch={() => toggleInput("REPLY", parentComment)} />
+          <CommentInput placeholder="Add a reply" dispatch={() => toggleInput("OPEN_REPLY_INPUT", parentComment)} />
         </>
       }
       items={
@@ -113,17 +113,22 @@ function ReplyMenu({
 
 export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps) {
   const root = document.getElementById("root")!
-  const { comments, state, handleToggleInput, onSubmit, sortComments, setSortComments } = useCommentMenu(
-    song._id,
-    song.comments,
-    onClose
-  )
+  const { comments, state, handleToggleInput, onSubmit, sortComments, setSortComments, isLoading, error, resetError } =
+    useCommentMenu(song._id, song.comments, onClose)
   const lastCommentId = comments[comments.length - 1]?._id
 
   if (!isOpen) return null
   return ReactDOM.createPortal(
     <>
-      <TextBox type={state.showInput} comment={state.selectedComment} onClose={handleToggleInput} onSubmit={onSubmit} />
+      <TextBox
+        type={state.showInput}
+        comment={state.selectedComment}
+        onClose={handleToggleInput}
+        onSubmit={onSubmit}
+        isLoading={isLoading}
+        error={error}
+        clearError={resetError}
+      />
 
       <ReplyMenu
         editingId={state.isEditingId}
@@ -133,11 +138,16 @@ export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps)
       />
 
       <CommentMenuLayout
-        header={<CommentHeader menu="Comments" comments={comments.length} onClose={() => handleToggleInput("CLOSE")} />}
+        header={
+          <CommentHeader menu="Comments" comments={comments.length} onClose={() => handleToggleInput("CLOSE_MENUS")} />
+        }
         actions={
           <>
             <CommentActions toggleSort={sortComments} setToggleSort={setSortComments} />
-            <CommentInput placeholder="Add a comment" dispatch={() => handleToggleInput("COMMENT", undefined)} />
+            <CommentInput
+              placeholder="Add a comment"
+              dispatch={() => handleToggleInput("OPEN_COMMENT_INPUT", undefined)}
+            />
           </>
         }
         items={

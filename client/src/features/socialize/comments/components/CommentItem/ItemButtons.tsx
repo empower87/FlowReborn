@@ -132,7 +132,7 @@ export const EditDeleteButtons = ({ comment, dispatch }: EditDeleteButtonsProps)
     <>
       <EditButton
         onClick={() => {
-          dispatch("EDIT", comment)
+          dispatch("OPEN_EDIT_INPUT", comment)
           console.log("CLICKED EDIT BUTTON", comment.text, comment._id)
         }}
       />
