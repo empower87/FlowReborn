@@ -18,8 +18,8 @@ interface ITextInputModalProps extends ITextAreaProps {
   // songId: string
   // dispatch: CommentDispatch
   // update: (type: "Comment" | "Edit" | "Delete", data: IComment | undefined) => void
-  onClose: (e: MouseEvent<HTMLDivElement>) => void
-  onSubmit: (e: MouseEvent<HTMLButtonElement>, text: string | undefined) => void
+  onClose: (type: "HIDE") => void
+  onSubmit: (text: string | undefined) => void
 }
 
 const Photo = () => {
@@ -120,34 +120,25 @@ export default function TextBox({ type, comment, onClose, onSubmit }: ITextInput
   const { addComment, editComment, error, isLoading, data } = useComments()
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
-  // const onSubmit = (e: MouseEvent<HTMLButtonElement>) => {
-  //   if (!inputRef.current) return
-  //   if (type === "EDIT" && comment) {
-  //     editComment(comment._id, inputRef.current.value)
-  //     update("Edit", data)
-  //   } else if (type === "REPLY" && comment) {
-  //     addComment(comment._id, inputRef.current.value)
-  //   } else {
-  //     addComment(songId, inputRef.current.value)
-  //     update("Comment", data)
-  //   }
-  //   e.preventDefault()
-  // }
+  const handleCloseInput = (e: MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onClose("HIDE")
+    }
+  }
 
-  // const onClose = (e: MouseEvent<HTMLDivElement>) => {
-  //   if (e.target === e.currentTarget) {
-  //     dispatch({ type: "HIDE" })
-  //   }
-  // }
+  const handleOnSubmit = (e: MouseEvent<HTMLButtonElement>) => {
+    onSubmit(inputRef.current?.value)
+    e.preventDefault()
+  }
 
   if (type === "HIDE") return null
   return ReactDOM.createPortal(
-    <div className="CommentInputModal" onClick={(e) => onClose(e)}>
+    <div className="CommentInputModal" onClick={(e) => handleCloseInput(e)}>
       <div className="comment-input__form--container">
         <form className="comment-input__form">
           <Photo />
           <TextArea type={type} comment={comment} ref={inputRef} />
-          <Button onClick={(e) => onSubmit(e, inputRef.current?.value)} isLoading={isLoading} />
+          <Button onClick={(e) => handleOnSubmit(e)} isLoading={isLoading} />
         </form>
       </div>
     </div>,

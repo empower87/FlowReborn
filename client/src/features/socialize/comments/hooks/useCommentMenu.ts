@@ -1,4 +1,4 @@
-import { Dispatch, MouseEvent, SetStateAction, useCallback, useEffect, useReducer, useState } from "react"
+import { Dispatch, SetStateAction, useCallback, useEffect, useReducer, useState } from "react"
 import { IComment } from "../../../../../../server/src/models"
 import { commentInputMenuReducer, INITIAL_STATE } from "../hooks/commentInputMenuReducer"
 import useComments from "../hooks/useComments"
@@ -71,15 +71,9 @@ export default function useCommentMenu(
     console.log(data, validData, "Did Comments update?")
   }, [data])
 
-  // useEffect(() => {
-  //   if (data && data.target === "DELETE") {
-  //     console.log(comments, data, "did it change the replY?")
-  //   }
-  // }, [data])
-
   const handleToggleInput = useCallback(
     (
-      type: "EDIT" | "REPLY" | "COMMENT" | "OPEN_REPLY_MENU" | "CLOSE_REPLY_MENU" | "CLOSE" | "DELETE",
+      type: "EDIT" | "REPLY" | "COMMENT" | "OPEN_REPLY_MENU" | "CLOSE_REPLY_MENU" | "CLOSE" | "DELETE" | "HIDE",
       data?: IComment | undefined
     ) => {
       switch (type) {
@@ -107,22 +101,22 @@ export default function useCommentMenu(
           dispatch({ type: "CLOSE" })
           onClose(false)
           break
+        case "HIDE":
+          dispatch({ type: "HIDE" })
+          break
         case "DELETE":
           if (!data) return
           const parentId = data.parent._id ? data.parent._id : (data.parent as unknown as string)
           deleteComment(data._id, parentId, songId)
+          break
+        default:
+          return
       }
     },
     []
   )
 
-  const handleCloseInput = (e: MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) {
-      dispatch({ type: "HIDE" })
-    }
-  }
-
-  const onSubmit = (e: MouseEvent<HTMLButtonElement>, text: string | undefined) => {
+  const onSubmit = (text: string | undefined) => {
     if (!text || text === "") return
     switch (state.showInput) {
       case "EDIT":
@@ -139,15 +133,12 @@ export default function useCommentMenu(
       default:
         return
     }
-    e.preventDefault()
   }
 
   return {
     comments,
     state,
-    // handleCloseCommentMenu,
     handleToggleInput,
-    handleCloseInput,
     onSubmit,
     sortComments,
     setSortComments,

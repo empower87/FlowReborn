@@ -44,23 +44,15 @@ function CommentMenuLayout({ header, actions, items }: CommentMenuLayoutProps) {
 }
 
 function ReplyMenu({
-  // song,
-  // state,
   editingId,
   toggleInput,
   parentComment,
   isOpen,
-}: // onClose,
-// onGoBack,
-{
-  // song: ISong
-  // state: CommentState
+}: {
   editingId: string | null
   toggleInput: (type: any, data?: IComment | undefined) => void
   parentComment: IComment | null
   isOpen: boolean
-  // onClose: () => void
-  // onGoBack: () => void
 }) {
   const root = document.getElementById("root")!
   if (!parentComment || !isOpen) return null
@@ -82,7 +74,6 @@ function ReplyMenu({
       }
       actions={
         <>
-          {/* <ReplyActions comment={parentComment} song={song} state={state} dispatch={dispatch} /> */}
           <ReplyActions>
             <CommentItem comment={parentComment} authorId={songId} editId={editingId} lastItemId={parentComment._id}>
               <LikeButton comment={parentComment} />
@@ -104,11 +95,7 @@ function ReplyMenu({
               return (
                 <CommentItem key={item._id} comment={item} authorId={songId} editId={editingId} lastItemId={lastReply}>
                   <LikeButton comment={item} />
-                  <EditDeleteButtons
-                    // songId={item.parent._id ? item.parent._id : (item.parent as unknown as string)}
-                    comment={item}
-                    dispatch={toggleInput}
-                  />
+                  <EditDeleteButtons comment={item} dispatch={toggleInput} />
                 </CommentItem>
               )
             })}
@@ -126,32 +113,22 @@ function ReplyMenu({
 
 export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps) {
   const root = document.getElementById("root")!
-  const {
-    comments,
-    state,
-    handleCloseInput,
-    handleToggleInput,
-    onSubmit,
-    // handleCloseCommentMenu,
-    sortComments,
-    setSortComments,
-  } = useCommentMenu(song._id, song.comments, onClose)
+  const { comments, state, handleToggleInput, onSubmit, sortComments, setSortComments } = useCommentMenu(
+    song._id,
+    song.comments,
+    onClose
+  )
   const lastCommentId = comments[comments.length - 1]?._id
 
-  console.log(comments, song.comments, "YO WHAT THE FUCK MAN WHAT THE FUCCKKCKCCKCK")
   if (!isOpen) return null
   return ReactDOM.createPortal(
     <>
-      <TextBox type={state.showInput} comment={state.selectedComment} onClose={handleCloseInput} onSubmit={onSubmit} />
+      <TextBox type={state.showInput} comment={state.selectedComment} onClose={handleToggleInput} onSubmit={onSubmit} />
 
       <ReplyMenu
-        // song={song}
-        // state={state}
         editingId={state.isEditingId}
         toggleInput={handleToggleInput}
         isOpen={state.isReplyMenuOpen}
-        // onClose={handleCloseCommentMenu}
-        // onGoBack={() => handleToggleInput("CLOSE_REPLY_MENU")}
         parentComment={state.replyComment}
       />
 

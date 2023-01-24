@@ -36,19 +36,6 @@ export const createCommentHandler = async ({ ctx, input }: ContextWithInput<Crea
       .populate<{ replies: IComment["replies"] }>({ path: "replies", populate: "user" })
     return updateComment
   }
-  // const commentPush = await Comment.findOne({ _id: input.parent })
-
-  // if (songPush) {
-  //   songPush.update({ $push: { comments: comment } }, { new: true }).exec()
-  //   await songPush.save()
-  //   return comment
-  // } else if (commentPush) {
-  //   commentPush.update({ $push: { replies: comment } }, { new: true }).exec()
-  //   await commentPush.save()
-  //   return commentPush
-  // } else {
-  //   throw TRPCError("BAD_REQUEST", "Bad/invalid request data")
-  // }
 }
 
 export const editCommentHandler = async ({ ctx, input }: ContextWithInput<EditCommentType>) => {
@@ -73,6 +60,7 @@ export const editCommentHandler = async ({ ctx, input }: ContextWithInput<EditCo
 
 export const deleteCommentHandler = async ({ ctx, input }: ContextWithInput<DeleteCommentType>) => {
   if (!ctx.user) throw TRPCError("UNAUTHORIZED", "user not authorized to comment")
+
   var ObjectId = require("mongoose").Types.ObjectId
   const deletedComment = Comment.findOneAndDelete({ _id: input._id })
 
