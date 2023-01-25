@@ -1,4 +1,4 @@
-import { Dispatch, ReactNode, SetStateAction } from "react"
+import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import { useAuth } from "src/context/AuthContext"
 
@@ -19,8 +19,26 @@ const Photo = () => {
   )
 }
 
-const SortButton = ({ type, selected, onClick }: { type: SortType; selected: SortType; onClick: () => void }) => {
-  const selectedClass = type === selected ? "selected" : ""
+export const SortButton = ({
+  type,
+  selected,
+  onClick,
+}: {
+  type: SortType
+  selected: SortType
+  onClick: () => void
+}) => {
+  const [selectedClass, setSelectedClass] = useState<string>("")
+
+  useEffect(() => {
+    if (type === selected) {
+      setSelectedClass("selected")
+    } else {
+      setSelectedClass("")
+    }
+  }, [type, selected])
+
+  // const selectedClass = type === selected ? "selected" : ""
   return (
     <div className="comments__header-actions-sort-btn--container">
       <button className={`comments__header-actions-sort-btn ${selectedClass}`} type="button" onClick={onClick}>
@@ -51,14 +69,23 @@ export const CommentInput = ({ placeholder, dispatch }: { placeholder: string; d
 export const CommentActions = ({
   toggleSort,
   setToggleSort,
-}: {
+}: // children,
+{
   toggleSort: SortType
   setToggleSort: Dispatch<SetStateAction<SortType>>
+  // children: ReactNode
 }) => {
+  const handleToggleSort = (type: "Top" | "Newest") => {
+    if (type !== toggleSort) {
+      setToggleSort(type)
+    }
+  }
+
   return (
     <div className="comments__header-actions-sort">
-      <SortButton type="Top" selected={toggleSort} onClick={() => setToggleSort("Top")} />
-      <SortButton type="Newest" selected={toggleSort} onClick={() => setToggleSort("Newest")} />
+      {/* {children} */}
+      <SortButton type="Top" selected={toggleSort} onClick={() => handleToggleSort("Top")} />
+      <SortButton type="Newest" selected={toggleSort} onClick={() => handleToggleSort("Newest")} />
     </div>
   )
 }

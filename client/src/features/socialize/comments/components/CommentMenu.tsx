@@ -115,6 +115,7 @@ export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps)
   const root = document.getElementById("root")!
   const { comments, state, handleToggleInput, onSubmit, sortComments, setSortComments, isLoading, error, resetError } =
     useCommentMenu(song._id, song.comments, onClose)
+
   const lastCommentId = comments[comments.length - 1]?._id
 
   if (!isOpen) return null
@@ -144,6 +145,10 @@ export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps)
         actions={
           <>
             <CommentActions toggleSort={sortComments} setToggleSort={setSortComments} />
+            {/* <CommentActions>
+              <SortButton type="Top" selected={sortComments} onClick={() => setSortComments("Top")} />
+              <SortButton type="Newest" selected={sortComments} onClick={() => setSortComments("Newest")} />
+            </CommentActions> */}
             <CommentInput
               placeholder="Add a comment"
               dispatch={() => handleToggleInput("OPEN_COMMENT_INPUT", undefined)}

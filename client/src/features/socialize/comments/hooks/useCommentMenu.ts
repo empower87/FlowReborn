@@ -14,10 +14,21 @@ export default function useCommentMenu(
   const [sortComments, setSortComments] = useState<"Top" | "Newest">("Newest")
 
   useEffect(() => {
-    setComments(_comments)
+    const sortByNewest = _comments.sort((a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime())
+    setComments(sortByNewest)
+    setSortComments("Newest")
   }, [_comments])
 
-  useEffect(() => {})
+  useEffect(() => {
+    if (!comments.length) return
+    if (sortComments === "Top") {
+      setComments((prevComments) => prevComments.sort((a, b) => b.likes.length - a.likes.length))
+    } else if (sortComments === "Newest") {
+      setComments((prevComments) =>
+        prevComments.sort((a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime())
+      )
+    }
+  }, [sortComments])
 
   useEffect(() => {
     if (!data) return
@@ -40,37 +51,19 @@ export default function useCommentMenu(
         )
         break
       case "DELETE":
-        if (data.deleteReply && data.deleteReply === true) {
-          setComments((prev) =>
-            prev.map((comment) => {
-              if (comment._id === validData.parent._id) {
-                console.log(comment, validData, "MUST BE A COMMENT REPLY NOT A SONG COMMENT")
-                return {
-                  ...comment,
-                  replies: comment.replies.filter((reply) => reply._id !== validData._id),
-                }
-              } else {
-                return comment
-              }
-            })
-          )
-        } else {
-          setComments((prev) =>
-            prev.map((prevComment) => {
-              if (prevComment._id === validData._id) {
-                console.log(prevComment, validData, "MUST HAVE BEEN A SONG COMMENT NOT A REPLY")
-                return validData
-              } else {
-                return prevComment
-              }
-            })
-          )
-        }
+        setComments((prev) =>
+          prev.map((prevComment) => {
+            if (prevComment._id === validData._id) {
+              return validData
+            } else {
+              return prevComment
+            }
+          })
+        )
         break
       default:
         return
     }
-    console.log(data, validData, "Did Comments update?")
   }, [data])
 
   const handleToggleInput = useCallback((type: InputTypes | "DELETE", data?: IComment | undefined) => {

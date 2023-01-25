@@ -12,7 +12,6 @@ export type ErrorType = {
 type DataType = {
   target: MutationType | undefined
   data: IComment | null
-  deleteReply?: boolean
 }
 
 const ERROR_STATE: ErrorType = {
@@ -22,7 +21,6 @@ const ERROR_STATE: ErrorType = {
 const DATA_STATE: DataType = {
   target: undefined,
   data: null,
-  deleteReply: false,
 }
 
 export default function useComments() {
@@ -59,9 +57,7 @@ export default function useComments() {
     onSuccess: (data, variables) => {
       console.log(data, "SUCCESS: deleted a comment")
       invalidateQueries()
-      let isReply = false
-      if (data && data.parent._id !== variables.songId) isReply = true
-      setData({ target: "DELETE", data: data, deleteReply: isReply })
+      setData({ target: "DELETE", data: data })
     },
     onError: (err) => {
       setError({ target: "DELETE", message: err.message })

@@ -9,7 +9,7 @@ export interface IComment {
   parent: ISong | IComment
   user: IUser
   replies: IComment[]
-  createdOn?: Date
+  createdOn: Date
   updatedOn?: Date
   editedOn?: Date
 }
