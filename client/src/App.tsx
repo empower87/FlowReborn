@@ -1,9 +1,9 @@
-import React, { Suspense, useEffect, useState } from "react"
+import React, { Suspense, useState } from "react"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { ReactQueryDevtools } from "react-query/devtools"
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom"
 import Loading from "./components/loading/Loading"
-import { AuthProvider, useAuth } from "./context/AuthContext"
+import { AuthProvider } from "./context/AuthContext"
 import Auth from "./pages/auth-page/Auth"
 import Home from "./pages/home-page/Home"
 import "./styles/style.css"
@@ -21,29 +21,9 @@ const getAuthToken = () => {
   return `Bearer ${token}`
 }
 
-// const PrivateRoutes = () => {
-//   const { isAuthenticated, isLoading } = useAuth()
-//   if (isLoading) return <p>loading... </p>
-//   return isAuthenticated !== null ? <Outlet /> : <Navigate to="/auth" />
-// }
-
 const PrivateRoutes = () => {
   const user = localStorage.getItem("token") == null ? false : true
   return user ? <Outlet /> : <Navigate to="/auth" replace />
-}
-
-const PublicRoutes = () => {
-  const { user, isLoading } = useAuth()
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  useEffect(() => {
-    if (user) {
-      setIsAuthenticated(true)
-    } else {
-      setIsAuthenticated(true)
-    }
-  }, [user])
-  if (isLoading) return <p>loading... </p>
-  return !isAuthenticated ? <Navigate to={"/auth"} /> : <Outlet />
 }
 
 function App() {
@@ -61,9 +41,9 @@ function App() {
     trpc.createClient({
       url:
         process.env.NODE_ENV === "production"
-          ? "https://iron-flow.herokuapp.com/api/trpc"
-          : // "https://flow-henna.vercel.app/api/trpc"
-            "http://localhost:5000/api/trpc",
+          ? // ? "https://iron-flow.herokuapp.com/api/trpc"
+            "https://flow-henna.vercel.app/api/trpc"
+          : "http://localhost:5000/api/trpc",
       headers() {
         return { Authorization: getAuthToken() }
       },
