@@ -42,6 +42,7 @@ const InputErrorLayout = ({ modalSpecs, message }: InputErrorLayoutProps) => {
     </div>
   )
 }
+
 export default function InputError({ isOpen, onClose, message, options, children, altRoot }: InputErrorType) {
   const root = document.getElementById(altRoot ? altRoot : "root")!
 

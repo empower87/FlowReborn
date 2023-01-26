@@ -2,7 +2,7 @@ import { useCallback, useEffect, useReducer, useState } from "react"
 import gifArray from "src/assets/images/gifs.json"
 import { useAuth } from "src/context/AuthContext"
 import { trpc } from "src/utils/trpc"
-import { ISong } from "../../../../../server/src/models"
+import { ISong } from "../../../../server/src/models"
 import { INITIAL_STATE, songFeedReducer } from "./songFeedReducer"
 
 export default function useSongFeeds() {
