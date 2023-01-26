@@ -1,4 +1,4 @@
-import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react"
+import { ReactNode, useEffect, useState } from "react"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import { useAuth } from "src/context/AuthContext"
 
@@ -72,7 +72,8 @@ export const CommentActions = ({
 }: // children,
 {
   toggleSort: SortType
-  setToggleSort: Dispatch<SetStateAction<SortType>>
+  // setToggleSort: Dispatch<SetStateAction<SortType>>
+  setToggleSort: (sort: "Top" | "Newest") => void
   // children: ReactNode
 }) => {
   const handleToggleSort = (type: "Top" | "Newest") => {
@@ -84,8 +85,8 @@ export const CommentActions = ({
   return (
     <div className="comments__header-actions-sort">
       {/* {children} */}
-      <SortButton type="Top" selected={toggleSort} onClick={() => handleToggleSort("Top")} />
-      <SortButton type="Newest" selected={toggleSort} onClick={() => handleToggleSort("Newest")} />
+      <SortButton type="Top" selected={toggleSort} onClick={() => setToggleSort("Top")} />
+      <SortButton type="Newest" selected={toggleSort} onClick={() => setToggleSort("Newest")} />
     </div>
   )
 }

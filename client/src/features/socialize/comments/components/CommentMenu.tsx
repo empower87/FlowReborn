@@ -113,8 +113,18 @@ function ReplyMenu({
 
 export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps) {
   const root = document.getElementById("root")!
-  const { comments, state, handleToggleInput, onSubmit, sortComments, setSortComments, isLoading, error, resetError } =
-    useCommentMenu(song._id, song.comments, onClose)
+  const {
+    comments,
+    state,
+    handleToggleInput,
+    onSubmit,
+    sortComments,
+    setSortComments,
+    sortCommentsHandler,
+    isLoading,
+    error,
+    resetError,
+  } = useCommentMenu(song._id, song.comments, onClose)
 
   const lastCommentId = comments[comments.length - 1]?._id
 
@@ -144,7 +154,7 @@ export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps)
         }
         actions={
           <>
-            <CommentActions toggleSort={sortComments} setToggleSort={setSortComments} />
+            <CommentActions toggleSort={sortComments} setToggleSort={sortCommentsHandler} />
             {/* <CommentActions>
               <SortButton type="Top" selected={sortComments} onClick={() => setSortComments("Top")} />
               <SortButton type="Newest" selected={sortComments} onClick={() => setSortComments("Newest")} />

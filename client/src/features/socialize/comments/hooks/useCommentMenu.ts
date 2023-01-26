@@ -19,16 +19,28 @@ export default function useCommentMenu(
     setSortComments("Newest")
   }, [_comments])
 
-  useEffect(() => {
-    if (!comments.length) return
-    if (sortComments === "Top") {
+  // useEffect(() => {
+  //   if (!comments.length) return
+  //   if (sortComments === "Top") {
+  //     setComments((prevComments) => prevComments.sort((a, b) => b.likes.length - a.likes.length))
+  //   } else if (sortComments === "Newest") {
+  //     setComments((prevComments) =>
+  //       prevComments.sort((a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime())
+  //     )
+  //   }
+  // }, [sortComments])
+
+  const sortCommentsHandler = useCallback((sort: "Top" | "Newest") => {
+    if (sort === "Top") {
+      setSortComments("Top")
       setComments((prevComments) => prevComments.sort((a, b) => b.likes.length - a.likes.length))
-    } else if (sortComments === "Newest") {
+    } else {
+      setSortComments("Newest")
       setComments((prevComments) =>
         prevComments.sort((a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime())
       )
     }
-  }, [sortComments])
+  }, [])
 
   useEffect(() => {
     if (!data) return
@@ -132,6 +144,7 @@ export default function useCommentMenu(
     onSubmit,
     sortComments,
     setSortComments,
+    sortCommentsHandler,
     isLoading,
     error,
     resetError,
