@@ -21,7 +21,7 @@ export type LyricsState = {
 export function useSongLyrics({ _songs }: Pick<UseEditLyricsProps, "_songs">) {
   const { user } = useAuth()
   const userId = user ? user._id : ""
-  const usersSongs = trpc.useQuery(["songs.users-songs", { _id: userId }])
+  const usersSongs = trpc.useQuery(["songs.users-songs", { _id: userId }], { enabled: !!userId })
   const [songs, setSongs] = useState<(ISong | ISongTake)[] | ISong[]>([])
   const [initialLyricsHistory, setInitialLyricsHistory] = useState<LyricsState[]>([])
 
