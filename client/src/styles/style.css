@@ -7970,7 +7970,7 @@ button {
 }
 .CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-text .comments__header-actions-text--bs-outset {
   height: 90%;
-  width: 92%;
+  width: 96%;
   border-radius: 2em 3em 0.2em 2em;
   display: flex;
   justify-content: center;
@@ -7978,6 +7978,9 @@ button {
   flex-direction: row;
   box-shadow: 2px 2px 3px #636363, -1px -1px 2px #ffffff;
   margin-right: 2%;
+}
+.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-text .comments__header-actions-text--bs-outset.Replies {
+  width: 90%;
 }
 .CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-text .comments__header-actions-text--bs-outset .comment-input__input-photo {
   height: auto;

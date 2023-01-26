@@ -1,8 +1,7 @@
-import { ReactNode, useEffect, useState } from "react"
+import { ReactNode } from "react"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import { useAuth } from "src/context/AuthContext"
-
-type SortType = "Top" | "Newest"
+import { SortCommentsType } from "../hooks/useCommentMenu"
 
 const Photo = () => {
   const { user } = useAuth()
@@ -24,41 +23,43 @@ export const SortButton = ({
   selected,
   onClick,
 }: {
-  type: SortType
-  selected: SortType
+  type: SortCommentsType
+  selected: SortCommentsType
   onClick: () => void
 }) => {
-  const [selectedClass, setSelectedClass] = useState<string>("")
-
-  useEffect(() => {
-    if (type === selected) {
-      setSelectedClass("selected")
-    } else {
-      setSelectedClass("")
-    }
-  }, [type, selected])
-
-  // const selectedClass = type === selected ? "selected" : ""
+  const title = type === "TOP" ? "Top" : "Newest"
   return (
     <div className="comments__header-actions-sort-btn--container">
-      <button className={`comments__header-actions-sort-btn ${selectedClass}`} type="button" onClick={onClick}>
-        {type}
+      <button
+        className={`comments__header-actions-sort-btn ${selected === type ? "selected" : ""}`}
+        type="button"
+        onClick={onClick}
+      >
+        {title}
       </button>
     </div>
   )
 }
 
-export const CommentInput = ({ placeholder, dispatch }: { placeholder: string; dispatch: () => void }) => {
+export const CommentInput = ({
+  type,
+  placeholder,
+  onClick,
+}: {
+  type: "Comments" | "Replies"
+  placeholder: string
+  onClick: () => void
+}) => {
   return (
     <div className="comments__header-actions-text">
-      <div className="comments__header-actions-text--bs-outset">
+      <div className={`comments__header-actions-text--bs-outset ${type}`}>
         <Photo />
         <div className="comments__header-actions-input--container">
           <input
             type="text"
             className="comments__header-actions-input"
             placeholder={placeholder}
-            onClick={dispatch}
+            onClick={onClick}
           ></input>
         </div>
       </div>
@@ -69,49 +70,18 @@ export const CommentInput = ({ placeholder, dispatch }: { placeholder: string; d
 export const CommentActions = ({
   toggleSort,
   setToggleSort,
-}: // children,
-{
-  toggleSort: SortType
-  // setToggleSort: Dispatch<SetStateAction<SortType>>
-  setToggleSort: (sort: "Top" | "Newest") => void
-  // children: ReactNode
+}: {
+  toggleSort: SortCommentsType
+  setToggleSort: (sort: SortCommentsType) => void
 }) => {
-  const handleToggleSort = (type: "Top" | "Newest") => {
-    if (type !== toggleSort) {
-      setToggleSort(type)
-    }
-  }
-
   return (
     <div className="comments__header-actions-sort">
-      {/* {children} */}
-      <SortButton type="Top" selected={toggleSort} onClick={() => setToggleSort("Top")} />
-      <SortButton type="Newest" selected={toggleSort} onClick={() => setToggleSort("Newest")} />
+      <SortButton type="TOP" selected={toggleSort} onClick={() => setToggleSort("TOP")} />
+      <SortButton type="NEWEST" selected={toggleSort} onClick={() => setToggleSort("NEWEST")} />
     </div>
   )
 }
 
-export const ReplyActions = ({
-  // comment,
-  // song,
-  // state,
-  // dispatch,
-  children,
-}: {
-  children: ReactNode
-  // comment: IComment
-  // song: ISong
-  // state: CommentState
-  // dispatch: CommentDispatch
-}) => {
-  return (
-    <div className="comments__item--reply-wrapper">
-      {children}
-      {/* <CommentItem comment={comment} authorId={song.user._id} editId={state.isEditingId} lastItemId={comment._id}>
-        <LikeButton comment={comment} />
-        <ReplyButton reply={comment} onClick={dispatch} total={comment?.replies?.length} />
-        <EditDeleteButtons songId={song._id} comment={comment} dispatch={dispatch} />
-      </CommentItem> */}
-    </div>
-  )
+export const ReplyActions = ({ children }: { children: ReactNode }) => {
+  return <div className="comments__item--reply-wrapper">{children}</div>
 }

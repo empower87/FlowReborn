@@ -1,46 +1,28 @@
 import { Dispatch, SetStateAction, useCallback, useEffect, useReducer, useState } from "react"
-import { IComment } from "../../../../../../server/src/models"
+import { QueryClient } from "react-query"
+import { IComment, ISong } from "../../../../../../server/src/models"
 import { commentInputMenuReducer, INITIAL_STATE, InputTypes } from "../hooks/commentInputMenuReducer"
 import useComments from "../hooks/useComments"
 
-export default function useCommentMenu(
-  songId: string,
-  _comments: IComment[],
-  onClose: Dispatch<SetStateAction<boolean>>
-) {
-  const [comments, setComments] = useState<IComment[]>([])
+export type SortCommentsType = "TOP" | "NEWEST"
+export type ToggleInputHandlerType = (type: InputTypes, data?: IComment | undefined) => void
+
+export default function useCommentMenu(song: ISong, onClose: Dispatch<SetStateAction<boolean>>) {
+  const queryClient = new QueryClient()
+  const songId = song._id
+  const _comments = song.comments
+  const sortByNewest = _comments.sort((a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime())
+
   const { addComment, editComment, deleteComment, isLoading, error, resetError, data } = useComments()
   const [state, dispatch] = useReducer(commentInputMenuReducer, INITIAL_STATE)
-  const [sortComments, setSortComments] = useState<"Top" | "Newest">("Newest")
+
+  const [comments, setComments] = useState<IComment[]>([])
+  const [sortComments, setSortComments] = useState<SortCommentsType>("NEWEST")
 
   useEffect(() => {
-    const sortByNewest = _comments.sort((a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime())
     setComments(sortByNewest)
-    setSortComments("Newest")
+    setSortComments("NEWEST")
   }, [_comments])
-
-  // useEffect(() => {
-  //   if (!comments.length) return
-  //   if (sortComments === "Top") {
-  //     setComments((prevComments) => prevComments.sort((a, b) => b.likes.length - a.likes.length))
-  //   } else if (sortComments === "Newest") {
-  //     setComments((prevComments) =>
-  //       prevComments.sort((a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime())
-  //     )
-  //   }
-  // }, [sortComments])
-
-  const sortCommentsHandler = useCallback((sort: "Top" | "Newest") => {
-    if (sort === "Top") {
-      setSortComments("Top")
-      setComments((prevComments) => prevComments.sort((a, b) => b.likes.length - a.likes.length))
-    } else {
-      setSortComments("Newest")
-      setComments((prevComments) =>
-        prevComments.sort((a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime())
-      )
-    }
-  }, [])
 
   useEffect(() => {
     if (!data) return
@@ -78,7 +60,18 @@ export default function useCommentMenu(
     }
   }, [data])
 
-  const handleToggleInput = useCallback((type: InputTypes | "DELETE", data?: IComment | undefined) => {
+  const sortCommentsHandler = useCallback((sort: SortCommentsType) => {
+    setSortComments(sort)
+    if (sort === "TOP") {
+      setComments((prevComments) => prevComments.sort((a, b) => b.likes.length - a.likes.length))
+    } else {
+      setComments((prevComments) =>
+        prevComments.sort((a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime())
+      )
+    }
+  }, [])
+
+  const handleToggleInput = useCallback((type: InputTypes, data?: IComment | undefined) => {
     switch (type) {
       case "OPEN_EDIT_INPUT":
         dispatch({ type: "OPEN_EDIT_INPUT", payload: { editComment: data } })
@@ -118,6 +111,8 @@ export default function useCommentMenu(
     }
   }, [])
 
+  const [rerender, setRerender] = useState<boolean>(false)
+
   const onSubmit = (text: string | undefined) => {
     if (!text || text === "") return
     switch (state.showInput) {
@@ -128,6 +123,14 @@ export default function useCommentMenu(
       case "OPEN_REPLY_INPUT":
         if (!state.selectedComment) return
         addComment(state.selectedComment._id, text, songId)
+        queryClient.invalidateQueries("get-comment")
+        setRerender(true)
+        break
+      case "OPEN_REPLY_MENU":
+        if (!state.selectedComment) return
+        addComment(state.selectedComment._id, text, songId)
+        queryClient.invalidateQueries("get-comment")
+        setRerender(true)
         break
       case "OPEN_COMMENT_INPUT":
         addComment(songId, text, songId)
@@ -143,10 +146,10 @@ export default function useCommentMenu(
     handleToggleInput,
     onSubmit,
     sortComments,
-    setSortComments,
     sortCommentsHandler,
     isLoading,
     error,
     resetError,
+    rerender,
   }
 }

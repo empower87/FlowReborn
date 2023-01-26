@@ -225,10 +225,13 @@
         margin-bottom: 1%;
 
         .comments__header-actions-text--bs-outset {
-          @include flexCenter(90%, 92%, 2em 3em 0.2em 2em, center, center, row);
+          @include flexCenter(90%, 96%, 2em 3em 0.2em 2em, center, center, row);
           box-shadow: 2px 2px 3px #636363, -1px -1px 2px #ffffff;
           margin-right: 2%;
 
+          &.Replies {
+            width: 90%;
+          }
           .comment-input__input-photo {
             @include flexCenter(auto, 11%, 0, center, center, row);
 

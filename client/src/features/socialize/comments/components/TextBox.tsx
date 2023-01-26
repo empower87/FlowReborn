@@ -11,7 +11,7 @@ import { InputTypes } from "../hooks/commentInputMenuReducer"
 import { ErrorType } from "../hooks/useComments"
 
 interface ITextAreaProps {
-  type: InputTypes
+  inputType: InputTypes
   comment: IComment | undefined | null
 }
 
@@ -20,7 +20,6 @@ interface ITextInputModalProps extends ITextAreaProps {
   onSubmit: (text: string | undefined) => void
   isLoading: boolean
   error: ErrorType
-  clearError: () => void
 }
 
 const Photo = () => {
@@ -50,47 +49,28 @@ const Button = ({ onClick, isLoading }: { onClick: MouseEventHandler<HTMLButtonE
   )
 }
 
-const TextArea = forwardRef(({ type, comment }: ITextAreaProps, ref: any) => {
+const TextArea = forwardRef(({ inputType, comment }: ITextAreaProps, ref: any) => {
   const { handleOnFocus } = useMobileKeyboardHandler()
-  const [text, setText] = useState<string>("")
-  const [placeholder, setPlaceholder] = useState<string>("")
+  const [text, setText] = useState<string>(inputType === "OPEN_EDIT_INPUT" && comment ? comment?.text : "")
+  const placeholder =
+    inputType === "OPEN_COMMENT_INPUT"
+      ? "Leave a comment..."
+      : inputType === "OPEN_EDIT_INPUT"
+      ? ""
+      : `Reply to ${comment?.user.username}...`
 
   useEffect(() => {
     if (ref) ref.current.focus()
-  }, [ref, type, comment])
+  }, [ref, inputType, comment])
 
   useEffect(() => {
     // TODO: Fix bug where on setting of different input type Textarea remains size of previous input
-    if (type === "OPEN_EDIT_INPUT" && ref.current) {
+    if (inputType === "OPEN_EDIT_INPUT" && ref.current) {
       const height = ref.current.scrollHeight
       const fontPixels = 16 * 0.95 + 1
       ref.current.style.height = `${height - fontPixels}px`
     }
-  }, [type, comment, text])
-
-  useEffect(() => {
-    switch (type) {
-      case "OPEN_EDIT_INPUT":
-        if (!comment) return
-        setText(comment.text)
-        setPlaceholder("")
-        break
-      case "OPEN_REPLY_INPUT":
-        if (!comment) return
-        setText("")
-        setPlaceholder(`Reply to ${comment.user.username}..`)
-        break
-      case "OPEN_REPLY_MENU":
-        if (!comment) return
-        setText("")
-        setPlaceholder(`Reply to ${comment.user.username}..`)
-        break
-      case "OPEN_COMMENT_INPUT":
-        setText("")
-        setPlaceholder("Leave A Comment..")
-        break
-    }
-  }, [type, comment])
+  }, [inputType, comment, text])
 
   const expandTextarea = useCallback(
     (_text: EventTarget & HTMLTextAreaElement) => {
@@ -99,7 +79,7 @@ const TextArea = forwardRef(({ type, comment }: ITextAreaProps, ref: any) => {
       const fontPixels = 16 * 0.95 + 1
       _text.style.height = `${_text.scrollHeight - fontPixels}px`
     },
-    [type, comment, text]
+    [inputType, comment, text]
   )
 
   return (
@@ -116,15 +96,7 @@ const TextArea = forwardRef(({ type, comment }: ITextAreaProps, ref: any) => {
   )
 })
 
-export default function TextBox({
-  type,
-  comment,
-  onClose,
-  onSubmit,
-  isLoading,
-  error,
-  clearError,
-}: ITextInputModalProps) {
+export default function TextBox({ inputType, comment, onClose, onSubmit, isLoading, error }: ITextInputModalProps) {
   const root = document.getElementById("root")!
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const [isError, setIsError] = useState<boolean>(false)
@@ -145,14 +117,13 @@ export default function TextBox({
       setIsError(true)
       setTimeout(() => {
         setIsError(false)
-        clearError()
       }, 5000)
     } else {
       setIsError(false)
     }
   }, [isLoading, error])
 
-  if (type === "HIDE_INPUT") return null
+  if (inputType === "HIDE_INPUT") return null
   return ReactDOM.createPortal(
     <div className="CommentInputModal" onClick={(e) => handleCloseInput(e)}>
       <div className="comment-input__form--container">
@@ -167,7 +138,7 @@ export default function TextBox({
           </div>
           <div className="comment-input__body">
             <Photo />
-            <TextArea type={type} comment={comment} ref={inputRef} />
+            <TextArea inputType={inputType} comment={comment} ref={inputRef} />
             <Button onClick={(e) => handleOnSubmit(e)} isLoading={isLoading} />
           </div>
         </form>

@@ -26,7 +26,7 @@ const DATA_STATE: DataType = {
 export default function useComments() {
   const { user } = useAuth()
   const queryClient = useQueryClient()
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [error, setError] = useState<ErrorType>(ERROR_STATE)
   const [data, setData] = useState<DataType>(DATA_STATE)
 

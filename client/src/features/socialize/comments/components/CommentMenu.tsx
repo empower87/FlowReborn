@@ -1,15 +1,15 @@
-import { Dispatch, SetStateAction } from "react"
+import { Dispatch, SetStateAction, useEffect } from "react"
 import ReactDOM from "react-dom"
 import { trpc } from "src/utils/trpc"
 import { IComment, ISong } from "../../../../../../server/src/models"
-import useCommentMenu from "../hooks/useCommentMenu"
+import useCommentMenu, { ToggleInputHandlerType } from "../hooks/useCommentMenu"
 import { CommentActions, CommentInput, ReplyActions } from "./CommentActions"
 import { CommentHeader, CommentHeaderButton } from "./CommentHeader"
 import CommentItem from "./CommentItem/CommentItem"
 import { EditDeleteButtons, LikeButton, ReplyButton } from "./CommentItem/ItemButtons"
 import TextBox from "./TextBox"
 
-type SortType = "Top" | "Newest"
+type CommentMenuType = "Comments" | "Replies"
 
 type CommentMenuProps = {
   song: ISong
@@ -17,13 +17,21 @@ type CommentMenuProps = {
   onClose: Dispatch<SetStateAction<boolean>>
 }
 
+type ReplyMenuProps = {
+  editingId: string | null
+  toggleInput: ToggleInputHandlerType
+  parentComment: IComment | null
+  isOpen: boolean
+  rerender: boolean
+}
+
 type CommentMenuLayoutProps = {
   header: JSX.Element
   actions: JSX.Element
-  items: JSX.Element
+  list: JSX.Element
 }
 
-function CommentMenuLayout({ header, actions, items }: CommentMenuLayoutProps) {
+function CommentMenuLayout({ header, actions, list }: CommentMenuLayoutProps) {
   return (
     <div className="CommentMenu">
       <div className="comments__header--container">{header}</div>
@@ -34,41 +42,33 @@ function CommentMenuLayout({ header, actions, items }: CommentMenuLayoutProps) {
 
       <div className="comments__list--container">
         <div className="comments__list--shadow-outset">
-          <div className="comments__list--shadow-inset">
-            <ul className="comments__list">{items}</ul>
-          </div>
+          <div className="comments__list--shadow-inset">{list}</div>
         </div>
       </div>
     </div>
   )
 }
 
-function ReplyMenu({
-  editingId,
-  toggleInput,
-  parentComment,
-  isOpen,
-}: {
-  editingId: string | null
-  toggleInput: (type: any, data?: IComment | undefined) => void
-  parentComment: IComment | null
-  isOpen: boolean
-}) {
+function ReplyMenu({ editingId, toggleInput, parentComment, isOpen, rerender }: ReplyMenuProps) {
   const root = document.getElementById("root")!
   if (!parentComment || !isOpen) return null
-
   const getReplies = trpc.useQuery(["comments.get-comment", { _id: parentComment._id }])
   const lastReply = getReplies.data && getReplies.data.replies[getReplies.data.replies.length - 1]?._id
-
   const songId = parentComment.parent._id ? parentComment.parent._id : (parentComment.parent as unknown as string)
+
+  useEffect(() => {
+    if (rerender) {
+      getReplies.refetch()
+    }
+  }, [rerender])
+
   if (getReplies.data) console.log(getReplies.data, "WTF IS GOING ON WITH REPLIES MAN")
   return ReactDOM.createPortal(
     <CommentMenuLayout
       header={
         <CommentHeader
           menu="Replies"
-          comments={undefined}
-          onClose={() => toggleInput("CLOSE")}
+          onClose={() => toggleInput("CLOSE_MENUS")}
           replyBackButton={<CommentHeaderButton onClick={() => toggleInput("CLOSE_REPLY_MENU")} type="Back" />}
         />
       }
@@ -82,28 +82,34 @@ function ReplyMenu({
                 onClick={toggleInput}
                 total={getReplies?.data?.replies?.length ? getReplies.data.replies.length : 0}
               />
-              <EditDeleteButtons comment={parentComment} dispatch={toggleInput} />
+              <EditDeleteButtons comment={parentComment} onClick={toggleInput} />
             </CommentItem>
           </ReplyActions>
-          <CommentInput placeholder="Add a reply" dispatch={() => toggleInput("OPEN_REPLY_INPUT", parentComment)} />
+          <CommentInput
+            type="Replies"
+            placeholder="Add a reply..."
+            onClick={() => toggleInput("OPEN_REPLY_INPUT", parentComment)}
+          />
         </>
       }
-      items={
-        !getReplies.isLoading && getReplies.data ? (
-          <>
-            {getReplies.data.replies?.map((item, index) => {
+      list={
+        getReplies.isLoading || getReplies.isFetching ? (
+          <div className="comments__list">
+            <p>loading..</p>
+          </div>
+        ) : getReplies.data ? (
+          <div className="comments__list">
+            {getReplies.data.replies?.map((item) => {
               return (
                 <CommentItem key={item._id} comment={item} authorId={songId} editId={editingId} lastItemId={lastReply}>
                   <LikeButton comment={item} />
-                  <EditDeleteButtons comment={item} dispatch={toggleInput} />
+                  <EditDeleteButtons comment={item} onClick={toggleInput} />
                 </CommentItem>
               )
             })}
-          </>
+          </div>
         ) : (
-          <>
-            <p>loading..</p>
-          </>
+          <></>
         )
       }
     />,
@@ -119,12 +125,11 @@ export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps)
     handleToggleInput,
     onSubmit,
     sortComments,
-    setSortComments,
     sortCommentsHandler,
     isLoading,
     error,
-    resetError,
-  } = useCommentMenu(song._id, song.comments, onClose)
+    rerender,
+  } = useCommentMenu(song, onClose)
 
   const lastCommentId = comments[comments.length - 1]?._id
 
@@ -132,13 +137,12 @@ export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps)
   return ReactDOM.createPortal(
     <>
       <TextBox
-        type={state.showInput}
+        inputType={state.showInput}
         comment={state.selectedComment}
         onClose={handleToggleInput}
         onSubmit={onSubmit}
         isLoading={isLoading}
         error={error}
-        clearError={resetError}
       />
 
       <ReplyMenu
@@ -146,32 +150,34 @@ export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps)
         toggleInput={handleToggleInput}
         isOpen={state.isReplyMenuOpen}
         parentComment={state.replyComment}
+        rerender={rerender}
       />
 
       <CommentMenuLayout
         header={
-          <CommentHeader menu="Comments" comments={comments.length} onClose={() => handleToggleInput("CLOSE_MENUS")} />
+          <CommentHeader
+            menu="Comments"
+            onClose={() => handleToggleInput("CLOSE_MENUS")}
+            totalComments={comments.length}
+          />
         }
         actions={
           <>
             <CommentActions toggleSort={sortComments} setToggleSort={sortCommentsHandler} />
-            {/* <CommentActions>
-              <SortButton type="Top" selected={sortComments} onClick={() => setSortComments("Top")} />
-              <SortButton type="Newest" selected={sortComments} onClick={() => setSortComments("Newest")} />
-            </CommentActions> */}
             <CommentInput
-              placeholder="Add a comment"
-              dispatch={() => handleToggleInput("OPEN_COMMENT_INPUT", undefined)}
+              type="Comments"
+              placeholder="Add a comment..."
+              onClick={() => handleToggleInput("OPEN_COMMENT_INPUT", undefined)}
             />
           </>
         }
-        items={
-          <>
-            {comments.map((item) => {
+        list={
+          <ul className="comments__list">
+            {comments.map((item, index) => {
               const total = item.replies?.length
               return (
                 <CommentItem
-                  key={item._id}
+                  key={`${item._id}_CommentMenu_${index}`}
                   comment={item}
                   authorId={song.user._id}
                   editId={state.isEditingId}
@@ -179,11 +185,11 @@ export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps)
                 >
                   <LikeButton comment={item} />
                   <ReplyButton reply={item} onClick={handleToggleInput} total={total} />
-                  <EditDeleteButtons comment={item} dispatch={handleToggleInput} />
+                  <EditDeleteButtons comment={item} onClick={handleToggleInput} />
                 </CommentItem>
               )
             })}
-          </>
+          </ul>
         }
       />
     </>,

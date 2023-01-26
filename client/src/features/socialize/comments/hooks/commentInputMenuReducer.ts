@@ -10,6 +10,7 @@ export type InputTypes =
   | "UPDATE_REPLY_MENU"
   | "HIDE_INPUT"
   | "CLOSE_MENUS"
+  | "DELETE"
 
 export type CommentState = {
   showInput: InputTypes

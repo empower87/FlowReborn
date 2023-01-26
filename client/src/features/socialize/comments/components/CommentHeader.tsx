@@ -36,20 +36,20 @@ const Title = ({ title, count }: { title: string; count: number | undefined }) =
 
 export const CommentHeader = ({
   menu,
-  comments,
   onClose,
+  totalComments,
   replyBackButton,
 }: {
   menu: "Comments" | "Replies"
-  comments: number | undefined
   onClose: () => void
+  totalComments?: number
   replyBackButton?: JSX.Element
 }) => {
   return (
     <div className="comments__header--shadow-outset">
       <div className="comments__header--shadow-inset">
         {replyBackButton}
-        <Title title={menu} count={comments} />
+        <Title title={menu} count={totalComments} />
         <CommentHeaderButton onClick={onClose} type="Close" />
       </div>
     </div>

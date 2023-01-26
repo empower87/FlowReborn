@@ -4,6 +4,7 @@ import ContinueModal from "src/components/modals/ContinueModal"
 import { useAuth } from "src/context/AuthContext"
 import { IComment } from "../../../../../../../server/src/models/index"
 import useLike from "../../../like/useLike"
+import { ToggleInputHandlerType } from "../../hooks/useCommentMenu"
 
 type OnClick = MouseEventHandler<HTMLButtonElement>
 
@@ -14,9 +15,8 @@ type ItemButtonProps = {
   isLiked?: boolean
 }
 type EditDeleteButtonsProps = {
-  // songId: string
   comment: IComment
-  dispatch: (type: any, data?: IComment | undefined) => void
+  onClick: ToggleInputHandlerType
 }
 
 const ItemButton = ({ type, onClick, total, isLiked }: ItemButtonProps) => {
@@ -124,19 +124,20 @@ const DeleteButton = ({
   )
 }
 
-export const EditDeleteButtons = ({ comment, dispatch }: EditDeleteButtonsProps) => {
+export const EditDeleteButtons = ({ comment, onClick }: EditDeleteButtonsProps) => {
   const { user } = useAuth()
   const parentId = comment.parent._id ? comment.parent._id : (comment.parent as unknown as string)
+
+  const onClickHandler = () => {
+    onClick("OPEN_EDIT_INPUT", comment)
+    console.log("CLICKED EDIT BUTTON", comment.text, comment._id)
+  }
+
   if (user && user._id !== comment.user._id) return null
   return (
     <>
-      <EditButton
-        onClick={() => {
-          dispatch("OPEN_EDIT_INPUT", comment)
-          console.log("CLICKED EDIT BUTTON", comment.text, comment._id)
-        }}
-      />
-      <DeleteButton songId={parentId} comment={comment} onClick={dispatch} />
+      <EditButton onClick={() => onClickHandler()} />
+      <DeleteButton songId={parentId} comment={comment} onClick={onClick} />
     </>
   )
 }
