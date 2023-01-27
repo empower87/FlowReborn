@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useReducer } from "react"
 import { useQueryClient } from "react-query"
 import { trpc } from "src/utils/trpc"
 import { IComment } from "../../../../../../server/src/models"
 import { useAuth } from "../../../../context/AuthContext"
+import { commentMutationStatusReducer, INITIAL_STATE } from "../reducers/commentMutationStatusReducer"
 
 type MutationType = "CREATE" | "EDIT" | "DELETE"
 export type ErrorType = {
@@ -24,43 +25,67 @@ const DATA_STATE: DataType = {
 }
 
 export default function useComments() {
-  const { user } = useAuth()
   const queryClient = useQueryClient()
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [error, setError] = useState<ErrorType>(ERROR_STATE)
-  const [data, setData] = useState<DataType>(DATA_STATE)
+  const { user } = useAuth()
+  const [state, dispatch] = useReducer(commentMutationStatusReducer, INITIAL_STATE)
 
   const add = trpc.useMutation(["comments.create"], {
+    // onMutate: () => {
+    //   dispatch({ type: "SET_SUBMITTING", payload: { target: "CREATE" } })
+    // },
     onSuccess: (data, variables) => {
       console.log(data, "SUCCESS: created a comment")
-      invalidateQueries()
+      invalidateQueries("songs.all-songs")
+      if (variables.parent !== variables.songId) {
+        console.log(queryClient, "if parent._id doesn't equal songId then created comment must be a reply")
+        invalidateQueries("comments.get-comment", { _id: `${variables.parent}` })
+      }
 
-      setData({ target: "CREATE", data: data })
+      dispatch({ type: "ON_SUCCESS", payload: { target: "CREATE", data: data } })
     },
     onError: (err) => {
-      setError({ target: "CREATE", message: err.message })
+      dispatch({ type: "ON_ERROR", payload: { target: "CREATE", errorMessage: err.message } })
+    },
+    onSettled: () => {
+      dispatch({ type: "SET_IDLE", payload: { target: "CREATE" } })
     },
   })
 
   const edit = trpc.useMutation(["comments.edit"], {
+    // onMutate: () => {
+    //   dispatch({ type: "SET_SUBMITTING", payload: { target: "EDIT" } })
+    // },
     onSuccess: (data, variables) => {
       console.log(data, "SUCCESS: edited a comment")
-      invalidateQueries()
-      setData({ target: "EDIT", data: data })
+      invalidateQueries("songs.all-songs")
+      dispatch({ type: "ON_SUCCESS", payload: { target: "EDIT", data: data } })
     },
     onError: (err) => {
-      setError({ target: "EDIT", message: err.message })
+      dispatch({ type: "ON_ERROR", payload: { target: "EDIT", errorMessage: err.message } })
+    },
+    onSettled: () => {
+      dispatch({ type: "SET_IDLE", payload: { target: "EDIT" } })
     },
   })
 
   const del = trpc.useMutation(["comments.delete"], {
+    // onMutate: () => {
+    //   dispatch({ type: "SET_SUBMITTING", payload: { target: "DELETE" } })
+    // },
     onSuccess: (data, variables) => {
       console.log(data, "SUCCESS: deleted a comment")
-      invalidateQueries()
-      setData({ target: "DELETE", data: data })
+      invalidateQueries("songs.all-songs")
+      if (variables.parent !== variables.songId) {
+        console.log(queryClient, "if parent._id doesn't equal songId then created comment must be a reply")
+        invalidateQueries("comments.get-comment", { _id: `${variables.parent}` })
+      }
+      dispatch({ type: "ON_SUCCESS", payload: { target: "DELETE", data: data } })
     },
     onError: (err) => {
-      setError({ target: "DELETE", message: err.message })
+      dispatch({ type: "ON_ERROR", payload: { target: "DELETE", errorMessage: err.message } })
+    },
+    onSettled: () => {
+      dispatch({ type: "SET_IDLE", payload: { target: "DELETE" } })
     },
   })
 
@@ -77,21 +102,20 @@ export default function useComments() {
     del.mutate({ _id, parent, songId })
   }, [])
 
-  const invalidateQueries = () => {
-    queryClient.invalidateQueries(["songs.all-songs"])
+  const invalidateQueries = (key: string, _id?: { _id: string }) => {
+    queryClient.invalidateQueries([key, _id])
   }
 
   const resetError = () => {
-    setError(ERROR_STATE)
+    dispatch({ type: "RESET_ERROR", payload: { target: "CREATE" } })
   }
 
-  useEffect(() => {
-    if (add.isLoading || edit.isLoading || del.isLoading) {
-      setIsLoading(true)
-    } else {
-      setIsLoading(false)
-    }
-  }, [add, edit, del])
-
-  return { addComment, editComment, deleteComment, error, resetError, isLoading, data }
+  return {
+    addComment,
+    editComment,
+    deleteComment,
+    resetError,
+    mutationStatus: state,
+    setMutationStatus: dispatch,
+  }
 }

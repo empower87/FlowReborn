@@ -7,8 +7,8 @@ import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import { useAuth } from "src/context/AuthContext"
 import useMobileKeyboardHandler from "src/hooks/useMobileKeyboardHandler"
 import { IComment } from "../../../../../../server/src/models/Comment"
-import { InputTypes } from "../hooks/commentInputMenuReducer"
-import { ErrorType } from "../hooks/useComments"
+import { InputTypes } from "../reducers/commentInputMenuReducer"
+import { CommentMutationStatusState } from "../reducers/commentMutationStatusReducer"
 
 interface ITextAreaProps {
   inputType: InputTypes
@@ -18,8 +18,10 @@ interface ITextAreaProps {
 interface ITextInputModalProps extends ITextAreaProps {
   onClose: (type: "HIDE_INPUT") => void
   onSubmit: (text: string | undefined) => void
-  isLoading: boolean
-  error: ErrorType
+  status: CommentMutationStatusState
+  // isLoading: boolean
+  // isSubmitting: boolean
+  // error: ErrorType
 }
 
 const Photo = () => {
@@ -37,11 +39,19 @@ const Photo = () => {
   )
 }
 
-const Button = ({ onClick, isLoading }: { onClick: MouseEventHandler<HTMLButtonElement>; isLoading: boolean }) => {
+const Button = ({
+  disabled,
+  onClick,
+  isLoading,
+}: {
+  disabled: boolean
+  onClick: MouseEventHandler<HTMLButtonElement>
+  isLoading: boolean
+}) => {
   return (
     <div className="comment-input__header">
       <div className="comment-input__btn">
-        <button className="comment-input__btn--submit" type="submit" onClick={onClick}>
+        <button className="comment-input__btn--submit" type="submit" disabled={disabled} onClick={onClick}>
           {isLoading ? <LoadingSpinner /> : <Icon type={ButtonTypes.Forward} options={{ color: "White", size: 80 }} />}
         </button>
       </div>
@@ -96,10 +106,20 @@ const TextArea = forwardRef(({ inputType, comment }: ITextAreaProps, ref: any) =
   )
 })
 
-export default function TextBox({ inputType, comment, onClose, onSubmit, isLoading, error }: ITextInputModalProps) {
+export default function TextBox({
+  inputType,
+  comment,
+  onClose,
+  onSubmit,
+  // isLoading,
+  // isSubmitting,
+  // error,
+  status,
+}: ITextInputModalProps) {
   const root = document.getElementById("root")!
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const [isError, setIsError] = useState<boolean>(false)
+  const { error, isLoading, isSubmitting } = status
 
   const handleCloseInput = (e: MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -113,7 +133,7 @@ export default function TextBox({ inputType, comment, onClose, onSubmit, isLoadi
   }
 
   useEffect(() => {
-    if (error.target) {
+    if (error) {
       setIsError(true)
       setTimeout(() => {
         setIsError(false)
@@ -121,7 +141,7 @@ export default function TextBox({ inputType, comment, onClose, onSubmit, isLoadi
     } else {
       setIsError(false)
     }
-  }, [isLoading, error])
+  }, [isSubmitting, error])
 
   if (inputType === "HIDE_INPUT") return null
   return ReactDOM.createPortal(
@@ -129,17 +149,19 @@ export default function TextBox({ inputType, comment, onClose, onSubmit, isLoadi
       <div className="comment-input__form--container">
         <form className="comment-input__form">
           <div className={`comment-input__error ${isError ? "show-error" : ""}`}>
-            <InputErrorNoModal
-              isOpen={isError}
-              onClose={setIsError}
-              message={error.message}
-              options={{ position: [2, 1.5], size: [36, 97] }}
-            />
+            {error ? (
+              <InputErrorNoModal
+                isOpen={isError}
+                onClose={setIsError}
+                message={error}
+                options={{ position: [2, 1.5], size: [36, 97] }}
+              />
+            ) : null}
           </div>
           <div className="comment-input__body">
             <Photo />
             <TextArea inputType={inputType} comment={comment} ref={inputRef} />
-            <Button onClick={(e) => handleOnSubmit(e)} isLoading={isLoading} />
+            <Button disabled={isSubmitting} onClick={(e) => handleOnSubmit(e)} isLoading={isLoading} />
           </div>
         </form>
       </div>

@@ -48,14 +48,15 @@ export const editCommentHandler = async ({ ctx, input }: ContextWithInput<EditCo
   getComment.update({ $set: { text: input.text, editedOn: new Date() } }, { new: true }).exec()
   await getComment.save()
 
-  if (getComment.parent._id === input.songId) {
-    return getComment
-  } else {
-    const getParentComment = await Comment.findById(getComment.parent._id)
-      .populate<{ user: IUser }>("user")
-      .populate<{ replies: IComment["replies"] }>({ path: "replies", populate: "user" })
-    return getParentComment
-  }
+  // if (getComment.parent._id === input.songId) {
+  //   return getComment
+  // } else {
+  //   const getParentComment = await Comment.findById(getComment.parent._id)
+  //     .populate<{ user: IUser }>("user")
+  //     .populate<{ replies: IComment["replies"] }>({ path: "replies", populate: "user" })
+  //   return getParentComment
+  // }
+  return getComment
 }
 
 export const deleteCommentHandler = async ({ ctx, input }: ContextWithInput<DeleteCommentType>) => {

@@ -1,19 +1,17 @@
 import { Dispatch, SetStateAction, useCallback, useEffect, useReducer, useState } from "react"
-import { QueryClient } from "react-query"
 import { IComment, ISong } from "../../../../../../server/src/models"
-import { commentInputMenuReducer, INITIAL_STATE, InputTypes } from "../hooks/commentInputMenuReducer"
 import useComments from "../hooks/useComments"
+import { commentInputMenuReducer, INITIAL_STATE, InputTypes } from "../reducers/commentInputMenuReducer"
 
 export type SortCommentsType = "TOP" | "NEWEST"
 export type ToggleInputHandlerType = (type: InputTypes, data?: IComment | undefined) => void
 
 export default function useCommentMenu(song: ISong, onClose: Dispatch<SetStateAction<boolean>>) {
-  const queryClient = new QueryClient()
   const songId = song._id
   const _comments = song.comments
   const sortByNewest = _comments.sort((a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime())
 
-  const { addComment, editComment, deleteComment, isLoading, error, resetError, data } = useComments()
+  const { addComment, editComment, deleteComment, resetError, mutationStatus, setMutationStatus } = useComments()
   const [state, dispatch] = useReducer(commentInputMenuReducer, INITIAL_STATE)
 
   const [comments, setComments] = useState<IComment[]>([])
@@ -25,11 +23,20 @@ export default function useCommentMenu(song: ISong, onClose: Dispatch<SetStateAc
   }, [_comments])
 
   useEffect(() => {
-    if (!data) return
-    if (!data.data || !data.target) return
-    const validData = data.data
+    if (mutationStatus.isSuccessful) {
+      dispatch({ type: "HIDE_INPUT" })
+      setMutationStatus({ type: "RESET", payload: { target: "NONE" } })
+    }
+  }, [mutationStatus])
 
-    switch (data?.target) {
+  useEffect(() => {
+    console.log(mutationStatus, "lets see how much this changes")
+  }, [mutationStatus])
+
+  useEffect(() => {
+    if (mutationStatus.target === "NONE" || !mutationStatus.data) return
+    const validData = mutationStatus.data
+    switch (mutationStatus.target) {
       case "CREATE":
         setComments((prev) => [...prev, validData])
         break
@@ -58,7 +65,7 @@ export default function useCommentMenu(song: ISong, onClose: Dispatch<SetStateAc
       default:
         return
     }
-  }, [data])
+  }, [mutationStatus])
 
   const sortCommentsHandler = useCallback((sort: SortCommentsType) => {
     setSortComments(sort)
@@ -111,28 +118,21 @@ export default function useCommentMenu(song: ISong, onClose: Dispatch<SetStateAc
     }
   }, [])
 
-  const [rerender, setRerender] = useState<boolean>(false)
-
   const onSubmit = (text: string | undefined) => {
     if (!text || text === "") return
     switch (state.showInput) {
       case "OPEN_EDIT_INPUT":
         if (!state.selectedComment) return
+        setMutationStatus({ type: "SET_SUBMITTING", payload: { target: "EDIT" } })
         editComment(state.selectedComment._id, text, songId)
         break
       case "OPEN_REPLY_INPUT":
         if (!state.selectedComment) return
+        setMutationStatus({ type: "SET_SUBMITTING", payload: { target: "CREATE" } })
         addComment(state.selectedComment._id, text, songId)
-        queryClient.invalidateQueries("get-comment")
-        setRerender(true)
-        break
-      case "OPEN_REPLY_MENU":
-        if (!state.selectedComment) return
-        addComment(state.selectedComment._id, text, songId)
-        queryClient.invalidateQueries("get-comment")
-        setRerender(true)
         break
       case "OPEN_COMMENT_INPUT":
+        setMutationStatus({ type: "SET_SUBMITTING", payload: { target: "CREATE" } })
         addComment(songId, text, songId)
         break
       default:
@@ -147,9 +147,8 @@ export default function useCommentMenu(song: ISong, onClose: Dispatch<SetStateAc
     onSubmit,
     sortComments,
     sortCommentsHandler,
-    isLoading,
-    error,
     resetError,
-    rerender,
+    mutationStatus,
+    setMutationStatus,
   }
 }

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect } from "react"
+import { Dispatch, SetStateAction } from "react"
 import ReactDOM from "react-dom"
 import { trpc } from "src/utils/trpc"
 import { IComment, ISong } from "../../../../../../server/src/models"
@@ -22,7 +22,6 @@ type ReplyMenuProps = {
   toggleInput: ToggleInputHandlerType
   parentComment: IComment | null
   isOpen: boolean
-  rerender: boolean
 }
 
 type CommentMenuLayoutProps = {
@@ -49,20 +48,14 @@ function CommentMenuLayout({ header, actions, list }: CommentMenuLayoutProps) {
   )
 }
 
-function ReplyMenu({ editingId, toggleInput, parentComment, isOpen, rerender }: ReplyMenuProps) {
+function ReplyMenu({ editingId, toggleInput, parentComment, isOpen }: ReplyMenuProps) {
   const root = document.getElementById("root")!
   if (!parentComment || !isOpen) return null
   const getReplies = trpc.useQuery(["comments.get-comment", { _id: parentComment._id }])
   const lastReply = getReplies.data && getReplies.data.replies[getReplies.data.replies.length - 1]?._id
   const songId = parentComment.parent._id ? parentComment.parent._id : (parentComment.parent as unknown as string)
 
-  useEffect(() => {
-    if (rerender) {
-      getReplies.refetch()
-    }
-  }, [rerender])
-
-  if (getReplies.data) console.log(getReplies.data, "WTF IS GOING ON WITH REPLIES MAN")
+  if (!isOpen) return null
   return ReactDOM.createPortal(
     <CommentMenuLayout
       header={
@@ -93,24 +86,30 @@ function ReplyMenu({ editingId, toggleInput, parentComment, isOpen, rerender }: 
         </>
       }
       list={
-        getReplies.isLoading || getReplies.isFetching ? (
-          <div className="comments__list">
-            <p>loading..</p>
-          </div>
-        ) : getReplies.data ? (
-          <div className="comments__list">
-            {getReplies.data.replies?.map((item) => {
-              return (
-                <CommentItem key={item._id} comment={item} authorId={songId} editId={editingId} lastItemId={lastReply}>
-                  <LikeButton comment={item} />
-                  <EditDeleteButtons comment={item} onClick={toggleInput} />
-                </CommentItem>
-              )
-            })}
-          </div>
-        ) : (
-          <></>
-        )
+        <div className="comments__list">
+          {getReplies.isLoading || getReplies.isRefetching ? (
+            <p>loading...</p>
+          ) : getReplies.data ? (
+            <>
+              {getReplies.data.replies?.map((item) => {
+                return (
+                  <CommentItem
+                    key={item._id}
+                    comment={item}
+                    authorId={songId}
+                    editId={editingId}
+                    lastItemId={lastReply}
+                  >
+                    <LikeButton comment={item} />
+                    <EditDeleteButtons comment={item} onClick={toggleInput} />
+                  </CommentItem>
+                )
+              })}
+            </>
+          ) : (
+            <></>
+          )}
+        </div>
       }
     />,
     root
@@ -126,11 +125,9 @@ export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps)
     onSubmit,
     sortComments,
     sortCommentsHandler,
-    isLoading,
-    error,
-    rerender,
+    mutationStatus,
+    setMutationStatus,
   } = useCommentMenu(song, onClose)
-
   const lastCommentId = comments[comments.length - 1]?._id
 
   if (!isOpen) return null
@@ -141,8 +138,10 @@ export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps)
         comment={state.selectedComment}
         onClose={handleToggleInput}
         onSubmit={onSubmit}
-        isLoading={isLoading}
-        error={error}
+        // isLoading={mutationStatus.isLoading}
+        // isSubmitting={mutationStatus.isSubmitting}
+        // error={mutationStatus.error}
+        status={mutationStatus}
       />
 
       <ReplyMenu
@@ -150,7 +149,6 @@ export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps)
         toggleInput={handleToggleInput}
         isOpen={state.isReplyMenuOpen}
         parentComment={state.replyComment}
-        rerender={rerender}
       />
 
       <CommentMenuLayout
