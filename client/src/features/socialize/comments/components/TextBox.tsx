@@ -17,11 +17,8 @@ interface ITextAreaProps {
 
 interface ITextInputModalProps extends ITextAreaProps {
   onClose: (type: "HIDE_INPUT") => void
-  onSubmit: (text: string | undefined) => void
+  onSubmit: (text: string, target: "EDIT" | "CREATE") => void
   status: CommentMutationStatusState
-  // isLoading: boolean
-  // isSubmitting: boolean
-  // error: ErrorType
 }
 
 const Photo = () => {
@@ -106,20 +103,11 @@ const TextArea = forwardRef(({ inputType, comment }: ITextAreaProps, ref: any) =
   )
 })
 
-export default function TextBox({
-  inputType,
-  comment,
-  onClose,
-  onSubmit,
-  // isLoading,
-  // isSubmitting,
-  // error,
-  status,
-}: ITextInputModalProps) {
+export default function TextBox({ inputType, comment, onClose, onSubmit, status }: ITextInputModalProps) {
   const root = document.getElementById("root")!
   const inputRef = useRef<HTMLTextAreaElement>(null)
-  const [isError, setIsError] = useState<boolean>(false)
-  const { error, isLoading, isSubmitting } = status
+  const [showError, setShowError] = useState<boolean>(false)
+  const { error, isLoading, isSubmitting, isSuccessful, isError } = status
 
   const handleCloseInput = (e: MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -128,31 +116,38 @@ export default function TextBox({
   }
 
   const handleOnSubmit = (e: MouseEvent<HTMLButtonElement>) => {
-    onSubmit(inputRef.current?.value)
+    // if isSubmitting then mutation is in progress
+    // if isSuccessful then mutation went through and input modal can be closed
     e.preventDefault()
+    if (isSuccessful || isSubmitting || !inputRef.current)
+      return console.log(inputRef.current, isSuccessful, isSubmitting, "ERROR ON SUBMIT BECAUSE OF ONE OF THESE VALUES")
+    const target = inputType === "OPEN_EDIT_INPUT" ? "EDIT" : "CREATE"
+    onSubmit(inputRef.current.value, target)
   }
 
   useEffect(() => {
-    if (error) {
-      setIsError(true)
+    // console.log(isError, error, status, "AM I GETTING ANYTHING WHEN ERROR IS TRIGGERED?")
+    if (!error) return
+    if (!showError) {
+      setShowError(true)
       setTimeout(() => {
-        setIsError(false)
+        setShowError(false)
       }, 5000)
     } else {
-      setIsError(false)
+      setShowError(false)
     }
-  }, [isSubmitting, error])
+  }, [isError, error])
 
   if (inputType === "HIDE_INPUT") return null
   return ReactDOM.createPortal(
     <div className="CommentInputModal" onClick={(e) => handleCloseInput(e)}>
       <div className="comment-input__form--container">
         <form className="comment-input__form">
-          <div className={`comment-input__error ${isError ? "show-error" : ""}`}>
+          <div className={`comment-input__error ${showError ? "show-error" : ""}`}>
             {error ? (
               <InputErrorNoModal
-                isOpen={isError}
-                onClose={setIsError}
+                isOpen={showError}
+                onClose={setShowError}
                 message={error}
                 options={{ position: [2, 1.5], size: [36, 97] }}
               />

@@ -52,15 +52,7 @@ export default function useCommentMenu(song: ISong, onClose: Dispatch<SetStateAc
         )
         break
       case "DELETE":
-        setComments((prev) =>
-          prev.map((prevComment) => {
-            if (prevComment._id === validData._id) {
-              return validData
-            } else {
-              return prevComment
-            }
-          })
-        )
+        setComments((prev) => prev.filter((each) => each._id !== validData._id))
         break
       default:
         return
@@ -118,8 +110,12 @@ export default function useCommentMenu(song: ISong, onClose: Dispatch<SetStateAc
     }
   }, [])
 
-  const onSubmit = (text: string | undefined) => {
-    if (!text || text === "") return
+  const onSubmit = (text: string, target: "EDIT" | "CREATE") => {
+    if (!text)
+      return setMutationStatus({
+        type: "ON_ERROR",
+        payload: { target: target, errorMessage: "comment must be at least 1 character" },
+      })
     switch (state.showInput) {
       case "OPEN_EDIT_INPUT":
         if (!state.selectedComment) return

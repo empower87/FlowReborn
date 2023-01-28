@@ -1,28 +1,11 @@
 import { useCallback, useReducer } from "react"
 import { useQueryClient } from "react-query"
-import { trpc } from "src/utils/trpc"
+import { useAuth } from "src/context/AuthContext"
+import { trpc, trpcZodErrorHandler } from "src/utils/trpc"
 import { IComment } from "../../../../../../server/src/models"
-import { useAuth } from "../../../../context/AuthContext"
 import { commentMutationStatusReducer, INITIAL_STATE } from "../reducers/commentMutationStatusReducer"
 
-type MutationType = "CREATE" | "EDIT" | "DELETE"
-export type ErrorType = {
-  target: MutationType | undefined
-  message: string
-}
-type DataType = {
-  target: MutationType | undefined
-  data: IComment | null
-}
-
-const ERROR_STATE: ErrorType = {
-  target: undefined,
-  message: "",
-}
-const DATA_STATE: DataType = {
-  target: undefined,
-  data: null,
-}
+type MutationType = "CREATE" | "EDIT" | "NONE"
 
 export default function useComments() {
   const queryClient = useQueryClient()
@@ -30,63 +13,25 @@ export default function useComments() {
   const [state, dispatch] = useReducer(commentMutationStatusReducer, INITIAL_STATE)
 
   const add = trpc.useMutation(["comments.create"], {
-    // onMutate: () => {
-    //   dispatch({ type: "SET_SUBMITTING", payload: { target: "CREATE" } })
-    // },
     onSuccess: (data, variables) => {
-      console.log(data, "SUCCESS: created a comment")
-      invalidateQueries("songs.all-songs")
-      if (variables.parent !== variables.songId) {
-        console.log(queryClient, "if parent._id doesn't equal songId then created comment must be a reply")
-        invalidateQueries("comments.get-comment", { _id: `${variables.parent}` })
-      }
-
-      dispatch({ type: "ON_SUCCESS", payload: { target: "CREATE", data: data } })
+      onSuccessHandler("CREATE", data)
+      invalidateQueries(variables.parent, variables.songId)
     },
-    onError: (err) => {
-      dispatch({ type: "ON_ERROR", payload: { target: "CREATE", errorMessage: err.message } })
-    },
-    onSettled: () => {
-      dispatch({ type: "SET_IDLE", payload: { target: "CREATE" } })
-    },
+    onError: (err) => onErrorHandler("CREATE", err.message),
   })
-
   const edit = trpc.useMutation(["comments.edit"], {
-    // onMutate: () => {
-    //   dispatch({ type: "SET_SUBMITTING", payload: { target: "EDIT" } })
-    // },
     onSuccess: (data, variables) => {
-      console.log(data, "SUCCESS: edited a comment")
-      invalidateQueries("songs.all-songs")
-      dispatch({ type: "ON_SUCCESS", payload: { target: "EDIT", data: data } })
+      onSuccessHandler("EDIT", data)
+      invalidateQueries(data.parent._id, variables.songId)
     },
-    onError: (err) => {
-      dispatch({ type: "ON_ERROR", payload: { target: "EDIT", errorMessage: err.message } })
-    },
-    onSettled: () => {
-      dispatch({ type: "SET_IDLE", payload: { target: "EDIT" } })
-    },
+    onError: (err) => onErrorHandler("EDIT", err.message),
   })
-
   const del = trpc.useMutation(["comments.delete"], {
-    // onMutate: () => {
-    //   dispatch({ type: "SET_SUBMITTING", payload: { target: "DELETE" } })
-    // },
     onSuccess: (data, variables) => {
-      console.log(data, "SUCCESS: deleted a comment")
-      invalidateQueries("songs.all-songs")
-      if (variables.parent !== variables.songId) {
-        console.log(queryClient, "if parent._id doesn't equal songId then created comment must be a reply")
-        invalidateQueries("comments.get-comment", { _id: `${variables.parent}` })
-      }
-      dispatch({ type: "ON_SUCCESS", payload: { target: "DELETE", data: data } })
+      onSuccessHandler("NONE", data)
+      invalidateQueries(variables.parent, variables.songId)
     },
-    onError: (err) => {
-      dispatch({ type: "ON_ERROR", payload: { target: "DELETE", errorMessage: err.message } })
-    },
-    onSettled: () => {
-      dispatch({ type: "SET_IDLE", payload: { target: "DELETE" } })
-    },
+    onError: (err) => onErrorHandler("NONE", err.message),
   })
 
   const addComment = useCallback((parent: string, text: string, songId: string) => {
@@ -102,8 +47,23 @@ export default function useComments() {
     del.mutate({ _id, parent, songId })
   }, [])
 
-  const invalidateQueries = (key: string, _id?: { _id: string }) => {
-    queryClient.invalidateQueries([key, _id])
+  const invalidateQueries = (parentId: string, songId: string) => {
+    const commentId = parentId !== songId && { _id: `${parentId}` }
+
+    queryClient.invalidateQueries("songs.all-songs")
+    if (commentId) {
+      queryClient.invalidateQueries(["comments.get-comment", commentId])
+    }
+  }
+
+  const onSuccessHandler = (target: MutationType, data: IComment | null) => {
+    console.log(data, `SUCCESS: ${target} mutation executed`)
+    dispatch({ type: "ON_SUCCESS", payload: { target: target, data: data } })
+  }
+
+  const onErrorHandler = (target: MutationType, error: string) => {
+    const message = trpcZodErrorHandler(error)
+    dispatch({ type: "ON_ERROR", payload: { target: target, errorMessage: message } })
   }
 
   const resetError = () => {

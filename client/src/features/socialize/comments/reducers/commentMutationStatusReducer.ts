@@ -13,7 +13,7 @@ export type CommentMutationStatusState = {
 }
 
 type Payload = {
-  target: "CREATE" | "EDIT" | "DELETE" | "NONE"
+  target: "CREATE" | "EDIT" | "NONE"
   data?: IComment | null
   errorMessage?: string | null
 }

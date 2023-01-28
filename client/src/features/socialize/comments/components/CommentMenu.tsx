@@ -118,16 +118,8 @@ function ReplyMenu({ editingId, toggleInput, parentComment, isOpen }: ReplyMenuP
 
 export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps) {
   const root = document.getElementById("root")!
-  const {
-    comments,
-    state,
-    handleToggleInput,
-    onSubmit,
-    sortComments,
-    sortCommentsHandler,
-    mutationStatus,
-    setMutationStatus,
-  } = useCommentMenu(song, onClose)
+  const { comments, state, handleToggleInput, onSubmit, sortComments, sortCommentsHandler, mutationStatus } =
+    useCommentMenu(song, onClose)
   const lastCommentId = comments[comments.length - 1]?._id
 
   if (!isOpen) return null
@@ -138,9 +130,6 @@ export default function CommentMenu({ song, isOpen, onClose }: CommentMenuProps)
         comment={state.selectedComment}
         onClose={handleToggleInput}
         onSubmit={onSubmit}
-        // isLoading={mutationStatus.isLoading}
-        // isSubmitting={mutationStatus.isSubmitting}
-        // error={mutationStatus.error}
         status={mutationStatus}
       />
 

@@ -2,7 +2,7 @@ import { createContext, ReactNode, useContext, useEffect, useState } from "react
 import { useQueryClient } from "react-query"
 import { useNavigate } from "react-router"
 import { RegisterInputClientType } from "src/pages/auth-page/utils/validation"
-import { trpc } from "src/utils/trpc"
+import { trpc, trpcZodErrorHandler } from "src/utils/trpc"
 import { IUser } from "../../../server/src/models/User"
 
 type AuthProviderType = ReturnType<typeof useProvideAuth>
@@ -48,14 +48,20 @@ const useProvideAuth = () => {
       setIsAuthenticated(data.token)
       setUser(data.user)
     },
-    onError: (err) => handleTRPCError(err.message),
+    onError: (err) => {
+      const message = trpcZodErrorHandler(err.message)
+      setError(message)
+    },
   })
 
   const authRegister = trpc.useMutation(["auth.register"], {
     onSuccess: async (data) => {
       await login(data)
     },
-    onError: (err) => handleTRPCError(err.message),
+    onError: (err) => {
+      const message = trpcZodErrorHandler(err.message)
+      setError(message)
+    },
   })
 
   const {
@@ -94,7 +100,7 @@ const useProvideAuth = () => {
   const login = async (credentials: { username: string; password: string }) => {
     authLogin.mutate(credentials, {
       onSuccess: (data) => {
-        console.log(data, "LOGIN MUTATE SSUCCESSS")
+        console.log(data, "LOGIN MUTATE SUCCESS")
         navigate("/", { replace: true })
       },
     })
@@ -108,15 +114,6 @@ const useProvideAuth = () => {
 
   const register = async (credentials: RegisterInputClientType) => {
     authRegister.mutate(credentials)
-  }
-
-  const handleTRPCError = (_message: string) => {
-    if (_message.charAt(0) === "[") {
-      const parseError = JSON.parse(_message)
-      setError(parseError[0].message)
-    } else {
-      setError(_message)
-    }
   }
 
   useEffect(() => {

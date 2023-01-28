@@ -15,6 +15,7 @@ export const getComment = async ({ ctx, input }: ContextWithInput<GetCommentById
 
 export const createCommentHandler = async ({ ctx, input }: ContextWithInput<CreateCommentType>) => {
   if (!ctx.user) throw TRPCError("UNAUTHORIZED", "user not authorized to comment")
+  if (!input.text.length) throw TRPCError("BAD_REQUEST", "comment must be at least 1 character")
   const createdComment = await Comment.create(input)
 
   if (!createdComment) throw TRPCError("INTERNAL_SERVER_ERROR", "couldn't create comment in database")

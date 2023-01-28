@@ -4,7 +4,7 @@ import { UserSchema } from "./user.schema"
 export const CommentSchema = z.object({
   _id: z.string(),
   parent: z.string(),
-  text: z.string(),
+  text: z.string().min(1, "comment must be at least 1 character"),
   user: UserSchema,
   replies: z.string().array(),
   likes: z.string().array(),
