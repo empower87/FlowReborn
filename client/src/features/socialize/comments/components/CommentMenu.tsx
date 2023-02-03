@@ -1,7 +1,8 @@
 import { Dispatch, SetStateAction } from "react"
 import ReactDOM from "react-dom"
 import { trpc } from "src/utils/trpc"
-import { IComment, ISong } from "../../../../../../server/src/models"
+// import { IComment, ISong } from "../../../../../../server/src/models"
+import { IComment, ISongPopulatedUserAndComments as ISong } from "src/types/ServerModelTypes"
 import useCommentMenu, { ToggleInputHandlerType } from "../hooks/useCommentMenu"
 import { CommentActions, CommentInput, ReplyActions } from "./CommentActions"
 import { CommentHeader, CommentHeaderButton } from "./CommentHeader"
@@ -51,9 +52,9 @@ function CommentMenuLayout({ header, actions, list }: CommentMenuLayoutProps) {
 function ReplyMenu({ editingId, toggleInput, parentComment, isOpen }: ReplyMenuProps) {
   const root = document.getElementById("root")!
   if (!parentComment || !isOpen) return null
-  const getReplies = trpc.useQuery(["comments.get-comment", { _id: parentComment._id }])
+  const getReplies = trpc.comments.getComment.useQuery({ _id: parentComment._id })
   const lastReply = getReplies.data && getReplies.data.replies[getReplies.data.replies.length - 1]?._id
-  const songId = parentComment.parent._id ? parentComment.parent._id : (parentComment.parent as unknown as string)
+  const songId = parentComment.parent
 
   if (!isOpen) return null
   return ReactDOM.createPortal(

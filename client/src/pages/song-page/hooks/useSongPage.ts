@@ -1,6 +1,18 @@
+import { inferReactQueryProcedureOptions } from "@trpc/react-query"
+import { inferRouterInputs, inferRouterOutputs } from "@trpc/server"
 import { useCallback, useEffect, useState } from "react"
 import { trpc } from "src/utils/trpc"
-import { ISong } from "../../../../../server/src/models/Song"
+// import { ISong } from "../../../../../server/src/models"
+import { ISongPopulatedUser as ISong } from "src/types/ServerModelTypes"
+import type { AppRouter } from "../../../../../server/src/routes/app.router"
+
+type ReactQueryOptions = inferReactQueryProcedureOptions<AppRouter>
+type RouterInputs = inferRouterInputs<AppRouter>
+type RouterOutput = inferRouterOutputs<AppRouter>
+
+type GetSongOptions = ReactQueryOptions["songs"]["getSong"]
+type GetSongInput = RouterInputs["songs"]["getSong"]
+type GetSongOutput = RouterOutput["songs"]["getSong"]
 
 const useSongPage = (id: string | undefined) => {
   const songId = id ? id : ""
@@ -8,26 +20,57 @@ const useSongPage = (id: string | undefined) => {
     data: song,
     isLoading: songIsLoading,
     isError: songIsError,
-  } = trpc.useQuery(["songs.get-song", { _id: songId }], {
-    enabled: !!songId,
-  })
-  const userId = song?.user ? song.user._id : ""
+  } = trpc.songs.getSongPopulatedUser.useQuery(
+    { _id: songId },
+    {
+      enabled: !!songId,
+    }
+  )
+
+  // if (!song) return null
+  // const {
+  //   data: song,
+  //   isLoading: songIsLoading,
+  //   isError: songIsError,
+  // } = trpc.useQuery(["songs.get-song", { _id: songId }], {
+  //   enabled: !!songId,
+  // })
+
+  const userId = song && song.user ? song.user._id : ""
+
+  // const userId = ""
+
+  // const userId = songQuery.user._id
+
   const {
     data: songs,
     isLoading: songsIsLoading,
     isError: songsIsError,
-  } = trpc.useQuery(["songs.users-songs", { _id: userId }], {
-    enabled: !!userId,
-  })
+  } = trpc.songs.usersSongs.useQuery(
+    { _id: userId },
+    {
+      enabled: !!userId,
+    }
+  )
   const [songInView, setSongInView] = useState<ISong>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isError, setIsError] = useState<boolean>(false)
+  const [allSongs, setAllSongs] = useState<ISong[]>([])
 
   useEffect(() => {
+    const oneSong = song
+
     if (song) {
+      console.log(oneSong, "wtf is going on???")
       setSongInView(song)
     }
   }, [song])
+
+  useEffect(() => {
+    if (songs) {
+      setAllSongs(songs)
+    }
+  }, [songs])
 
   useEffect(() => {
     if (songIsLoading || songsIsLoading) {
@@ -47,26 +90,26 @@ const useSongPage = (id: string | undefined) => {
 
   const findCurrentSong = useCallback(
     (direction: "Previous" | "Next") => {
-      if (!songs) return
-      ;[...songs].filter((each: ISong, index: number) => {
+      if (!allSongs) return
+      ;[...allSongs].filter((each, index) => {
         if (each._id === songInView?._id) {
           if (direction === "Previous") {
             if (index === 0) {
               return null
             } else {
-              setSongInView(songs[index - 1])
+              setSongInView(allSongs[index - 1])
             }
           } else {
-            if (index === songs.length - 1) {
+            if (index === allSongs.length - 1) {
               return null
             } else {
-              setSongInView(songs[index + 1])
+              setSongInView(allSongs[index + 1])
             }
           }
         }
       })
     },
-    [songs, songInView]
+    [allSongs, songInView]
   )
 
   return { songInView, songs, findCurrentSong, isLoading, isError }

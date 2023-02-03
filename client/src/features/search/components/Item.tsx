@@ -1,7 +1,8 @@
 import { searchIcon } from "src/assets/images/_icons"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
-import { ISong } from "../../../../../server/src/models/Song"
-import { IUser } from "../../../../../server/src/models/User"
+// import { ISong } from "../../../../../server/src/models/Song"
+// import { IUser } from "../../../../../server/src/models/User"
+import { ISongPopulatedUserAndComments as ISong, IUser } from "src/types/ServerModelTypes"
 
 type Id = IUser["_id"] | ISong["_id"]
 
@@ -46,28 +47,14 @@ const SongData = ({ song }: { song: ISong }) => {
   )
 }
 
-export const SearchItem = ({
-  id,
-  type,
-  index,
-  artist,
-  song,
-  onClick,
-}: SearchItemProps) => {
+export const SearchItem = ({ id, type, index, artist, song, onClick }: SearchItemProps) => {
   return (
     <li className="suggestions-result-list">
-      <button
-        className="result-link-container"
-        onClick={() => onClick(id, type)}
-      >
+      <button className="result-link-container" onClick={() => onClick(id, type)}>
         <div className="result-1_data">
           <div className="data_shadow-div-outset">
             <div className="search-icon-container">
-              <img
-                className="button-icons"
-                src={searchIcon}
-                alt="search icon"
-              />
+              <img className="button-icons" src={searchIcon} alt="search icon" />
             </div>
             {song ? <SongData song={song} /> : <ArtistData artist={artist} />}
           </div>
@@ -78,10 +65,7 @@ export const SearchItem = ({
             <div className="search-prof-outset">
               <div className="search-results-link">
                 <div className="prof-pic">
-                  <UserPhoto
-                    photoUrl={artist.picture}
-                    username={artist.username}
-                  />
+                  <UserPhoto photoUrl={artist.picture} username={artist.username} />
                 </div>
               </div>
             </div>

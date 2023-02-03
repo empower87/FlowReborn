@@ -1,5 +1,5 @@
 import customConfig from "../config/default"
-import { User } from "../models/User"
+import { IUser, User } from "../models/User"
 import { LoginInputType, RegisterInputType } from "../schema/auth.schema"
 import { hashPassword, matchPassword } from "../utils/bcrypt"
 import { CtxUserToken, signJwt, verifyJwt } from "../utils/jwt"
@@ -51,8 +51,10 @@ export const loginHandler = async ({ ctx, input }: ContextWithInput<LoginInputTy
     secure: process.env.NODE_ENV === "production",
     maxAge: 24 * 60 * 60 * 1000,
   })
-
-  return { token: accessToken, user: dbUser }
+  const returnUser: IUser | null = await User.findById(dbUser._id).select("-password")
+  if (!returnUser) throw TRPCError("NOT_FOUND", "user not found..")
+  console.log(returnUser, "OMG WE GOT HERE???")
+  return { token: accessToken, user: returnUser }
 }
 
 export const refreshHandler = async ({ ctx }: { ctx: Context }) => {
@@ -71,6 +73,7 @@ export const refreshHandler = async ({ ctx }: { ctx: Context }) => {
       expiresIn: `${customConfig.accessTokenExpiresIn}m`,
     })
 
+    console.log(cookies, decoded, user, accessToken, "HAHAHAH ???")
     return accessToken
   } catch (err: any) {
     throw err

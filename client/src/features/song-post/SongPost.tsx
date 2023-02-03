@@ -1,5 +1,6 @@
 import { useRef, useState } from "react"
-import { ISong } from "../../../../server/src/models"
+// import { ISong } from "../../../../server/src/models"
+import { ISong } from "src/types/ServerModelTypes"
 
 type SongPostProps = {
   song: ISong

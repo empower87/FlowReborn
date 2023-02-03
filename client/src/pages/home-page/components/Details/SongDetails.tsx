@@ -2,7 +2,8 @@ import { Link } from "react-router-dom"
 import MarqueeText from "src/components/text/MarqueeText"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import useFormatDate from "src/hooks/useFormatDate"
-import { ISong } from "../../../../../../server/src/models/Song"
+// import { ISong } from "../../../../../../server/src/models/Song"
+import { ISongPopulatedUserAndComments as ISong } from "src/types/ServerModelTypes"
 
 const PRIMARY_COLOR_400 = "#e24f8c"
 const BASE_COLOR = "#ffffff"
@@ -47,7 +48,7 @@ const SongCaption = ({ song }: { song: ISong }) => {
   const { formatDate } = useFormatDate()
   return (
     <div className="song-caption--container">
-      <p className="song-caption__text date">{formatDate(song.createdOn, "m")}</p>
+      <p className="song-caption__text date">{formatDate(new Date(song.createdOn), "m")}</p>
       <p className="song-caption__text bullet">{String.fromCodePoint(8226)}</p>
       <p className="song-caption__text caption">{song?.caption ? `${song.caption}` : "no caption for this song"}</p>
     </div>

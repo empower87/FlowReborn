@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
-import { IUser } from "../../../../../../server/src/models/User"
+// import { IUser } from "../../../../../../server/src/models/User"
+import { IUser } from "src/types/ServerModelTypes"
 import useSongsFeed from "../../hooks/useSongFeeds"
 import SongItem from "./SongItem/Item"
 import NoSongsItem from "./SongItem/NoSongsItem"

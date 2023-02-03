@@ -1,5 +1,6 @@
 import { Dispatch, Reducer } from "react"
-import { IComment } from "../../../../../../server/src/models"
+// import { IComment } from "../../../../../../server/src/models"
+import { IComment } from "src/types/ServerModelTypes"
 
 export type InputTypes =
   | "OPEN_COMMENT_INPUT"

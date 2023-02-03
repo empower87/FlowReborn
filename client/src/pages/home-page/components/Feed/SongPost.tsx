@@ -7,17 +7,18 @@ import useFollow from "src/features/socialize/follow/useFollow"
 import useLike from "src/features/socialize/like/useLike"
 import useAudioPlayer from "src/hooks/useAudioPlayer"
 import { useIntersectionObserver } from "src/hooks/useIntersectionObserver"
-import { IComment, IUser } from "../../../../../../server/src/models"
-import { ISong } from "../../../../../../server/src/models/Song"
+// import { IComment, IUser } from "../../../../../../server/src/models"
+// import { ISong } from "../../../../../../server/src/models/Song"
+import { IComment, ISongPopulatedUserAndComments as ISong, IUser } from "src/types/ServerModelTypes"
 import SongDetails from "../Details/SongDetails"
 
 const LikeButton = ({ data }: { data: ISong | IComment }) => {
-  const { total, hasUser, onClick } = useLike(data, "Song")
+  const { total, hasUser, onClick } = useLike(data._id, data.likes, "Song")
   return <SideButton type="Like" text={`${total}`} hasUser={hasUser} onClick={onClick} size={75} />
 }
 
 const FollowButton = ({ data }: { data: IUser }) => {
-  const { total, hasUser, onClick } = useFollow(data)
+  const { total, hasUser, onClick } = useFollow(data._id, data.followers)
   return <SideButton type="Follow" text={`${total}`} hasUser={hasUser} onClick={onClick} size={110} />
 }
 

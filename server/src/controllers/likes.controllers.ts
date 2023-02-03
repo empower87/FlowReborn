@@ -13,7 +13,7 @@ export const likeSongHandler = async ({ ctx, input }: ContextWithInput<LikeInput
   const user = await User.findOne({ username: ctx.user.username })
   if (!user) throw TRPCError("INTERNAL_SERVER_ERROR", "user not found")
 
-  if (song.likes.includes(user._id)) throw TRPCError("BAD_REQUEST", "you already liked this song")
+  if (song.likes.includes(user._id.toString())) throw TRPCError("BAD_REQUEST", "you already liked this song")
 
   const updateLikedSong = await song.updateOne({ $push: { likes: user._id } })
   return updateLikedSong
@@ -28,7 +28,7 @@ export const unlikeSongHandler = async ({ ctx, input }: ContextWithInput<LikeInp
   const user = await User.findOne({ username: ctx.user.username })
   if (!user) throw TRPCError("INTERNAL_SERVER_ERROR", "user not found")
 
-  if (!song.likes.includes(user._id)) throw TRPCError("BAD_REQUEST", "you have not liked this song")
+  if (!song.likes.includes(user._id.toString())) throw TRPCError("BAD_REQUEST", "you have not liked this song")
 
   const updateUnlikedSong = await song.updateOne({ $pull: { likes: user._id } })
   return updateUnlikedSong
@@ -44,7 +44,7 @@ export const likeCommentHandler = async ({ ctx, input }: ContextWithInput<LikeIn
   const user = await User.findOne({ username: ctx.user.username })
   if (!user) throw TRPCError("INTERNAL_SERVER_ERROR", "user not found")
 
-  if (comment.likes.includes(user._id)) throw TRPCError("BAD_REQUEST", "you already liked this comment")
+  if (comment.likes.includes(user._id.toString())) throw TRPCError("BAD_REQUEST", "you already liked this comment")
 
   const updatedComment = await comment.updateOne({ $push: { likes: user._id } })
   return updatedComment
@@ -60,7 +60,7 @@ export const unlikeCommentHandler = async ({ ctx, input }: ContextWithInput<Like
   const user = await User.findOne({ username: ctx.user.username })
   if (!user) throw TRPCError("INTERNAL_SERVER_ERROR", "user not found")
 
-  if (!comment.likes.includes(user._id)) throw TRPCError("BAD_REQUEST", "you have not liked this comment")
+  if (!comment.likes.includes(user._id.toString())) throw TRPCError("BAD_REQUEST", "you have not liked this comment")
 
   const updatedComment = await comment.updateOne({ $pull: { likes: user._id } })
   return updatedComment

@@ -1,5 +1,6 @@
 import { Dispatch } from "react"
-import { ISong } from "../../../../../server/src/models"
+// import { ISong } from "../../../../../server/src/models"
+import { ISongPopulatedUserAndComments as ISong } from "src/types/ServerModelTypes"
 
 type State = {
   feedInView: Feeds

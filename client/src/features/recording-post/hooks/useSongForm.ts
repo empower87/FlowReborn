@@ -25,10 +25,10 @@ export const useSongForm = (recordingType: "audio" | "video") => {
   const [isSaving, setIsSaving] = useState<boolean>(false)
   const [error, setError] = useState<Error>(INITIAL_ERROR_STATE)
 
-  const uploadToAWS = trpc.useMutation(["users.upload-file"], {
+  const uploadToAWS = trpc.users.uploadFile.useMutation({
     onError: (err) => onSettledMutation(err.message),
   })
-  const createSong = trpc.useMutation(["songs.create-song"], {
+  const createSong = trpc.songs.createSong.useMutation({
     onSuccess: (data) => onSettledMutation("success", data._id),
     onError: (err) => onSettledMutation(err.message),
   })
@@ -130,8 +130,9 @@ export const useSongForm = (recordingType: "audio" | "video") => {
         }
 
         if (songUrl) {
-          songToUpload = { ...songToUpload, thumbnail: thumbnailUrl, audio: songUrl }
-          createSong.mutate({ ...songToUpload })
+          let { blob, thumbnailBlob, _id, user, ...rest } = songToUpload
+          let songToCreate = { ...rest, user: songToUpload.user._id, thumbnail: thumbnailUrl, audio: songUrl }
+          createSong.mutate({ ...songToCreate })
         }
       },
     })

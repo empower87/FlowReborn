@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react"
-import { ISong, IUser } from "../../../../../../../server/src/models"
+// import { ISong, IUser } from "../../../../../../../server/src/models"
+import { ISongPopulatedUser as ISong, IUser } from "src/types/ServerModelTypes"
 import ConfirmDeleteSong from "./DeleteSongDisplay"
 import ItemBody, { LyricsBox } from "./ItemBody"
 

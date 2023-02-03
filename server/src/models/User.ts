@@ -1,31 +1,35 @@
 import { model, Model, Schema } from "mongoose"
+import { z } from "zod"
+import { UserSchema as IUserSchema } from "../schema/user.schema"
 
-export interface IUser {
-  _id: string
-  email: string
-  username: string
-  google?: {
-    googleId: string
-    userPhoto: string
-    userSignUpDate: Date
-    given_name: string
-    family_name: string
-  }
-  picture?: string
-  firstName?: string
-  lastName?: string
-  about?: string
-  location?: string
-  socials?: {
-    twitter: string
-    instagram: string
-    soundCloud: string
-  }
-  followers: string[]
-  following: string[]
-  createdOn?: Date
-  updatedOn?: Date
-}
+export type IUser = z.infer<typeof IUserSchema>
+
+// export interface IUser {
+//   _id: Types.ObjectId
+//   email: string
+//   username: string
+//   google?: {
+//     googleId: string
+//     userPhoto: string
+//     userSignUpDate: Date
+//     given_name: string
+//     family_name: string
+//   }
+//   picture?: string
+//   firstName?: string
+//   lastName?: string
+//   about?: string
+//   location?: string
+//   socials?: {
+//     twitter: string
+//     instagram: string
+//     soundCloud: string
+//   }
+//   followers: string[]
+//   following: string[]
+//   createdOn?: Date
+//   updatedOn?: Date
+// }
 
 interface IUserDocument extends IUser {
   password: string

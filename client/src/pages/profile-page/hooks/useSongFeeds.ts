@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useState } from "react"
+import { ISongPopulatedUser as ISong, IUser } from "src/types/ServerModelTypes"
 import { trpc } from "src/utils/trpc"
-import { ISong, IUser } from "../../../../../server/src/models"
 
 type SetActions = "Songs" | "Follow" | "Like"
 
@@ -66,20 +66,29 @@ export default function useSongFeed(user: IUser) {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [state, dispatch] = useReducer(songFeedsReducer, INITIAL_STATE)
 
-  const userSongs = trpc.useQuery(["songs.users-songs", { _id: id }], {
-    enabled: !!id,
-    refetchOnWindowFocus: false,
-  })
+  const userSongs = trpc.songs.usersSongs.useQuery(
+    { _id: id },
+    {
+      enabled: !!id,
+      refetchOnWindowFocus: false,
+    }
+  )
 
-  const likedSongs = trpc.useQuery(["songs.users-liked-songs", { _id: id }], {
-    enabled: !!id,
-    refetchOnWindowFocus: false,
-  })
+  const likedSongs = trpc.songs.usersLikedSongs.useQuery(
+    { _id: id },
+    {
+      enabled: !!id,
+      refetchOnWindowFocus: false,
+    }
+  )
 
-  const followSongs = trpc.useQuery(["songs.users-followers-songs", { followers: followers }], {
-    enabled: !!followers,
-    refetchOnWindowFocus: false,
-  })
+  const followSongs = trpc.songs.usersFollowersSongs.useQuery(
+    { followers: followers },
+    {
+      enabled: !!followers,
+      refetchOnWindowFocus: false,
+    }
+  )
 
   useEffect(() => {
     if (userSongs.data) {

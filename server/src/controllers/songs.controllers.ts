@@ -1,24 +1,33 @@
 import { ISong, Song } from "../models/Song"
 import { IUser, User } from "../models/User"
-import { CreateSongType, GetByFollowersType, SongInputType, UpdateSongType } from "../schema/songs.schema"
+import { CommentSchemaPopulatedUserType } from "../schema/comments.schema"
+import {
+  CreateSongType,
+  GetByFollowersType,
+  SongInputType,
+  SongSchemaPopulatedUserAndCommentsType,
+  SongSchemaPopulatedUserType,
+  UpdateSongType,
+} from "../schema/songs.schema"
 import { ContextWithInput, TRPCError } from "../utils/trpc"
 
 export const createSongHandler = async ({ ctx, input }: ContextWithInput<CreateSongType>) => {
   if (!ctx.user) throw TRPCError("UNAUTHORIZED", "user is not authorized ")
 
-  const newSong = await Song.create(input)
+  const newSong: ISong = await Song.create(input)
 
+  // if (!newSong)
   console.log(newSong, input, "YO WHAT IS GOING ON??? WHY NO THUMBY")
   return newSong
 }
 
 export const updateSongHandler = async ({ ctx, input }: ContextWithInput<UpdateSongType>) => {
   const update = { title: input.title, caption: input.caption }
-  const updatedSong = await Song.findByIdAndUpdate(input._id, update, {
+  const updatedSong: SongSchemaPopulatedUserAndCommentsType | null = await Song.findByIdAndUpdate(input._id, update, {
     new: true,
   })
     .populate<{ user: IUser }>("user")
-    .populate<{ comments: ISong["comments"] }>({
+    .populate<{ comments: CommentSchemaPopulatedUserType[] }>({
       path: "comments",
       populate: "user",
     })
@@ -33,10 +42,32 @@ export const deleteSongHandler = async ({ ctx, input }: ContextWithInput<SongInp
   return deleteSong
 }
 
-export const getSongHandler = async ({ ctx, input }: ContextWithInput<SongInputType>) => {
-  const getSong = await Song.findOne(input)
+export const getSongHandler = async ({ input }: { input: SongInputType }) => {
+  const getSong: ISong | null = await Song.findOne(input)
+  // .populate<{ user: IUser }>("user")
+  // .populate<{ comments: ISong["comments"] }>({
+  //   path: "comments",
+  //   populate: "user",
+  // })
+  if (!getSong) throw TRPCError("INTERNAL_SERVER_ERROR", "couldn't find song")
+  return getSong
+}
+
+export const getSongWithPopulatedUserHandler = async ({ ctx, input }: ContextWithInput<SongInputType>) => {
+  const getSong: SongSchemaPopulatedUserType | null = await Song.findOne(input).populate<{ user: IUser }>("user")
+  // .populate<{ comments: ISong["comments"] }>({
+  //   path: "comments",
+  //   populate: "user",
+  // })
+  if (!getSong) return TRPCError("INTERNAL_SERVER_ERROR", "couldn't find song")
+
+  return getSong
+}
+
+export const getSongWithPopulatedUserAndCommentsHandler = async ({ input }: { input: SongInputType }) => {
+  const getSong: SongSchemaPopulatedUserAndCommentsType | null = await Song.findOne(input)
     .populate<{ user: IUser }>("user")
-    .populate<{ comments: ISong["comments"] }>({
+    .populate<{ comments: CommentSchemaPopulatedUserType[] }>({
       path: "comments",
       populate: "user",
     })
@@ -47,12 +78,13 @@ export const getSongHandler = async ({ ctx, input }: ContextWithInput<SongInputT
 export const getUsersSongsHandler = async ({ ctx, input }: ContextWithInput<SongInputType>) => {
   if (!ctx.user) throw TRPCError("UNAUTHORIZED", "user is not authorized ")
 
-  const userSongs = await Song.find({ user: input._id })
-    .populate<{ user: IUser }>("user")
-    .populate<{ comments: ISong["comments"] }>({
-      path: "comments",
-      populate: "user",
-    })
+  const userSongs: SongSchemaPopulatedUserType[] | null = await Song.find({ user: input._id }).populate<{
+    user: IUser
+  }>("user")
+  // .populate<{ comments: ISong["comments"] }>({
+  //   path: "comments",
+  //   populate: "user",
+  // })
   if (!userSongs) throw TRPCError("BAD_REQUEST", "user not found")
   return userSongs
 }
@@ -60,7 +92,7 @@ export const getUsersSongsHandler = async ({ ctx, input }: ContextWithInput<Song
 export const getUsersLikedSongs = async ({ ctx, input }: ContextWithInput<SongInputType>) => {
   if (!ctx.user) throw TRPCError("UNAUTHORIZED", "user is not authorized ")
 
-  const likedSongs = await Song.find({ likes: { $in: input._id } }).populate<{
+  const likedSongs: SongSchemaPopulatedUserType[] | null = await Song.find({ likes: { $in: input._id } }).populate<{
     user: IUser
   }>("user")
   if (!likedSongs) throw TRPCError("BAD_REQUEST", "could not find users liked songs")
@@ -70,8 +102,8 @@ export const getUsersLikedSongs = async ({ ctx, input }: ContextWithInput<SongIn
 export const getUsersFollowersSongs = async ({ ctx, input }: ContextWithInput<GetByFollowersType>) => {
   if (!ctx.user) throw TRPCError("UNAUTHORIZED", "user is not authorized ")
   const followers = input.followers
-  console.log(followers, "are we getting data here??")
-  const songsByFollowers = await Song.find({
+
+  const songsByFollowers: SongSchemaPopulatedUserType[] | null = await Song.find({
     user: { $in: [...followers] },
   }).populate<{
     user: IUser
@@ -83,33 +115,32 @@ export const getUsersFollowersSongs = async ({ ctx, input }: ContextWithInput<Ge
 }
 
 export const getAllSongsHandler = async () => {
-  const allSongs = await Song.find().populate<{ user: IUser }>("user").populate<{ comments: ISong["comments"] }>({
-    path: "comments",
-    populate: "user",
-  })
+  const allSongs: SongSchemaPopulatedUserAndCommentsType[] | null = await Song.find({})
+    .populate<{ user: IUser }>("user")
+    .populate<{ comments: CommentSchemaPopulatedUserType[] }>({
+      path: "comments",
+      populate: "user",
+    })
+  if (!allSongs) throw TRPCError("INTERNAL_SERVER_ERROR", "request coulnd't be completed")
   return allSongs
 }
 
-type Data = {
+type DataType = {
   users: IUser[]
-  songs: ISong[]
+  songs: SongSchemaPopulatedUserAndCommentsType[]
 }
-
 export const searchHandler = async ({ ctx, input }: ContextWithInput<string>) => {
-  let data: Data = {
-    users: [],
-    songs: [],
-  }
+  let data: DataType
 
-  const users = await User.find().or([
+  const users: IUser[] = await User.find().or([
     { username: { $regex: input, $options: "i" } },
     { email: { $regex: input, $options: "i" } },
     { firstName: { $regex: input, $options: "i" } },
   ])
 
-  const songs = await Song.find({ title: { $regex: input, $options: "i" } })
+  const songs: SongSchemaPopulatedUserAndCommentsType[] = await Song.find({ title: { $regex: input, $options: "i" } })
     .populate<{ user: IUser }>("user")
-    .populate<{ comments: ISong["comments"] }>({
+    .populate<{ comments: CommentSchemaPopulatedUserType[] }>({
       path: "comments",
       populate: "user",
     })

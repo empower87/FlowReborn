@@ -1,6 +1,7 @@
 import { ReactNode } from "react"
 import { CommentButton, FollowButton, LikeButton } from "src/features/socialize/SocializeButtons"
-import { ISong } from "../../../../../server/src/models"
+// import { ISong } from "../../../../../server/src/models"
+import { ISongPopulatedUser as ISong } from "src/types/ServerModelTypes"
 
 type SocialButton = {
   type: "follow" | "like" | "comment"

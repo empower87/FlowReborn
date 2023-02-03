@@ -1,42 +1,43 @@
 import { useCallback, useReducer } from "react"
-import { useQueryClient } from "react-query"
 import { useAuth } from "src/context/AuthContext"
 import { trpc, trpcZodErrorHandler } from "src/utils/trpc"
-import { IComment } from "../../../../../../server/src/models"
+// import { IComment } from "../../../../../../server/src/models"
+import { ICommentPopulatedUserAndReplies as IComment } from "src/types/ServerModelTypes"
 import { commentMutationStatusReducer, INITIAL_STATE } from "../reducers/commentMutationStatusReducer"
 
-type MutationType = "CREATE" | "EDIT" | "NONE"
+type MutationType = "CREATE" | "EDIT" | "DELETE"
 
 export default function useComments() {
-  const queryClient = useQueryClient()
+  // const queryClient = useQueryClient()
+  const utils = trpc.useContext()
   const { user } = useAuth()
   const [state, dispatch] = useReducer(commentMutationStatusReducer, INITIAL_STATE)
 
-  const add = trpc.useMutation(["comments.create"], {
+  const add = trpc.comments.createComment.useMutation({
     onSuccess: (data, variables) => {
       onSuccessHandler("CREATE", data)
       invalidateQueries(variables.parent, variables.songId)
     },
     onError: (err) => onErrorHandler("CREATE", err.message),
   })
-  const edit = trpc.useMutation(["comments.edit"], {
+  const edit = trpc.comments.editComment.useMutation({
     onSuccess: (data, variables) => {
       onSuccessHandler("EDIT", data)
-      invalidateQueries(data.parent._id, variables.songId)
+      invalidateQueries(data.parent, variables.songId)
     },
     onError: (err) => onErrorHandler("EDIT", err.message),
   })
-  const del = trpc.useMutation(["comments.delete"], {
+  const del = trpc.comments.deleteComment.useMutation({
     onSuccess: (data, variables) => {
-      onSuccessHandler("NONE", data)
+      onSuccessHandler("DELETE", data)
       invalidateQueries(variables.parent, variables.songId)
     },
-    onError: (err) => onErrorHandler("NONE", err.message),
+    onError: (err) => onErrorHandler("DELETE", err.message),
   })
 
   const addComment = useCallback((parent: string, text: string, songId: string) => {
     if (!user) return
-    add.mutate({ parent, text, user, songId })
+    add.mutate({ parent: parent, text: text, user: user._id, songId: songId })
   }, [])
 
   const editComment = useCallback((_id: string, text: string, songId: string) => {
@@ -50,9 +51,11 @@ export default function useComments() {
   const invalidateQueries = (parentId: string, songId: string) => {
     const commentId = parentId !== songId && { _id: `${parentId}` }
 
-    queryClient.invalidateQueries("songs.all-songs")
+    // queryClient.invalidateQueries("songs.allSongs")
+    utils.songs.allSongs.invalidate()
     if (commentId) {
-      queryClient.invalidateQueries(["comments.get-comment", commentId])
+      utils.comments.getComment.invalidate(commentId)
+      // queryClient.invalidateQueries(["comments.getComment", commentId])
     }
   }
 

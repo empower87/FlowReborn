@@ -7,7 +7,8 @@ import { useNavigate } from "react-router-dom"
 import { useAuth } from "src/context/AuthContext"
 import { convertBase64ToBlob } from "src/utils/convertBase64ToBlob"
 import { trpc } from "src/utils/trpc"
-import { ISong } from "../../../../../server/src/models"
+// import { ISong } from "../../../../../server/src/models"
+import { ISongPopulatedUser as ISong } from "src/types/ServerModelTypes"
 
 interface IFormInputs {
   picture: string
@@ -42,13 +43,13 @@ export default function useEditForm() {
   })
   const [songs, setSongs] = useState<ISong[]>([])
   const queryClient = useQueryClient()
-  const upload = trpc.useMutation(["users.upload-file"])
-  const getSongs = trpc.useQuery(["songs.users-songs", { _id: userId }], { enabled: !!userId })
-  const updateUser = trpc.useMutation(["users.update-user"], {
+  const upload = trpc.users.uploadFile.useMutation()
+  const getSongs = trpc.songs.usersSongs.useQuery({ _id: userId }, { enabled: !!userId })
+  const updateUser = trpc.users.updateUser.useMutation({
     onMutate: async (data) => {
-      await queryClient.cancelQueries(["users.get-me"])
-      const prevUser = queryClient.getQueryData(["users.get-me"])
-      const newData = queryClient.setQueryData(["users.get-me"], (old: any) => ({
+      await queryClient.cancelQueries(["users.getMe"])
+      const prevUser = queryClient.getQueryData(["users.getMe"])
+      const newData = queryClient.setQueryData(["users.getMe"], (old: any) => ({
         ...old,
         ...data,
       }))
@@ -60,10 +61,10 @@ export default function useEditForm() {
       navigate(-1)
     },
     onError: (err, data, context) => {
-      queryClient.setQueryData(["users.get-me"], context?.prevUser)
+      queryClient.setQueryData(["users.getMe"], context?.prevUser)
     },
     onSettled: (prevUser) => {
-      queryClient.invalidateQueries(["users.get-me"])
+      queryClient.invalidateQueries(["users.getMe"])
     },
   })
 

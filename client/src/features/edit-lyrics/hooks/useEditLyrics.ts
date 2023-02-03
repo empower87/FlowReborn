@@ -3,7 +3,8 @@ import { useAuth } from "src/context/AuthContext"
 import { ISongTake } from "src/features/recording-booth/utils/types"
 import useHistory from "src/hooks/useHistory"
 import { trpc } from "src/utils/trpc"
-import { ISong } from "../../../../../server/src/models"
+// import { ISong } from "../../../../../server/src/models"
+import { ISongPopulatedUser as ISong } from "src/types/ServerModelTypes"
 
 type UseEditLyricsProps = {
   _songs: (ISong | ISongTake)[] | ISong[]
@@ -21,7 +22,7 @@ export type LyricsState = {
 export function useSongLyrics({ _songs }: Pick<UseEditLyricsProps, "_songs">) {
   const { user } = useAuth()
   const userId = user ? user._id : ""
-  const usersSongs = trpc.useQuery(["songs.users-songs", { _id: userId }], { enabled: !!userId })
+  const usersSongs = trpc.songs.usersSongs.useQuery({ _id: userId }, { enabled: !!userId })
   const [songs, setSongs] = useState<(ISong | ISongTake)[] | ISong[]>([])
   const [initialLyricsHistory, setInitialLyricsHistory] = useState<LyricsState[]>([])
 

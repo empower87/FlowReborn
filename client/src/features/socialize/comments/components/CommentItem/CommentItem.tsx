@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom"
 import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import useFormatDate from "src/hooks/useFormatDate"
-import { IComment } from "../../../../../../../server/src/models/index"
+// import { IComment } from "../../../../../../../server/src/models/index"
+import { IComment } from "src/types/ServerModelTypes"
 
 type InputType = "Comment" | "Edit" | "Reply" | "Hide"
 
@@ -67,13 +68,15 @@ const Title = ({ username, isAuthor, onClick }: Omit<HeaderProps, "picture">) =>
   )
 }
 
-const Date = ({ createdOn, editedOn }: { createdOn: Date | undefined; editedOn?: Date }) => {
+const CommentDate = ({ createdOn, editedOn }: { createdOn: string | undefined; editedOn?: string | undefined }) => {
   const { formatDate } = useFormatDate()
+  const createdOnDate = createdOn ? new Date(createdOn) : undefined
+  const editedOnDate = editedOn ? new Date(editedOn) : undefined
   return (
     <p className="comments__date">
       {editedOn
-        ? `${String.fromCodePoint(8226)} ${formatDate(createdOn, "m")} (edited)`
-        : `${String.fromCodePoint(8226)} ${formatDate(createdOn, "m")}`}
+        ? `${String.fromCodePoint(8226)} ${formatDate(editedOnDate, "m")} (edited)`
+        : `${String.fromCodePoint(8226)} ${formatDate(createdOnDate, "m")}`}
     </p>
   )
 }
@@ -96,7 +99,7 @@ function CommentItemDetails({
           <div className="comments__user-details">
             <div className="comments__user-details--bs-inset">
               <Title username={comment?.user?.username} isAuthor={isAuthor} onClick={() => onClick()} />
-              <Date createdOn={comment?.createdOn} editedOn={comment?.editedOn} />
+              <CommentDate createdOn={comment?.createdOn} editedOn={comment?.editedOn} />
             </div>
           </div>
           <p className="comments__comment">{comment?.text}</p>

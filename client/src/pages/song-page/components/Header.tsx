@@ -3,7 +3,8 @@ import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
 import MarqueeText from "src/components/text/MarqueeText"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import useFormatDate from "src/hooks/useFormatDate"
-import { ISong } from "../../../../../server/src/models"
+// import { ISong } from "../../../../../server/src/models"
+import { ISongPopulatedUser as ISong } from "src/types/ServerModelTypes"
 
 type HeaderProps = {
   song: ISong
@@ -72,7 +73,7 @@ const SongInfo = ({ song }: Pick<HeaderProps, "song">) => {
       <p>
         by: <span> {song?.user?.username}</span>
       </p>
-      <p>on: {formatDate(song?.createdOn, "MMMM_Dth_YYYY")}</p>
+      <p>on: {formatDate(new Date(song?.createdOn), "MMMM_Dth_YYYY")}</p>
     </div>
   )
 }

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
 import { useAuth } from "src/context/AuthContext"
 import useFollow from "src/features/socialize/follow/useFollow"
-import { IUser } from "../../../../../../server/src/models/User"
+import { IUser } from "src/types/ServerModelTypes"
 
 type ProfileDataProps = PropsWithChildren<{
   title: "Follow" | "Following" | "Followers" | "Logout" | "Edit"
@@ -38,7 +38,7 @@ const SocialProofItem = ({ title, onClick, size, addClasses, children }: Profile
 }
 
 const FollowButton = ({ thisUser }: { thisUser: IUser }) => {
-  const { total, hasUser, onClick, loading } = useFollow(thisUser)
+  const { total, hasUser, onClick, loading } = useFollow(thisUser._id, thisUser.followers)
   const [classes, setClasses] = useState<string>("")
   const [titleText, setTitleText] = useState<string>("Follow")
 

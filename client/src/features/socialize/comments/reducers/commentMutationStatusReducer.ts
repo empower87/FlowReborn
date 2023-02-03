@@ -1,5 +1,6 @@
 import { Reducer } from "react"
-import { IComment } from "../../../../../../server/src/models"
+// import { IComment } from "../../../../../../server/src/models"
+import { ICommentPopulatedUserAndReplies as IComment } from "src/types/ServerModelTypes"
 
 export type CommentMutationStatusState = {
   target: "EDIT" | "CREATE" | "DELETE" | "NONE"
@@ -13,7 +14,7 @@ export type CommentMutationStatusState = {
 }
 
 type Payload = {
-  target: "CREATE" | "EDIT" | "NONE"
+  target: "CREATE" | "EDIT" | "DELETE" | "NONE"
   data?: IComment | null
   errorMessage?: string | null
 }

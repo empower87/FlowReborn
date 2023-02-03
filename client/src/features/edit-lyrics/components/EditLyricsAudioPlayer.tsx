@@ -2,7 +2,7 @@ import { useState } from "react"
 import AudioTimeSlider from "src/components/audio/AudioTimeSlider"
 import { PlayButton } from "src/components/buttons/PlayButton"
 import { ISongTake } from "src/features/recording-booth/utils/types"
-import { ISong } from "../../../../../server/src/models"
+import { ISongPopulatedUser as ISong } from "src/types/ServerModelTypes"
 
 export function EditLyricsAudioPlayer({ currentSong }: { currentSong: ISongTake | ISong }) {
   const [isPlaying, setIsPlaying] = useState<boolean>(false)

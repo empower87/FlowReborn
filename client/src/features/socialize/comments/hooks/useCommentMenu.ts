@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useCallback, useEffect, useReducer, useState } from "react"
-import { IComment, ISong } from "../../../../../../server/src/models"
+// import { IComment, ISong } from "../../../../../../server/src/models"
+import { IComment, ISongPopulatedUserAndComments as ISong } from "src/types/ServerModelTypes"
 import useComments from "../hooks/useComments"
 import { commentInputMenuReducer, INITIAL_STATE, InputTypes } from "../reducers/commentInputMenuReducer"
 
@@ -38,18 +39,18 @@ export default function useCommentMenu(song: ISong, onClose: Dispatch<SetStateAc
     const validData = mutationStatus.data
     switch (mutationStatus.target) {
       case "CREATE":
-        setComments((prev) => [...prev, validData])
+        // setComments((prev) => [...prev, validData])
         break
       case "EDIT":
-        setComments((prev) =>
-          prev.map((prevComment) => {
-            if (prevComment._id === validData._id) {
-              return validData
-            } else {
-              return prevComment
-            }
-          })
-        )
+        // setComments((prev) =>
+        //   prev.map((prevComment) => {
+        //     if (prevComment._id === validData._id) {
+        //       return validData
+        //     } else {
+        //       return prevComment
+        //     }
+        //   })
+        // )
         break
       case "DELETE":
         setComments((prev) => prev.filter((each) => each._id !== validData._id))
@@ -102,7 +103,7 @@ export default function useCommentMenu(song: ISong, onClose: Dispatch<SetStateAc
         break
       case "DELETE":
         if (!data) return
-        const parentId = data.parent._id ? data.parent._id : (data.parent as unknown as string)
+        const parentId = data.parent
         deleteComment(data._id, parentId, songId)
         break
       default:

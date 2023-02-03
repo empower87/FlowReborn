@@ -1,4 +1,4 @@
-import { IUser } from "../../../../../../server/src/models/User"
+import { IUser } from "src/types/ServerModelTypes"
 import Buttons from "./Buttons"
 import Fields from "./Fields"
 

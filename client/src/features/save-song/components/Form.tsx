@@ -1,8 +1,6 @@
 import { Dispatch, forwardRef, SetStateAction, useEffect, useRef, useState } from "react"
 import ButtonClearText from "src/components/buttons/ButtonClearText"
-import InputError from "src/components/errors/InputError"
 import { ISongTake } from "src/features/recording-booth/utils/types"
-import { useSongForm } from "../hooks/useSongForm"
 
 type FormProps = {
   currentSong: ISongTake
@@ -15,24 +13,22 @@ type InputProps = {
 }
 
 export default function Form({ currentSong }: FormProps) {
-  const { handleSaveSong, error, setError } = useSongForm("audio")
+  // const { handleSaveSong, error, setError } = useSongForm("audio")
   const captionRef = useRef<HTMLInputElement>(null)
   const titleRef = useRef<HTMLInputElement>(null)
   const [showError, setShowError] = useState<boolean>(false)
 
-  useEffect(() => {
-    if (error.showError) {
-      setShowError(true)
-    } else {
-      setShowError(false)
-    }
-  }, [error])
+  // useEffect(() => {
+  //   if (error.showError) {
+  //     setShowError(true)
+  //   } else {
+  //     setShowError(false)
+  //   }
+  // }, [error])
 
   return (
     <div className="SaveSongDisplay">
-      <form className="song-inputs-container">
-        {/* onSubmit={e => validateInputs(e)} */}
-        {/* TODO: fix InputError portal to live in container element */}
+      {/* <form className="song-inputs-container">
         <InputError
           isOpen={showError}
           onClose={setShowError}
@@ -59,7 +55,7 @@ export default function Form({ currentSong }: FormProps) {
             </button>
           </div>
         </div>
-      </form>
+      </form> */}
     </div>
   )
 }

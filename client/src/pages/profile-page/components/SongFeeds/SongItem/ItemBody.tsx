@@ -6,7 +6,8 @@ import { BtnColorsEnum, RoundButton } from "src/components/buttons/RoundButton/R
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import useFormatDate from "src/hooks/useFormatDate"
 import { fourDigitNumberHandler } from "src/utils/styleCalculators"
-import { ISong } from "../../../../../../../server/src/models/Song"
+// import { ISong } from "../../../../../../../server/src/models/Song"
+import { ISongPopulatedUser as ISong } from "src/types/ServerModelTypes"
 
 type Props = {
   song: ISong
@@ -38,7 +39,7 @@ const DetailsTitle = ({ song, onClick }: Pick<Props, "song" | "onClick">) => {
       <p className="profile-songs__text title">{song.title}</p>
       <p className="profile-songs__text user">
         {song.user.username} {String.fromCodePoint(8226)}{" "}
-        <span className="profile-songs__text date">{formatDate(song?.createdOn, "m")}</span>
+        <span className="profile-songs__text date">{formatDate(new Date(song?.createdOn), "m")}</span>
       </p>
     </button>
   )

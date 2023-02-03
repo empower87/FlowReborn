@@ -6,7 +6,8 @@ import MarqueeText from "src/components/text/MarqueeText"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import { useAuth } from "src/context/AuthContext"
 import { ISongTake } from "src/features/recording-booth/utils/types"
-import { ISong } from "../../../../../server/src/models"
+// import { ISong } from "../../../../../server/src/models"
+import { ISongPopulatedUser as ISong } from "src/types/ServerModelTypes"
 
 type EditLyricsHeaderProps = {
   currentSong: ISong | ISongTake

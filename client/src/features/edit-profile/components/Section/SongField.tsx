@@ -1,5 +1,6 @@
 import { useState } from "react"
-import { ISong } from "../../../../../../server/src/models/Song"
+// import { ISong } from "../../../../../../server/src/models/Song"
+import { ISongPopulatedUser as ISong } from "src/types/ServerModelTypes"
 import ButtonClearText from "../../../../components/buttons/ButtonClearText"
 import useHandleOSK from "../../../../hooks/useMobileKeyboardHandler"
 

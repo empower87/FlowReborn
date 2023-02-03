@@ -2,7 +2,8 @@ import { MouseEventHandler, useState } from "react"
 import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
 import ContinueModal from "src/components/modals/ContinueModal"
 import { useAuth } from "src/context/AuthContext"
-import { IComment } from "../../../../../../../server/src/models/index"
+// import { IComment } from "../../../../../../../server/src/models/index"
+import { IComment } from "src/types/ServerModelTypes"
 import useLike from "../../../like/useLike"
 import { ToggleInputHandlerType } from "../../hooks/useCommentMenu"
 
@@ -44,7 +45,7 @@ const ItemButton = ({ type, onClick, total, isLiked }: ItemButtonProps) => {
 }
 
 export const LikeButton = ({ comment }: { comment: IComment }) => {
-  const { hasUser, total, onClick, loading } = useLike(comment, "Comment")
+  const { hasUser, total, onClick, loading } = useLike(comment._id, comment.likes, "Comment")
   return (
     <ItemButton
       type={"Like"}
@@ -97,7 +98,6 @@ const DeleteButton = ({
   // const { deleteComment } = useComments()
   const [isDelete, setIsDelete] = useState<boolean>(false)
 
-  const parentId = comment.parent._id ? comment.parent._id : (comment.parent as unknown as string)
   const handleOnDelete = () => {
     onClick("DELETE", comment)
     // deleteComment(comment._id, parentId)
@@ -126,7 +126,7 @@ const DeleteButton = ({
 
 export const EditDeleteButtons = ({ comment, onClick }: EditDeleteButtonsProps) => {
   const { user } = useAuth()
-  const parentId = comment.parent._id ? comment.parent._id : (comment.parent as unknown as string)
+  const parentId = comment.parent
 
   const onClickHandler = () => {
     onClick("OPEN_EDIT_INPUT", comment)

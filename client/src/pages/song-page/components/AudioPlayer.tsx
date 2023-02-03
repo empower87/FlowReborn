@@ -1,8 +1,9 @@
 import { Dispatch, SetStateAction, useState } from "react"
 import { pauseIcon, playIcon } from "src/assets/images/_icons"
-import AudioTimeSlider from "src/components/audio/AudioTimeSlider"
+// import AudioTimeSlider from "src/components/audio/AudioTimeSlider"
 import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
-import { ISong } from "../../../../../server/src/models"
+// import { ISong } from "../../../../../server/src/models"
+import { ISongPopulatedUser as ISong } from "src/types/ServerModelTypes"
 
 const AUDIO_SLIDER_COLOR = `#353535`
 
@@ -67,12 +68,12 @@ export default function AudioPlayer({
           <div className="songscreen__audioslider--container">
             <div className="songscreen__audioslider--shadow-inset">
               <div className="songscreen__audioslider--shadow-outset">
-                <AudioTimeSlider
+                {/* <AudioTimeSlider
                   isPlaying={isPlaying}
                   setIsPlaying={setIsPlaying}
                   currentSong={song}
                   bgColor={AUDIO_SLIDER_COLOR}
-                />
+                /> */}
               </div>
             </div>
           </div>

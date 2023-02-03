@@ -1,4 +1,5 @@
-import { ISong } from "../../../../../../../server/src/models/Song"
+// import { ISong } from "../../../../../../../server/src/models/Song"
+import { ISongPopulatedUser as ISong } from "src/types/ServerModelTypes"
 
 type ButtonProps = {
   title: string

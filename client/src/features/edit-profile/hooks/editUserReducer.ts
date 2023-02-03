@@ -1,4 +1,5 @@
-import { IUser } from "../../../../../server/src/models"
+// import { IUser } from "../../../../../server/src/models"
+import { IUser } from "src/types/ServerModelTypes"
 
 export const INITIAL_STATE = {
   picture: "",

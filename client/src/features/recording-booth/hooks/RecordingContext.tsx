@@ -28,7 +28,7 @@ const useRecordingsProvider = (selectedBeat: Beat, recordingType: "audio" | "vid
       const id = parseInt(takes.length?.toString()) + 1
       const filteredLyrics = [...lyrics].filter((lyric) => lyric.length !== 0)
       const duration = recorder.minutes * 60000 + recorder.seconds * 1000
-      var newTake = {
+      var newTake: ISongTake = {
         _id: `${id}`,
         title: "",
         blob: recorder.blob,

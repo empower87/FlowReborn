@@ -1,5 +1,5 @@
 import { LayoutThree } from "src/components/layouts/LayoutWrappers"
-import { IUser } from "../../../../../../server/src/models/User"
+import { IUser } from "src/types/ServerModelTypes"
 
 type FieldProps = {
   title: string

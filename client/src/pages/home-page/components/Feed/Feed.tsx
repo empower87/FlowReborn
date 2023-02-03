@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useState } from "react"
-import { ISong } from "../../../../../../server/src/models"
+// import { ISong } from "../../../../../../server/src/models"
+import { ISongPopulatedUserAndComments as ISong } from "src/types/ServerModelTypes"
 import SongPost from "./SongPost"
 
 type FeedProps = {

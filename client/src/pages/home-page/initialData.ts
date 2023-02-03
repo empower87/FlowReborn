@@ -1,5 +1,6 @@
 // import { faker } from '@faker-js/faker'
-import { IUser } from "../../../../server/src/models/User"
+// import { IUser } from "../../../../server/src/models/User"
+import { IUser } from "src/types/ServerModelTypes"
 
 export const tempMockSong = {
   _id: "100",
@@ -21,19 +22,7 @@ export const tempMockSong = {
   likes: [],
   video: "",
 }
-const ids = [
-  "100",
-  "101",
-  "102",
-  "103",
-  "104",
-  "105",
-  "106",
-  "107",
-  "108",
-  "109",
-  "110",
-]
+const ids = ["100", "101", "102", "103", "104", "105", "106", "107", "108", "109", "110"]
 const songIds = [
   "1000",
   "1001",

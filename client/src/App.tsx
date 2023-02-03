@@ -1,6 +1,8 @@
 import React, { Suspense, useState } from "react"
-import { QueryClient, QueryClientProvider } from "react-query"
-import { ReactQueryDevtools } from "react-query/devtools"
+// import { QueryClient, QueryClientProvider } from "react-query"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+import { getFetch, httpBatchLink, loggerLink } from "@trpc/client"
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom"
 import Loading from "./components/loading/Loading"
 import { AuthProvider } from "./context/AuthContext"
@@ -39,16 +41,41 @@ function App() {
   )
   const [trpcClient] = useState(() =>
     trpc.createClient({
-      url:
-        process.env.NODE_ENV === "production"
-          ? // ? "https://iron-flow.herokuapp.com/api/trpc"git
-            "https://flow-henna.vercel.app/api/trpc"
-          : "http://localhost:5000/api/trpc",
-      headers() {
-        return { Authorization: getAuthToken() }
-      },
+      links: [
+        loggerLink(),
+        httpBatchLink({
+          url:
+            process.env.NODE_ENV === "production"
+              ? "https://flow-henna.vercel.app/api/trpc"
+              : "http://localhost:5000/api/trpc",
+          async fetch(input, init?) {
+            const fetch = getFetch()
+            return fetch(input, {
+              ...init,
+              credentials: "include",
+            })
+          },
+          headers() {
+            return {
+              authorization: getAuthToken(),
+            }
+          },
+        }),
+      ],
     })
   )
+  // const [trpcClient] = useState(() =>
+  //   trpc.createClient({
+  //     url:
+  //       process.env.NODE_ENV === "production"
+  //         ? // ? "https://iron-flow.herokuapp.com/api/trpc"git
+  //           "https://flow-henna.vercel.app/api/trpc"
+  //         : "http://localhost:5000/api/trpc",
+  //     headers() {
+  //       return { Authorization: getAuthToken() }
+  //     },
+  //   })
+  // )
 
   return (
     <div className="App">

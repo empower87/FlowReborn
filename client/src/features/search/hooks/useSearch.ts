@@ -1,7 +1,8 @@
 import { useCallback, useState } from "react"
 import { trpc } from "src/utils/trpc"
-import { ISong } from "../../../../../server/src/models/Song"
-import { IUser } from "../../../../../server/src/models/User"
+// import { ISong } from "../../../../../server/src/models/Song"
+// import { IUser } from "../../../../../server/src/models/User"
+import { ISearch, ISongPopulatedUserAndComments as ISong, IUser } from "src/types/ServerModelTypes"
 
 type SearchResultsType = {
   users: IUser[]
@@ -9,9 +10,9 @@ type SearchResultsType = {
 }
 
 const useSearch = () => {
-  const search = trpc.useMutation(["songs.search"])
+  const search = trpc.songs.search.useMutation()
   const [searchValue, setSearchValue] = useState<string>("")
-  const [searchResults, setSearchResults] = useState<SearchResultsType>({
+  const [searchResults, setSearchResults] = useState<ISearch>({
     users: [],
     songs: [],
   })
@@ -24,7 +25,7 @@ const useSearch = () => {
     search.mutate(query, {
       onSuccess: (data) => {
         console.log(data, "SEARCH DATA INC")
-        setSearchResults(data)
+        setSearchResults({ ...data })
       },
     })
   }, [])

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
-import { ISong } from "../../../../server/src/models/Song"
+// import { ISong } from "../../../../server/src/models/Song"
+import { ISongPopulatedUser as ISong } from "src/types/ServerModelTypes"
 import { commentIcon, followIcon, thumbsUpIcon } from "../../assets/images/_icons"
 import { ButtonTypes } from "../../components/buttons/Icon/Icon"
 import { BtnColorsEnum, RoundButton } from "../../components/buttons/RoundButton/RoundButton"
@@ -77,13 +78,13 @@ const SocialButtonHome = ({ type, total, onClick, hasUser, loading }: ISocialize
 }
 
 export const LikeButton = ({ location, song }: ISocializeButtonWrapper) => {
-  const like = useLike(song, "Song")
+  const like = useLike(song._id, song.likes, "Song")
   if (location === "Song") return <SocialButtonSong type="Like" {...like} />
   return <SocialButtonHome type="Like" {...like} />
 }
 
 export const FollowButton = ({ location, song }: ISocializeButtonWrapper) => {
-  const follow = useFollow(song.user)
+  const follow = useFollow(song.user._id, song.user.followers)
   if (location === "Song") return <SocialButtonSong type="Follow" {...follow} />
   return <SocialButtonHome type="Follow" {...follow} />
 }

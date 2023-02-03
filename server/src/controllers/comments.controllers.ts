@@ -1,5 +1,11 @@
-import { Comment, IComment, IUser, Song } from "../models/index"
-import { CreateCommentType, DeleteCommentType, EditCommentType, GetCommentByIdType } from "../schema/comments.schema"
+import { Comment, IUser, Song } from "../models/index"
+import {
+  CommentSchemaPopulatedUserType,
+  CreateCommentType,
+  DeleteCommentType,
+  EditCommentType,
+  GetCommentByIdType,
+} from "../schema/comments.schema"
 import { ContextWithInput, TRPCError } from "../utils/trpc"
 
 export const getComment = async ({ ctx, input }: ContextWithInput<GetCommentByIdType>) => {
@@ -7,16 +13,25 @@ export const getComment = async ({ ctx, input }: ContextWithInput<GetCommentById
 
   const getComment = await Comment.findOne({ _id: input._id })
     .populate<{ user: IUser }>("user")
-    .populate<{ replies: IComment["replies"] }>({ path: "replies", populate: "user" })
+    .populate<{ replies: CommentSchemaPopulatedUserType[] }>({ path: "replies", populate: "user" })
   console.log(getComment, "is this hydrated???")
+  if (!getComment) throw TRPCError("INTERNAL_SERVER_ERROR", "couldn't get request")
+  return getComment
+}
 
+export const getCommentPopulatedUser = async ({ ctx, input }: ContextWithInput<GetCommentByIdType>) => {
+  if (!ctx.user) throw TRPCError("UNAUTHORIZED", "user not authorized to get comment")
+
+  const getComment = await Comment.findOne({ _id: input._id }).populate<{ user: IUser }>("user")
+  if (!getComment) throw TRPCError("INTERNAL_SERVER_ERROR", "couldn't get request")
   return getComment
 }
 
 export const createCommentHandler = async ({ ctx, input }: ContextWithInput<CreateCommentType>) => {
   if (!ctx.user) throw TRPCError("UNAUTHORIZED", "user not authorized to comment")
   if (!input.text.length) throw TRPCError("BAD_REQUEST", "comment must be at least 1 character")
-  const createdComment = await Comment.create(input)
+  const create = { text: input.text, parent: input.parent, user: input.user }
+  const createdComment = await Comment.create(create)
 
   if (!createdComment) throw TRPCError("INTERNAL_SERVER_ERROR", "couldn't create comment in database")
 
@@ -26,7 +41,17 @@ export const createCommentHandler = async ({ ctx, input }: ContextWithInput<Crea
       { $push: { comments: createdComment } },
       { new: true }
     )
-    return createdComment
+
+    const getCreatedComment = await Comment.findById(createdComment._id)
+      .populate<{ user: IUser }>("user")
+      .populate<{ replies: CommentSchemaPopulatedUserType[] }>({
+        path: "replies",
+        populate: "user",
+      })
+
+    if (!getCreatedComment) throw TRPCError("INTERNAL_SERVER_ERROR", "request could not be completed")
+
+    return getCreatedComment
   } else {
     const updateComment = await Comment.findByIdAndUpdate(
       input.parent,
@@ -34,7 +59,8 @@ export const createCommentHandler = async ({ ctx, input }: ContextWithInput<Crea
       { new: true }
     )
       .populate<{ user: IUser }>("user")
-      .populate<{ replies: IComment["replies"] }>({ path: "replies", populate: "user" })
+      .populate<{ replies: CommentSchemaPopulatedUserType[] }>({ path: "replies", populate: "user" })
+    if (!updateComment) throw TRPCError("INTERNAL_SERVER_ERROR", "request could not be completed")
     return updateComment
   }
 }
@@ -42,6 +68,8 @@ export const createCommentHandler = async ({ ctx, input }: ContextWithInput<Crea
 export const editCommentHandler = async ({ ctx, input }: ContextWithInput<EditCommentType>) => {
   if (!ctx.user) throw TRPCError("UNAUTHORIZED", "user not authorized to comment")
   const getComment = await Comment.findById(input._id)
+    .populate<{ user: IUser }>("user")
+    .populate<{ replies: CommentSchemaPopulatedUserType[] }>({ path: "replies", populate: "user" })
 
   if (!getComment) throw TRPCError("NOT_FOUND", "comment not found. Bad/invalid request data")
   if (getComment.text === input.text) return TRPCError("BAD_REQUEST", "comment hasn't been edited")
@@ -64,7 +92,12 @@ export const deleteCommentHandler = async ({ ctx, input }: ContextWithInput<Dele
   if (!ctx.user) throw TRPCError("UNAUTHORIZED", "user not authorized to comment")
 
   var ObjectId = require("mongoose").Types.ObjectId
-  const deletedComment = Comment.findOneAndDelete({ _id: input._id })
+
+  const beforeDelete = await Comment.findById(input._id)
+    .populate<{ user: IUser }>("user")
+    .populate<{ replies: CommentSchemaPopulatedUserType[] }>({ path: "replies", populate: "user" })
+
+  const deletedComment = await Comment.findOneAndDelete({ _id: input._id })
 
   if (input.parent === input.songId) {
     const song = await Song.findByIdAndUpdate(
@@ -72,15 +105,19 @@ export const deleteCommentHandler = async ({ ctx, input }: ContextWithInput<Dele
       { $pull: { comments: new ObjectId(input._id) } },
       { new: true }
     )
+    if (!beforeDelete) throw TRPCError("INTERNAL_SERVER_ERROR", "request could not be completed")
 
-    return deletedComment
+    return beforeDelete
   } else {
     const updatedComment = await Comment.findByIdAndUpdate(
       input.parent,
       { $pull: { replies: new ObjectId(input._id) } },
       { new: true }
     )
+      .populate<{ user: IUser }>("user")
+      .populate<{ replies: CommentSchemaPopulatedUserType[] }>({ path: "replies", populate: "user" })
 
+    if (!updatedComment) throw TRPCError("INTERNAL_SERVER_ERROR", "request could not be completed")
     return updatedComment
   }
 }

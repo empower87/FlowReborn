@@ -2,12 +2,14 @@ import { useCallback, useEffect, useReducer, useState } from "react"
 import gifArray from "src/assets/images/gifs.json"
 import { useAuth } from "src/context/AuthContext"
 import { trpc } from "src/utils/trpc"
-import { ISong } from "../../../../../server/src/models"
+// import { ISong } from "../../../../../server/src/models"
+import { ISongPopulatedUserAndComments as ISong } from "src/types/ServerModelTypes"
 import { INITIAL_STATE, songFeedReducer } from "./songFeedReducer"
 
 export default function useSongFeeds() {
   const { user } = useAuth()
-  const songs = trpc.useQuery(["songs.all-songs"])
+  // const songs = trpc.useQuery(["songs.all-songs"])
+  const songs = trpc.songs.allSongs.useQuery()
   const [state, dispatch] = useReducer(songFeedReducer, INITIAL_STATE)
   const [feedSongs, setFeedSongs] = useState<ISong[]>([])
 
@@ -18,6 +20,7 @@ export default function useSongFeeds() {
       if (!each.thumbnail) return { ...each, video: gifArray[Math.floor(Math.random() * 10)].url }
       else return { ...each }
     })
+
     dispatch({
       type: "SET_FEED_SONGS",
       payload: {

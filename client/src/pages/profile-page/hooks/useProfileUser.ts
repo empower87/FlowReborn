@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react"
 import { useAuth } from "src/context/AuthContext"
+import { IUser } from "src/types/ServerModelTypes"
 import { trpc } from "src/utils/trpc"
-import { IUser } from "../../../../../server/src/models/User"
 
 const useProfileUser = (id: string | undefined) => {
   const { user } = useAuth()
   const userId = id ? id : ""
-  const getUser = trpc.useQuery(["users.get-user", { _id: userId }], {
-    enabled: !!userId,
-    refetchOnWindowFocus: false,
-  })
+  const getUser = trpc.users.getUser.useQuery(
+    { _id: userId },
+    {
+      enabled: !!userId,
+      refetchOnWindowFocus: false,
+    }
+  )
   const [thisUser, setThisUser] = useState<IUser>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 

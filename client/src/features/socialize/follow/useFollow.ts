@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react"
-import { useQueryClient } from "react-query"
 import { useAuth } from "src/context/AuthContext"
 import useDebounce from "src/hooks/useDebounce"
 import { trpc } from "src/utils/trpc"
-import { IUser } from "../../../../../server/src/models"
-import { ISong } from "../../../../../server/src/models/Song"
+// import { IUser } from "../../../../../server/src/models"
+// import { ISong } from "../../../../../server/src/models/Song"
+import { ISongPopulatedUserAndComments as ISong } from "src/types/ServerModelTypes"
 
-export default function useFollow(thisUser: IUser) {
+// export default function useFollow(thisUser: IUser) {
+export default function useFollow(userId: string, userFollowers: string[]) {
   const { user } = useAuth()
-  const queryClient = useQueryClient()
-  const follow = trpc.useMutation(["follows.follow"], {
+  // const queryClient = useQueryClient()
+  const utils = trpc.useContext()
+
+  const follow = trpc.follows.follow.useMutation({
     onSuccess: () => invalidateQueries(),
   })
-  const unfollow = trpc.useMutation(["follows.unfollow"], {
+  const unfollow = trpc.follows.unfollow.useMutation({
     onSuccess: () => invalidateQueries(),
   })
 
@@ -32,11 +35,11 @@ export default function useFollow(thisUser: IUser) {
   }, [follow.isLoading, unfollow.isLoading])
 
   useEffect(() => {
-    if (!thisUser) return
+    if (!userFollowers) return
     const rerender = stopInvalidatedQueriesFromRerendering()
     if (!rerender) return
 
-    const followers = thisUser.followers
+    const followers = userFollowers
     setTotalFollowers(followers.length)
 
     if (!user) return
@@ -45,7 +48,7 @@ export default function useFollow(thisUser: IUser) {
     } else {
       setIsFollowed(false)
     }
-  }, [thisUser, user])
+  }, [userFollowers, user])
 
   useEffect(() => {
     if (isLoading || !hasClicked) return
@@ -62,25 +65,27 @@ export default function useFollow(thisUser: IUser) {
   const addFollowHandler = (_isFollowed: boolean) => {
     if (!user || !hasClicked) return
     if (_isFollowed) {
-      follow.mutate({ follower: user._id, following: thisUser._id })
+      follow.mutate({ follower: user._id, following: userId })
     }
   }
 
   const deleteFollowHandler = (_isFollowed: boolean) => {
     if (!user || !hasClicked) return
     if (!_isFollowed) {
-      unfollow.mutate({ follower: user._id, following: thisUser._id })
+      unfollow.mutate({ follower: user._id, following: userId })
     }
   }
 
   const invalidateQueries = () => {
-    queryClient.invalidateQueries(["users.get-me"])
-    queryClient.invalidateQueries(["songs.all-songs"])
+    // queryClient.invalidateQueries(["users.getMe"])
+    // queryClient.invalidateQueries(["songs.allSongs"])
+    utils.users.getMe.invalidate()
+    utils.songs.allSongs.invalidate()
   }
 
   const stopInvalidatedQueriesFromRerendering = () => {
     let isMatch = true
-    const songs: ISong[] | undefined = queryClient.getQueryData(["songs.all-songs"])
+    const songs: ISong[] | undefined = utils.songs.allSongs.getData()
     if (songs) {
       // songs.forEach((each) => {
       //   if (each._id === song._id) {

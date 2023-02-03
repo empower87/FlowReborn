@@ -1,10 +1,7 @@
 import { useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import { ButtonTypes } from "src/components/buttons/Icon/Icon"
-import {
-  BtnColorsEnum,
-  RoundButton,
-} from "src/components/buttons/RoundButton/RoundButton"
+import { BtnColorsEnum, RoundButton } from "src/components/buttons/RoundButton/RoundButton"
 import { LayoutTwo } from "src/components/layouts/LayoutWrappers"
 import Navbar from "src/components/navbar/Navbar"
 import { SearchInput } from "src/features/search/components/Input"
@@ -22,8 +19,7 @@ function Search() {
   const renderRef = useRef<number>(0)
 
   const navigateOnClick = (id: string, type: string) => {
-    if (type === "song")
-      navigate(`/songScreen/${id}`, { state: { currentSong: id } })
+    if (type === "song") navigate(`/songScreen/${id}`, { state: { currentSong: id } })
     else navigate(`/profile/${id}`)
   }
 
@@ -34,13 +30,8 @@ function Search() {
   return (
     <div id="Search" className="Search">
       <div className="search-inner" id="SearchInner">
-        <LayoutTwo
-          classes={["section-1_search-field", "search-field_shadow-div-outset"]}
-        >
-          <form
-            className="search-field-form"
-            onSubmit={(e) => e.preventDefault()}
-          >
+        <LayoutTwo classes={["section-1_search-field", "search-field_shadow-div-outset"]}>
+          <form className="search-field-form" onSubmit={(e) => e.preventDefault()}>
             <div className="search-back-btn-container">
               <RoundButton
                 type={ButtonTypes.Back}
@@ -52,24 +43,14 @@ function Search() {
                 onClick={() => onClose()}
               />
             </div>
-            <SearchInput
-              getResults={getSearchResults}
-              clearResults={clearSearchResults}
-              ref={searchInputRef}
-            />
+            <SearchInput getResults={getSearchResults} clearResults={clearSearchResults} ref={searchInputRef} />
           </form>
         </LayoutTwo>
 
         <div className="section-2_search-results" id="SearchResults">
           <div className="results-1_recent"></div>
-          <LayoutTwo
-            classes={["results-2_suggestions", "suggestions_shadow-div-inset"]}
-          >
-            <SearchList
-              users={searchResults.users}
-              songs={searchResults.songs}
-              onClick={navigateOnClick}
-            />
+          <LayoutTwo classes={["results-2_suggestions", "suggestions_shadow-div-inset"]}>
+            <SearchList users={searchResults.users} songs={searchResults.songs} onClick={navigateOnClick} />
           </LayoutTwo>
         </div>
       </div>
