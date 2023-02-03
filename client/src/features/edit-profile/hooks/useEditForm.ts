@@ -2,13 +2,13 @@ import axios from "axios"
 import { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import "react-image-crop/src/ReactCrop.scss"
-import { useQueryClient } from "react-query"
+// import { useQueryClient } from "react-query"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "src/context/AuthContext"
 import { convertBase64ToBlob } from "src/utils/convertBase64ToBlob"
 import { trpc } from "src/utils/trpc"
 // import { ISong } from "../../../../../server/src/models"
-import { ISongPopulatedUser as ISong } from "src/types/ServerModelTypes"
+import { ISongPopulatedUser as ISong, IUser } from "src/types/ServerModelTypes"
 
 interface IFormInputs {
   picture: string
@@ -42,17 +42,30 @@ export default function useEditForm() {
     },
   })
   const [songs, setSongs] = useState<ISong[]>([])
-  const queryClient = useQueryClient()
+  // const queryClient = useQueryClient()
+  const utils = trpc.useContext()
+
   const upload = trpc.users.uploadFile.useMutation()
   const getSongs = trpc.songs.usersSongs.useQuery({ _id: userId }, { enabled: !!userId })
+
   const updateUser = trpc.users.updateUser.useMutation({
     onMutate: async (data) => {
-      await queryClient.cancelQueries(["users.getMe"])
-      const prevUser = queryClient.getQueryData(["users.getMe"])
-      const newData = queryClient.setQueryData(["users.getMe"], (old: any) => ({
-        ...old,
-        ...data,
-      }))
+      // await queryClient.cancelQueries(["users.getMe"])
+      await utils.users.getMe.cancel()
+      const prevUser = utils.users.getMe.getData()
+      const getType = prevUser ? typeof prevUser : undefined
+      const newData = utils.users.getMe.setData(undefined, (update: IUser | undefined) => {
+        if (!update) return
+        return {
+          ...update,
+          ...data,
+        }
+      })
+      // const prevUser = queryClient.getQueryData(["users.getMe"])
+      // const newData = queryClient.setQueryData(["users.getMe"], (old: any) => ({
+      //   ...old,
+      //   ...data,
+      // }))
       return { prevUser, data }
     },
     onSuccess: (data) => {
@@ -61,10 +74,12 @@ export default function useEditForm() {
       navigate(-1)
     },
     onError: (err, data, context) => {
-      queryClient.setQueryData(["users.getMe"], context?.prevUser)
+      // queryClient.setQueryData(["users.getMe"], context?.prevUser)
+      utils.users.getMe.setData(undefined, context?.prevUser)
     },
     onSettled: (prevUser) => {
-      queryClient.invalidateQueries(["users.getMe"])
+      // queryClient.invalidateQueries(["users.getMe"])
+      utils.users.getMe.invalidate()
     },
   })
 

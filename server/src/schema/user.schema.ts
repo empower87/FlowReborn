@@ -47,8 +47,8 @@ export const UserSchema = object({
   socials: Socials.optional(),
   followers: string().array().default([]),
   following: string().array().default([]),
-  createdOn: date().optional(),
-  updatedOn: date().optional(),
+  createdOn: string().optional(),
+  updatedOn: string().optional(),
 })
 
 const UpdateUserInput = UserSchema.omit({

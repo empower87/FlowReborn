@@ -1,5 +1,6 @@
 import { Comment, IUser, Song } from "../models/index"
 import {
+  CommentSchemaPopulatedUserAndRepliesType,
   CommentSchemaPopulatedUserType,
   CreateCommentType,
   DeleteCommentType,
@@ -11,10 +12,11 @@ import { ContextWithInput, TRPCError } from "../utils/trpc"
 export const getComment = async ({ ctx, input }: ContextWithInput<GetCommentByIdType>) => {
   if (!ctx.user) throw TRPCError("UNAUTHORIZED", "user not authorized to get comment")
 
-  const getComment = await Comment.findOne({ _id: input._id })
+  const getComment: CommentSchemaPopulatedUserAndRepliesType | null = await Comment.findOne({ _id: input._id })
     .populate<{ user: IUser }>("user")
     .populate<{ replies: CommentSchemaPopulatedUserType[] }>({ path: "replies", populate: "user" })
   console.log(getComment, "is this hydrated???")
+
   if (!getComment) throw TRPCError("INTERNAL_SERVER_ERROR", "couldn't get request")
   return getComment
 }
@@ -22,7 +24,9 @@ export const getComment = async ({ ctx, input }: ContextWithInput<GetCommentById
 export const getCommentPopulatedUser = async ({ ctx, input }: ContextWithInput<GetCommentByIdType>) => {
   if (!ctx.user) throw TRPCError("UNAUTHORIZED", "user not authorized to get comment")
 
-  const getComment = await Comment.findOne({ _id: input._id }).populate<{ user: IUser }>("user")
+  const getComment: CommentSchemaPopulatedUserType | null = await Comment.findOne({ _id: input._id }).populate<{
+    user: IUser
+  }>("user")
   if (!getComment) throw TRPCError("INTERNAL_SERVER_ERROR", "couldn't get request")
   return getComment
 }
@@ -42,7 +46,9 @@ export const createCommentHandler = async ({ ctx, input }: ContextWithInput<Crea
       { new: true }
     )
 
-    const getCreatedComment = await Comment.findById(createdComment._id)
+    const getCreatedComment: CommentSchemaPopulatedUserAndRepliesType | null = await Comment.findById(
+      createdComment._id
+    )
       .populate<{ user: IUser }>("user")
       .populate<{ replies: CommentSchemaPopulatedUserType[] }>({
         path: "replies",
@@ -53,7 +59,7 @@ export const createCommentHandler = async ({ ctx, input }: ContextWithInput<Crea
 
     return getCreatedComment
   } else {
-    const updateComment = await Comment.findByIdAndUpdate(
+    const updateComment: CommentSchemaPopulatedUserAndRepliesType | null = await Comment.findByIdAndUpdate(
       input.parent,
       { $push: { replies: createdComment } },
       { new: true }
@@ -85,7 +91,7 @@ export const editCommentHandler = async ({ ctx, input }: ContextWithInput<EditCo
   //     .populate<{ replies: IComment["replies"] }>({ path: "replies", populate: "user" })
   //   return getParentComment
   // }
-  return getComment
+  return getComment as CommentSchemaPopulatedUserAndRepliesType
 }
 
 export const deleteCommentHandler = async ({ ctx, input }: ContextWithInput<DeleteCommentType>) => {
@@ -93,7 +99,7 @@ export const deleteCommentHandler = async ({ ctx, input }: ContextWithInput<Dele
 
   var ObjectId = require("mongoose").Types.ObjectId
 
-  const beforeDelete = await Comment.findById(input._id)
+  const beforeDelete: CommentSchemaPopulatedUserAndRepliesType | null = await Comment.findById(input._id)
     .populate<{ user: IUser }>("user")
     .populate<{ replies: CommentSchemaPopulatedUserType[] }>({ path: "replies", populate: "user" })
 
@@ -109,7 +115,7 @@ export const deleteCommentHandler = async ({ ctx, input }: ContextWithInput<Dele
 
     return beforeDelete
   } else {
-    const updatedComment = await Comment.findByIdAndUpdate(
+    const updatedComment: CommentSchemaPopulatedUserAndRepliesType | null = await Comment.findByIdAndUpdate(
       input.parent,
       { $pull: { replies: new ObjectId(input._id) } },
       { new: true }

@@ -6,8 +6,6 @@ import {
   getCommentPopulatedUser,
 } from "../controllers/comments.controllers"
 import {
-  CommentSchemaPopulatedUser,
-  CommentSchemaPopulatedUserAndReplies,
   CreateCommentSchema,
   DeleteCommentSchema,
   EditCommentSchema,
@@ -18,23 +16,23 @@ import { protectedProcedure, router } from "../utils/trpc"
 export const commentsRouter = router({
   getComment: protectedProcedure
     .input(GetCommentByIdSchema)
-    .output(CommentSchemaPopulatedUserAndReplies)
+    // .output(CommentSchemaPopulatedUserAndReplies)
     .query(({ ctx, input }) => getComment({ ctx, input })),
   getCommentPopulatedUser: protectedProcedure
     .input(GetCommentByIdSchema)
-    .output(CommentSchemaPopulatedUser)
+    // .output(CommentSchemaPopulatedUser)
     .query(({ ctx, input }) => getCommentPopulatedUser({ ctx, input })),
   createComment: protectedProcedure
     .input(CreateCommentSchema)
-    .output(CommentSchemaPopulatedUserAndReplies)
+    // .output(CommentSchemaPopulatedUserAndReplies)
     .mutation(({ ctx, input }) => createCommentHandler({ ctx, input })),
   editComment: protectedProcedure
     .input(EditCommentSchema)
-    .output(CommentSchemaPopulatedUserAndReplies)
+    // .output(CommentSchemaPopulatedUserAndReplies)
     .mutation(({ ctx, input }) => editCommentHandler({ ctx, input })),
   deleteComment: protectedProcedure
     .input(DeleteCommentSchema)
-    .output(CommentSchemaPopulatedUserAndReplies)
+    // .output(CommentSchemaPopulatedUserAndReplies)
     .mutation(({ ctx, input }) => deleteCommentHandler({ ctx, input })),
 })
 

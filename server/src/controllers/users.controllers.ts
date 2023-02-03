@@ -18,7 +18,11 @@ export const getUserHandler = async ({ ctx, input }: ContextWithInput<UserInputT
 
 export const updateUserHandler = async ({ ctx, input }: ContextWithInput<UpdateUserInputType>) => {
   if (!ctx.user) throw TRPCError("UNAUTHORIZED", "user is not authorized for this action")
-  const user = await User.findOneAndUpdate({ username: ctx.user.username }, { $set: { ...input } }, { new: true })
+  const user: IUser | null = await User.findOneAndUpdate(
+    { username: ctx.user.username },
+    { $set: { ...input } },
+    { new: true }
+  )
   if (!user) throw TRPCError("BAD_REQUEST", "user not found")
   console.log(user, "this should have changed")
   return user
