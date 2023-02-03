@@ -44,10 +44,7 @@ function App() {
       links: [
         loggerLink(),
         httpBatchLink({
-          url:
-            process.env.NODE_ENV === "production"
-              ? "https://flow-henna.vercel.app/api/trpc"
-              : "http://localhost:5000/api/trpc",
+          url: "http://localhost:5000/api/trpc",
           async fetch(input, init?) {
             const fetch = getFetch()
             return fetch(input, {
@@ -78,10 +75,10 @@ function App() {
   // )
 
   return (
-    <div className="App">
-      <BrowserRouter>
-        <trpc.Provider client={trpcClient} queryClient={queryClient}>
-          <QueryClientProvider client={queryClient}>
+    <trpc.Provider client={trpcClient} queryClient={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <div className="App">
+          <BrowserRouter>
             <AuthProvider>
               <Suspense fallback={<Loading margin={0.5} isLoading={true} />}>
                 <Routes>
@@ -103,10 +100,11 @@ function App() {
               </Suspense>
             </AuthProvider>
             <ReactQueryDevtools initialIsOpen={true} />
-          </QueryClientProvider>
-        </trpc.Provider>
-      </BrowserRouter>
-    </div>
+          </BrowserRouter>
+          W
+        </div>
+      </QueryClientProvider>
+    </trpc.Provider>
   )
 }
 
