@@ -91,7 +91,6 @@ function App() {
                     <Route path="/editProfile" element={<LazyEditProfile />} />
                     <Route path="/recording-booth" element={<LazyRecordingBooth />} />
                     <Route path="/post-recording" element={<LazyPostRecording />} />
-
                     <Route path="/editLyrics" element={<LazyEditLyrics />} />
                     <Route path="/songScreen/:id" element={<LazySongPage />} />
                     <Route path="/search" element={<LazySearch />} />
@@ -101,7 +100,6 @@ function App() {
             </AuthProvider>
             <ReactQueryDevtools initialIsOpen={true} />
           </BrowserRouter>
-          W
         </div>
       </QueryClientProvider>
     </trpc.Provider>
