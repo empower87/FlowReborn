@@ -1,0 +1,41 @@
+$base-color: #ffffff;
+$primary-color-100: #ffd6d6;
+$primary-color-200: #ff9ec7;
+$primary-color-300: #ec6aa0;
+$primary-color-400: #e24f8c;
+$primary-color-500: #c52d6c;
+
+$secondary-color-200: #6bbba5;
+$secondary-color-300: #58e4bc;
+$secondary-color-400: #38d9ab;
+$secondary-color-500: #00bf87;
+
+$tertiary-color-500: #7dc3bc;
+$tertiary-color-500: #5cd3c8;
+$tertiary-color-500: #2cc1b4;
+$tertiary-color-500: #00b1a1;
+
+$svg-color-base: invert(100%) sepia(3%) saturate(0%) hue-rotate(293deg) brightness(107%) contrast(103%);
+$svg-color-primary-300: invert(73%) sepia(28%) saturate(6219%) hue-rotate(297deg) brightness(95%) contrast(95%);
+$svg-color-primary-400: invert(48%) sepia(32%) saturate(3043%) hue-rotate(305deg) brightness(92%) contrast(93%);
+$svg-color-secondary-300: invert(59%) sepia(98%) saturate(315%) hue-rotate(112deg) brightness(96%) contrast(90%);
+$svg-color-tertiary-300: invert(60%) sepia(96%) saturate(337%) hue-rotate(125deg) brightness(89%) contrast(86%);
+$svg-color-gray-200: invert(71%) sepia(7%) saturate(8%) hue-rotate(69deg) brightness(95%) contrast(88%);
+
+$background-linear-color: (
+  dark-light: (
+    background: linear-gradient(323deg, #4b4b4b 0%, #757575 100%),
+  ),
+  dark-dark: (
+    background: linear-gradient(323deg, #262626 0%, #474646 100%),
+  ),
+  light-dark: (
+    recordBooth: linear-gradient(315deg, #858585 0%, #a7a7a7 100%),
+    home: linear-gradient(315deg, #4f4f4f 0%, #b1b1b1 100%),
+    search: linear-gradient(315deg, #b1b1b1 0%, #828282 100%),
+  ),
+  light-light: (
+    auth: linear-gradient(315deg, #666666 0%, #b1b1b1 100%),
+    selectMenu: linear-gradient(315deg, #8f8f8f 0%, #cdcdcd 100%),
+  ),
+);

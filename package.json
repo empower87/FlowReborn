@@ -1,0 +1,24 @@
+{
+  "name": "flowreborn",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/empower87/FlowReborn.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/empower87/FlowReborn/issues"
+  },
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "homepage": "https://github.com/empower87/FlowReborn#readme"
+}

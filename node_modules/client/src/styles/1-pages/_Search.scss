@@ -1,0 +1,244 @@
+.Search {
+  position: relative;
+
+  .search-inner {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(0deg, #b1b1b1 0%, #828282 100%);
+
+    .section-1_search-field {
+      @include flexCenter(8%, 100%, 0px, center, center, column);
+
+      .search-field_shadow-div-outset {
+        @include flexCenter(75%, 97%, 50px, center, center, row);
+        box-shadow: 2px 3px 4px #414141, -3px -2px 3px #c3c3c3;
+
+        .search-field-form {
+          @include flexCenter(83%, 98%, 20px, space-evenly, center, row);
+          box-shadow: inset 2px 2px 4px #505050, inset -2px -2px 3px #cecece;
+
+          .search-back-btn-container {
+            @include flexCenter(100%, 12%, 30px, center, center, row);
+
+            .search-back-btn {
+              @include flexCenter(72%, 70%, 30px, center, center, row);
+              box-shadow: 2px 2px 4px #373737, -1px -1px 3px #dadada;
+              background: #ec6aa0;
+
+              img {
+                height: 1.7em;
+                width: 1.7em;
+                filter: invert(100%) sepia(3%) saturate(0%) hue-rotate(293deg) brightness(107%) contrast(103%);
+              }
+              &:active {
+                background: #e24f8c;
+
+                box-shadow: inset 2px 2px 3px #84274e, inset -1px -1px 3px #ffcde2;
+              }
+              &:hover {
+                background: #e24f8c;
+              }
+            }
+          }
+
+          .search-field-input-container {
+            @include flexCenter(100%, 88%, 30px, flex-start, center, row);
+
+            .search-field-input {
+              @include flexCenter(70%, stretch, 2em, center, center, row);
+              font-family: inherit;
+              font-size: 1em;
+              border: none;
+              padding-left: 3%;
+              background: #686a6b;
+              box-shadow: inset 2px 2px 3px #444444, inset -1px -1px 3px #ffffff;
+              border: 2px solid #838383;
+
+              &:defined {
+                color: pink;
+              }
+              &::placeholder {
+                color: #adadad;
+                font-family: FontAwesome, Roboto;
+              }
+              &:focus {
+                border: 2px solid pink;
+                outline: none !important;
+                color: white;
+                border-radius: 20px;
+              }
+            }
+
+            .search-clear-btn {
+              @include flexCenter(72%, 9%, 30px, center, center, row);
+              box-shadow: 2px 2px 4px #373737, -2px -2px 5px #c7c7c7;
+              margin-left: 2%;
+            }
+          }
+        }
+      }
+    }
+
+    .section-2_search-results {
+      @include flexCenter(77%, 96%, 25px 25px 5px, flex-start, center, column);
+      box-shadow: 2px 3px 4px #414141, -2px -1px 3px #c3c3c3;
+
+      .results-1_recent {
+        @include flexCenter(20%, 100%, 25px, center, center, column);
+      }
+
+      .results-2_suggestions {
+        @include flexCenter(80%, 100%, 25px, center, center, column);
+
+        .suggestions_shadow-div-inset {
+          @include flexCenter(98.5%, 98%, 5px 5px 5px 24px, center, center, column);
+          background: #686a6b;
+          box-shadow: inset 2px 2px 3px #3d3f3f, inset -2px -3px 2px #e7e7e7;
+
+          .suggestions_shadow-div-outset {
+            @include flexCenter(97%, 96%, 5px 5px 5px 20px, flex-start, center, column);
+            color: white;
+            box-shadow: 2px 2px 3px #3d3f3f, -2px -2px 3px #9e9e9e;
+            overflow-x: scroll;
+
+            .suggestions-result-list {
+              @include flexCenter(initial, 97%, 5px 5px 5px 28px, space-between, center, row);
+              min-height: 14%;
+              margin-top: 1%;
+              box-shadow: inset 2px 2px 3px #3d3f3f, inset -2px -2px 3px #9e9e9e;
+
+              .result-link-container {
+                @include flexCenter(100%, 100%, 0px, space-between, center, row);
+                text-decoration: none;
+
+                .result-1_data {
+                  @include flexCenter(100%, 80%, 10px, center, center, row);
+
+                  .data_shadow-div-outset {
+                    @include flexCenter(80%, 95%, 25px 4px 4px 25px, space-between, center, row);
+                    box-shadow: 2px 2px 3px #3d3f3f, -2px -2px 3px #9e9e9e;
+
+                    .search-icon-container {
+                      @include flexCenter(100%, 15%, 7px, center, center, row);
+
+                      img {
+                        height: 1.7em;
+                        width: 1.7em;
+                        filter: invert(82%) sepia(0%) saturate(5438%) hue-rotate(104deg) brightness(90%) contrast(80%);
+                      }
+                    }
+
+                    .data-container {
+                      @include flexCenter(100%, 85%, 0, center, center, column);
+
+                      .data-1_titles {
+                        @include flexCenter(70%, 100%, 0, center, center, column);
+
+                        .data-title {
+                          @include flexCenter(50%, 100%, 0, flex-start, center, row);
+
+                          font-size: 0.9rem;
+                          color: #ec6aa0;
+                          font-weight: 700;
+                          text-align: start;
+                          white-space: nowrap;
+                          overflow: hidden;
+                          text-overflow: ellipsis;
+                        }
+                        .data-type {
+                          @include flexCenter(50%, 100%, 0, flex-start, center, row);
+                          font-size: 0.8rem;
+                          color: white;
+                          text-align: start;
+                        }
+                      }
+
+                      .data-2_caption {
+                        @include flexCenter(30%, 100%, 0, flex-start, center, column);
+
+                        p {
+                          width: 100%;
+                          font-size: 0.8rem;
+                          color: #f3d5e1;
+                          text-align: start;
+                          line-height: 0.8;
+                          white-space: nowrap;
+                          overflow: hidden;
+                          text-overflow: ellipsis;
+                        }
+                      }
+                    }
+                  }
+                }
+
+                .result-2_picture {
+                  @include flexCenter(100%, 20%, 0, center, center, row);
+
+                  .search-prof-inset {
+                    @include flexCenter(3.4em, 3.4em, 100vh, center, center, row);
+                    box-shadow: inset 2px 2px 3px #3d3f3f, inset -2px -2px 3px #9e9e9e;
+
+                    .search-prof-outset {
+                      @include flexCenter(80%, 80%, 100vh, center, center, row);
+                      box-shadow: 2px 2px 3px #3d3f3f, -2px -2px 3px #9e9e9e;
+
+                      .search-results-link {
+                        @include flexCenter(90%, 90%, 100vh, center, center, row);
+                        overflow: hidden;
+
+                        .prof-pic {
+                          @include flexCenter(100%, 100%, 100vh, center, stretch, row);
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              &:hover {
+                background: #e24f8c;
+                box-shadow: inset 2px 2px 3px #6f2f4a, inset -2px -2px 3px #ffa7cc;
+                .result-link-container {
+                  .result-1_data {
+                    .data_shadow-div-outset {
+                      box-shadow: 2px 2px 3px #9f3260, -2px -2px 3px #e185ac;
+                      .data-container {
+                        .data-1_titles {
+                          .data-title {
+                            color: white;
+                          }
+                          .data-type {
+                            color: rgb(221, 221, 221);
+                          }
+                        }
+                      }
+                    }
+                  }
+                  .result-2_picture {
+                    .search-prof-inset {
+                      box-shadow: inset 2px 2px 3px #9f2f5e, inset -2px -2px 3px #ffa7cc;
+                      .search-prof-outset {
+                        box-shadow: 2px 2px 3px #9f2f5e, -1px -1px 3px #ffdeec;
+                      }
+                    }
+                  }
+                  &:active {
+                    .result-1_data {
+                      .data_shadow-div-outset {
+                        background: #ec6aa0;
+                        box-shadow: inset 2px 2px 3px #9f3260, inset -2px -2px 3px #e185ac;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

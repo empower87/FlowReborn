@@ -1,0 +1,26 @@
+.LoadingHome {
+  height: 100%;
+  width: 100%;
+  position: relative;
+
+  .loading-home__header {
+    @include flexCenter(6%, 100%, 0em 0em 1.4em 1.4em, center, center, row);
+    background: linear-gradient(327deg, #959595 0%, #cdcdcd 100%);
+    position: absolute;
+    z-index: 2;
+  }
+  .loading-home__video {
+    position: absolute;
+    height: 60%;
+    width: 100%;
+    margin-top: 8%;
+    z-index: 1;
+  }
+  .loading-home__body {
+    @include flexCenter(40%, 100%, 2.2em 0em 0em 0em, space-evenly, center, column);
+    background: linear-gradient(180deg, #b1b1b1 0%, #4f4f4f 100%);
+    position: absolute;
+    bottom: 0;
+    z-index: 2;
+  }
+}

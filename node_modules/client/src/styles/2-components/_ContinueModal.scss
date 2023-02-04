@@ -1,0 +1,86 @@
+.ContinueModal {
+  height: 100%;
+  width: 100%;
+  background: #00000085;
+  position: absolute;
+  top: 0;
+  z-index: 5;
+}
+
+.continue--container {
+  @include flexCenter(65px, 100%, 0vh, center, center, row);
+  background: linear-gradient(327deg, #959595 0%, #cdcdcd 100%);
+  box-shadow: 0px 10px 25px #000000cc;
+  position: absolute;
+  top: 0;
+
+  .continue--shadow-inset {
+    @include flexCenter(84%, 97.5%, 50px, center, center, row);
+    box-shadow: inset 2px 2px 2px #686868, inset -2px -2px 2px #fbfbfb;
+
+    .continue__header--container {
+      @include flexCenter(100%, 65%, 0, flex-start, center, row);
+
+      .continue__header--shadow-outset {
+        @include flexCenter(78%, 94%, 10vh 1vh 1vh 10vh, center, flex-end, column);
+        box-shadow: 2px 2px 3px #545353, -2px -2px 2px #fdfdfd;
+        margin-left: 3%;
+
+        .continue__title {
+          height: 40%;
+          width: 86%;
+          padding-right: 5%;
+          color: #ec6aa0;
+          text-align: start;
+        }
+
+        .continue__text {
+          height: 60%;
+          width: 86%;
+          padding-right: 5%;
+          color: white;
+          text-align: start;
+          font-size: 0.8rem;
+          line-height: 0.95;
+        }
+      }
+    }
+
+    .continue__btns--container {
+      @include flexCenter(100%, 35%, 0, center, center, row);
+
+      .continue__cancel--container {
+        @include flexCenter(100%, 50%, 0, flex-start, center, row);
+
+        .continue__cancel--shadow-outset {
+          @include flexCenter(78%, 90%, 0.5vh, center, center, row);
+          box-shadow: 2px 2px 2px #5c5c5c, -2px -2px 2px #d4d4d4;
+          font-size: 0.85rem;
+          color: #666666;
+
+          &:active {
+            background: #8e8e8e;
+            box-shadow: inset 2px 2px 3px #545454, inset -1px -1px 2px #e7e7e7;
+          }
+        }
+      }
+      .continue__exit--container {
+        @include flexCenter(100%, 50%, 0, flex-start, center, row);
+
+        .continue__exit--shadow-outset {
+          @include flexCenter(78%, 90%, 1vh 5vh 5vh 1vh, center, center, row);
+          box-shadow: 2px 2px 2px #4e4e4e, -2px -2px 2px #d4d4d4;
+          font-size: 0.85rem;
+          background: #ec6aa0;
+          color: white;
+
+          &:active {
+            color: #ec6aa0;
+            box-shadow: inset 2px 2px 3px #6c6c6c, inset -2px -2px 3px #dcdcdc;
+            background: #ababab;
+          }
+        }
+      }
+    }
+  }
+}
