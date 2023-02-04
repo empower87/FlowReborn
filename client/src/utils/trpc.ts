@@ -2,7 +2,8 @@
 import { createTRPCReact } from "@trpc/react-query"
 
 // import type { AppRouter } from "server"
-import type { AppRouter } from "../../../server/src/routes/app.router"
+// import type { AppRouter } from "../../../server/src/routes/app.router"
+import type { AppRouter } from "@server/app.router"
 
 export const trpc = createTRPCReact<AppRouter>()
 // export const trpc = createReactQueryHooks<AppRouter>()

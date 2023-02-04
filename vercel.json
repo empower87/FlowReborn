@@ -1,4 +1,0 @@
-{
-  "buildCommand": "cd client react-scripts build",
-  "outputDirectory": "client/build"
-}
