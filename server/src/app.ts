@@ -49,7 +49,7 @@ app.use(cookieparser())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.get("/", (req: Request, res: Response, next: NextFunction) => {
+app.get("*", (req: Request, res: Response, next: NextFunction) => {
   res.sendFile(path.join(__dirname, "../../client/build/index.html"))
 })
 
