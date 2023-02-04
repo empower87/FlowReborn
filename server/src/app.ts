@@ -49,7 +49,7 @@ app.use(cookieparser())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use("/api/trpc", trpcExpress.createExpressMiddleware({ router: appRouter, createContext }))
-app.use(express.static(path.join(__dirname, "../../client/build")))
+app.use(express.static(path.join(__dirname, "../../client/build/index.html")))
 
 const PORT = customConfig.port
 
