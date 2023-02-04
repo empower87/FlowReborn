@@ -1,4 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query"
 import { createContext, ReactNode, useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 import { RegisterInputClientType } from "src/pages/auth-page/utils/validation"
@@ -20,7 +19,7 @@ const AuthUserContext = createContext<AuthProviderType>({
 })
 
 const useProvideAuth = () => {
-  const queryClient = useQueryClient()
+  // const queryClient = useQueryClient()
   const utils = trpc.useContext()
   const navigate = useNavigate()
   const [user, setUser] = useState<IUser | null>(null)

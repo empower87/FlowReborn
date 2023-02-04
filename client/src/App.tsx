@@ -44,7 +44,10 @@ function App() {
       links: [
         loggerLink(),
         httpBatchLink({
-          url: "http://localhost:3000/api/trpc",
+          url:
+            process.env.NODE_ENV === "production"
+              ? "https://flow-reborn.vercel.app"
+              : "http://localhost:3000/api/trpc/",
           async fetch(input, init?) {
             const fetch = getFetch()
             return fetch(input, {
