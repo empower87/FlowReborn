@@ -37,7 +37,7 @@ const useProvideAuth = () => {
       utils.users.getMe.invalidate()
     },
     onError: (err) => {
-      console.log(err, "['auth.refresh']: onError")
+      console.log(err, err.message, "['auth.refresh']: onError")
       setIsAuthenticated(null)
       setUser(null)
       navigate("/auth", { replace: true })
@@ -117,7 +117,7 @@ const useProvideAuth = () => {
       setUser(data)
     },
     onError: (error) => {
-      console.log(error, "['auth.get-me']: onError")
+      console.log(error, error.message, "['auth.get-me']: onError")
       let retryRequest = true
 
       if (error.message.includes("you must be logged in") || (error.message.includes("jwt expired") && retryRequest)) {
