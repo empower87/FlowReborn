@@ -41,27 +41,21 @@ mongoose
 app.use(
   cors({
     credentials: true,
-    origin: "*",
+    origin: customConfig.origin,
     optionsSuccessStatus: 200,
   })
 )
 app.use(cookieparser())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+
+app.get("/", (req: Request, res: Response, next: NextFunction) => {
+  res.sendFile(path.join(__dirname, "../../client/build/index.html"))
+})
+
 app.use(express.static(path.join(__dirname, "../../client/build/")))
 app.use("/api/trpc", trpcExpress.createExpressMiddleware({ router: appRouter, createContext }))
 
 const PORT = customConfig.port
-
-if (process.env.NODE_ENV === "production") {
-  app.get("*", (req, res) => {
-    app.use(express.static(path.resolve(__dirname, "build")))
-    res.sendFile(path.resolve(__dirname, "build", "index.html"))
-  })
-}
-
-app.get("*", (req: Request, res: Response, next: NextFunction) => {
-  res.sendFile(path.join(__dirname, "../../client/build/index.html"))
-})
 
 app.listen(PORT, () => console.log(`Listening to port ${PORT}`))
