@@ -14,6 +14,9 @@ export const appRouter = router({
   likes: likesRouter,
   follows: followsRouter,
 })
+
+export type AppRouter = typeof appRouter
+
 // export const appRouter = mergeRouters(authRouter, userRouter, songsRouter, commentsRouter, likesRouter, followsRouter)
 // .merge('auth.', authRouter)
 // .merge('users.', userRouter)
@@ -21,5 +24,3 @@ export const appRouter = router({
 // .merge('comments.', commentsRouter)
 // .merge('likes.', likesRouter)
 // .merge('follows.', followsRouter)
-
-export type AppRouter = typeof appRouter

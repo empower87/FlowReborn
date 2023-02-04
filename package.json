@@ -25,7 +25,7 @@
     "client",
     "server"
   ],
-  "homepage": "https://github.com/empower87/FlowReborn#readme",
+  "homepage": "https://flow-reborn.vercel.app",
   "dependencies": {
     "npm-run-all": "^4.1.5"
   }
