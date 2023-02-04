@@ -44,7 +44,7 @@ function App() {
       links: [
         loggerLink(),
         httpBatchLink({
-          url: "http://localhost:5000/api/trpc",
+          url: "http://localhost:3000/api/trpc",
           async fetch(input, init?) {
             const fetch = getFetch()
             return fetch(input, {

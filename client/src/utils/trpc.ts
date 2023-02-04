@@ -7,7 +7,7 @@ import type { AppRouter } from "@server/app.router"
 
 export const trpc = createTRPCReact<AppRouter>()
 // export const trpc = createReactQueryHooks<AppRouter>()
-
+trpc
 export const trpcZodErrorHandler = (_message: string) => {
   if (_message.charAt(0) === "[") {
     const parseError = JSON.parse(_message)
