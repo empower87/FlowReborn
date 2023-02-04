@@ -16,6 +16,7 @@
   "bugs": {
     "url": "https://github.com/empower87/FlowReborn/issues"
   },
+  "build": "npm run build --workspaces --if-present && npm run test && rm -rf dist && npm run lint && tsc -b",
   "workspaces": [
     "client",
     "server"
