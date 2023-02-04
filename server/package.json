@@ -1,7 +1,7 @@
 {
   "name": "api-server",
   "version": "1.0.0",
-  "main": "src/routes/app.router",
+  "main": "src/app.ts",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
