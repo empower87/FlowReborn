@@ -1,7 +1,7 @@
 {
   "name": "api-server",
   "version": "1.0.0",
-  "main": "src/app",
+  "main": "src/routes/app.router",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
@@ -29,7 +29,7 @@
     "zod": "^3.20.2"
   },
   "scripts": {
-    "start": "ts-node-dev --respawn --transpile-only src/app.ts",
+    "start": "ts-node ./src/app.ts",
     "dev": "nodemon",
     "build": "react-scripts build",
     "test": "react-scripts test",
