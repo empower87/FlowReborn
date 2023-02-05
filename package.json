@@ -8,9 +8,9 @@
     "server": "nodemon ./server/src/app.ts",
     "client": "npm start --prefix client",
     "build": "npm --prefix client build && start",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "render-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "npm-run-all --parallel start server",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "render-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "repository": {
     "type": "git",
