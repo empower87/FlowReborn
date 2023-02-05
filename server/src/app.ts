@@ -18,25 +18,7 @@ import { createContext, router } from "./utils/trpc"
 
 const mongoose = require("mongoose")
 
-dotenv.config({ path: path.join(__dirname, "/.env") })
-const app = express()
-
-const MONGODB_URI = customConfig.dbUri
-mongoose
-  .connect(MONGODB_URI)
-  .then((x: any) => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
-  .catch((err: any) => console.error("Error connecting to mongo", err))
-
-app.use(
-  cors({
-    credentials: true,
-    origin: customConfig.origin,
-    optionsSuccessStatus: 200,
-  })
-)
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(cookieparser())
+dotenv.config({ path: path.join(__dirname, "./.env") })
 
 export const appRouter = router({
   auth: authRouter,
@@ -48,7 +30,26 @@ export const appRouter = router({
 })
 
 export type AppRouter = typeof appRouter
+const app = express()
+
+app.use(cookieparser())
+app.use(
+  cors({
+    credentials: true,
+    origin: customConfig.origin,
+    optionsSuccessStatus: 200,
+  })
+)
 app.use("/api/trpc", trpcExpress.createExpressMiddleware({ router: appRouter, createContext }))
+
+const MONGODB_URI = customConfig.dbUri
+mongoose
+  .connect(MONGODB_URI)
+  .then((x: any) => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
+  .catch((err: any) => console.error("Error connecting to mongo", err))
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(express.static(path.join(__dirname, "../../client/build/")))
 app.get("*", (req: Request, res: Response, next: NextFunction) => {
