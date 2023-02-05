@@ -4,16 +4,12 @@
     {
       "src": "./server/src/app.ts",
       "use": "@vercel/node"
-    },
-    {
-      "src": "./client/build",
-      "use": "@vercel/static"
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/(.*)",
-      "destination": "./server/src/app.ts"
+      "src": "/(.*)",
+      "dest": "./server/src/app.ts"
     }
   ]
 }
