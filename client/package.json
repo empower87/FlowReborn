@@ -70,5 +70,5 @@
     "@types/sortablejs": "^1.13.0",
     "typescript": "^4.9.5"
   },
-  "homepage": "https://flow-reborn.vercel.app",
+  "homepage": "https://flow-reborn.vercel.app"
 }

@@ -45,16 +45,16 @@ app.use(
     optionsSuccessStatus: 200,
   })
 )
-app.use(cookieparser())
-app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(cookieparser())
 
+app.use("/api/trpc", trpcExpress.createExpressMiddleware({ router: appRouter, createContext }))
+
+app.use(express.static(path.join(__dirname, "../../client/build/")))
 app.get("*", (req: Request, res: Response, next: NextFunction) => {
   res.sendFile(path.join(__dirname, "../../client/build/index.html"))
 })
-
-app.use(express.static(path.join(__dirname, "client/build")))
-app.use("/api/trpc", trpcExpress.createExpressMiddleware({ router: appRouter, createContext }))
 
 const PORT = customConfig.port
 
