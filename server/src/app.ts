@@ -16,17 +16,6 @@ import { songsRouter } from "./routes/songs.router"
 import { userRouter } from "./routes/users.router"
 import { createContext, router } from "./utils/trpc"
 
-export const appRouter = router({
-  auth: authRouter,
-  users: userRouter,
-  songs: songsRouter,
-  comments: commentsRouter,
-  likes: likesRouter,
-  follows: followsRouter,
-})
-
-export type AppRouter = typeof appRouter
-
 const mongoose = require("mongoose")
 
 dotenv.config({ path: path.join(__dirname, "./.env") })
@@ -49,6 +38,16 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieparser())
 
+export const appRouter = router({
+  auth: authRouter,
+  users: userRouter,
+  songs: songsRouter,
+  comments: commentsRouter,
+  likes: likesRouter,
+  follows: followsRouter,
+})
+
+export type AppRouter = typeof appRouter
 app.use("/api/trpc", trpcExpress.createExpressMiddleware({ router: appRouter, createContext }))
 
 app.use(express.static(path.join(__dirname, "../../client/build/")))
