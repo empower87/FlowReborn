@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://flow-reborn.vercel.app",
+  "homepage": "https://flow-reborn.onrender.com",
   "dependencies": {
     "@hookform/resolvers": "^2.9.8",
     "@tanstack/react-query": "^4.23.0",

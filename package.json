@@ -7,7 +7,7 @@
     "start": "node server/src/app.ts",
     "server": "nodemon ./server/src/app.ts",
     "client": "npm start --prefix client",
-    "build": "cd server && npm install && cd ../client && npm install && npm run build",
+    "build": "npm install && cd server && npm install && cd ../client && npm install && npm run build",
     "dev": "npm-run-all --parallel start client",
     "test": "echo \"Error: no test specified\" && exit 1",
     "render-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
@@ -28,7 +28,7 @@
     "client",
     "server"
   ],
-  "homepage": "https://flow-reborn.vercel.app",
+  "homepage": "https://flow-reborn.onrender.com",
   "dependencies": {
     "npm-run-all": "^4.1.5"
   }
