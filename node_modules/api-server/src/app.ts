@@ -3,7 +3,7 @@ import bodyParser from "body-parser"
 import cookieparser from "cookie-parser"
 import cors from "cors"
 import dotenv from "dotenv"
-import express, { Application, NextFunction, Request, Response } from "express"
+import express, { NextFunction, Request, Response } from "express"
 // import mongoose from "mongoose"
 import path from "path"
 import customConfig from "./config/default"
@@ -18,8 +18,8 @@ import { createContext, router } from "./utils/trpc"
 
 const mongoose = require("mongoose")
 
-dotenv.config({ path: path.join(__dirname, "./.env") })
-const app: Application = express()
+dotenv.config({ path: path.join(__dirname, "/.env") })
+const app = express()
 
 const MONGODB_URI = customConfig.dbUri
 mongoose
@@ -51,7 +51,7 @@ export type AppRouter = typeof appRouter
 app.use("/api/trpc", trpcExpress.createExpressMiddleware({ router: appRouter, createContext }))
 
 app.use(express.static(path.join(__dirname, "../../client/build/")))
-app.get("*", (req: Request, res: Response, next: NextFunction) => {
+app.get("/*", (req: Request, res: Response, next: NextFunction) => {
   res.sendFile(path.join(__dirname, "../../client/build/index.html"))
 })
 
