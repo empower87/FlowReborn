@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm --prefix client start",
-    "server": "npm --prefix server start",
+    "start": "node ./server/src/app.ts",
+    "server": "nodemon ./server/src/app.ts",
+    "client": "npm start --prefix client",
     "build": "npm --prefix client build && start",
-    "dev": "npm-run-all --parallel start server",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "render-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
