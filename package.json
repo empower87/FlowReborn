@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node ./server/src/app.ts",
+    "start": "npm --prefix server start",
     "server": "nodemon ./server/src/app.ts",
     "client": "npm start --prefix client",
     "build": "npm --prefix client build && start",
