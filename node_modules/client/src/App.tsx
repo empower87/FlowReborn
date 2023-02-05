@@ -2,7 +2,7 @@ import React, { Suspense, useState } from "react"
 // import { QueryClient, QueryClientProvider } from "react-query"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
-import { httpBatchLink, loggerLink } from "@trpc/client"
+import { getFetch, httpBatchLink, loggerLink } from "@trpc/client"
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom"
 import Loading from "./components/loading/Loading"
 import { AuthProvider } from "./context/AuthContext"
@@ -48,6 +48,13 @@ function App() {
             process.env.NODE_ENV === "production"
               ? "https://flow-reborn.vercel.app/api/trpc"
               : "http://localhost:5000/api/trpc",
+          async fetch(input, init?) {
+            const fetch = getFetch()
+            return fetch(input, {
+              ...init,
+              credentials: "include",
+            })
+          },
           headers() {
             return {
               authorization: getAuthToken(),
