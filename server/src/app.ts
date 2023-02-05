@@ -51,7 +51,7 @@ export type AppRouter = typeof appRouter
 app.use("/api/trpc", trpcExpress.createExpressMiddleware({ router: appRouter, createContext }))
 
 app.use(express.static(path.join(__dirname, "../../client/build/")))
-app.get("/*", (req: Request, res: Response, next: NextFunction) => {
+app.get("*", (req: Request, res: Response, next: NextFunction) => {
   res.sendFile(path.join(__dirname, "../../client/build/index.html"))
 })
 
