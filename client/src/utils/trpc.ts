@@ -1,12 +1,7 @@
-// import { createReactQueryHooks } from "@trpc/react"
 import { createTRPCReact } from "@trpc/react-query"
-
 import type { AppRouter } from "api-server"
-// import type { AppRouter } from "../../../server/src/routes/app.router"
 
 export const trpc = createTRPCReact<AppRouter>()
-
-// export const trpc = createReactQueryHooks<AppRouter>()
 
 export const trpcZodErrorHandler = (_message: string) => {
   if (_message.charAt(0) === "[") {

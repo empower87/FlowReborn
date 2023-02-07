@@ -1,17 +1,12 @@
 import { useEffect, useState } from "react"
+import { useAuth } from "src/context/AuthContext"
 import useDebounce from "src/hooks/useDebounce"
-import { trpc } from "src/utils/trpc"
-// import { IComment, ISong } from "../../../../../server/src/models/index"
 import { ISongPopulatedUserAndComments as ISong } from "src/types/ServerModelTypes"
-import { useAuth } from "../../../context/AuthContext"
-
-const parentId = ""
-const parentLikes = []
+import { trpc } from "src/utils/trpc"
 
 // params before refactor: useLike(parent: ISong | IComment, type: "Song" | "Comment")
 export default function useLike(parentId: string, parentLikes: string[], type: "Song" | "Comment") {
   const { user } = useAuth()
-  // const queryClient = useQueryClient()
   const utils = trpc.useContext()
 
   const likeEndpoint = type === "Song" ? "likeSong" : "likeComment"
@@ -82,8 +77,6 @@ export default function useLike(parentId: string, parentLikes: string[], type: "
   }
 
   const invalidateQueries = () => {
-    // queryClient.invalidateQueries(["users.getMe"])
-    // queryClient.invalidateQueries(["songs.allSongs"])
     utils.users.getMe.invalidate()
     utils.songs.allSongs.invalidate()
   }

@@ -17,8 +17,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "paths": { "@server/*": ["../server/src/routes/*"] }
+    "jsx": "react-jsx"
   },
   "include": ["src"]
 }

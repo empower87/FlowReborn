@@ -1,15 +1,15 @@
 import { Dispatch, SetStateAction, useState } from "react"
 // import { ISong } from "../../../../../../server/src/models"
+import SongPost from "src/features/song-post/SongPost"
 import { ISongPopulatedUserAndComments as ISong } from "src/types/ServerModelTypes"
-import SongPost from "./SongPost"
 
-type FeedProps = {
+type FeedListProps = {
   songs: ISong[]
   isVideoFullscreen: boolean
   setIsVideoFullscreen: Dispatch<SetStateAction<boolean>>
 }
 
-export const Feed = ({ songs, isVideoFullscreen, setIsVideoFullscreen }: FeedProps) => {
+export default function FeedList({ songs, isVideoFullscreen, setIsVideoFullscreen }: FeedListProps) {
   const [onShowCommentMenu, setOnShowCommentMenu] = useState<boolean>(false)
 
   return (

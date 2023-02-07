@@ -125,12 +125,13 @@ export const getAllSongsHandler = async () => {
   return allSongs
 }
 
-type DataType = {
+type SearchResults = {
   users: IUser[]
   songs: SongSchemaPopulatedUserAndCommentsType[]
 }
+
 export const searchHandler = async ({ ctx, input }: ContextWithInput<string>) => {
-  let data: DataType
+  let data: SearchResults
 
   const users: IUser[] = await User.find().or([
     { username: { $regex: input, $options: "i" } },
@@ -147,5 +148,6 @@ export const searchHandler = async ({ ctx, input }: ContextWithInput<string>) =>
 
   data = { users: [...users], songs: [...songs] }
   console.log(data, users, songs, "whats this data look like in search")
+
   return data
 }

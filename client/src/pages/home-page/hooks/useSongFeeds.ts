@@ -1,14 +1,12 @@
 import { useCallback, useEffect, useReducer, useState } from "react"
 import gifArray from "src/assets/images/gifs.json"
 import { useAuth } from "src/context/AuthContext"
-import { trpc } from "src/utils/trpc"
-// import { ISong } from "../../../../../server/src/models"
 import { ISongPopulatedUserAndComments as ISong } from "src/types/ServerModelTypes"
-import { INITIAL_STATE, songFeedReducer } from "./songFeedReducer"
+import { trpc } from "src/utils/trpc"
+import { Feeds, INITIAL_STATE, songFeedReducer } from "./songFeedReducer"
 
 export default function useSongFeeds() {
   const { user } = useAuth()
-  // const songs = trpc.useQuery(["songs.all-songs"])
   const songs = trpc.songs.allSongs.useQuery()
   const [state, dispatch] = useReducer(songFeedReducer, INITIAL_STATE)
   const [feedSongs, setFeedSongs] = useState<ISong[]>([])
@@ -34,13 +32,38 @@ export default function useSongFeeds() {
     })
   }, [songs.data, user])
 
+  const toggleFeedHandler = (feed: Feeds) => {
+    dispatch({ type: feed })
+  }
+
   useEffect(() => {
-    if (state.feedSongs && state.feedSongs.length !== 0) {
-      setFeedSongs(state.feedSongs)
-    } else {
-      setFeedSongs(state.ForYou.songs)
+    if (!songs.data) return
+    setFeedSongs(state.ForYou.songs)
+  }, [songs])
+
+  useEffect(() => {
+    switch (state.feedInView) {
+      case "ForYou":
+        setFeedSongs(state.ForYou.songs)
+        break
+      case "Following":
+        setFeedSongs(state.Following.songs)
+        break
+      case "Trending":
+        setFeedSongs(state.Trending.songs)
+        break
+      default:
+        return
     }
-  }, [state])
+  }, [state.feedInView])
+
+  // useEffect(() => {
+  //   if (state.feedSongs && state.feedSongs.length !== 0) {
+  //     setFeedSongs(state.feedSongs)
+  //   } else {
+  //     setFeedSongs(state.ForYou.songs)
+  //   }
+  // }, [state])
 
   const getTrendingSongs = useCallback((songs: ISong[]) => {
     const byLikes = songs.sort((a, b) => b.likes.length - a.likes.length)
@@ -57,5 +80,6 @@ export default function useSongFeeds() {
     feedInView: state.feedInView,
     feedSongs,
     dispatch,
+    toggleFeedHandler,
   }
 }
