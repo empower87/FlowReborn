@@ -366,9 +366,6 @@ button {
 .page-container .middle-container .mid-outset .mid-inset .login-container .user-input-container .user-login_shadow-div-outset .user-login-3_form .login-form .user-form-container .login-input-container .login-input_shadow-div-outset .input-container .login-input-field::-moz-placeholder {
   color: #d6d6d6;
 }
-.page-container .middle-container .mid-outset .mid-inset .login-container .user-input-container .user-login_shadow-div-outset .user-login-3_form .login-form .user-form-container .login-input-container .login-input_shadow-div-outset .input-container .login-input-field:-ms-input-placeholder {
-  color: #d6d6d6;
-}
 .page-container .middle-container .mid-outset .mid-inset .login-container .user-input-container .user-login_shadow-div-outset .user-login-3_form .login-form .user-form-container .login-input-container .login-input_shadow-div-outset .input-container .login-input-field::placeholder {
   color: #d6d6d6;
 }
@@ -499,15 +496,6 @@ button {
   box-shadow: inset 2px 2px 3px #70344d, inset -2px -2px 3px #ffe3ef;
 }
 
-@-webkit-keyframes floatText {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
 @keyframes floatText {
   0% {
     transform: translateX(0);
@@ -593,13 +581,21 @@ button {
   position: absolute;
   height: 100%;
   width: 100%;
-  -ms-scroll-snap-type: y mandatory;
-      scroll-snap-type: y mandatory;
+}
+.section-1_feed .video-scroll-container .video-scroll-container-list {
+  height: 100%;
+  width: 100%;
+  border-radius: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  scroll-snap-type: y mandatory;
   overflow-y: auto;
   will-change: transform;
   z-index: 1;
 }
-.section-1_feed .video-scroll-container .video-pane {
+.section-1_feed .video-scroll-container .video-scroll-container-list .video-pane-wrapper {
   height: 100%;
   width: 100%;
   border-radius: 0px;
@@ -612,7 +608,16 @@ button {
   background-size: cover;
   background-position-x: center;
 }
-.section-1_feed .video-scroll-container .video-pane .video-pane-video {
+.section-1_feed .video-scroll-container .video-scroll-container-list .video-pane-wrapper .video-pane {
+  height: 100%;
+  width: 100%;
+  border-radius: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.section-1_feed .video-scroll-container .video-scroll-container-list .video-pane-wrapper .video-pane .video-pane-video {
   height: 100%;
   width: 100%;
   border-radius: 0px;
@@ -624,7 +629,7 @@ button {
      object-fit: cover;
   position: absolute;
 }
-.section-1_feed .video-scroll-container .video-pane .last-div {
+.section-1_feed .video-scroll-container .video-scroll-container-list .video-pane-wrapper .video-pane .last-div {
   height: 100%;
   width: 100%;
   border-radius: 0;
@@ -637,7 +642,7 @@ button {
   overflow-y: scroll;
   position: absolute;
 }
-.section-1_feed .video-scroll-container .video-pane .last-div .audio-player {
+.section-1_feed .video-scroll-container .video-scroll-container-list .video-pane-wrapper .video-pane .last-div .audio-player {
   height: 17px;
   width: 100%;
   border-radius: 0em 0em 1em 1em;
@@ -649,7 +654,7 @@ button {
   position: absolute;
   bottom: 84px;
 }
-.section-1_feed .video-scroll-container .video-pane .last-div .audio-player .audio-player__play {
+.section-1_feed .video-scroll-container .video-scroll-container-list .video-pane-wrapper .video-pane .last-div .audio-player .audio-player__play {
   height: 35px;
   width: 45px;
   border-radius: 0em 0em 2em 2em;
@@ -662,7 +667,7 @@ button {
   bottom: -30px;
   left: 44%;
 }
-.section-1_feed .video-scroll-container .video-pane .last-div .audio-player .audio-player__play::before {
+.section-1_feed .video-scroll-container .video-scroll-container-list .video-pane-wrapper .video-pane .last-div .audio-player .audio-player__play::before {
   content: "";
   position: absolute;
   height: 25px;
@@ -673,7 +678,7 @@ button {
   border-top-right-radius: 19px;
   box-shadow: 0px -10px 0 0 #9d9d9d;
 }
-.section-1_feed .video-scroll-container .video-pane .last-div .audio-player .audio-player__play::after {
+.section-1_feed .video-scroll-container .video-scroll-container-list .video-pane-wrapper .video-pane .last-div .audio-player .audio-player__play::after {
   content: "";
   position: absolute;
   height: 25px;
@@ -684,7 +689,7 @@ button {
   border-top-left-radius: 19px;
   box-shadow: 0px -10px 0 0 #9d9d9d;
 }
-.section-1_feed .video-scroll-container .video-pane .last-div .audio-player .audio-player__play .audio-player__play-btn {
+.section-1_feed .video-scroll-container .video-scroll-container-list .video-pane-wrapper .video-pane .last-div .audio-player .audio-player__play .audio-player__play-btn {
   height: 31px;
   width: 31px;
   border-radius: 2em;
@@ -694,7 +699,7 @@ button {
   flex-direction: row;
   box-shadow: inset 1px 1px 3px 0px #262626, inset -1px -1px 3px #ffffff;
 }
-.section-1_feed .video-scroll-container .video-pane .last-div .audio-player .audio-player__play .audio-player__play-btn .audio-player__play-btn--inner {
+.section-1_feed .video-scroll-container .video-scroll-container-list .video-pane-wrapper .video-pane .last-div .audio-player .audio-player__play .audio-player__play-btn .audio-player__play-btn--inner {
   height: 75%;
   width: 75%;
   border-radius: 2em;
@@ -705,7 +710,7 @@ button {
   box-shadow: 1px 1px 3px 0px #1e1e1e, -1px -1px 3px #ffffff;
   background: #ec6aa0;
 }
-.section-1_feed .video-scroll-container .video-pane .last-div .audio-player .audio-player__slider {
+.section-1_feed .video-scroll-container .video-scroll-container-list .video-pane-wrapper .video-pane .last-div .audio-player .audio-player__slider {
   height: 80%;
   width: 100%;
   border-radius: 0;
@@ -715,7 +720,7 @@ button {
   flex-direction: row;
   z-index: 1;
 }
-.section-1_feed .video-scroll-container .video-pane .last-div .audio-player .audio-player__slider .audio-player__playback-text {
+.section-1_feed .video-scroll-container .video-scroll-container-list .video-pane-wrapper .video-pane .last-div .audio-player .audio-player__slider .audio-player__playback-text {
   height: 100%;
   width: 8%;
   border-radius: 0;
@@ -726,7 +731,7 @@ button {
   font-size: 0.65rem;
   color: #ffffff;
 }
-.section-1_feed .video-scroll-container .video-pane .last-div .audio-player .audio-player__slider .audio-player__slider {
+.section-1_feed .video-scroll-container .video-scroll-container-list .video-pane-wrapper .video-pane .last-div .audio-player .audio-player__slider .audio-player__slider {
   height: 100%;
   width: 84%;
   border-radius: 2em;
@@ -735,7 +740,7 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.section-1_feed .video-scroll-container .video-pane .last-div .audio-player .audio-player__slider .audio-player__slider .audio-player__slider--bs-inset {
+.section-1_feed .video-scroll-container .video-scroll-container-list .video-pane-wrapper .video-pane .last-div .audio-player .audio-player__slider .audio-player__slider .audio-player__slider--bs-inset {
   height: 70%;
   width: 97%;
   border-radius: 2em;
@@ -745,7 +750,7 @@ button {
   flex-direction: row;
   box-shadow: inset 1px 1px 2px 0px #313131, inset -1px -1px 2px #ffffff;
 }
-.section-1_feed .video-scroll-container .video-pane .last-div .audio-player .audio-player__slider .audio-player__slider .audio-player__slider--bs-inset input[type=range] {
+.section-1_feed .video-scroll-container .video-scroll-container-list .video-pane-wrapper .video-pane .last-div .audio-player .audio-player__slider .audio-player__slider .audio-player__slider--bs-inset input[type=range] {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
@@ -753,7 +758,7 @@ button {
   width: 98%;
   border-radius: 2em;
 }
-.section-1_feed .video-scroll-container .video-pane .last-div .audio-player .audio-player__slider .audio-player__slider .audio-player__slider--bs-inset input[type=range]::-webkit-slider-thumb {
+.section-1_feed .video-scroll-container .video-scroll-container-list .video-pane-wrapper .video-pane .last-div .audio-player .audio-player__slider .audio-player__slider .audio-player__slider--bs-inset input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
           appearance: none;
   height: 5px;
@@ -765,7 +770,7 @@ button {
   -webkit-transition: background-color 1s ease;
   transition: background-color 1s ease;
 }
-.section-1_feed .video-scroll-container .video-pane .last-div .lyrics-popup {
+.section-1_feed .video-scroll-container .video-scroll-container-list .video-pane-wrapper .video-pane .last-div .lyrics-popup {
   height: 100px;
   width: 80%;
   border-radius: 5px;
@@ -778,7 +783,7 @@ button {
   bottom: 20%;
   left: 3%;
 }
-.section-1_feed .video-scroll-container .video-pane .last-div .lyrics-popup .each-lyric-container {
+.section-1_feed .video-scroll-container .video-scroll-container-list .video-pane-wrapper .video-pane .last-div .lyrics-popup .each-lyric-container {
   height: initial;
   width: 100%;
   border-radius: 0px;
@@ -789,12 +794,12 @@ button {
   flex-wrap: wrap;
   overflow-y: auto;
 }
-.section-1_feed .video-scroll-container .video-pane .last-div .lyrics-popup .each-lyric-container .each-lyric-no {
+.section-1_feed .video-scroll-container .video-scroll-container-list .video-pane-wrapper .video-pane .last-div .lyrics-popup .each-lyric-container .each-lyric-no {
   color: #ff9ec7;
   font-size: 10px;
   margin-left: 1%;
 }
-.section-1_feed .video-scroll-container .video-pane .last-div .lyrics-popup .each-lyric-container .each-lyric-line {
+.section-1_feed .video-scroll-container .video-scroll-container-list .video-pane-wrapper .video-pane .last-div .lyrics-popup .each-lyric-container .each-lyric-line {
   font-size: 13px;
   margin-left: 1%;
   color: #ec6aa0;
@@ -1116,8 +1121,7 @@ button {
   font-weight: 500;
 }
 .section-1_feed .section-1c_song-details .song-details-2_song-data .song-data-container .song-user-section .song-user-container .song-title-container .song-title_shadow-div-outset .song-title_shadow-div-inset .song-title_title--container .marquee--animation .song-title-marquee {
-  -webkit-animation: floatText 5s linear infinite;
-          animation: floatText 5s linear infinite;
+  animation: floatText 5s linear infinite;
   padding-left: 30%;
   display: inline-block;
 }
@@ -2387,7 +2391,6 @@ button {
 .profile-songs__item .profile-songs__body .profile-songs__header .profile-songs__header--shadow-outset .profile-songs__details .profile-songs__song-info .profile-songs__social-data .profile-songs__social-data--container .profile-songs__social-data--bs-inset .profile-songs__social-data-number .profile-songs__number-text {
   color: #ffffff;
   font-size: 0.7rem;
-  width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
 }
@@ -2636,17 +2639,6 @@ button {
 }
 .profile-songs__item.Expanded:hover .profile-songs__lyrics--bs-outset .profile-songs__lyrics-expand .profile-songs__lyrics-expand-btn .RoundButton__wrapper .RoundButton__inset button {
   box-shadow: 1px 1px 3px #a73464, -1px -1px 2px 0px #fab6d2;
-}
-
-@-webkit-keyframes smallScale {
-  from {
-    transform: scale(1);
-    opacity: 1;
-  }
-  to {
-    transform: scale(1.6);
-    opacity: 0;
-  }
 }
 
 @keyframes smallScale {
@@ -3562,17 +3554,6 @@ button {
     opacity: 0;
   }
 }
-@-webkit-keyframes recording-title {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
 @keyframes recording-title {
   0% {
     background-position: 0% 50%;
@@ -3745,8 +3726,7 @@ button {
 .recording__header .recording__header--bs-inset .recording__header-right .recording__title.isRecording {
   background: linear-gradient(-45deg, #6bbba5, #58e4bc, #38d9ab);
   background-size: 400% 400%;
-  -webkit-animation: recording-title 4s ease infinite;
-          animation: recording-title 4s ease infinite;
+  animation: recording-title 4s ease infinite;
 }
 .recording__header .recording__header--bs-inset .recording__header-right .recording__finish {
   height: 100%;
@@ -4247,8 +4227,7 @@ button {
 .record-btn .record-btn_shadow-div-inset .record-btn_shadow-div-inset-2 .record-btn-animation {
   opacity: 1;
   background: #00ffba;
-  -webkit-animation: smallScale 1s infinite;
-          animation: smallScale 1s infinite;
+  animation: smallScale 1s infinite;
 }
 
 .suggestions__transcript--container {
@@ -5161,10 +5140,6 @@ button {
   color: #adadad;
   font-family: FontAwesome, Roboto;
 }
-.Search .search-inner .section-1_search-field .search-field_shadow-div-outset .search-field-form .search-field-input-container .search-field-input:-ms-input-placeholder {
-  color: #adadad;
-  font-family: FontAwesome, Roboto;
-}
 .Search .search-inner .section-1_search-field .search-field_shadow-div-outset .search-field-form .search-field-input-container .search-field-input::placeholder {
   color: #adadad;
   font-family: FontAwesome, Roboto;
@@ -5880,11 +5855,6 @@ button {
   line-height: 1;
 }
 .EditLyrics .edit-lyrics__lyrics--container .edit-lyrics__lyrics-list .lyrics-list-item .list-item-1_edit-lyrics .edit-lyrics-container .edit-lyrics_shadow-div-outset .each-lyric-container .each-word-container .edit-lyrics__form .edit-lyrics__edit-field::-moz-placeholder {
-  color: white;
-  text-align: start;
-  text-indent: 3%;
-}
-.EditLyrics .edit-lyrics__lyrics--container .edit-lyrics__lyrics-list .lyrics-list-item .list-item-1_edit-lyrics .edit-lyrics-container .edit-lyrics_shadow-div-outset .each-lyric-container .each-word-container .edit-lyrics__form .edit-lyrics__edit-field:-ms-input-placeholder {
   color: white;
   text-align: start;
   text-indent: 3%;
@@ -7662,7 +7632,7 @@ button {
   box-shadow: 0px -10px 15px rgba(0, 0, 0, 0.64);
   position: absolute;
   bottom: 0;
-  z-index: 2;
+  z-index: 3;
 }
 .CommentMenu .comments__list--container {
   height: -webkit-fill-available;
@@ -8047,11 +8017,6 @@ button {
   font-size: 0.85rem;
   text-indent: 4%;
 }
-.CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-text .comments__header-actions-text--bs-outset .comments__header-actions-input--container .comments__header-actions-input:-ms-input-placeholder {
-  color: #cbcbcb;
-  font-size: 0.85rem;
-  text-indent: 4%;
-}
 .CommentMenu .comments__header-actions .comments__header-actions--bs-outset .comments__header-actions-text .comments__header-actions-text--bs-outset .comments__header-actions-input--container .comments__header-actions-input::placeholder {
   color: #cbcbcb;
   font-size: 0.85rem;
@@ -8210,10 +8175,6 @@ button {
   color: pink;
 }
 .CommentInputModal .comment-input__form--container .comment-input__form .comment-input__body .comment-input__input--container .comment-input__input::-moz-placeholder {
-  color: #adadad;
-  font-size: 1rem;
-}
-.CommentInputModal .comment-input__form--container .comment-input__form .comment-input__body .comment-input__input--container .comment-input__input:-ms-input-placeholder {
   color: #adadad;
   font-size: 1rem;
 }
@@ -8439,7 +8400,6 @@ button {
   line-height: 1;
 }
 .comments__item .comment-list-inner .comments__text--container .comments__text--shadow-outset .comments__comment {
-  height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
   width: 90%;
@@ -8849,8 +8809,7 @@ button {
   font-weight: 500;
 }
 .song-user-section .song-user-container .song-title-container .song-title_shadow-div-outset .song-title_shadow-div-inset .song-title_title--container .marquee--animation .song-title-marquee {
-  -webkit-animation: floatText 5s linear infinite;
-          animation: floatText 5s linear infinite;
+  animation: floatText 5s linear infinite;
   padding-left: 30%;
   display: inline-block;
 }
@@ -9120,8 +9079,7 @@ button {
   font-weight: 500;
 }
 .marquee-wrapper.marquee-animation .marquee-text {
-  -webkit-animation: floatText 5s linear infinite;
-          animation: floatText 5s linear infinite;
+  animation: floatText 5s linear infinite;
   padding-left: 30%;
   display: inline-block;
 }
@@ -9224,8 +9182,7 @@ button {
   position: absolute;
   top: 0%;
   right: 41%;
-  -webkit-animation: circleLoader 1.5s infinite ease;
-          animation: circleLoader 1.5s infinite ease;
+  animation: circleLoader 1.5s infinite ease;
 }
 
 .LoadingSongScreen {
@@ -9241,8 +9198,7 @@ button {
   background: linear-gradient(117deg, #14ba98, #8af3dc);
   background-size: 200% 100%;
   box-shadow: inset 2px 2px 4px #2d5e54, inset -2px -2px 3px #8af3dc;
-  -webkit-animation: gradient 1s ease infinite;
-          animation: gradient 1s ease infinite;
+  animation: gradient 1s ease infinite;
 }
 
 .loading-btn {
@@ -9264,18 +9220,6 @@ button {
   z-index: 1;
 }
 
-@-webkit-keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
 @keyframes gradient {
   0% {
     background-position: 0% 50%;
@@ -9285,92 +9229,6 @@ button {
   }
   100% {
     background-position: 0% 50%;
-  }
-}
-@-webkit-keyframes circleLoader {
-  0% {
-    top: 0%;
-    right: 41%;
-  }
-  5% {
-    top: 2%;
-    right: 28%;
-  }
-  10% {
-    top: 7%;
-    right: 18%;
-  }
-  15% {
-    top: 13%;
-    right: 12%;
-  }
-  20% {
-    top: 23%;
-    right: 5%;
-  }
-  25% {
-    top: 41%;
-    right: 0%;
-  }
-  30% {
-    top: 56%;
-    right: 4%;
-  }
-  35% {
-    top: 67%;
-    right: 10%;
-  }
-  40% {
-    top: 74%;
-    right: 20%;
-  }
-  45% {
-    top: 77%;
-    right: 26%;
-  }
-  50% {
-    top: 81%;
-    right: 41%;
-  }
-  55% {
-    top: 76%;
-    right: 60%;
-  }
-  60% {
-    top: 70%;
-    right: 68%;
-  }
-  65% {
-    top: 60%;
-    right: 75%;
-  }
-  70% {
-    top: 55%;
-    right: 78%;
-  }
-  75% {
-    top: 41%;
-    right: 81%;
-  }
-  80% {
-    top: 27%;
-    right: 77%;
-  }
-  85% {
-    top: 17%;
-    right: 72%;
-  }
-  90% {
-    top: 9%;
-    right: 63%;
-  }
-  95% {
-    top: 4%;
-    right: 55%;
-  }
-  100% {
-    top: 0%;
-    right: 41%;
   }
 }
 @keyframes circleLoader {
@@ -9483,33 +9341,20 @@ button {
   margin: 4px;
   border: 4px solid #fff;
   border-radius: 50%;
-  -webkit-animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-          animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   border-color: #fff transparent transparent transparent;
 }
 
 .lds-ring div:nth-child(1) {
-  -webkit-animation-delay: -0.45s;
-          animation-delay: -0.45s;
+  animation-delay: -0.45s;
 }
 
 .lds-ring div:nth-child(2) {
-  -webkit-animation-delay: -0.3s;
-          animation-delay: -0.3s;
+  animation-delay: -0.3s;
 }
 
 .lds-ring div:nth-child(3) {
-  -webkit-animation-delay: -0.15s;
-          animation-delay: -0.15s;
-}
-
-@-webkit-keyframes lds-ring {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  animation-delay: -0.15s;
 }
 
 @keyframes lds-ring {
@@ -9881,19 +9726,6 @@ button {
   font-size: 0.85rem;
 }
 
-@-webkit-keyframes editOpacityIn {
-  0% {
-    height: 65%;
-    opacity: 0;
-    visibility: hidden;
-  }
-  100% {
-    height: 65%;
-    opacity: 1;
-    visibility: visible;
-  }
-}
-
 @keyframes editOpacityIn {
   0% {
     height: 65%;
@@ -9904,18 +9736,6 @@ button {
     height: 65%;
     opacity: 1;
     visibility: visible;
-  }
-}
-@-webkit-keyframes editOpacityOut {
-  0% {
-    height: 65%;
-    opacity: 1;
-    visibility: visible;
-  }
-  100% {
-    height: 0%;
-    opacity: 0;
-    visibility: hidden;
   }
 }
 @keyframes editOpacityOut {
@@ -10362,10 +10182,6 @@ button {
   color: #8a8a8a;
   font-size: 0.9rem;
 }
-.edit-profile .edit-profile__body .edit-profile__form .edit-profile__body--bs-outset .edit-profile__body--bs-inset-2 .edit-section__sections .edit-section--shadow-inset .edit-section__form--container .edit-section__form .edit-section__list .edit-section__item .edit-section__item--shadow-outset .edit-section__item-input-container .edit-section__item-input:-ms-input-placeholder {
-  color: #8a8a8a;
-  font-size: 0.9rem;
-}
 .edit-profile .edit-profile__body .edit-profile__form .edit-profile__body--bs-outset .edit-profile__body--bs-inset-2 .edit-section__sections .edit-section--shadow-inset .edit-section__form--container .edit-section__form .edit-section__list .edit-section__item .edit-section__item--shadow-outset .edit-section__item-input-container .edit-section__item-input::placeholder {
   color: #8a8a8a;
   font-size: 0.9rem;
@@ -10388,9 +10204,6 @@ button {
   border-radius: 100vh;
 }
 .edit-profile .edit-profile__body .edit-profile__form .edit-profile__body--bs-outset .edit-profile__body--bs-inset-2 .edit-section__sections .edit-section--shadow-inset .edit-section__form--container .edit-section__form .edit-section__list .edit-section__item .edit-section__item--shadow-outset .edit-section__item-input-container .edit-section__item-input.hasValue::-moz-placeholder {
-  color: #ffffff;
-}
-.edit-profile .edit-profile__body .edit-profile__form .edit-profile__body--bs-outset .edit-profile__body--bs-inset-2 .edit-section__sections .edit-section--shadow-inset .edit-section__form--container .edit-section__form .edit-section__list .edit-section__item .edit-section__item--shadow-outset .edit-section__item-input-container .edit-section__item-input.hasValue:-ms-input-placeholder {
   color: #ffffff;
 }
 .edit-profile .edit-profile__body .edit-profile__form .edit-profile__body--bs-outset .edit-profile__body--bs-inset-2 .edit-section__sections .edit-section--shadow-inset .edit-section__form--container .edit-section__form .edit-section__list .edit-section__item .edit-section__item--shadow-outset .edit-section__item-input-container .edit-section__item-input.hasValue::placeholder {
@@ -10581,10 +10394,6 @@ button {
   color: pink;
 }
 .edit-profile .edit-profile__body .edit-profile__form .edit-profile__body--bs-outset .edit-profile__body--bs-inset-2 .edit-section__sections .Songs .edit-section__form--container .edit-section__form .edit-section__list .edit-section__item.song .edit-section__item--shadow-outset .edit-section__flow--container .edit-section__flow-input--container .edit-section__item-input-container .edit-section__item-input::-moz-placeholder {
-  color: #bbbbbb;
-  font-size: 0.9rem;
-}
-.edit-profile .edit-profile__body .edit-profile__form .edit-profile__body--bs-outset .edit-profile__body--bs-inset-2 .edit-section__sections .Songs .edit-section__form--container .edit-section__form .edit-section__list .edit-section__item.song .edit-section__item--shadow-outset .edit-section__flow--container .edit-section__flow-input--container .edit-section__item-input-container .edit-section__item-input:-ms-input-placeholder {
   color: #bbbbbb;
   font-size: 0.9rem;
 }
@@ -11114,7 +10923,6 @@ button {
   padding-left: 3%;
 }
 .section-4_controls .section_shadow-div-inset .section_text-container .text-container_shadow-div-outset .steps_shadow-div-inset .steps__steps .steps__text {
-  height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
   width: 85%;
@@ -11918,9 +11726,6 @@ button {
 .SaveSongModal .save-song_modal-container .flow-controls-container .flow-controls-2_actions .actions-container_shadow-div-outset .actions-container_shadow-div-inset .SaveSongDisplay .song-inputs-container .section-inputs .input-container .input-field-container .input-field::-moz-placeholder {
   color: rgb(214, 214, 214);
 }
-.SaveSongModal .save-song_modal-container .flow-controls-container .flow-controls-2_actions .actions-container_shadow-div-outset .actions-container_shadow-div-inset .SaveSongDisplay .song-inputs-container .section-inputs .input-container .input-field-container .input-field:-ms-input-placeholder {
-  color: rgb(214, 214, 214);
-}
 .SaveSongModal .save-song_modal-container .flow-controls-container .flow-controls-2_actions .actions-container_shadow-div-outset .actions-container_shadow-div-inset .SaveSongDisplay .song-inputs-container .section-inputs .input-container .input-field-container .input-field::placeholder {
   color: rgb(214, 214, 214);
 }
@@ -11936,9 +11741,6 @@ button {
   border: "3px solid #ff6e6e";
 }
 .SaveSongModal .save-song_modal-container .flow-controls-container .flow-controls-2_actions .actions-container_shadow-div-outset .actions-container_shadow-div-inset .SaveSongDisplay .song-inputs-container .section-inputs .input-container .input-field-container .required::-moz-placeholder {
-  color: white;
-}
-.SaveSongModal .save-song_modal-container .flow-controls-container .flow-controls-2_actions .actions-container_shadow-div-outset .actions-container_shadow-div-inset .SaveSongDisplay .song-inputs-container .section-inputs .input-container .input-field-container .required:-ms-input-placeholder {
   color: white;
 }
 .SaveSongModal .save-song_modal-container .flow-controls-container .flow-controls-2_actions .actions-container_shadow-div-outset .actions-container_shadow-div-inset .SaveSongDisplay .song-inputs-container .section-inputs .input-container .input-field-container .required::placeholder {
@@ -11992,23 +11794,10 @@ button {
   background: #36a486;
 }
 .SaveSongModal .save-song_modal-container.transition-in {
-  -webkit-animation: tranny 0.4s ease-out forwards;
-          animation: tranny 0.4s ease-out forwards;
+  animation: tranny 0.4s ease-out forwards;
 }
 .SaveSongModal .save-song_modal-container.transition-out {
-  -webkit-animation: trannyOut 0.3s ease-in forwards;
-          animation: trannyOut 0.3s ease-in forwards;
-}
-
-@-webkit-keyframes tranny {
-  0% {
-    opacity: 0;
-    transform: translateY(-100%);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0%);
-  }
+  animation: trannyOut 0.3s ease-in forwards;
 }
 
 @keyframes tranny {
@@ -12019,16 +11808,6 @@ button {
   100% {
     opacity: 1;
     transform: translateY(0%);
-  }
-}
-@-webkit-keyframes trannyOut {
-  0% {
-    opacity: 1;
-    transform: translateY(0%);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-100%);
   }
 }
 @keyframes trannyOut {
@@ -12095,8 +11874,7 @@ button {
   width: 100%;
   border-radius: 0.5em;
   overflow-y: scroll;
-  -ms-scroll-snap-type: y mandatory;
-      scroll-snap-type: y mandatory;
+  scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
 }
 .SelectMenuModal .select-menu__list--container .select-menu__list--shadow-inset .select-menu__list .select-menu__item-container {

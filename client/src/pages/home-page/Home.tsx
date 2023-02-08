@@ -6,8 +6,9 @@ import { FeedToggleButton, HomeHeader } from "./components/HomeHeader"
 import useSongFeeds from "./hooks/useSongFeeds"
 
 // TODO: redesign for Layout, will create a post/song item component
+
 export default function HomeDisplay() {
-  const { isLoading, feedInView, feedSongs, dispatch, toggleFeedHandler } = useSongFeeds()
+  const { isLoading, feedInView, feedSongs, toggleFeedHandler } = useSongFeeds()
   const [isVideoFullscreen, setIsVideoFullscreen] = useState<boolean>(false)
 
   if (isLoading) return <LoadingHome />

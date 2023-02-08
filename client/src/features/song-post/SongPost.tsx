@@ -86,32 +86,22 @@ export default function SongPost({
   song,
   isVideoFullscreen,
   setIsVideoFullscreen,
-  setOnShowCommentMenu,
 }: {
   song: ISong
   isVideoFullscreen: boolean
   setIsVideoFullscreen: Dispatch<SetStateAction<boolean>>
-  setOnShowCommentMenu: Dispatch<SetStateAction<boolean>>
 }) {
   const [showComments, setShowComments] = useState<boolean>(false)
   const [toggleLyrics, setToggleLyrics] = useState<boolean>(false)
-  const itemRef = useRef<HTMLLIElement>(null)
+  const itemRef = useRef<HTMLDivElement>(null)
   const isIntersecting = useIntersectionObserver(itemRef, {
     threshold: 0.9,
     root: document.querySelector(".video-scroll-container"),
     rootMargin: "0px 0px 200px 0px",
   })
 
-  useEffect(() => {
-    if (showComments) {
-      setOnShowCommentMenu(true)
-    } else {
-      setOnShowCommentMenu(false)
-    }
-  }, [showComments])
-
   return (
-    <li
+    <div
       id={song?._id}
       ref={itemRef}
       className="video-pane"
@@ -170,6 +160,6 @@ export default function SongPost({
         <ShowLyrics lyrics={song.lyrics} isOpen={toggleLyrics} />
         <SongDetails song={song} />
       </div>
-    </li>
+    </div>
   )
 }

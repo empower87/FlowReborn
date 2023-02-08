@@ -8,7 +8,6 @@ import { commentMutationStatusReducer, INITIAL_STATE } from "../reducers/comment
 type MutationType = "CREATE" | "EDIT" | "DELETE"
 
 export default function useComments() {
-  // const queryClient = useQueryClient()
   const utils = trpc.useContext()
   const { user } = useAuth()
   const [state, dispatch] = useReducer(commentMutationStatusReducer, INITIAL_STATE)
@@ -50,12 +49,9 @@ export default function useComments() {
 
   const invalidateQueries = (parentId: string, songId: string) => {
     const commentId = parentId !== songId && { _id: `${parentId}` }
-
-    // queryClient.invalidateQueries("songs.allSongs")
     utils.songs.allSongs.invalidate()
     if (commentId) {
       utils.comments.getComment.invalidate(commentId)
-      // queryClient.invalidateQueries(["comments.getComment", commentId])
     }
   }
 
