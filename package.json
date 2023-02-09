@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run start --workspace=server",
+    "start": "cd ./server && npm start",
     "server": "nodemon ./server/src/app.ts",
     "client": "npm start --prefix client",
     "client-build": "cd client && npm install && npm run build",
