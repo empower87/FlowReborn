@@ -1,5 +1,8 @@
+import dotenv from "dotenv";
 import path from "path";
-require("dotenv").config({ path: path.join(__dirname, "../../.env") });
+dotenv.config({ path: path.join(__dirname, "../../.env") });
+// dotenv.config()
+// require("dotenv").config({ path: path.join(__dirname, "../../.env") })
 const customConfig = {
     port: 5000,
     accessTokenExpiresIn: 15,

@@ -4,7 +4,7 @@ import cookieparser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
-// import mongoose from "mongoose"
+import mongoose from "mongoose";
 import path from "path";
 import customConfig from "./config/default.js";
 // import { appRouter } from "./routes/app.router"
@@ -15,7 +15,7 @@ import { likesRouter } from "./routes/likes.router.js";
 import { songsRouter } from "./routes/songs.router.js";
 import { userRouter } from "./routes/users.router.js";
 import { createContext, router } from "./utils/trpc/index.js";
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose")
 dotenv.config({ path: path.join(__dirname, "./.env") });
 export const appRouter = router({
     auth: authRouter,
@@ -29,7 +29,7 @@ const app = express();
 app.use(cookieparser());
 app.use(cors({
     credentials: true,
-    origin: customConfig.origin,
+    origin: "http://localhost:3000",
     optionsSuccessStatus: 200,
 }));
 app.use("/api/trpc", trpcExpress.createExpressMiddleware({ router: appRouter, createContext }));
@@ -40,11 +40,10 @@ mongoose
     .catch((err) => console.error("Error connecting to mongo", err));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, "../../client/build/")));
+app.use(express.static(path.join(__dirname, "../../client/build")));
 app.get("*", (req, res, next) => {
     res.sendFile(path.join(__dirname, "../../client/build/index.html"));
 });
 const PORT = customConfig.port;
 app.listen(PORT, () => console.log(`Listening to port ${PORT}`));
-module.exports = app;
 //# sourceMappingURL=app.js.map
