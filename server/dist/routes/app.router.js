@@ -1,20 +1,17 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.appRouter = void 0;
-const trpc_1 = require("../utils/trpc");
-const auth_router_1 = require("./auth.router");
-const comments_router_1 = require("./comments.router");
-const follows_router_1 = require("./follows.router");
-const likes_router_1 = require("./likes.router");
-const songs_router_1 = require("./songs.router");
-const users_router_1 = require("./users.router");
-exports.appRouter = (0, trpc_1.router)({
-    auth: auth_router_1.authRouter,
-    users: users_router_1.userRouter,
-    songs: songs_router_1.songsRouter,
-    comments: comments_router_1.commentsRouter,
-    likes: likes_router_1.likesRouter,
-    follows: follows_router_1.followsRouter,
+import { router } from "../utils/trpc/index.js";
+import { authRouter } from "./auth.router.js";
+import { commentsRouter } from "./comments.router.js";
+import { followsRouter } from "./follows.router.js";
+import { likesRouter } from "./likes.router.js";
+import { songsRouter } from "./songs.router.js";
+import { userRouter } from "./users.router.js";
+export const appRouter = router({
+    auth: authRouter,
+    users: userRouter,
+    songs: songsRouter,
+    comments: commentsRouter,
+    likes: likesRouter,
+    follows: followsRouter,
 });
 // export const appRouter = mergeRouters(authRouter, userRouter, songsRouter, commentsRouter, likesRouter, followsRouter)
 // .merge('auth.', authRouter)
@@ -23,3 +20,4 @@ exports.appRouter = (0, trpc_1.router)({
 // .merge('comments.', commentsRouter)
 // .merge('likes.', likesRouter)
 // .merge('follows.', followsRouter)
+//# sourceMappingURL=app.router.js.map

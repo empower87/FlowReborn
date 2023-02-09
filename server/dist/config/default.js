@@ -1,10 +1,5 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const path_1 = __importDefault(require("path"));
-require("dotenv").config({ path: path_1.default.join(__dirname, "../../.env") });
+import path from "path";
+require("dotenv").config({ path: path.join(__dirname, "../../.env") });
 const customConfig = {
     port: 5000,
     accessTokenExpiresIn: 15,
@@ -14,4 +9,5 @@ const customConfig = {
     accessTokenPrivateKey: process.env.ACCESS_TOKEN,
     refreshTokenPrivateKey: process.env.REFRESH_TOKEN,
 };
-exports.default = customConfig;
+export default customConfig;
+//# sourceMappingURL=default.js.map

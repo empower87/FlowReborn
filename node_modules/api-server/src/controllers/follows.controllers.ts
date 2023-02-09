@@ -1,6 +1,6 @@
-import { User } from "../models/User"
-import { FollowInputType } from "../schema/follows.schema"
-import { ContextWithInput, TRPCError } from "../utils/trpc"
+import { User } from "../models/User.js"
+import { FollowInputType } from "../schema/follows.schema.js"
+import { ContextWithInput, TRPCError } from "../utils/trpc/index.js"
 
 export const followHandler = async ({ ctx, input }: ContextWithInput<FollowInputType>) => {
   if (!ctx.user) throw TRPCError("UNAUTHORIZED", "user not authorized to comment")

@@ -1,6 +1,6 @@
 import * as trpcExpress from "@trpc/server/adapters/express"
-import { User } from "../models/User"
-import { CtxUserToken, verifyJwt } from "../utils/jwt"
+import { User } from "../models/User.js"
+import { CtxUserToken, verifyJwt } from "../utils/jwt.js"
 
 export const verifyToken = async ({ req, res }: trpcExpress.CreateExpressContextOptions) => {
   const token = req.headers["authorization" || "Authorization"]?.split(" ")[1]

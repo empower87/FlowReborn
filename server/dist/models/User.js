@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
-const mongoose_1 = require("mongoose");
-const UserSchema = new mongoose_1.Schema({
+import { model, Schema } from "mongoose";
+const UserSchema = new Schema({
     email: { type: String, required: true, unique: true },
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true, select: false },
@@ -23,7 +20,8 @@ const UserSchema = new mongoose_1.Schema({
         instagram: String,
         soundCloud: String,
     },
-    followers: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "User", default: [] }],
-    following: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "User", default: [] }],
+    followers: [{ type: Schema.Types.ObjectId, ref: "User", default: [] }],
+    following: [{ type: Schema.Types.ObjectId, ref: "User", default: [] }],
 }, { timestamps: { createdAt: "createdOn", updatedAt: "updatedOn" } });
-exports.User = (0, mongoose_1.model)("User", UserSchema);
+export const User = model("User", UserSchema);
+//# sourceMappingURL=User.js.map

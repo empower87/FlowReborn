@@ -1,19 +1,16 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.protectedProcedure = exports.mergeRouters = exports.publicProcedure = exports.middleware = exports.router = exports.t = void 0;
-const server_1 = require("@trpc/server");
-const trpcError_1 = require("./trpcError");
-exports.t = server_1.initTRPC.context().create();
-exports.router = exports.t.router;
-exports.middleware = exports.t.middleware;
-exports.publicProcedure = exports.t.procedure;
-exports.mergeRouters = exports.t.mergeRouters;
-const isAuthed = (0, exports.middleware)(({ next, ctx }) => {
+import { initTRPC } from "@trpc/server";
+import { TRPCError } from "./trpcError.js";
+export const t = initTRPC.context().create();
+export const router = t.router;
+export const middleware = t.middleware;
+export const publicProcedure = t.procedure;
+export const mergeRouters = t.mergeRouters;
+const isAuthed = middleware(({ next, ctx }) => {
     if (!ctx.user)
-        throw (0, trpcError_1.TRPCError)("UNAUTHORIZED", "user is not logged in");
+        throw TRPCError("UNAUTHORIZED", "user is not logged in");
     return next({ ctx });
 });
-exports.protectedProcedure = exports.t.procedure.use(isAuthed);
+export const protectedProcedure = t.procedure.use(isAuthed);
 // export const protectedProcedure = publicProcedure.use(verifyToken)
 // export function createRouter() {
 //   return router<Context>({})
@@ -25,3 +22,4 @@ exports.protectedProcedure = exports.t.procedure.use(isAuthed);
 // export function createRouter() {
 //   return trpc.router<Context>()
 // }
+//# sourceMappingURL=createRouter.js.map

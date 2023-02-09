@@ -1,35 +1,29 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetByFollowersSchema = exports.SongInputSchema = exports.UpdateSongSchema = exports.CreateSongSchema = exports.SongSchemaPopulatedUser = exports.SongSchemaPopulatedUserAndComments = exports.SongSchema = void 0;
-const mongoose_1 = require("mongoose");
-const zod_1 = __importDefault(require("zod"));
-const comments_schema_1 = require("./comments.schema");
-const user_schema_1 = require("./user.schema");
-exports.SongSchema = zod_1.default.object({
-    _id: zod_1.default.instanceof(mongoose_1.Types.ObjectId),
+import { Types } from "mongoose";
+import z from "zod";
+import { CommentSchemaPopulatedUser } from "./comments.schema.js";
+import { UserSchema } from "./user.schema.js";
+export const SongSchema = z.object({
+    _id: z.instanceof(Types.ObjectId),
     // _id: z.string(),
-    title: zod_1.default.string(),
-    caption: zod_1.default.string().optional(),
-    lyrics: zod_1.default.array(zod_1.default.string().array()).default([]),
-    duration: zod_1.default.number(),
-    audio: zod_1.default.string(),
-    thumbnail: zod_1.default.string().optional(),
-    video: zod_1.default.string().optional(),
-    user: zod_1.default.instanceof(mongoose_1.Types.ObjectId),
-    comments: zod_1.default.array(zod_1.default.instanceof(mongoose_1.Types.ObjectId)).default([]),
-    likes: zod_1.default.string().array().default([]),
-    createdOn: zod_1.default.date(),
-    updatedOn: zod_1.default.date(),
+    title: z.string(),
+    caption: z.string().optional(),
+    lyrics: z.array(z.string().array()).default([]),
+    duration: z.number(),
+    audio: z.string(),
+    thumbnail: z.string().optional(),
+    video: z.string().optional(),
+    user: z.instanceof(Types.ObjectId),
+    comments: z.array(z.instanceof(Types.ObjectId)).default([]),
+    likes: z.string().array().default([]),
+    createdOn: z.date(),
+    updatedOn: z.date(),
 });
-exports.SongSchemaPopulatedUserAndComments = exports.SongSchema.omit({ user: true, comments: true }).extend({
-    user: user_schema_1.UserSchema,
-    comments: zod_1.default.array(comments_schema_1.CommentSchemaPopulatedUser),
+export const SongSchemaPopulatedUserAndComments = SongSchema.omit({ user: true, comments: true }).extend({
+    user: UserSchema,
+    comments: z.array(CommentSchemaPopulatedUser),
 });
-exports.SongSchemaPopulatedUser = exports.SongSchema.omit({ user: true }).extend({ user: user_schema_1.UserSchema });
-exports.CreateSongSchema = exports.SongSchema.omit({
+export const SongSchemaPopulatedUser = SongSchema.omit({ user: true }).extend({ user: UserSchema });
+export const CreateSongSchema = SongSchema.omit({
     _id: true,
     user: true,
     likes: true,
@@ -37,12 +31,13 @@ exports.CreateSongSchema = exports.SongSchema.omit({
     createdOn: true,
     updatedOn: true,
 }).extend({
-    user: zod_1.default.string(),
+    user: z.string(),
 });
-const UpdateSongSchemaPick = exports.SongSchema.pick({ title: true, caption: true });
-exports.UpdateSongSchema = UpdateSongSchemaPick.extend({
-    _id: zod_1.default.string(),
+const UpdateSongSchemaPick = SongSchema.pick({ title: true, caption: true });
+export const UpdateSongSchema = UpdateSongSchemaPick.extend({
+    _id: z.string(),
 });
 // export const SongInputSchema = SongSchema.pick({ _id: true })
-exports.SongInputSchema = zod_1.default.object({ _id: zod_1.default.string() });
-exports.GetByFollowersSchema = user_schema_1.UserSchema.pick({ followers: true });
+export const SongInputSchema = z.object({ _id: z.string() });
+export const GetByFollowersSchema = UserSchema.pick({ followers: true });
+//# sourceMappingURL=songs.schema.js.map

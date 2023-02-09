@@ -1,6 +1,6 @@
 import AWS from "aws-sdk"
 import z from "zod"
-import { Context, TRPCError } from "../utils/trpc"
+import { Context, TRPCError } from "../utils/trpc/index.js"
 
 AWS.config.update({
   region: "us-west-1",

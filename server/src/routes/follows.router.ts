@@ -1,6 +1,6 @@
-import { followHandler, unfollowHandler } from "../controllers/follows.controllers"
-import { FollowSchema } from "../schema/follows.schema"
-import { publicProcedure, router } from "../utils/trpc"
+import { followHandler, unfollowHandler } from "../controllers/follows.controllers.js"
+import { FollowSchema } from "../schema/follows.schema.js"
+import { publicProcedure, router } from "../utils/trpc/index.js"
 
 export const followsRouter = router({
   follow: publicProcedure.input(FollowSchema).mutation(async ({ ctx, input }) => await followHandler({ ctx, input })),

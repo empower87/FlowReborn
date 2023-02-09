@@ -1,79 +1,53 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateUserInputSchema = exports.UserInputSchema = exports.UserSchema = exports.UserSchemaFromClient = void 0;
-const mongoose_1 = require("mongoose");
-const zod_1 = __importStar(require("zod"));
-const GoogleUser = (0, zod_1.object)({
-    googleId: (0, zod_1.string)(),
-    userPhoto: (0, zod_1.string)(),
-    userSignUpDate: (0, zod_1.date)(),
-    given_name: (0, zod_1.string)(),
-    family_name: (0, zod_1.string)(),
+import { Types } from "mongoose";
+import z, { date, object, string } from "zod";
+const GoogleUser = object({
+    googleId: string(),
+    userPhoto: string(),
+    userSignUpDate: date(),
+    given_name: string(),
+    family_name: string(),
 });
 const GoogleUserClient = GoogleUser.omit({
     userSignUpDate: true,
-}).extend({ userSignUpDate: zod_1.default.string() });
-const Socials = (0, zod_1.object)({
-    twitter: (0, zod_1.string)().optional(),
-    instagram: (0, zod_1.string)().optional(),
-    soundCloud: (0, zod_1.string)().optional(),
+}).extend({ userSignUpDate: z.string() });
+const Socials = object({
+    twitter: string().optional(),
+    instagram: string().optional(),
+    soundCloud: string().optional(),
 });
-exports.UserSchemaFromClient = (0, zod_1.object)({
-    _id: (0, zod_1.string)(),
-    email: (0, zod_1.string)().email(),
+export const UserSchemaFromClient = object({
+    _id: string(),
+    email: string().email(),
     google: GoogleUserClient.optional(),
-    picture: (0, zod_1.string)().optional(),
-    firstName: (0, zod_1.string)().optional(),
-    lastName: (0, zod_1.string)().optional(),
-    about: (0, zod_1.string)().optional(),
-    location: (0, zod_1.string)().optional(),
+    picture: string().optional(),
+    firstName: string().optional(),
+    lastName: string().optional(),
+    about: string().optional(),
+    location: string().optional(),
     socials: Socials.optional(),
-    followers: (0, zod_1.string)().array().default([]),
-    following: (0, zod_1.string)().array().default([]),
-    createdOn: (0, zod_1.string)().optional(),
-    updatedOn: (0, zod_1.string)().optional(),
+    followers: string().array().default([]),
+    following: string().array().default([]),
+    createdOn: string().optional(),
+    updatedOn: string().optional(),
 });
-exports.UserSchema = (0, zod_1.object)({
+export const UserSchema = object({
     // _id: string(),
-    _id: zod_1.default.instanceof(mongoose_1.Types.ObjectId),
-    username: (0, zod_1.string)(),
-    email: (0, zod_1.string)().email(),
+    _id: z.instanceof(Types.ObjectId),
+    username: string(),
+    email: string().email(),
     google: GoogleUser.optional(),
-    picture: (0, zod_1.string)().optional(),
-    firstName: (0, zod_1.string)().optional(),
-    lastName: (0, zod_1.string)().optional(),
-    about: (0, zod_1.string)().optional(),
-    location: (0, zod_1.string)().optional(),
+    picture: string().optional(),
+    firstName: string().optional(),
+    lastName: string().optional(),
+    about: string().optional(),
+    location: string().optional(),
     socials: Socials.optional(),
-    followers: (0, zod_1.string)().array().default([]),
-    following: (0, zod_1.string)().array().default([]),
-    createdOn: (0, zod_1.string)().optional(),
-    updatedOn: (0, zod_1.string)().optional(),
+    followers: string().array().default([]),
+    following: string().array().default([]),
+    createdOn: string().optional(),
+    updatedOn: string().optional(),
 });
-const UpdateUserInput = exports.UserSchema.omit({
+const UpdateUserInput = UserSchema.omit({
     _id: true,
     username: true,
     email: true,
@@ -81,8 +55,9 @@ const UpdateUserInput = exports.UserSchema.omit({
     followers: true,
     following: true,
 });
-exports.UserInputSchema = zod_1.default.object({ _id: zod_1.default.string() });
-exports.UpdateUserInputSchema = UpdateUserInput.extend({
-    username: (0, zod_1.string)().optional(),
-    email: (0, zod_1.string)().email().optional(),
+export const UserInputSchema = z.object({ _id: z.string() });
+export const UpdateUserInputSchema = UpdateUserInput.extend({
+    username: string().optional(),
+    email: string().email().optional(),
 });
+//# sourceMappingURL=user.schema.js.map

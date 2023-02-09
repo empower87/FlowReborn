@@ -1,6 +1,6 @@
 import { model, Model, Schema } from "mongoose"
 import { z } from "zod"
-import { UserSchema as IUserSchema } from "../schema/user.schema"
+import { UserSchema as IUserSchema } from "../schema/user.schema.js"
 
 export type IUser = z.infer<typeof IUserSchema>
 

@@ -1,28 +1,26 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.commentsRouter = void 0;
-const comments_controllers_1 = require("../controllers/comments.controllers");
-const comments_schema_1 = require("../schema/comments.schema");
-const trpc_1 = require("../utils/trpc");
-exports.commentsRouter = (0, trpc_1.router)({
-    getComment: trpc_1.protectedProcedure
-        .input(comments_schema_1.GetCommentByIdSchema)
+import { createCommentHandler, deleteCommentHandler, editCommentHandler, getComment, getCommentPopulatedUser, } from "../controllers/comments.controllers.js";
+import { CreateCommentSchema, DeleteCommentSchema, EditCommentSchema, GetCommentByIdSchema, } from "../schema/comments.schema.js";
+import { protectedProcedure, router } from "../utils/trpc/index.js";
+export const commentsRouter = router({
+    getComment: protectedProcedure
+        .input(GetCommentByIdSchema)
         // .output(CommentSchemaPopulatedUserAndReplies)
-        .query(({ ctx, input }) => (0, comments_controllers_1.getComment)({ ctx, input })),
-    getCommentPopulatedUser: trpc_1.protectedProcedure
-        .input(comments_schema_1.GetCommentByIdSchema)
+        .query(({ ctx, input }) => getComment({ ctx, input })),
+    getCommentPopulatedUser: protectedProcedure
+        .input(GetCommentByIdSchema)
         // .output(CommentSchemaPopulatedUser)
-        .query(({ ctx, input }) => (0, comments_controllers_1.getCommentPopulatedUser)({ ctx, input })),
-    createComment: trpc_1.protectedProcedure
-        .input(comments_schema_1.CreateCommentSchema)
+        .query(({ ctx, input }) => getCommentPopulatedUser({ ctx, input })),
+    createComment: protectedProcedure
+        .input(CreateCommentSchema)
         // .output(CommentSchemaPopulatedUserAndReplies)
-        .mutation(({ ctx, input }) => (0, comments_controllers_1.createCommentHandler)({ ctx, input })),
-    editComment: trpc_1.protectedProcedure
-        .input(comments_schema_1.EditCommentSchema)
+        .mutation(({ ctx, input }) => createCommentHandler({ ctx, input })),
+    editComment: protectedProcedure
+        .input(EditCommentSchema)
         // .output(CommentSchemaPopulatedUserAndReplies)
-        .mutation(({ ctx, input }) => (0, comments_controllers_1.editCommentHandler)({ ctx, input })),
-    deleteComment: trpc_1.protectedProcedure
-        .input(comments_schema_1.DeleteCommentSchema)
+        .mutation(({ ctx, input }) => editCommentHandler({ ctx, input })),
+    deleteComment: protectedProcedure
+        .input(DeleteCommentSchema)
         // .output(CommentSchemaPopulatedUserAndReplies)
-        .mutation(({ ctx, input }) => (0, comments_controllers_1.deleteCommentHandler)({ ctx, input })),
+        .mutation(({ ctx, input }) => deleteCommentHandler({ ctx, input })),
 });
+//# sourceMappingURL=comments.router.js.map

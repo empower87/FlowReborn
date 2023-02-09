@@ -1,6 +1,6 @@
-import { IUser, User } from "../models/User"
-import { UpdateUserInputType, UserInputType } from "../schema/user.schema"
-import { Context, ContextWithInput, TRPCError } from "../utils/trpc"
+import { IUser, User } from "../models/User.js"
+import { UpdateUserInputType, UserInputType } from "../schema/user.schema.js"
+import { Context, ContextWithInput, TRPCError } from "../utils/trpc/index.js"
 
 export const getMeHandler = async ({ ctx }: { ctx: Context }) => {
   const user = ctx.user

@@ -1,7 +1,7 @@
 import { Types } from "mongoose"
 import z from "zod"
-import { CommentSchemaPopulatedUser } from "./comments.schema"
-import { UserSchema } from "./user.schema"
+import { CommentSchemaPopulatedUser } from "./comments.schema.js"
+import { UserSchema } from "./user.schema.js"
 
 export const SongSchema = z.object({
   _id: z.instanceof(Types.ObjectId),

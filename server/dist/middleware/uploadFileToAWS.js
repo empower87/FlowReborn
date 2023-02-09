@@ -1,28 +1,22 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploadFileToAWS = exports.UploadInputSchema = void 0;
-const aws_sdk_1 = __importDefault(require("aws-sdk"));
-const zod_1 = __importDefault(require("zod"));
-const trpc_1 = require("../utils/trpc");
-aws_sdk_1.default.config.update({
+import AWS from "aws-sdk";
+import z from "zod";
+import { TRPCError } from "../utils/trpc/index.js";
+AWS.config.update({
     region: "us-west-1",
     accessKeyId: process.env.AWSAccessKeyId,
     secretAccessKey: process.env.AWSSecretKey,
 });
 const S3_BUCKET = process.env.Bucket;
-const UploadInputObjectSchema = zod_1.default.object({
-    fileName: zod_1.default.string(),
-    fileType: zod_1.default.string(),
-    fileBlob: zod_1.default.any(),
+const UploadInputObjectSchema = z.object({
+    fileName: z.string(),
+    fileType: z.string(),
+    fileBlob: z.any(),
 });
-exports.UploadInputSchema = zod_1.default.array(UploadInputObjectSchema);
-const uploadFileToAWS = async ({ ctx, input }) => {
+export const UploadInputSchema = z.array(UploadInputObjectSchema);
+export const uploadFileToAWS = async ({ ctx, input }) => {
     if (!ctx.user)
-        throw (0, trpc_1.TRPCError)("INTERNAL_SERVER_ERROR", "you must be logged in");
-    const s3 = new aws_sdk_1.default.S3();
+        throw TRPCError("INTERNAL_SERVER_ERROR", "you must be logged in");
+    const s3 = new AWS.S3();
     const params = (object) => {
         return {
             Bucket: S3_BUCKET,
@@ -44,7 +38,6 @@ const uploadFileToAWS = async ({ ctx, input }) => {
     console.log(responses, response, "response / responses uploadFileToAWS");
     return response;
 };
-exports.uploadFileToAWS = uploadFileToAWS;
 // export const uploadFileToAWS = async ({ ctx, input }: { ctx: Context; input: UploadInputType }) => {
 //   const s3 = new AWS.S3()
 //   const { fileName, fileType } = input
@@ -66,3 +59,4 @@ exports.uploadFileToAWS = uploadFileToAWS;
 //   }
 //   return signedRequest
 // }
+//# sourceMappingURL=uploadFileToAWS.js.map

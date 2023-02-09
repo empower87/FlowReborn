@@ -1,48 +1,43 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.authRouter = void 0;
-const zod_1 = __importDefault(require("zod"));
-const auth_controllers_1 = require("../controllers/auth.controllers");
-const auth_schema_1 = require("../schema/auth.schema");
-const trpc_1 = require("../utils/trpc");
-const GoogleUser = zod_1.default.object({
-    googleId: zod_1.default.string(),
-    userPhoto: zod_1.default.string(),
-    userSignUpDate: zod_1.default.date(),
-    given_name: zod_1.default.string(),
-    family_name: zod_1.default.string(),
+import z from "zod";
+import { loginHandler, refreshHandler, registerHandler } from "../controllers/auth.controllers.js";
+import { LoginSchema, RegisterSchema } from "../schema/auth.schema.js";
+import { publicProcedure, router } from "../utils/trpc/index.js";
+const GoogleUser = z.object({
+    googleId: z.string(),
+    userPhoto: z.string(),
+    userSignUpDate: z.date(),
+    given_name: z.string(),
+    family_name: z.string(),
 });
-const OutputSchema = zod_1.default.object({
-    socials: zod_1.default
+const OutputSchema = z.object({
+    socials: z
         .object({
-        twitter: zod_1.default.string().optional(),
-        instagram: zod_1.default.string().optional(),
-        soundCloud: zod_1.default.string().optional(),
+        twitter: z.string().optional(),
+        instagram: z.string().optional(),
+        soundCloud: z.string().optional(),
     })
         .optional(),
-    _id: zod_1.default.string(),
-    email: zod_1.default.string().email(),
-    username: zod_1.default.string(),
-    followers: zod_1.default.array(zod_1.default.string()).default([]),
-    following: zod_1.default.array(zod_1.default.string()).default([]),
-    createdOn: zod_1.default.date().optional(),
-    updatedOn: zod_1.default.date().optional(),
-    __v: zod_1.default.number().optional(),
-    about: zod_1.default.string().optional(),
-    firstName: zod_1.default.string().optional(),
-    lastName: zod_1.default.string().optional(),
-    location: zod_1.default.string().optional(),
-    picture: zod_1.default.string().optional(),
+    _id: z.string(),
+    email: z.string().email(),
+    username: z.string(),
+    followers: z.array(z.string()).default([]),
+    following: z.array(z.string()).default([]),
+    createdOn: z.date().optional(),
+    updatedOn: z.date().optional(),
+    __v: z.number().optional(),
+    about: z.string().optional(),
+    firstName: z.string().optional(),
+    lastName: z.string().optional(),
+    location: z.string().optional(),
+    picture: z.string().optional(),
     google: GoogleUser.optional(),
 });
-exports.authRouter = (0, trpc_1.router)({
-    register: trpc_1.publicProcedure.input(auth_schema_1.RegisterSchema).mutation(({ input }) => (0, auth_controllers_1.registerHandler)({ input })),
-    login: trpc_1.publicProcedure
-        .input(auth_schema_1.LoginSchema)
+export const authRouter = router({
+    register: publicProcedure.input(RegisterSchema).mutation(({ input }) => registerHandler({ input })),
+    login: publicProcedure
+        .input(LoginSchema)
         // .output(z.object({ token: z.string(), user: UserSchema }))
-        .mutation(({ ctx, input }) => (0, auth_controllers_1.loginHandler)({ ctx, input })),
-    refresh: trpc_1.publicProcedure.query(({ ctx }) => (0, auth_controllers_1.refreshHandler)({ ctx })),
+        .mutation(({ ctx, input }) => loginHandler({ ctx, input })),
+    refresh: publicProcedure.query(({ ctx }) => refreshHandler({ ctx })),
 });
+//# sourceMappingURL=auth.router.js.map

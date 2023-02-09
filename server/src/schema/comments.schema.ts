@@ -1,6 +1,6 @@
 import { Types } from "mongoose"
 import z from "zod"
-import { UserSchema } from "./user.schema"
+import { UserSchema } from "./user.schema.js"
 
 export const CommentSchema = z.object({
   // _id: z.string(),

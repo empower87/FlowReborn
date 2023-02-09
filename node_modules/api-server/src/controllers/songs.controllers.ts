@@ -1,6 +1,5 @@
-import { ISong, Song } from "../models/Song"
-import { IUser, User } from "../models/User"
-import { CommentSchemaPopulatedUserType } from "../schema/comments.schema"
+import { ISong, IUser, Song, User } from "../models/index.js"
+import { CommentSchemaPopulatedUserType } from "../schema/comments.schema.js"
 import {
   CreateSongType,
   GetByFollowersType,
@@ -8,8 +7,8 @@ import {
   SongSchemaPopulatedUserAndCommentsType,
   SongSchemaPopulatedUserType,
   UpdateSongType,
-} from "../schema/songs.schema"
-import { ContextWithInput, TRPCError } from "../utils/trpc"
+} from "../schema/songs.schema.js"
+import { ContextWithInput, TRPCError } from "../utils/trpc/index.js"
 
 export const createSongHandler = async ({ ctx, input }: ContextWithInput<CreateSongType>) => {
   if (!ctx.user) throw TRPCError("UNAUTHORIZED", "user is not authorized ")

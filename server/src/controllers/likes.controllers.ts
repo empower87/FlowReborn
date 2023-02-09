@@ -1,8 +1,7 @@
-import { Comment } from "../models/Comment"
-import { Song } from "../models/Song"
-import { User } from "../models/User"
-import { LikeInputType } from "../schema/likes.schema"
-import { ContextWithInput, TRPCError } from "../utils/trpc"
+import { Comment, Song, User } from "../models/index.js"
+
+import { LikeInputType } from "../schema/likes.schema.js"
+import { ContextWithInput, TRPCError } from "../utils/trpc/index.js"
 
 export const likeSongHandler = async ({ ctx, input }: ContextWithInput<LikeInputType>) => {
   if (!ctx.user) throw TRPCError("UNAUTHORIZED", "user not authorized to comment")

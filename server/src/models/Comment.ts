@@ -1,6 +1,6 @@
 import { model, Model, Schema } from "mongoose"
 import { z } from "zod"
-import { CommentSchema as ICommentSchema } from "../schema/comments.schema"
+import { CommentSchema as ICommentSchema } from "../schema/comments.schema.js"
 
 export type IComment = z.infer<typeof ICommentSchema>
 // export interface IComment {

@@ -1,47 +1,40 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.refreshHandler = exports.loginHandler = exports.registerHandler = void 0;
-const default_1 = __importDefault(require("../config/default"));
-const User_1 = require("../models/User");
-const bcrypt_1 = require("../utils/bcrypt");
-const jwt_1 = require("../utils/jwt");
-const trpc_1 = require("../utils/trpc");
-const registerHandler = async ({ input }) => {
+import customConfig from "../config/default.js";
+import { User } from "../models/User.js";
+import { hashPassword, matchPassword } from "../utils/bcrypt.js";
+import { signJwt, verifyJwt } from "../utils/jwt.js";
+import { TRPCError } from "../utils/trpc/index.js";
+export const registerHandler = async ({ input }) => {
     const { email, username, password } = input;
     const lowercaseUsername = username.toLowerCase();
     const lowercaseEmail = email.toLowerCase();
-    const takenUsername = await User_1.User.findOne({ username: lowercaseUsername });
+    const takenUsername = await User.findOne({ username: lowercaseUsername });
     if (takenUsername)
-        throw (0, trpc_1.TRPCError)("BAD_REQUEST", "username has already been taken");
-    const hashedPassword = await (0, bcrypt_1.hashPassword)(password);
+        throw TRPCError("BAD_REQUEST", "username has already been taken");
+    const hashedPassword = await hashPassword(password);
     if (!hashedPassword)
-        throw (0, trpc_1.TRPCError)("INTERNAL_SERVER_ERROR", "password failed to encrypt");
-    const newUser = await User_1.User.create({
+        throw TRPCError("INTERNAL_SERVER_ERROR", "password failed to encrypt");
+    const newUser = await User.create({
         username: lowercaseUsername,
         email: lowercaseEmail,
         password: hashedPassword,
     });
     return { username: lowercaseUsername, password: password };
 };
-exports.registerHandler = registerHandler;
-const loginHandler = async ({ ctx, input }) => {
+export const loginHandler = async ({ ctx, input }) => {
     const { username, password } = input;
     const lowercaseUsername = username.toLowerCase();
-    const dbUser = await User_1.User.findOne({ username: lowercaseUsername }).select("+password");
+    const dbUser = await User.findOne({ username: lowercaseUsername }).select("+password");
     if (!dbUser)
-        throw (0, trpc_1.TRPCError)("NOT_FOUND", `username of: ${username} does not exist`);
-    const isMatch = await (0, bcrypt_1.matchPassword)(password, dbUser.password);
+        throw TRPCError("NOT_FOUND", `username of: ${username} does not exist`);
+    const isMatch = await matchPassword(password, dbUser.password);
     if (!isMatch)
-        throw (0, trpc_1.TRPCError)("BAD_REQUEST", "invalid password");
+        throw TRPCError("BAD_REQUEST", "invalid password");
     const payload = { username: dbUser.username };
-    const accessToken = (0, jwt_1.signJwt)({ ...payload }, "accessTokenPrivateKey", {
-        expiresIn: `${default_1.default.accessTokenExpiresIn}m`,
+    const accessToken = signJwt({ ...payload }, "accessTokenPrivateKey", {
+        expiresIn: `${customConfig.accessTokenExpiresIn}m`,
     });
-    const refreshToken = (0, jwt_1.signJwt)({ ...payload }, "refreshTokenPrivateKey", {
-        expiresIn: `${default_1.default.refreshTokenExpiresIn}m`,
+    const refreshToken = signJwt({ ...payload }, "refreshTokenPrivateKey", {
+        expiresIn: `${customConfig.refreshTokenExpiresIn}m`,
     });
     ctx.res.cookie("jwt", refreshToken, {
         httpOnly: true,
@@ -49,27 +42,26 @@ const loginHandler = async ({ ctx, input }) => {
         secure: process.env.NODE_ENV === "production",
         maxAge: 24 * 60 * 60 * 1000,
     });
-    const returnUser = await User_1.User.findById(dbUser._id).select("-password");
+    const returnUser = await User.findById(dbUser._id).select("-password");
     if (!returnUser)
-        throw (0, trpc_1.TRPCError)("NOT_FOUND", "user not found..");
+        throw TRPCError("NOT_FOUND", "user not found..");
     console.log(returnUser, "OMG WE GOT HERE???");
     return { token: accessToken, user: returnUser };
 };
-exports.loginHandler = loginHandler;
-const refreshHandler = async ({ ctx }) => {
+export const refreshHandler = async ({ ctx }) => {
     try {
         const cookies = ctx.req.cookies.jwt;
         if (!cookies)
-            throw (0, trpc_1.TRPCError)("UNAUTHORIZED", "refresh expired token");
+            throw TRPCError("UNAUTHORIZED", "refresh expired token");
         const refreshToken = cookies;
-        const decoded = (0, jwt_1.verifyJwt)(refreshToken, "refreshTokenPrivateKey");
+        const decoded = verifyJwt(refreshToken, "refreshTokenPrivateKey");
         if (!decoded)
-            throw (0, trpc_1.TRPCError)("UNAUTHORIZED", "refresh expired token");
-        const user = await User_1.User.findOne({ username: decoded.username });
+            throw TRPCError("UNAUTHORIZED", "refresh expired token");
+        const user = await User.findOne({ username: decoded.username });
         if (!user)
-            throw (0, trpc_1.TRPCError)("INTERNAL_SERVER_ERROR", "user not found");
-        const accessToken = (0, jwt_1.signJwt)({ username: user.username }, "accessTokenPrivateKey", {
-            expiresIn: `${default_1.default.accessTokenExpiresIn}m`,
+            throw TRPCError("INTERNAL_SERVER_ERROR", "user not found");
+        const accessToken = signJwt({ username: user.username }, "accessTokenPrivateKey", {
+            expiresIn: `${customConfig.accessTokenExpiresIn}m`,
         });
         console.log(cookies, decoded, user, accessToken, "HAHAHAH ???");
         return accessToken;
@@ -78,7 +70,6 @@ const refreshHandler = async ({ ctx }) => {
         throw err;
     }
 };
-exports.refreshHandler = refreshHandler;
 // export const googleLoginHandler = async () => {
 //   const tokenId: string | undefined = req.header('X-Google-Token')
 //   console.log(tokenId, 'google token')
@@ -141,3 +132,4 @@ exports.refreshHandler = refreshHandler;
 //     }
 //   })
 // }
+//# sourceMappingURL=auth.controllers.js.map

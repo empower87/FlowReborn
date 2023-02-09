@@ -11,9 +11,9 @@ import {
   getUsersSongsHandler,
   searchHandler,
   updateSongHandler,
-} from "../controllers/songs.controllers"
-import { CreateSongSchema, GetByFollowersSchema, SongInputSchema, UpdateSongSchema } from "../schema/songs.schema"
-import { protectedProcedure, publicProcedure, router } from "../utils/trpc"
+} from "../controllers/songs.controllers.js"
+import { CreateSongSchema, GetByFollowersSchema, SongInputSchema, UpdateSongSchema } from "../schema/songs.schema.js"
+import { protectedProcedure, publicProcedure, router } from "../utils/trpc/index.js"
 
 export const songsRouter = router({
   createSong: publicProcedure

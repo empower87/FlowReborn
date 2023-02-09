@@ -3,9 +3,9 @@ import {
   likeSongHandler,
   unlikeCommentHandler,
   unlikeSongHandler,
-} from "../controllers/likes.controllers"
-import { LikeSchema } from "../schema/likes.schema"
-import { publicProcedure, router } from "../utils/trpc"
+} from "../controllers/likes.controllers.js"
+import { LikeSchema } from "../schema/likes.schema.js"
+import { publicProcedure, router } from "../utils/trpc/index.js"
 
 export const likesRouter = router({
   likeSong: publicProcedure.input(LikeSchema).mutation(async ({ ctx, input }) => await likeSongHandler({ ctx, input })),

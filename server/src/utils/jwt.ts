@@ -1,5 +1,5 @@
 import jwt, { SignOptions } from "jsonwebtoken"
-import customConfig from "../config/default"
+import customConfig from "../config/default.js"
 
 export type CtxUserToken = {
   username: string

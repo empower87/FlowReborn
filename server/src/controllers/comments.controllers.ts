@@ -1,4 +1,4 @@
-import { Comment, IUser, Song } from "../models/index"
+import { Comment, IUser, Song } from "../models/index.js"
 import {
   CommentSchemaPopulatedUserAndRepliesType,
   CommentSchemaPopulatedUserType,
@@ -6,8 +6,8 @@ import {
   DeleteCommentType,
   EditCommentType,
   GetCommentByIdType,
-} from "../schema/comments.schema"
-import { ContextWithInput, TRPCError } from "../utils/trpc"
+} from "../schema/comments.schema.js"
+import { ContextWithInput, TRPCError } from "../utils/trpc/index.js"
 
 export const getComment = async ({ ctx, input }: ContextWithInput<GetCommentByIdType>) => {
   if (!ctx.user) throw TRPCError("UNAUTHORIZED", "user not authorized to get comment")

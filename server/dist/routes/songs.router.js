@@ -1,55 +1,50 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.songsRouter = void 0;
-const zod_1 = __importDefault(require("zod"));
-const songs_controllers_1 = require("../controllers/songs.controllers");
-const songs_schema_1 = require("../schema/songs.schema");
-const trpc_1 = require("../utils/trpc");
-exports.songsRouter = (0, trpc_1.router)({
-    createSong: trpc_1.publicProcedure
-        .input(songs_schema_1.CreateSongSchema)
+import z from "zod";
+import { createSongHandler, deleteSongHandler, getAllSongsHandler, getSongHandler, getSongWithPopulatedUserAndCommentsHandler, getSongWithPopulatedUserHandler, getUsersFollowersSongs, getUsersLikedSongs, getUsersSongsHandler, searchHandler, updateSongHandler, } from "../controllers/songs.controllers.js";
+import { CreateSongSchema, GetByFollowersSchema, SongInputSchema, UpdateSongSchema } from "../schema/songs.schema.js";
+import { protectedProcedure, publicProcedure, router } from "../utils/trpc/index.js";
+export const songsRouter = router({
+    createSong: publicProcedure
+        .input(CreateSongSchema)
         // .output(SongSchema)
-        .mutation(({ ctx, input }) => (0, songs_controllers_1.createSongHandler)({ ctx, input })),
-    deleteSong: trpc_1.publicProcedure.input(songs_schema_1.SongInputSchema).mutation(({ ctx, input }) => (0, songs_controllers_1.deleteSongHandler)({ ctx, input })),
-    updateSong: trpc_1.publicProcedure.input(songs_schema_1.UpdateSongSchema).mutation(({ ctx, input }) => (0, songs_controllers_1.updateSongHandler)({ ctx, input })),
-    usersLikedSongs: trpc_1.publicProcedure
-        .input(songs_schema_1.SongInputSchema)
+        .mutation(({ ctx, input }) => createSongHandler({ ctx, input })),
+    deleteSong: publicProcedure.input(SongInputSchema).mutation(({ ctx, input }) => deleteSongHandler({ ctx, input })),
+    updateSong: publicProcedure.input(UpdateSongSchema).mutation(({ ctx, input }) => updateSongHandler({ ctx, input })),
+    usersLikedSongs: publicProcedure
+        .input(SongInputSchema)
         // .output(z.array(SongSchemaPopulatedUser))
-        .query(({ ctx, input }) => (0, songs_controllers_1.getUsersLikedSongs)({ ctx, input })),
-    usersFollowersSongs: trpc_1.publicProcedure
-        .input(songs_schema_1.GetByFollowersSchema)
+        .query(({ ctx, input }) => getUsersLikedSongs({ ctx, input })),
+    usersFollowersSongs: publicProcedure
+        .input(GetByFollowersSchema)
         // .output(z.array(SongSchemaPopulatedUser))
-        .query(({ ctx, input }) => (0, songs_controllers_1.getUsersFollowersSongs)({ ctx, input })),
-    getSong: trpc_1.protectedProcedure
-        .input(songs_schema_1.SongInputSchema)
+        .query(({ ctx, input }) => getUsersFollowersSongs({ ctx, input })),
+    getSong: protectedProcedure
+        .input(SongInputSchema)
         // .output(SongSchema)
         .query(({ input }) => {
-        return (0, songs_controllers_1.getSongHandler)({ input });
+        return getSongHandler({ input });
     }),
-    getSongPopulated: trpc_1.protectedProcedure
-        .input(songs_schema_1.SongInputSchema)
+    getSongPopulated: protectedProcedure
+        .input(SongInputSchema)
         // .output(SongSchemaPopulatedUserAndComments)
         .query(({ input }) => {
-        return (0, songs_controllers_1.getSongWithPopulatedUserAndCommentsHandler)({ input });
+        return getSongWithPopulatedUserAndCommentsHandler({ input });
     }),
-    getSongPopulatedUser: trpc_1.protectedProcedure
-        .input(songs_schema_1.SongInputSchema)
+    getSongPopulatedUser: protectedProcedure
+        .input(SongInputSchema)
         // .output(SongSchemaPopulatedUser)
         .query(async ({ ctx, input }) => {
-        return await (0, songs_controllers_1.getSongWithPopulatedUserHandler)({ ctx, input });
+        return await getSongWithPopulatedUserHandler({ ctx, input });
     }),
-    usersSongs: trpc_1.protectedProcedure
-        .input(songs_schema_1.SongInputSchema)
+    usersSongs: protectedProcedure
+        .input(SongInputSchema)
         // .output(z.array(SongSchemaPopulatedUser))
-        .query(({ ctx, input }) => (0, songs_controllers_1.getUsersSongsHandler)({ ctx, input })),
-    allSongs: trpc_1.publicProcedure
+        .query(({ ctx, input }) => getUsersSongsHandler({ ctx, input })),
+    allSongs: publicProcedure
         // .output(z.array(SongSchemaPopulatedUserAndComments))
-        .query(() => (0, songs_controllers_1.getAllSongsHandler)()),
-    search: trpc_1.publicProcedure
-        .input(zod_1.default.string())
+        .query(() => getAllSongsHandler()),
+    search: publicProcedure
+        .input(z.string())
         // .output(z.object({ users: z.array(UserSchema), songs: z.array(SongSchemaPopulatedUserAndComments) }))
-        .mutation(async ({ ctx, input }) => await (0, songs_controllers_1.searchHandler)({ ctx, input })),
+        .mutation(async ({ ctx, input }) => await searchHandler({ ctx, input })),
 });
+//# sourceMappingURL=songs.router.js.map

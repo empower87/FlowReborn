@@ -4,14 +4,14 @@ import {
   editCommentHandler,
   getComment,
   getCommentPopulatedUser,
-} from "../controllers/comments.controllers"
+} from "../controllers/comments.controllers.js"
 import {
   CreateCommentSchema,
   DeleteCommentSchema,
   EditCommentSchema,
   GetCommentByIdSchema,
-} from "../schema/comments.schema"
-import { protectedProcedure, router } from "../utils/trpc"
+} from "../schema/comments.schema.js"
+import { protectedProcedure, router } from "../utils/trpc/index.js"
 
 export const commentsRouter = router({
   getComment: protectedProcedure

@@ -1,11 +1,11 @@
-import express, { Request, Response, NextFunction } from 'express'
-import { verifyToken } from '../middleware/verifyToken'
+import express, { NextFunction, Request, Response } from "express"
+import { verifyToken } from "../middleware/verifyToken.js"
 // const User = require('../models/User')
 // const Songs = require('../models/Songs')
 // const Likes = require('../models/Likes')
 const router = express.Router()
 
-router.post('/searchUsersAndSongs', async (req, res, next) => {
+router.post("/searchUsersAndSongs", async (req, res, next) => {
   // let searchData = { user: '', songs: '' }
   // await User.find({ user_name: { $regex: req.body.search, $options: '$i' } })
   //   .then(user => {
@@ -24,48 +24,44 @@ router.post('/searchUsersAndSongs', async (req, res, next) => {
   // res.status(200).json(searchData)
 })
 
-var aws = require('aws-sdk')
-require('dotenv').config()
+var aws = require("aws-sdk")
+require("dotenv").config()
 
 aws.config.update({
-  region: 'us-west-1',
+  region: "us-west-1",
   accessKeyId: process.env.AWSAccessKeyId,
   secretAccessKey: process.env.AWSSecretKey,
-  signatureVersion: 'v4',
+  signatureVersion: "v4",
 })
 
 const S3_BUCKET = process.env.Bucket
 
-router.post(
-  '/getSignedS3',
-  verifyToken,
-  async (req: Request, res: Response, next: NextFunction) => {
-    const s3 = new aws.S3()
-    const fileName = req.body.fileName
-    const fileType = req.body.fileType
-    const s3Params = {
-      Bucket: S3_BUCKET,
-      Key: fileName,
-      Expires: 3000,
-      ContentType: fileType,
-      ACL: 'public-read',
+router.post("/getSignedS3", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
+  const s3 = new aws.S3()
+  const fileName = req.body.fileName
+  const fileType = req.body.fileType
+  const s3Params = {
+    Bucket: S3_BUCKET,
+    Key: fileName,
+    Expires: 3000,
+    ContentType: fileType,
+    ACL: "public-read",
+  }
+  s3.getSignedUrl("putObject", s3Params, async (err: any, data: any) => {
+    if (err) {
+      return res.json({ success: false, error: err, message: "AWS unable to sign request" })
+    } else {
+      return res.json({
+        success: true,
+        signedRequest: {
+          signed_URL: data,
+          aws_URL: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName}`,
+        },
+        message: "AWS Successfully signed URL",
+      })
     }
-    s3.getSignedUrl('putObject', s3Params, async (err: any, data: any) => {
-      if (err) {
-        return res.json({ success: false, error: err, message: 'AWS unable to sign request' })
-      } else {
-        return res.json({
-          success: true,
-          signedRequest: {
-            signed_URL: data,
-            aws_URL: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName}`,
-          },
-          message: 'AWS Successfully signed URL',
-        })
-      }
-    })
-  },
-)
+  })
+})
 
 // router.post('/sign_s3', verifyToken, (req, res) => {
 //   let incoming = req.body

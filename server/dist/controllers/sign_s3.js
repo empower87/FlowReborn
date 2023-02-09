@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var AWS = require('aws-sdk');
 require('dotenv').config();
 AWS.config.update({
@@ -38,3 +36,5 @@ module.exports = function sign_s3(req, res, next) {
         }
     });
 };
+export {};
+//# sourceMappingURL=sign_s3.js.map

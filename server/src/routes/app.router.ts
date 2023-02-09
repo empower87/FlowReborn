@@ -1,10 +1,10 @@
-import { router } from "../utils/trpc"
-import { authRouter } from "./auth.router"
-import { commentsRouter } from "./comments.router"
-import { followsRouter } from "./follows.router"
-import { likesRouter } from "./likes.router"
-import { songsRouter } from "./songs.router"
-import { userRouter } from "./users.router"
+import { router } from "../utils/trpc/index.js"
+import { authRouter } from "./auth.router.js"
+import { commentsRouter } from "./comments.router.js"
+import { followsRouter } from "./follows.router.js"
+import { likesRouter } from "./likes.router.js"
+import { songsRouter } from "./songs.router.js"
+import { userRouter } from "./users.router.js"
 
 export const appRouter = router({
   auth: authRouter,

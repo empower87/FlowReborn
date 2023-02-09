@@ -1,7 +1,7 @@
 import * as trpc from "@trpc/server"
 import * as trpcExpress from "@trpc/server/adapters/express"
-import { User } from "../../models"
-import { CtxUserToken, verifyJwt } from "../jwt"
+import { User } from "../../models/index.js"
+import { CtxUserToken, verifyJwt } from "../jwt.js"
 
 export const createContext = async ({ req, res }: trpcExpress.CreateExpressContextOptions) => {
   async function getUserFromHeader() {

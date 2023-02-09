@@ -1,9 +1,9 @@
-import customConfig from "../config/default"
-import { IUser, User } from "../models/User"
-import { LoginInputType, RegisterInputType } from "../schema/auth.schema"
-import { hashPassword, matchPassword } from "../utils/bcrypt"
-import { CtxUserToken, signJwt, verifyJwt } from "../utils/jwt"
-import { Context, ContextWithInput, TRPCError } from "../utils/trpc"
+import customConfig from "../config/default.js"
+import { IUser, User } from "../models/User.js"
+import { LoginInputType, RegisterInputType } from "../schema/auth.schema.js"
+import { hashPassword, matchPassword } from "../utils/bcrypt.js"
+import { CtxUserToken, signJwt, verifyJwt } from "../utils/jwt.js"
+import { Context, ContextWithInput, TRPCError } from "../utils/trpc/index.js"
 
 export const registerHandler = async ({ input }: { input: RegisterInputType }) => {
   const { email, username, password } = input
@@ -25,11 +25,14 @@ export const registerHandler = async ({ input }: { input: RegisterInputType }) =
   return { username: lowercaseUsername, password: password }
 }
 
+interface IUserWithPassword extends IUser {
+  password: string
+}
 export const loginHandler = async ({ ctx, input }: ContextWithInput<LoginInputType>) => {
   const { username, password } = input
   const lowercaseUsername = username.toLowerCase()
 
-  const dbUser = await User.findOne({ username: lowercaseUsername }).select("+password")
+  const dbUser: IUserWithPassword | null = await User.findOne({ username: lowercaseUsername }).select("+password")
   if (!dbUser) throw TRPCError("NOT_FOUND", `username of: ${username} does not exist`)
 
   const isMatch = await matchPassword(password, dbUser.password)
@@ -66,7 +69,7 @@ export const refreshHandler = async ({ ctx }: { ctx: Context }) => {
     const decoded = verifyJwt<CtxUserToken>(refreshToken, "refreshTokenPrivateKey")
     if (!decoded) throw TRPCError("UNAUTHORIZED", "refresh expired token")
 
-    const user = await User.findOne({ username: decoded.username })
+    const user: IUser | null = await User.findOne({ username: decoded.username })
     if (!user) throw TRPCError("INTERNAL_SERVER_ERROR", "user not found")
 
     const accessToken = signJwt({ username: user.username }, "accessTokenPrivateKey", {

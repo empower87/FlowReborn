@@ -1,7 +1,7 @@
 import z from "zod"
-import { loginHandler, refreshHandler, registerHandler } from "../controllers/auth.controllers"
-import { LoginSchema, RegisterSchema } from "../schema/auth.schema"
-import { publicProcedure, router } from "../utils/trpc"
+import { loginHandler, refreshHandler, registerHandler } from "../controllers/auth.controllers.js"
+import { LoginSchema, RegisterSchema } from "../schema/auth.schema.js"
+import { publicProcedure, router } from "../utils/trpc/index.js"
 
 const GoogleUser = z.object({
   googleId: z.string(),
