@@ -29,7 +29,7 @@
     "zod": "^3.20.2"
   },
   "scripts": {
-    "start": "ts-node ./src/app.ts",
+    "start": "node dist/app.js",
     "dev": "nodemon",
     "build": "react-scripts build",
     "test": "react-scripts test",
