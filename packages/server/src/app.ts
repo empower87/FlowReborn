@@ -63,3 +63,5 @@ app.get("*", (req: Request, res: Response, next: NextFunction) => {
 const PORT = customConfig.port
 
 app.listen(PORT, () => console.log(`Listening to port ${PORT}`))
+
+// exports.module = app

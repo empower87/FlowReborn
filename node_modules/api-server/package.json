@@ -1,7 +1,7 @@
 {
   "name": "api-server",
   "version": "1.0.0",
-  "main": "dist/app.js",
+  "main": "src/app.ts",
   "private": true,
   "type": "module",
   "dependencies": {
