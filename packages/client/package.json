@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "homepage": "https://flow-reborn.onrender.com",
   "dependencies": {
@@ -80,7 +80,7 @@
     "url": "git+https://github.com/empower87/FlowReborn.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "empower87",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/empower87/FlowReborn/issues"
