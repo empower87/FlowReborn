@@ -38,8 +38,7 @@ function App() {
         },
       })
   )
-  const whatPort = process.env.PORT
-  console.log(whatPort, "PORT WHAT???")
+
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
