@@ -1,9 +1,11 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "target": "ES2020",
     "outDir": "dist",
+    "rootDir": "src",
     "sourceMap": true,
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -17,7 +19,8 @@
     "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true
+    "declaration": true,
+    "composite": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*.ts"]
 }
