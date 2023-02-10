@@ -1,5 +1,5 @@
 {
-  "name": "@api-server",
+  "name": "server",
   "version": "1.0.0",
   "main": "src/app.ts",
   "private": true,
