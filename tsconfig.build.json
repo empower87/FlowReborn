@@ -11,5 +11,11 @@
     "sourceMap": true,
     "composite": true,
     "moduleResolution": "node"
-  }
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "packages/server"
+    }
+  ]
 }
