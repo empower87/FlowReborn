@@ -6,11 +6,11 @@
   "private": true,
   "scripts": {
     "start": "cd ./packages/server && npm i && npm start",
-    "server": "npm --workspace=packages/server run",
+    "server": "cd ./packages/server && npm i && npm start",
     "client": "npm start --workspace=packages/client",
     "client-build": "cd client && npm install && npm run build",
     "server-build": "cd server && npm install",
-    "build": "npm i --workspaces && npm install --prefix ./packages/client && npm run build --prefix ./packages/client",
+    "build": "npm i --workspaces && cd ./packages/client && npm install && npm run build",
     "dev": "npm-run-all --parallel start client",
     "test": "echo \"Error: no test specified\" && exit 1",
     "render-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
@@ -26,7 +26,6 @@
     "url": "https://github.com/empower87/FlowReborn/issues"
   },
   "build": "npm run build --workspaces --if-present && npm run test && rm -rf dist && npm run lint && tsc -b",
-  "deploy": "vercel deploy --prod",
   "workspaces": [
     "packages/*"
   ],
