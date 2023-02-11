@@ -1,5 +1,5 @@
 {
-  "name": "@FlowReborn-packages/server",
+  "name": "@flowreborn-packages/server",
   "version": "1.0.0",
   "main": "src/app.ts",
   "types": "dist/app.d.ts",
