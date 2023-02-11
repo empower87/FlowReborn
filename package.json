@@ -5,7 +5,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "start": "npm install --prefix ./packages/server && npm run start --prefix ./packages/server",
+    "start": "cd ./packages/server && npm i && npm start",
     "server": "npm --workspace=packages/server run",
     "client": "npm start --workspace=packages/client",
     "client-build": "cd client && npm install && npm run build",
