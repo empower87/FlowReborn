@@ -10,7 +10,9 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "composite": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "preserveSymlinks": true
   },
   "files": [],
   "references": [

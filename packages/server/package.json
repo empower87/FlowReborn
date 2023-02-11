@@ -1,7 +1,8 @@
 {
-  "name": "server",
+  "name": "@FlowReborn-packages/server",
   "version": "1.0.0",
   "main": "src/app.ts",
+  "types": "dist/app.d.ts",
   "private": true,
   "type": "module",
   "dependencies": {
@@ -37,7 +38,7 @@
     "dev": "npx tsc --watch & nodemon -q dist/app.js",
     "devtwo": "nodemon --watch \"src/**\" --ext \"ts,json\" --exec \"ts-node src/app.ts\"",
     "devthree": "node --loader ts-node/esm src/app.ts",
-    "build": "npx tsc --noEmit false",
+    "build": "rm -rf dist && tsc src/app.ts --declaration --allowJs --outDir dist",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

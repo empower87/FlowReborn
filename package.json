@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "start": "cd packages/server && npm start",
-    "server": "npm run devthree --workspace=packages/server",
+    "server": "npm --workspace=packages/server run",
     "client": "npm start --workspace=packages/client",
     "client-build": "cd client && npm install && npm run build",
     "server-build": "cd server && npm install",
@@ -28,8 +28,7 @@
   "build": "npm run build --workspaces --if-present && npm run test && rm -rf dist && npm run lint && tsc -b",
   "deploy": "vercel deploy --prod",
   "workspaces": [
-    "./packages/server",
-    "./packages/client"
+    "packages/*"
   ],
   "homepage": "https://flow-reborn.onrender.com",
   "dependencies": {

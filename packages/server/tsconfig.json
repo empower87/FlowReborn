@@ -20,6 +20,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "declaration": true,
+    "preserveSymlinks": true,
     "composite": true
   },
   "include": ["src/**/*.ts"]
