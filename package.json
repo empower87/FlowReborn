@@ -1,12 +1,12 @@
 {
-  "name": "flowreborn",
+  "name": "@FlowReborn",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "private": true,
   "scripts": {
     "start": "cd ./packages/server && npm i && npm start",
-    "server": "cd ../server && npm i && npm start",
+    "server": "cd ./packages/server && npm i && npm start",
     "client": "npm start --workspace=packages/client",
     "client-build": "cd client && npm install && npm run build",
     "server-build": "cd server && npm install",
