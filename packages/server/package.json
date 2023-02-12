@@ -1,7 +1,7 @@
 {
   "name": "@flowreborn-packages/server",
   "version": "1.0.0",
-  "main": "src/app.ts",
+  "main": "dist/app.js",
   "types": "dist/app.d.ts",
   "private": true,
   "type": "module",
@@ -24,7 +24,7 @@
     "zod": "^3.20.2"
   },
   "scripts": {
-    "start": "node dist/app.js",
+    "start": "tsc & node dist/app.js",
     "predev": "npm run build",
     "dev": "npx tsc --watch & nodemon -q dist/app.js",
     "devtwo": "nodemon --watch \"src/**\" --ext \"ts,json\" --exec \"ts-node src/app.ts\"",
