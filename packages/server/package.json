@@ -30,7 +30,7 @@
     "dev": "npx tsc --watch & nodemon -q dist/app.js",
     "devtwo": "nodemon --watch \"src/**\" --ext \"ts,json\" --exec \"ts-node src/app.ts\"",
     "devthree": "node --loader ts-node/esm src/app.ts",
-    "build": "rm -rf dist && npx tsc src/app.ts --declaration --allowJs --outDir dist"
+    "build": "rm -rf dist && tsc src/app.ts --declaration --allowJs --outDir dist"
   },
   "eslintConfig": {
     "extends": [
