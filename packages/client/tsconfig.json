@@ -22,10 +22,10 @@
     "jsx": "react-jsx"
   },
   "include": ["src"],
-  "exclude": ["src/App.test.tsx"],
+  "exclude": ["src/App.test.tsx", "node_modules"],
   "references": [
     {
-      "path": "../server"
+      "path": "../server/tsconfig.json"
     }
   ]
 }

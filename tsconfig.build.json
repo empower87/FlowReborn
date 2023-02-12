@@ -22,5 +22,6 @@
     {
       "path": "packages/client"
     }
-  ]
+  ],
+  "exclude": ["node_modules"]
 }
