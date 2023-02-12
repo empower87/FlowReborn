@@ -11,6 +11,7 @@
     "strictNullChecks": true,
     "baseUrl": ".",
     "rootDir": "src",
+    "outDir": "build",
     "typeRoots": ["./src/@types", "./node_modules/@types"],
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
