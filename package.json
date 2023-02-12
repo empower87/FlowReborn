@@ -5,12 +5,12 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "start": "npm install --prefix packages/server && npm start --prefix packages/server",
+    "start": "npm start --workspace=server",
     "server": "cd ./packages/server && npm i && npm start",
     "client": "npm start --workspace=packages/client",
     "client-build": "cd client && npm install && npm run build",
     "server-build": "cd server && npm install",
-    "build": "npm i --workspaces && npm i --prefix packages/client && npm run build --prefix packages/client",
+    "build": "npm i --workspaces && npm run build --workspace=client",
     "dev": "npm-run-all --parallel start client",
     "test": "echo \"Error: no test specified\" && exit 1",
     "render-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
