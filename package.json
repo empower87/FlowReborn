@@ -8,7 +8,7 @@
     "start": "npm run start -w ./packages/server",
     "server": "cd ./packages/server && npm i && npm start",
     "client": "npm start --workspace=packages/client",
-    "client-build": "cd client && npm install && npm run build",
+    "client-build": "npm run build --workspace=packages/client",
     "server-build": "cd server && npm install",
     "build-a": "npm i --workspaces && npm run build --workspace=client",
     "build": "npm run build --workspaces --if-present",
