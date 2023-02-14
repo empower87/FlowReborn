@@ -19,7 +19,7 @@ import { createContext, router } from "./utils/trpc/index.js"
 // const __filename = fileURLToPath(import.meta.url)
 
 // const __dirname = path.dirname(__filename)
-const __dirname = path.resolve()
+// const __dirname = path.resolve()
 // dotenv.config({ path: path.join(__dirname, "./.env") })
 dotenv.config()
 
