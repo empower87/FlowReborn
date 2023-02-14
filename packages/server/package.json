@@ -30,7 +30,7 @@
     "devthree": "node --loader ts-node/esm src/app.ts",
     "build:obs": "tsc",
     "tsc": "tsc",
-    "clean": "rimraf dist",
+    "clean": "npm install rimraf && rimraf dist",
     "build": "npm-run-all clean tsc",
     "dev:start": "npm-run-all build start",
     "dev": "nodemon --watch src -e ts,ejs --exec npm run dev:start"
