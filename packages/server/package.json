@@ -1,8 +1,8 @@
 {
   "name": "@flowreborn-packages/server",
   "version": "1.0.0",
-  "main": "dist/app.js",
-  "types": "dist/app.d.ts",
+  "main": "dist/src/app.js",
+  "types": "dist/src/app.d.ts",
   "private": true,
   "type": "module",
   "dependencies": {
@@ -24,12 +24,16 @@
     "zod": "^3.20.2"
   },
   "scripts": {
-    "start": "node dist/app.js",
-    "predev": "npm run build",
-    "dev": "npx tsc --watch & nodemon -q dist/app.js",
+    "start": "node dist/src/app.js",
+    "dev:obs": "npx tsc --watch & nodemon -q dist/app.js",
     "devtwo": "nodemon --watch \"src/**\" --ext \"ts,json\" --exec \"ts-node src/app.ts\"",
     "devthree": "node --loader ts-node/esm src/app.ts",
-    "build": "tsc"
+    "build:obs": "tsc",
+    "tsc": "tsc",
+    "clean": "rimraf dist",
+    "build": "npm-run-all clean tsc",
+    "dev:start": "npm-run-all build start",
+    "dev": "nodemon --watch src -e ts,ejs --exec npm run dev:start"
   },
   "eslintConfig": {
     "extends": [

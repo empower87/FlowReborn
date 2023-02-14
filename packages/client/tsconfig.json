@@ -21,7 +21,7 @@
     // "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src"],
+  "include": ["src", "src/assets/images/*.json"],
   "exclude": ["src/App.test.tsx", "node_modules"],
   "references": [
     {
