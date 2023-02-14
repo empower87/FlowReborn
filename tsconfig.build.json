@@ -12,7 +12,8 @@
     "composite": true,
     "moduleResolution": "node",
     "baseUrl": ".",
-    "preserveSymlinks": true
+    "preserveSymlinks": true,
+    "typeRoots": ["/node_modules/@types"]
   },
   "files": [],
   "references": [
