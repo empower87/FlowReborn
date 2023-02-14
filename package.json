@@ -28,7 +28,8 @@
   },
   "build": "npm run build --workspaces --if-present && npm run test && rm -rf dist && npm run lint && tsc -b",
   "workspaces": [
-    "packages/*"
+    "packages/server",
+    "packages/client"
   ],
   "homepage": "https://flow-reborn.onrender.com",
   "dependencies": {

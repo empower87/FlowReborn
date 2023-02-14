@@ -1,7 +1,7 @@
 import { inferReactQueryProcedureOptions } from "@trpc/react-query"
 import { inferRouterInputs, inferRouterOutputs } from "@trpc/server"
 
-import type { AppRouter } from "../../../server/src/routes/app.router"
+import type { AppRouter } from "@flowreborn-packages/server"
 
 type ReactQueryOptions = inferReactQueryProcedureOptions<AppRouter>
 type RouterInputs = inferRouterInputs<AppRouter>

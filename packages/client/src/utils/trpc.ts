@@ -1,4 +1,4 @@
-import type { AppRouter } from "../../../../node_modules/@flowreborn-packages/server/src/app"
+import type { AppRouter } from "@flowreborn-packages/server"
 // import type { AppRouter } from "@flowreborn-packages/server"
 import { createTRPCReact } from "@trpc/react-query"
 
