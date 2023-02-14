@@ -15,10 +15,10 @@ import { songsRouter } from "./routes/songs.router.js"
 import { userRouter } from "./routes/users.router.js"
 import { createContext, router } from "./utils/trpc/index.js"
 // const mongoose = require("mongoose")
-// import { fileURLToPath } from "url"
-// const __filename = fileURLToPath(import.meta.url)
+import { fileURLToPath } from "url"
+const __filename = fileURLToPath(import.meta.url)
 
-// const __dirname = path.dirname(__filename)
+const __dirname = path.dirname(__filename)
 // const __dirname = path.resolve()
 // dotenv.config({ path: path.join(__dirname, "./.env") })
 dotenv.config()
