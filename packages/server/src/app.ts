@@ -7,7 +7,6 @@ import mongoose from "mongoose"
 import path from "path"
 import customConfig from "./config/default.js"
 // import { appRouter } from "./routes/app.router"
-import { fileURLToPath } from "url"
 import { authRouter } from "./routes/auth.router.js"
 import { commentsRouter } from "./routes/comments.router.js"
 import { followsRouter } from "./routes/follows.router.js"
@@ -17,9 +16,9 @@ import { userRouter } from "./routes/users.router.js"
 import { createContext, router } from "./utils/trpc/index.js"
 // const mongoose = require("mongoose")
 
-const __filename = fileURLToPath(import.meta.url)
+// const __filename = fileURLToPath(import.meta.url)
 
-const __dirname = path.dirname(__filename)
+// const __dirname = path.dirname(__filename)
 dotenv.config({ path: path.join(__dirname, "./.env") })
 
 export const appRouter = router({
