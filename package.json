@@ -10,7 +10,8 @@
     "client": "npm start --workspace=packages/client",
     "client-build": "cd client && npm install && npm run build",
     "server-build": "cd server && npm install",
-    "build": "npm i --workspaces && npm run build --workspace=client",
+    "build-a": "npm i --workspaces && npm run build --workspace=client",
+    "build": "npm run build --workspaces --if-present",
     "dev": "npm-run-all --parallel start client",
     "test": "echo \"Error: no test specified\" && exit 1",
     "render-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
