@@ -23,9 +23,9 @@
     "preserveSymlinks": true,
     "composite": true,
     "baseUrl": ".",
-    "typeRoots": ["../../node_modules/@types"],
+    "typeRoots": ["../../node_modules/@types", "./node_modules/@types", "./@types"],
     "paths": {
-      "*": ["../../node_modules/*"]
+      "*": ["../../node_modules/*", "./node_modules/*"]
     }
   },
   "include": ["src", "src/**/*.ts", "src/**/*"],
