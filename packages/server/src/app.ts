@@ -19,6 +19,8 @@ import { fileURLToPath } from "url"
 const __filename = fileURLToPath(import.meta.url)
 
 const __dirname = path.dirname(__filename)
+console.log("directory-name", __dirname)
+console.log(path.join(__dirname, "../../../client/build", "index.html"))
 // const __dirname = path.resolve()
 // dotenv.config({ path: path.join(__dirname, "./.env") })
 dotenv.config()
@@ -54,10 +56,10 @@ mongoose
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
-app.use(express.static(path.join(__dirname, "../../client/build")))
+app.use(express.static(path.join(__dirname, "../../../client/build")))
 
 app.get("*", (req: Request, res: Response, next: NextFunction) => {
-  res.sendFile(path.join(__dirname, "../../client/build/index.html"))
+  res.sendFile(path.join(__dirname, "../../../client/build/index.html"))
 })
 
 const PORT = customConfig.port
