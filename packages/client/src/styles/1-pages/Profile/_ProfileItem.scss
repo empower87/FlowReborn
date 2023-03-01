@@ -138,9 +138,19 @@
       @include flexCenter(60%, 100%, 0px, flex-end, center, column);
 
       .profile-songs__header--shadow-outset {
-        @include flexCenter(93%, 96%, 3em 0.3em 0.3em 3em, center, flex-start, row);
+        @include flexCenter(93%, 96%, 3em 0.3em 0.3em 3em, flex-start, flex-start, row);
         box-shadow: 2px 2px 3px 0px #545454, -1px -1px 3px #d2d2d2;
         text-decoration: none;
+
+        .profile-songs__no-songs-title {
+          @include flexCenter(40%, 100%, 0, center, center, row);
+
+          .profile-songs__no-songs-title-text {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: $base-color;
+          }
+        }
 
         .profile-songs__user-photo {
           @include flexCenter(100%, 25%, 0, center, center, row);
@@ -168,7 +178,7 @@
         }
 
         .profile-songs__details {
-          @include flexCenter(100%, 62%, 0, center, center, column);
+          @include flexCenter(100%, 68%, 0, center, center, column);
 
           .profile-songs__title {
             @include flexCenter(42%, 100%, 0, center, flex-start, column);
@@ -255,8 +265,11 @@
           }
         }
         .profile-songs__action-btns {
-          @include flexCenter(100%, 13%, 0, flex-end, flex-start, row);
+          @include flexCenter(100%, 7%, 0, flex-end, flex-start, row);
 
+          .profile-songs__dot-menu {
+            @include flexCenter(60%, 100%, 0, center, center, row);
+          }
           .profile-songs__action-btns--bs-inset {
             @include flexCenter(100%, 91%, 0, space-between, center, column);
             padding: 2% 0%;
@@ -288,13 +301,11 @@
     .profile-songs__lyrics--container {
       @include flexCenter(40%, 100%, 0, flex-start, center, row);
 
-      .profile-songs__lyrics-edit {
+      .profile-songs__play-btn--container {
         @include flexCenter(100%, 15%, 0, center, center, row);
 
-        button {
-          &:hover {
-            background: $primary-color-300;
-          }
+        .profile-songs__play-btn--wrapper {
+          @include flexCenter(75%, 75%, 0, center, center, row);
         }
       }
     }

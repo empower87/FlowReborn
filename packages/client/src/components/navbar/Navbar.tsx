@@ -2,12 +2,12 @@ import { useLocation, useNavigate } from "react-router-dom"
 import { useAuth } from "../../context/AuthContext"
 import { ButtonTypes, Icon } from "../buttons/Icon/Icon"
 
-type Props = {
-  pageClass?: String
+type NavbarProps = {
+  variant?: "light-variant" | "mid-variant"
   isVisible?: Boolean
 }
 
-export default function Navbar({ pageClass, isVisible }: Props) {
+export default function Navbar({ variant, isVisible }: NavbarProps) {
   const { user } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
@@ -18,7 +18,7 @@ export default function Navbar({ pageClass, isVisible }: Props) {
   }
 
   return (
-    <div className={`Navbar ${pageClass}`}>
+    <div className={`Navbar ${variant}`} style={{ visibility: isVisible === false ? "hidden" : "visible" }}>
       <div className="navbar__upper">
         <div className="navbar__upper--bs-outset">
           <div className="navbar__upper--bs-inset">
@@ -34,6 +34,7 @@ export default function Navbar({ pageClass, isVisible }: Props) {
           </div>
         </div>
       </div>
+
       <div className="navbar__lower">
         <NavbarButtonTitle title="Home" />
         <NavbarButtonTitle title="Record" />

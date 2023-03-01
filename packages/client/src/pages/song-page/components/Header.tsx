@@ -1,14 +1,15 @@
 import { useNavigate } from "react-router-dom"
 import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
 import MarqueeText from "src/components/text/MarqueeText"
-import { UserPhoto } from "src/components/user-photo/UserPhoto"
-import useFormatDate from "src/hooks/useFormatDate"
-// import { ISong } from "../../../../../server/src/models"
-import { ISongPopulatedUser as ISong } from "src/types/ServerModelTypes"
+import { ISongPopulatedUserAndComments as ISong } from "src/types/ServerModelTypes"
 
-type HeaderProps = {
+type Props = {
   song: ISong
   songs: ISong[]
+}
+
+interface HeaderProps extends Props {
+  isVideoFullscreen: boolean
 }
 
 const ExitButton = () => {
@@ -20,26 +21,14 @@ const ExitButton = () => {
     <div className="songscreen__exit--container">
       <button className="songscreen__exit-btn" onClick={() => onClose()}>
         <div className="songscreen__exit-btn--shadow-inset">
-          <Icon type={ButtonTypes.Back} options={{ color: "Primary" }} />
+          <Icon type={ButtonTypes.Back} options={{ color: "Primary", size: 70 }} />
         </div>
       </button>
     </div>
   )
 }
 
-const Photo = ({ photoUrl, username }: { photoUrl: string | undefined; username: string }) => {
-  return (
-    <div className="songscreen__photo--container">
-      <div className="songscreen__photo--shadow-inset">
-        <div className="songscreen__photo--shadow-outset">
-          <UserPhoto photoUrl={photoUrl} username={username} />
-        </div>
-      </div>
-    </div>
-  )
-}
-
-const SongTitle = ({ song, songs }: HeaderProps) => {
+const SongTitle = ({ song, songs }: Props) => {
   const getSongIndex = (array: ISong[], current: string): number => {
     let getIndex: number = 0
     array.forEach((each, index) => {
@@ -51,54 +40,27 @@ const SongTitle = ({ song, songs }: HeaderProps) => {
   }
 
   return (
-    <div className="songscreen__song-title--shadow-inset">
-      <MarqueeText
-        text={song?.title}
-        wrapperStyles={["75%", "77%", "0.2em 0.2em 0.2em 2em"]}
-        textStyles={["0.95rem", "white", "0.5em"]}
-      />
-      <p className="songscreen__song-index">
-        <span>{getSongIndex(songs, song._id)}</span>
-        of {songs?.length}
-      </p>
-    </div>
-  )
-}
-
-const SongInfo = ({ song }: Pick<HeaderProps, "song">) => {
-  const { formatDate } = useFormatDate()
-  return (
-    <div className="songscreen__song-data">
-      <p>{song?.caption ? song?.caption : "No caption for this song"}</p>
-      <p>
-        by: <span> {song?.user?.username}</span>
-      </p>
-      <p>on: {formatDate(new Date(song?.createdOn), "MMMM_Dth_YYYY")}</p>
-    </div>
-  )
-}
-
-export default function Header({ song, songs }: HeaderProps) {
-  return (
-    <div className="songscreen__header--container">
-      <div className="songscreen__header--shadow-outset">
-        <div className="songscreen__header--shadow-inset">
-          <ExitButton />
-          <div className="songscreen__title--container">
-            <div className="songscreen__title--shadow-inset">
-              <Photo photoUrl={song.user?.picture} username={song.user?.username} />
-
-              <div className="songscreen__song-data--container">
-                <div className="songscreen__song-title--container">
-                  <SongTitle song={song} songs={songs} />
-                </div>
-
-                <SongInfo song={song} />
-              </div>
-            </div>
-          </div>
-        </div>
+    <div className="songscreen__title--container">
+      <div className="songscreen__title">
+        <MarqueeText
+          text={`${song.user.username}'s Songs`}
+          wrapperStyles={["75%", "77%", "0.2em 0.2em 0.2em 2em"]}
+          textStyles={["0.85rem", "white", "0.5em"]}
+        />
+        <p className="songscreen__song-index">
+          <span>{getSongIndex(songs, song._id)}</span>
+          of {songs?.length}
+        </p>
       </div>
+    </div>
+  )
+}
+
+export default function Header({ song, songs, isVideoFullscreen }: HeaderProps) {
+  return (
+    <div className="songscreen__header--container" style={{ visibility: isVideoFullscreen ? "hidden" : "visible" }}>
+      <ExitButton />
+      <SongTitle song={song} songs={songs} />
     </div>
   )
 }

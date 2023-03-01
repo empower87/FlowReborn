@@ -3,16 +3,12 @@ import { inferRouterInputs, inferRouterOutputs } from "@trpc/server"
 import { useCallback, useEffect, useState } from "react"
 import { trpc } from "src/utils/trpc"
 // import { ISong } from "../../../../../server/src/models"
-import { ISongPopulatedUser as ISong } from "src/types/ServerModelTypes"
+import { ISongPopulatedUserAndComments as ISong } from "src/types/ServerModelTypes"
 import type { AppRouter } from "../../../../../server/src/routes/app.router"
 
 type ReactQueryOptions = inferReactQueryProcedureOptions<AppRouter>
 type RouterInputs = inferRouterInputs<AppRouter>
 type RouterOutput = inferRouterOutputs<AppRouter>
-
-type GetSongOptions = ReactQueryOptions["songs"]["getSong"]
-type GetSongInput = RouterInputs["songs"]["getSong"]
-type GetSongOutput = RouterOutput["songs"]["getSong"]
 
 const useSongPage = (id: string | undefined) => {
   const songId = id ? id : ""
@@ -20,7 +16,7 @@ const useSongPage = (id: string | undefined) => {
     data: song,
     isLoading: songIsLoading,
     isError: songIsError,
-  } = trpc.songs.getSongPopulatedUser.useQuery(
+  } = trpc.songs.getSongPopulated.useQuery(
     { _id: songId },
     {
       enabled: !!songId,
@@ -46,7 +42,7 @@ const useSongPage = (id: string | undefined) => {
     data: songs,
     isLoading: songsIsLoading,
     isError: songsIsError,
-  } = trpc.songs.usersSongs.useQuery(
+  } = trpc.songs.usersSongsWithComments.useQuery(
     { _id: userId },
     {
       enabled: !!userId,

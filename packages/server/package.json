@@ -32,7 +32,9 @@
     "tsc": "tsc",
     "clean": "npm install rimraf && rimraf dist",
     "build": "npm-run-all clean tsc",
-    "dev:start": "npm-run-all build start",
+    "clean:dev": "rimraf dist",
+    "build:dev": "npm-run-all clean:dev tsc",
+    "dev:start": "npm-run-all build:dev start",
     "dev": "nodemon --watch src -e ts,ejs --exec npm run dev:start"
   },
   "eslintConfig": {

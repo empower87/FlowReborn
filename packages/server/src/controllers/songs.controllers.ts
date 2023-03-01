@@ -80,10 +80,25 @@ export const getUsersSongsHandler = async ({ ctx, input }: ContextWithInput<Song
   const userSongs: SongSchemaPopulatedUserType[] | null = await Song.find({ user: input._id }).populate<{
     user: IUser
   }>("user")
-  // .populate<{ comments: ISong["comments"] }>({
+  // .populate<{ comments: CommentSchemaPopulatedUserType[] }>({
   //   path: "comments",
   //   populate: "user",
   // })
+  if (!userSongs) throw TRPCError("BAD_REQUEST", "user not found")
+  return userSongs
+}
+
+export const getUsersSongsWithCommentsHandler = async ({ ctx, input }: ContextWithInput<SongInputType>) => {
+  if (!ctx.user) throw TRPCError("UNAUTHORIZED", "user is not authorized ")
+
+  const userSongs: SongSchemaPopulatedUserAndCommentsType[] | null = await Song.find({ user: input._id })
+    .populate<{
+      user: IUser
+    }>("user")
+    .populate<{ comments: CommentSchemaPopulatedUserType[] }>({
+      path: "comments",
+      populate: "user",
+    })
   if (!userSongs) throw TRPCError("BAD_REQUEST", "user not found")
   return userSongs
 }

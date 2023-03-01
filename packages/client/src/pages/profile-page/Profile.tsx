@@ -17,7 +17,7 @@ function Profile() {
         <UserData user={thisUser} />
       </div>
       <SongFeeds user={thisUser} />
-      <Navbar pageClass={"NavBarProfile"} />
+      <Navbar variant="mid-variant" />
     </div>
   )
 }

@@ -17,6 +17,7 @@
     .side-btn-menu__menu-list {
       @include flexCenter(98%, 88%, 3em, flex-start, center, column);
       position: relative;
+      overflow-y: scroll;
 
       .side-btn-menu__menu-item {
         @include flexCenter(60px, 100%, 3em, center, center, column);
@@ -47,6 +48,31 @@
           font-size: 0.75rem;
           color: $base-color;
         }
+      }
+    }
+  }
+}
+
+.resize-bar__title--shadow-outset {
+  @include flexCenter(68%, 97%, 10em, flex-start, center, row);
+  box-shadow: 2px 2px 3px #414141, -1px -1px 3px #ffffff;
+  position: relative;
+
+  .resize-bar__header-toggle-fullscreen {
+    @include flexCenter(14px, 70px, 0, center, center, row);
+    position: absolute;
+    top: -2px;
+    left: 40%;
+
+    .resize-bar__header-toggle-fullscreen--bs-inset {
+      @include flexCenter(80%, 100%, 0em 0em 1em 1em, center, center, row);
+      box-shadow: inset 1px 1px 2px #353434, inset -1px -1px 2px #ffffff;
+      background: #a4a4a4;
+
+      .resize-bar__header-toggle-fullscreen-btn {
+        @include flexCenter(30%, 80%, 10em, center, center, row);
+        box-shadow: 1px 1px 2px #414141, -1px -1px 2px #ffffff;
+        background: #b9b9b9;
       }
     }
   }

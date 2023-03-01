@@ -27,7 +27,7 @@ export const FeedToggleButton = ({ feed, selectedFeed, onClick }: FeedButtonProp
 
 export const HomeHeader = ({ isVideoFullscreen, children }: HomeHeaderProps) => {
   return (
-    <div className={`section-1a_toggle-feed`} style={{ visibility: isVideoFullscreen ? "hidden" : "visible" }}>
+    <div className="section-1a_toggle-feed" style={{ visibility: isVideoFullscreen ? "hidden" : "visible" }}>
       <div className="toggle-feed-container">{children}</div>
     </div>
   )

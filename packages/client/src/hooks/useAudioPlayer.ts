@@ -23,6 +23,11 @@ export default function useAudioPlayer({ src, duration, bgColor, video }: UseAud
   const srcRef = useRef<any>(null)
 
   useEffect(() => {
+    setIsPlaying(false)
+    srcRef.current = null
+  }, [src])
+
+  useEffect(() => {
     if (video) {
       srcRef.current = videoElement
     } else {
@@ -40,6 +45,10 @@ export default function useAudioPlayer({ src, duration, bgColor, video }: UseAud
         clearInterval(intervalRef.current)
         clearInterval(secondsRef.current)
       }
+      srcRef?.current?.pause()
+    }
+    return () => {
+      setIsPlaying(false)
       srcRef?.current?.pause()
     }
   }, [isPlaying, srcRef.current])

@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react"
-// import { ISong, IUser } from "../../../../../../../server/src/models"
 import { ISongPopulatedUser as ISong, IUser } from "src/types/ServerModelTypes"
-import ConfirmDeleteSong from "./DeleteSongDisplay"
 import ItemBody, { LyricsBox } from "./ItemBody"
 
 type SongItemProps = {
@@ -42,8 +40,6 @@ export default function SongItem({ song, profileUser }: SongItemProps) {
     >
       {lyricsExpanded ? (
         <LyricsBox buttonType={"Close"} lyrics={song.lyrics} isMe={isMe} onClick={() => setLyricsExpanded(false)} />
-      ) : deleteCheck ? (
-        <ConfirmDeleteSong song={song} />
       ) : (
         <ItemBody song={song} isMe={isMe}>
           <LyricsBox buttonType={"Expand"} lyrics={song.lyrics} isMe={isMe} onClick={() => setLyricsExpanded(true)} />

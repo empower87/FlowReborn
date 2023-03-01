@@ -4,7 +4,7 @@ import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
 import { IUser } from "src/types/ServerModelTypes"
 import useSongsFeed from "../../hooks/useSongFeeds"
 import SongItem from "./SongItem/Item"
-import NoSongsItem from "./SongItem/NoSongsItem"
+import { BlankItem } from "./SongItem/ItemLayout"
 
 type FeedType = "Songs" | "Follow" | "Like"
 
@@ -49,9 +49,12 @@ export default function SongFeeds({ user }: { user: IUser }) {
         <div className="section-2a_songs-container">
           <ul className="profile-songs__list">
             {isLoading ? (
-              <p>loading...</p>
+              <>
+                <BlankItem isLoading={isLoading} />
+                <BlankItem isLoading={isLoading} />
+              </>
             ) : state.displayedSongs.length === 0 ? (
-              <NoSongsItem />
+              <BlankItem />
             ) : (
               state.displayedSongs.map((song, index) => {
                 return <SongItem key={`${song._id}_${index}`} song={song} profileUser={user} />

@@ -1,0 +1,88 @@
+.dot-menu {
+  @include flexCenter(100%, 100%, 0, center, center, column);
+
+  .dot-menu__container {
+    @include flexCenter(35px, 15px, 0.3em, space-evenly, center, column);
+    box-shadow: inset 2px 2px 3px #545454, inset -2px -2px 2px #969595;
+
+    .dot-menu__dot {
+      @include flexCenter(7px, 7px, 1em, center, center, column);
+      box-shadow: 1px 2px 3px #3f3f3f, -1px -1px 2px #b0b0b0;
+    }
+  }
+}
+
+.dot-menu__modal-background {
+  @include flexCenter(100%, 100%, 0, center, center, column);
+  position: absolute;
+  background: #0000008c;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+
+  .dot-menu__modal {
+    @include flexCenter(auto, 100%, 1em 1em 0em 0em, center, center, column);
+    position: absolute;
+    background: linear-gradient(327deg, #959595 0%, #cdcdcd 100%);
+    bottom: 0;
+    padding: 1% 0%;
+
+    .dot-menu__modal--bs-inset {
+      @include flexCenter(auto, 98%, 1em, flex-start, center, column);
+      box-shadow: inset 2px 2px 3px #606060, inset -2px -2px 2px #b0b0b0;
+      // padding: 1% 0%;
+
+      .dot-menu__modal-header {
+        @include flexCenter(20px, 100%, 0, flex-end, center, column);
+
+        .dot-menu__modal-header--bs-outset {
+          @include flexCenter(60%, 96%, 2em, center, center, column);
+          box-shadow: 2px 2px 3px #545454, -1px -1px 2px #ffffff;
+        }
+      }
+
+      .dot-menu__modal-body {
+        @include flexCenter(auto, 100%, 0, center, center, column);
+        padding: 1% 0%;
+
+        .dot-menu__modal-list {
+          @include flexCenter(auto, 97%, 0.5em 0.5em 1em 1em, center, center, column);
+          box-shadow: inset 2px 2px 3px #545454, inset -2px -2px 2px #969595;
+          padding: 0% 0% 1% 0%;
+
+          .dot-menu__modal-item {
+            @include flexCenter(35px, 100%, 0, center, flex-end, row);
+            cursor: pointer;
+
+            .dot-menu__modal-item--bs-inset {
+              @include flexCenter(85%, 96%, 2em, center, center, row);
+              box-shadow: 2px 2px 3px #545454, -1px -1px 2px #ececec;
+
+              .dot-menu__modal-item-icon {
+                @include flexCenter(100%, 10%, 0, center, center, row);
+
+                .dot-menu__modal-item-icon--bs-inset {
+                  @include flexCenter(85%, 85%, 2em, center, center, row);
+                  box-shadow: inset 1px 1px 2px #595959, inset -1px -1px 2px #ffffff;
+                }
+              }
+              .dot-menu__modal-item-title {
+                @include flexCenter(100%, 90%, 0, flex-start, center, row);
+
+                p {
+                  font-size: 0.9rem;
+                  color: $base-color;
+                  margin-left: 1em;
+                }
+              }
+              // TODO: add better hover animation
+              &:hover {
+                background: $primary-color-200;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

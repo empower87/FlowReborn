@@ -1,13 +1,14 @@
-import { ReactNode, useCallback, useLayoutEffect, useRef, useState } from "react"
+import { ReactNode, useCallback, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
 import { PlayButton } from "src/components/buttons/PlayButton"
 import { BtnColorsEnum, RoundButton } from "src/components/buttons/RoundButton/RoundButton"
+import DotMenu, { DotMenuModalItem } from "src/components/modals/Dots/DotMenu"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import useFormatDate from "src/hooks/useFormatDate"
-import { fourDigitNumberHandler } from "src/utils/styleCalculators"
-// import { ISong } from "../../../../../../../server/src/models/Song"
 import { ISongPopulatedUser as ISong } from "src/types/ServerModelTypes"
+import { fourDigitNumberHandler } from "src/utils/styleCalculators"
+import { HeaderLayout, LyricsBoxLayout, SongItemBodyLayout } from "./ItemLayout"
 
 type Props = {
   song: ISong
@@ -80,48 +81,22 @@ const Details = ({ song, children }: Pick<Props, "song" | "children">) => (
   </div>
 )
 
-const PlayButtonWrapper = ({ audio, isMe }: Pick<Props, "audio" | "isMe">) => {
-  const [isPlaying, setIsPlaying] = useState<boolean>(false)
-  const deleteRef = useRef<HTMLDivElement>(null)
-  const playRef = useRef<HTMLDivElement>(null)
-
-  useLayoutEffect(() => {
-    if (!deleteRef.current || !playRef.current) return
-    const deleteHeight = deleteRef.current.offsetHeight
-    const playHeight = playRef.current.offsetHeight
-    deleteRef.current.style.width = `${deleteHeight}px`
-    playRef.current.style.width = `${playHeight}px`
-  }, [])
-
+const DotMenuWrapper = ({
+  onClick,
+}: {
+  onClick: (location: "EditLyrics" | "Delete" | "SongPage" | "Profile") => void
+}) => {
   return (
     <div className="profile-songs__action-btns">
-      <div className="profile-songs__action-btns--bs-inset">
-        {isMe && (
-          <div className="profile-songs__action-btn--container Delete" ref={deleteRef}>
-            <div className="profile-songs__action-btn Delete">
-              <RoundButton
-                type={ButtonTypes.Delete}
-                btnOptions={{ bgColor: BtnColorsEnum.Initial }}
-                iconOptions={{ color: "White" }}
-              />
-            </div>
-          </div>
-        )}
-        <div className="profile-songs__action-btn--container Play" ref={playRef}>
-          <div className="profile-songs__action-btn Play">
-            <PlayButton isPlaying={isPlaying} setIsPlaying={setIsPlaying} audio={audio} />
-          </div>
-        </div>
+      <div className="profile-songs__dot-menu">
+        <DotMenu>
+          <DotMenuModalItem icon="Delete" title="Delete" size={80} onClick={() => onClick("Delete")} />
+          <DotMenuModalItem icon="Edit" title="Edit Lyrics" size={70} onClick={() => onClick("EditLyrics")} />
+        </DotMenu>
       </div>
     </div>
   )
 }
-
-const Header = ({ children }: Pick<Props, "children">) => (
-  <div className="profile-songs__header">
-    <div className="profile-songs__header--shadow-outset">{children}</div>
-  </div>
-)
 
 const LyricItem = ({ line, index }: { line: string[]; index: number }) => (
   <li className="profile-songs__lyrics-line" key={`${line}lyrics${index}`}>
@@ -143,27 +118,24 @@ export const LyricsBox = ({
   onClick,
 }: Pick<Props, "buttonType" | "lyrics" | "isMe" | "onClick">) => {
   return (
-    <div
-      className={`profile-songs__lyrics ${buttonType !== "Expand" ? "Expanded" : ""}`}
-      style={buttonType !== "Expand" ? { width: "97%" } : { width: isMe ? "85%" : "stretch" }}
-    >
-      <div className="profile-songs__lyrics--bs-outset">
-        <div className="profile-songs__lyrics--wrapper">
-          <div className="profile-songs__lyrics-title">
-            <p className="profile-songs__title-text">Lyrics</p>
-          </div>
-
-          <div className="profile-songs__lyrics-text">
-            <ul className="profile-songs__lyrics-list">
-              {lyrics.map((lyric, index) => (
-                <LyricItem key={`${lyric}_${index}`} line={lyric} index={index} />
-              ))}
-            </ul>
-          </div>
+    <LyricsBoxLayout buttonType={buttonType} isMe={isMe}>
+      <div className="profile-songs__lyrics--wrapper">
+        <div className="profile-songs__lyrics-title">
+          <p className="profile-songs__title-text">Lyrics</p>
         </div>
 
-        <div className="profile-songs__lyrics-expand">
-          <div className="profile-songs__lyrics-expand-btn">
+        <div className="profile-songs__lyrics-text">
+          <ul className="profile-songs__lyrics-list">
+            {lyrics.map((lyric, index) => (
+              <LyricItem key={`${lyric}_${index}`} line={lyric} index={index} />
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div className="profile-songs__lyrics-expand">
+        <div className="profile-songs__lyrics-expand-btn">
+          {lyrics.length > 2 ? (
             <RoundButton
               type={ButtonTypes[buttonType]}
               btnOptions={{
@@ -175,8 +147,20 @@ export const LyricsBox = ({
               iconOptions={{ color: "Primary", size: 80 }}
               onClick={() => onClick()}
             />
-          </div>
+          ) : null}
         </div>
+      </div>
+    </LyricsBoxLayout>
+  )
+}
+
+const PlayButtonContainer = ({ audio }: { audio: string }) => {
+  const [isPlaying, setIsPlaying] = useState<boolean>(false)
+
+  return (
+    <div className="profile-songs__play-btn--container">
+      <div className="profile-songs__play-btn--wrapper">
+        <PlayButton isPlaying={isPlaying} setIsPlaying={setIsPlaying} audio={audio} />
       </div>
     </div>
   )
@@ -185,7 +169,7 @@ export const LyricsBox = ({
 export default function ItemBody({ song, isMe, children }: Pick<Props, "song" | "isMe" | "children">) {
   const navigate = useNavigate()
 
-  const navigateCallback = useCallback((location: "Profile" | "SongPage" | "EditLyrics") => {
+  const onClickHandler = useCallback((location: "Profile" | "SongPage" | "EditLyrics" | "Delete") => {
     switch (location) {
       case "Profile":
         navigate(`/profile/${song.user._id}`)
@@ -196,36 +180,33 @@ export default function ItemBody({ song, isMe, children }: Pick<Props, "song" | 
       case "EditLyrics":
         navigate(`/editLyrics`, { state: { currentSong: song } })
         break
+      case "Delete":
+        // no logic yet
+        break
       default:
         return
     }
   }, [])
 
   return (
-    <div className="profile-songs__body">
-      <Header>
-        <Photo onClick={() => navigateCallback("Profile")}>
-          <UserPhoto photoUrl={song.user.picture} username={song.user.username} />
-        </Photo>
-        <Details song={song}>
-          <DetailsTitle song={song} onClick={() => navigateCallback("SongPage")} />
-        </Details>
-        <PlayButtonWrapper audio={song.audio} isMe={isMe} />
-      </Header>
-
-      <div className="profile-songs__lyrics--container">
-        {children}
-        {isMe && (
-          <div className="profile-songs__lyrics-edit">
-            <RoundButton
-              type={ButtonTypes.Edit}
-              btnOptions={{ offset: 11, bgColor: BtnColorsEnum.Primary, alignment: ["flex-end", 0.4] }}
-              iconOptions={{ color: "White", size: 75 }}
-              onClick={() => navigateCallback("EditLyrics")}
-            />
-          </div>
-        )}
-      </div>
-    </div>
+    <SongItemBodyLayout
+      header={
+        <HeaderLayout>
+          <Photo onClick={() => onClickHandler("Profile")}>
+            <UserPhoto photoUrl={song.user.picture} username={song.user.username} />
+          </Photo>
+          <Details song={song}>
+            <DetailsTitle song={song} onClick={() => onClickHandler("SongPage")} />
+          </Details>
+          {isMe && <DotMenuWrapper onClick={onClickHandler} />}
+        </HeaderLayout>
+      }
+      lyrics={
+        <div className="profile-songs__lyrics--container">
+          {children}
+          <PlayButtonContainer audio={song.audio} />
+        </div>
+      }
+    />
   )
 }

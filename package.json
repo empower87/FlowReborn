@@ -13,6 +13,8 @@
     "build-a": "npm i --workspaces && npm run build --workspace=client",
     "build": "npm run build --workspaces --if-present",
     "dev": "npm-run-all --parallel start client",
+    "server:dev": "npm run dev --workspace=packages/server",
+    "client:dev": "npm start --workspace=packages/client",
     "test": "echo \"Error: no test specified\" && exit 1",
     "render-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },

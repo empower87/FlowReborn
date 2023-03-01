@@ -54,7 +54,7 @@ function Search() {
           </LayoutTwo>
         </div>
       </div>
-      <Navbar />
+      <Navbar variant="light-variant" />
     </div>
   )
 }

@@ -5,7 +5,7 @@ type SideButtonMenuProps = {
   children: ReactNode
 }
 type SideButtonProps = {
-  type: "Opacity" | "Songs" | "AddVideo" | "NoVideo" | "Settings" | "Like" | "Comment" | "Follow"
+  type: "Opacity" | "Songs" | "AddVideo" | "NoVideo" | "Settings" | "Like" | "Comment" | "Follow" | "Landscape" | "Portrait"
   text: string
   hasUser: boolean
   onClick: React.MouseEventHandler<HTMLButtonElement>

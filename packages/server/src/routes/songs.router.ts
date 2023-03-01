@@ -9,6 +9,7 @@ import {
   getUsersFollowersSongs,
   getUsersLikedSongs,
   getUsersSongsHandler,
+  getUsersSongsWithCommentsHandler,
   searchHandler,
   updateSongHandler,
 } from "../controllers/songs.controllers.js"
@@ -52,6 +53,10 @@ export const songsRouter = router({
     .input(SongInputSchema)
     // .output(z.array(SongSchemaPopulatedUser))
     .query(({ ctx, input }) => getUsersSongsHandler({ ctx, input })),
+  usersSongsWithComments: protectedProcedure
+    .input(SongInputSchema)
+    // .output(z.array(SongSchemaPopulatedUser))
+    .query(({ ctx, input }) => getUsersSongsWithCommentsHandler({ ctx, input })),
   allSongs: publicProcedure
     // .output(z.array(SongSchemaPopulatedUserAndComments))
     .query(() => getAllSongsHandler()),
