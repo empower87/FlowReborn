@@ -1,6 +1,5 @@
 import { CSSProperties, Dispatch, SetStateAction, useEffect, useLayoutEffect, useRef, useState } from "react"
 import AudioSlider from "src/components/audio/AudioSlider"
-import { PlayButton } from "src/components/buttons/PlayButton"
 import { SideButton, SideButtonMenu } from "src/components/ui/SideButtonMenu"
 import CommentMenu from "src/features/socialize/comments/components/CommentMenu"
 import useFollow from "src/features/socialize/follow/useFollow"
@@ -99,11 +98,11 @@ const MediaPlayer = ({ song, autoPlay }: { song: ISong; autoPlay: boolean }) => 
         </div>
         <div className="audio-player__playback-text End">{end}</div>
       </div>
-      <div className="audio-player__play">
+      {/* <div className="audio-player__play">
         <div className="audio-player__play-btn">
           <PlayButton isPlaying={isPlaying} setIsPlaying={setIsPlaying} audio={song.audio} />
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }
@@ -129,8 +128,6 @@ const SongPostUIOverlay = ({
         }
       }}
     >
-      <MediaPlayer song={song} autoPlay={isIntersecting} />
-
       <SideButtonMenu>
         <LikeButton data={song} />
         <SideButton
@@ -160,7 +157,10 @@ const SongPostUIOverlay = ({
       </SideButtonMenu>
 
       <LyricsModal lyrics={song.lyrics} isOpen={toggleLyrics} />
-      <SongDetails song={song} />
+      <div className="song-post__details--wrapper">
+        <SongDetails song={song} />
+        <MediaPlayer song={song} autoPlay={isIntersecting} />
+      </div>
     </div>
   )
 }

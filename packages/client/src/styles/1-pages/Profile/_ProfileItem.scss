@@ -317,7 +317,7 @@
   @include flexCenter(100%, 85%, 0, center, center, row);
 
   .profile-songs__lyrics--bs-outset {
-    @include flexCenter(83%, 96%, 0.5em 3em 3em 0.5em, flex-start, center, row);
+    @include flexCenter(80%, 96%, 0.5em 3em 3em 0.5em, flex-start, center, row);
     box-shadow: 2px 2px 3px 0px #545454, -1px -1px 3px #d2d2d2;
 
     .profile-songs__lyrics--wrapper {
