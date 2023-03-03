@@ -1,4 +1,4 @@
-import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
+import { Icon } from "src/components/buttons/Icon/Icon"
 import { SettingsDispatcher, SettingsState } from "../../hooks/useSuggestionSettings"
 import SettingsModal from "./SettingsModal/SettingsModal"
 
@@ -18,7 +18,7 @@ const SideButton = ({ type, isPressed, onClick, size }: SideButtonProps) => {
   return (
     <li className="recording-booth__side-menu-item">
       <button className={`recording-booth__side-menu-btn ${isPressed ? "Pressed" : ""}`} onClick={onClick}>
-        <Icon type={ButtonTypes[type]} options={{ color: "Primary", size: size }} />
+        <Icon type={type} options={{ color: "Primary", size: size }} />
       </button>
     </li>
   )

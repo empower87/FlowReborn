@@ -1,6 +1,6 @@
 import { MouseEventHandler, ReactNode, useLayoutEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
-import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
+import { Icon } from "src/components/buttons/Icon/Icon"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import useFormatDate from "src/hooks/useFormatDate"
 // import { IComment } from "../../../../../../../server/src/models/index"
@@ -61,7 +61,7 @@ const Title = ({ username, isAuthor, onClick }: Omit<HeaderProps, "picture">) =>
       <p className="comments__user-title">{username}</p>
       {isAuthor ? (
         <div className="comments__user-title-icon">
-          <Icon type={ButtonTypes.Check} options={{ color: "White" }} />
+          <Icon type="Check" options={{ color: "White" }} />
         </div>
       ) : null}
     </button>

@@ -1,5 +1,5 @@
 import { Dispatch, ReactNode, SetStateAction, useState } from "react"
-import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
+import { Icon } from "src/components/buttons/Icon/Icon"
 import { SelectMenu } from "src/components/modals/SelectMenu/SelectMenu"
 import { ISongTake } from "src/features/recording-booth/utils/types"
 
@@ -40,7 +40,7 @@ const Dropdown = ({ takes, take, setTake, children }: DropdownProps) => {
               <div className="record__select-dropdown">
                 <button className="record__select-dropdown-btn" type="button" onClick={handleShowMenu}>
                   <div className="record__select-take-number">{take._id}</div>
-                  <Icon type={showSelectSongMenu ? ButtonTypes.Up : ButtonTypes.Down} options={{ color: "Primary" }} />
+                  <Icon type={showSelectSongMenu ? "Up" : "Down"} options={{ color: "Primary" }} />
                 </button>
               </div>
             )}

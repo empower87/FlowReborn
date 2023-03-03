@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useRef } from "react"
 import { closeIcon } from "../../assets/images/_icons"
-import { ButtonTypes, Icon } from "./Icon/Icon"
+import { Icon } from "./Icon/Icon"
 
 type Props = {
   inset: boolean
@@ -117,7 +117,7 @@ export const ClearTextButton = ({
           onClick={onClick}
           tabIndex={-1}
         >
-          <Icon type={ButtonTypes.Close} options={{ color: "Primary" }} />
+          <Icon type="Close" options={{ color: "Primary" }} />
           {/* <img className="button-icons" src={closeIcon} alt="clear text button" /> */}
         </button>
       </div>

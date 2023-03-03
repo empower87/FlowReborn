@@ -1,4 +1,4 @@
-import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
+import { Icon } from "src/components/buttons/Icon/Icon"
 import { SettingsProps } from "../SideSettingsMenu"
 import { ModalHeader } from "./SelectBeat"
 
@@ -18,10 +18,7 @@ const SuggestionToggleButton = ({
           <p className="suggestions__settings-item-btn-text">{type}</p>
         </div>
         <div className="suggestions__settings-item-btn-icon">
-          <Icon
-            type={isSelected ? ButtonTypes.Close : ButtonTypes.Plus}
-            options={{ color: "White", size: 70, margin: "0% 10% 0% 0%" }}
-          />
+          <Icon type={isSelected ? "Close" : "Plus"} options={{ color: "White", size: 70, margin: "0% 10% 0% 0%" }} />
         </div>
       </button>
     </li>

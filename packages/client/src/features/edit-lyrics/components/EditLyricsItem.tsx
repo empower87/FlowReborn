@@ -1,6 +1,6 @@
 import { Dispatch, ReactNode, SetStateAction } from "react"
 import { moveIcon } from "src/assets/images/_icons"
-import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
+import { Icon } from "src/components/buttons/Icon/Icon"
 
 type ButtonProps = {
   type: "Edit" | "Save" | "Delete"
@@ -11,7 +11,7 @@ type ButtonProps = {
 const Button = ({ type, onClick, size }: ButtonProps) => {
   return (
     <button className={`buttons_shadow-div-outset ${type}`} onClick={() => onClick()}>
-      <Icon type={ButtonTypes[type]} options={{ color: type === "Delete" ? "Primary" : "White", size: size }} />
+      <Icon type={type} options={{ color: type === "Delete" ? "Primary" : "White", size: size }} />
     </button>
   )
 }

@@ -1,6 +1,5 @@
 import { ReactNode, useLayoutEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { ButtonTypes } from "src/components/buttons/Icon/Icon"
 import { BtnColorsEnum, RoundButton } from "src/components/buttons/RoundButton/RoundButton"
 import ContinueModal from "src/components/modals/ContinueModal"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
@@ -33,7 +32,7 @@ export const BackButton = ({ isDirty }: { isDirty: boolean }) => {
       />
       <div className="edit-profile__go-back--wrapper">
         <RoundButton
-          type={ButtonTypes.Back}
+          type="Back"
           btnOptions={{
             inset: [true, "4px"],
             offset: 13,

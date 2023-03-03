@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom"
-import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
+import { Icon } from "src/components/buttons/Icon/Icon"
 import MarqueeText from "src/components/text/MarqueeText"
 import { ISongPopulatedUserAndComments as ISong } from "src/types/ServerModelTypes"
 
@@ -21,7 +21,7 @@ const ExitButton = () => {
     <div className="songscreen__exit--container">
       <button className="songscreen__exit-btn" onClick={() => onClose()}>
         <div className="songscreen__exit-btn--shadow-inset">
-          <Icon type={ButtonTypes.Back} options={{ color: "Primary", size: 70 }} />
+          <Icon type="Back" options={{ color: "Primary", size: 70 }} />
         </div>
       </button>
     </div>

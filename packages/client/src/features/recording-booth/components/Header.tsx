@@ -1,5 +1,5 @@
 import { MouseEventHandler, ReactNode } from "react"
-import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
+import { Icon } from "src/components/buttons/Icon/Icon"
 
 type TitleProps = {
   isRecording: boolean
@@ -21,7 +21,7 @@ interface HeaderButtonProps extends Pick<HeaderProps, "type" | "onClose"> {
 const HeaderButton = ({ type, size, onClose }: HeaderButtonProps) => {
   return (
     <button className="recording__header-go-back-btn" type="button" onClick={onClose}>
-      <Icon type={ButtonTypes[type]} options={{ color: "White", size: size }} />
+      <Icon type={type} options={{ color: "White", size: size }} />
     </button>
   )
 }

@@ -1,6 +1,5 @@
 import { useRef } from "react"
 import { useNavigate } from "react-router-dom"
-import { ButtonTypes } from "src/components/buttons/Icon/Icon"
 import { BtnColorsEnum, RoundButton } from "src/components/buttons/RoundButton/RoundButton"
 import { LayoutTwo } from "src/components/layouts/LayoutWrappers"
 import Navbar from "src/components/navbar/Navbar"
@@ -34,7 +33,7 @@ function Search() {
           <form className="search-field-form" onSubmit={(e) => e.preventDefault()}>
             <div className="search-back-btn-container">
               <RoundButton
-                type={ButtonTypes.Back}
+                type="Back"
                 btnOptions={{
                   offset: 10,
                   bgColor: BtnColorsEnum.Primary,

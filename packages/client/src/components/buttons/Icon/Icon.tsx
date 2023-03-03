@@ -43,51 +43,95 @@ import {
   volumeUpIcon,
 } from "src/assets/images/_icons"
 
-export enum ButtonTypes {
-  AddVideo = "AddVideo",
-  Back = "Back",
-  Check = "Check",
-  Close = "Close",
-  Comment = "Comment",
-  Delete = "Delete",
-  Down = "Down",
-  Edit = "Edit",
-  Expand = "Expand",
-  Follow = "Follow",
-  Followers = "Followers",
-  Following = "Following",
-  Forward = "Forward",
-  Fullscreen = "Fullscreen",
-  Home = "Home",
-  Like = "Like",
-  Locked = "Locked",
-  Logout = "Logout",
-  Next = "Next",
-  NoVideo = "NoVideo",
-  Pause = "Pause",
-  Play = "Play",
-  Plus = "Plus",
-  Previous = "Previous",
-  Profile = "Profile",
-  Opacity = "Opacity",
-  Reply = "Reply",
-  Record = "Record",
-  Save = "Save",
-  Search = "Search",
-  Settings = "Settings",
-  Shuffle = "Shuffle",
-  Stop = "Stop",
-  Songs = "Songs",
-  Up = "Up",
-  Standard = "Standard",
-  Landscape = "Landscape",
-  Portrait = "Portrait",
-  VideoRecord = "VideoRecord",
-  VolumeUp = "VolumeUp",
-  VolumeMute = "VolumeMute",
-  Undo = "Undo",
-  Redo = "Redo",
-}
+// export enum ButtonTypes {
+//   AddVideo = "AddVideo",
+//   Back = "Back",
+//   Check = "Check",
+//   Close = "Close",
+//   Comment = "Comment",
+//   Delete = "Delete",
+//   Down = "Down",
+//   Edit = "Edit",
+//   Expand = "Expand",
+//   Follow = "Follow",
+//   Followers = "Followers",
+//   Following = "Following",
+//   Forward = "Forward",
+//   Fullscreen = "Fullscreen",
+//   Home = "Home",
+//   Like = "Like",
+//   Locked = "Locked",
+//   Logout = "Logout",
+//   Next = "Next",
+//   NoVideo = "NoVideo",
+//   Pause = "Pause",
+//   Play = "Play",
+//   Plus = "Plus",
+//   Previous = "Previous",
+//   Profile = "Profile",
+//   Opacity = "Opacity",
+//   Reply = "Reply",
+//   Record = "Record",
+//   Save = "Save",
+//   Search = "Search",
+//   Settings = "Settings",
+//   Shuffle = "Shuffle",
+//   Stop = "Stop",
+//   Songs = "Songs",
+//   Up = "Up",
+//   Standard = "Standard",
+//   Landscape = "Landscape",
+//   Portrait = "Portrait",
+//   VideoRecord = "VideoRecord",
+//   VolumeUp = "VolumeUp",
+//   VolumeMute = "VolumeMute",
+//   Undo = "Undo",
+//   Redo = "Redo",
+// }
+export type ButtonTypes =
+  | "AddVideo"
+  | "Back"
+  | "Check"
+  | "Close"
+  | "Comment"
+  | "Delete"
+  | "Down"
+  | "Edit"
+  | "Expand"
+  | "Follow"
+  | "Followers"
+  | "Following"
+  | "Forward"
+  | "Fullscreen"
+  | "Home"
+  | "Like"
+  | "Locked"
+  | "Logout"
+  | "Next"
+  | "NoVideo"
+  | "Pause"
+  | "Play"
+  | "Plus"
+  | "Previous"
+  | "Profile"
+  | "Opacity"
+  | "Reply"
+  | "Record"
+  | "Save"
+  | "Search"
+  | "Settings"
+  | "Shuffle"
+  | "Stop"
+  | "Songs"
+  | "Up"
+  | "Standard"
+  | "Landscape"
+  | "Portrait"
+  | "VideoRecord"
+  | "VolumeUp"
+  | "VolumeMute"
+  | "Undo"
+  | "Redo"
 
 const getButtonIcon = (type: ButtonTypes) => {
   switch (type) {

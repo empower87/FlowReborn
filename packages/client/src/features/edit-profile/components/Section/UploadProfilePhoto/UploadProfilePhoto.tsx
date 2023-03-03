@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react"
 import { useFormContext } from "react-hook-form"
 import Resizer from "react-image-file-resizer"
-import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
+import { Icon } from "src/components/buttons/Icon/Icon"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import { useAuth } from "src/context/AuthContext"
 import { CropModal } from "./CropModal"
@@ -63,7 +63,7 @@ export default function UploadProfilePhoto() {
                 onChange={(e) => onFileChange(e)}
                 hidden
               />
-              <Icon type={ButtonTypes.Edit} options={{ color: "White", size: 80 }} />
+              <Icon type="Edit" options={{ color: "White", size: 80 }} />
             </label>
           </div>
         </div>

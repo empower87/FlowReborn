@@ -1,6 +1,6 @@
 import { forwardRef, MouseEvent, MouseEventHandler, useCallback, useEffect, useRef, useState } from "react"
 import ReactDOM from "react-dom"
-import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
+import { Icon } from "src/components/buttons/Icon/Icon"
 import { InputErrorNoModal } from "src/components/errors/InputError"
 import LoadingSpinner from "src/components/loading/LoadingSpinner"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
@@ -50,7 +50,7 @@ const Button = ({
     <div className="comment-input__header">
       <div className="comment-input__btn">
         <button className="comment-input__btn--submit" type="submit" disabled={disabled} onClick={onClick}>
-          {isLoading ? <LoadingSpinner /> : <Icon type={ButtonTypes.Forward} options={{ color: "White", size: 80 }} />}
+          {isLoading ? <LoadingSpinner /> : <Icon type="Forward" options={{ color: "White", size: 80 }} />}
         </button>
       </div>
     </div>

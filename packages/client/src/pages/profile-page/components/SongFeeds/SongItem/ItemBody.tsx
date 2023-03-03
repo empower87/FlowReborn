@@ -1,6 +1,6 @@
 import { ReactNode, useCallback, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
+import { Icon } from "src/components/buttons/Icon/Icon"
 import { PlayButton } from "src/components/buttons/PlayButton"
 import { BtnColorsEnum, RoundButton } from "src/components/buttons/RoundButton/RoundButton"
 import DotMenu, { DotMenuModalItem } from "src/components/modals/Dots/DotMenu"
@@ -67,13 +67,13 @@ const Details = ({ song, children }: Pick<Props, "song" | "children">) => (
       <div className="profile-songs__social-data">
         <DetailsIcon count={song.likes.length}>
           <div className="profile-songs__social-data-icon Like">
-            <Icon type={ButtonTypes.Like} options={{ color: "Primary" }} />
+            <Icon type="Like" options={{ color: "Primary" }} />
           </div>
         </DetailsIcon>
 
         <DetailsIcon count={song.comments.length}>
           <div className="profile-songs__social-data-icon Comment">
-            <Icon type={ButtonTypes.Comment} options={{ color: "Primary", size: 70 }} />
+            <Icon type="Comment" options={{ color: "Primary", size: 70 }} />
           </div>
         </DetailsIcon>
       </div>
@@ -137,7 +137,7 @@ export const LyricsBox = ({
         <div className="profile-songs__lyrics-expand-btn">
           {lyrics.length > 2 ? (
             <RoundButton
-              type={ButtonTypes[buttonType]}
+              type={buttonType}
               btnOptions={{
                 inset: [true, "4px"],
                 offset: 8,

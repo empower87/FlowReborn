@@ -1,5 +1,5 @@
 import { ReactNode } from "react"
-import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
+import { Icon } from "src/components/buttons/Icon/Icon"
 
 const Button = ({
   type,
@@ -44,7 +44,7 @@ export const ActionButton = ({
   }
   return (
     <Button type={type} onClick={onClick} isClickable={isClickable}>
-      <Icon type={ButtonTypes[type]} options={{ color: color ? color : "White", size: size }} />
+      <Icon type={type} options={{ color: color ? color : "White", size: size }} />
     </Button>
   )
 }

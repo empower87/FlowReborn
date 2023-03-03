@@ -1,5 +1,5 @@
 import { MouseEventHandler } from "react"
-import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
+import { Icon } from "src/components/buttons/Icon/Icon"
 import { ResizeBar } from "src/components/ui/ResizeBar"
 
 type CommentMenuButtonProps = {
@@ -13,7 +13,7 @@ export const CommentHeaderButton = ({ onClick, type }: CommentMenuButtonProps) =
   return (
     <div className="comments__header-btn--container">
       <button className={`comments__header-btn ${type}`} type="button" onClick={onClick}>
-        <Icon type={ButtonTypes[type]} options={{ color: color, size: size }} />
+        <Icon type={type} options={{ color: color, size: size }} />
       </button>
     </div>
   )
@@ -42,16 +42,6 @@ const Title = ({ title, count }: { title: string; count: number | undefined }) =
   return (
     <div className="comments__title--container">
       <ResizeBar text={<TitleText text={title} count={count} />} onClick={onClickHandler} />
-
-      {/* <div className="comments__title--shadow-outset">
-        <h3 className="comments__text">{title} </h3>
-        <p>{count}</p>
-        <div className="comments__header-toggle-fullscreen">
-          <div className="comments__header-toggle-fullscreen--bs-inset">
-            <button className="comments__header-toggle-fullscreen-btn"></button>
-          </div>
-        </div>
-      </div> */}
     </div>
   )
 }

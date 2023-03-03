@@ -1,4 +1,4 @@
-import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
+import { Icon } from "src/components/buttons/Icon/Icon"
 import { BtnColorsEnum, RoundButton } from "src/components/buttons/RoundButton/RoundButton"
 
 type RecordButtonProps = {
@@ -19,7 +19,7 @@ export const ActionButton = ({
   return (
     <div className="suggestions__side-btn--bs-inset">
       <button className={`suggestions__side-btn ${type}`} onClick={onClick}>
-        {type !== "Forward" ? <Icon type={ButtonTypes[type]} options={{ color: "Primary", size: size }} /> : "Next"}
+        {type !== "Forward" ? <Icon type={type} options={{ color: "Primary", size: size }} /> : "Next"}
       </button>
     </div>
   )
@@ -33,7 +33,7 @@ export const RecordButton = ({ isRecording, startRecording, stopRecording }: Rec
           {isRecording ? (
             <div className="record-btn_shadow-div-outset" onClick={() => stopRecording()}>
               <RoundButton
-                type={ButtonTypes.Stop}
+                type="Stop"
                 btnOptions={{ offset: 3, bgColor: BtnColorsEnum.Secondary }}
                 iconOptions={{ color: "Primary" }}
               />
@@ -41,7 +41,7 @@ export const RecordButton = ({ isRecording, startRecording, stopRecording }: Rec
           ) : (
             <div className="record-btn_shadow-div-outset" onClick={() => startRecording()}>
               <RoundButton
-                type={ButtonTypes.Record}
+                type="Record"
                 btnOptions={{ offset: 3, bgColor: BtnColorsEnum.Secondary }}
                 iconOptions={{ color: "Primary", size: 70 }}
               />

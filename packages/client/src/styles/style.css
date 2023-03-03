@@ -6357,6 +6357,86 @@ button {
   background: #b9b9b9;
 }
 
+.sliding-btn-menu {
+  height: 40px;
+  width: 100%;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+.sliding-btn-menu .sliding-btn-menu--bs-inset {
+  height: 80%;
+  width: 95%;
+  border-radius: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  box-shadow: inset 1px 1px 2px #414141, inset -1px -1px 2px #c3c3c3;
+}
+.sliding-btn-menu .sliding-btn-menu--bs-inset .sliding-btn-menu__list {
+  height: 85%;
+  width: 98%;
+  border-radius: 2em;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  overflow-x: scroll;
+}
+.sliding-btn-menu .sliding-btn-menu--bs-inset .sliding-btn-menu__list .sliding-btn-menu__item {
+  height: 100%;
+  width: 90px;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  flex: 0 0 auto;
+}
+.sliding-btn-menu .sliding-btn-menu--bs-inset .sliding-btn-menu__list .sliding-btn-menu__item .sliding-btn-menu__button {
+  height: 85%;
+  width: 95%;
+  border-radius: 0.2em;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  box-shadow: 1px 1px 2px #414141, -1px -1px 2px #c3c3c3;
+}
+.sliding-btn-menu .sliding-btn-menu--bs-inset .sliding-btn-menu__list .sliding-btn-menu__item .sliding-btn-menu__button .sliding-btn-menu__icon {
+  height: 100%;
+  width: 25%;
+  border-radius: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: row;
+}
+.sliding-btn-menu .sliding-btn-menu--bs-inset .sliding-btn-menu__list .sliding-btn-menu__item .sliding-btn-menu__button .sliding-btn-menu__icon .sliding-btn-menu__icon--wrapper {
+  height: 80%;
+  width: 80%;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+.sliding-btn-menu .sliding-btn-menu--bs-inset .sliding-btn-menu__list .sliding-btn-menu__item .sliding-btn-menu__button .sliding-btn-menu__title {
+  margin-left: 2%;
+  color: #ffffff;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+.sliding-btn-menu .sliding-btn-menu--bs-inset .sliding-btn-menu__list .sliding-btn-menu__item .sliding-btn-menu__button.First {
+  border-radius: 2em 0.2em 0.2em 2em;
+}
+.sliding-btn-menu .sliding-btn-menu--bs-inset .sliding-btn-menu__list .sliding-btn-menu__item .sliding-btn-menu__button.Last {
+  border-radius: 0.2em 2em 2em 0.2em;
+}
+
 .dot-menu {
   height: 100%;
   width: 100%;

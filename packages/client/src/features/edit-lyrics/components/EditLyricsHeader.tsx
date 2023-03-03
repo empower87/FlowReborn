@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
+import { Icon } from "src/components/buttons/Icon/Icon"
 import { SelectMenu } from "src/components/modals/SelectMenu/SelectMenu"
 import MarqueeText from "src/components/text/MarqueeText"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
@@ -60,7 +60,7 @@ export default function EditLyricsHeader({ currentSong, setCurrentSong, allSongs
       <div className="edit-lyrics__header--shadow-inset">
         <div className="edit-lyrics__exit--container">
           <button className="edit-lyrics__exit-btn" onClick={() => navigate(-1)}>
-            <Icon type={ButtonTypes.Back} options={{ color: "White" }} />
+            <Icon type="Back" options={{ color: "White" }} />
           </button>
         </div>
         <Title />

@@ -1,6 +1,6 @@
 import { Dispatch, MouseEvent, ReactNode, SetStateAction, useState } from "react"
 import ReactDOM from "react-dom"
-import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
+import { Icon } from "src/components/buttons/Icon/Icon"
 import { ResizeBar } from "src/components/ui/ResizeBar"
 
 type DotMenuModalProps = {
@@ -40,7 +40,7 @@ export const DotMenuModalItem = ({ icon, title, size, onClick }: DotMenuModalIte
       <div className="dot-menu__modal-item--bs-inset">
         <div className="dot-menu__modal-item-icon">
           <div className="dot-menu__modal-item-icon--bs-inset">
-            <Icon type={ButtonTypes[icon]} options={{ color: "Primary", size: size }} />
+            <Icon type={icon} options={{ color: "Primary", size: size }} />
           </div>
         </div>
         <div className="dot-menu__modal-item-title">

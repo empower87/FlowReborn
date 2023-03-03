@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { ButtonTypes } from "src/components/buttons/Icon/Icon"
 import { PlayButton } from "src/components/buttons/PlayButton"
 import { BtnColorsEnum, RoundButton } from "src/components/buttons/RoundButton/RoundButton"
 import { Container } from "src/components/layouts/LayoutWrappers"
@@ -21,7 +20,7 @@ export const ModalHeader = ({ title, dispatch }: { title: string; dispatch: Sett
       </div>
       <div className="suggestion-settings__close">
         <RoundButton
-          type={ButtonTypes.Close}
+          type="Close"
           btnOptions={{ bgColor: BtnColorsEnum.Initial, offset: 8 }}
           iconOptions={{ color: "Primary" }}
           onClick={() => dispatch({ type: "SHOW_MENU", payload: { menu: "Hide" } })}

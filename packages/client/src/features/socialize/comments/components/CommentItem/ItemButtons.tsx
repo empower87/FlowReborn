@@ -1,5 +1,5 @@
 import { MouseEventHandler, useState } from "react"
-import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
+import { Icon } from "src/components/buttons/Icon/Icon"
 import ContinueModal from "src/components/modals/ContinueModal"
 import { useAuth } from "src/context/AuthContext"
 // import { IComment } from "../../../../../../../server/src/models/index"
@@ -29,13 +29,13 @@ const ItemButton = ({ type, onClick, total, isLiked }: ItemButtonProps) => {
         onClick={onClick}
       >
         <div className={`comments__btn-icon ${type}`}>
-          <Icon type={ButtonTypes[type]} options={{ color: "Primary", size: type === "Reply" ? 70 : undefined }} />
+          <Icon type={type} options={{ color: "Primary", size: type === "Reply" ? 70 : undefined }} />
         </div>
         <div className="comments__btn-text--container">
           <p className={`comments__btn-text ${type}`}>{type === "Like" || type === "Reply" ? total : type}</p>
           {type === "Reply" && total !== 0 && (
             <div className="comments__btn-reply-icon">
-              <Icon type={ButtonTypes.Down} options={{ color: "Primary" }} />
+              <Icon type="Down" options={{ color: "Primary" }} />
             </div>
           )}
         </div>

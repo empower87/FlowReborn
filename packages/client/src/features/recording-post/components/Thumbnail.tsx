@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction, useRef, useState } from "react"
 import ReactDOM from "react-dom"
-import { ButtonTypes } from "src/components/buttons/Icon/Icon"
 import { BtnColorsEnum, RoundButton } from "src/components/buttons/RoundButton/RoundButton"
 import { generateCanvas } from "src/features/recording-booth/utils/generateThumbnail"
 import { ISongTake } from "src/features/recording-booth/utils/types"
@@ -59,7 +58,7 @@ const ThumbnailModal = ({
         <div className="post-recording__thumbnail-header--bs-inset">
           <div className="post-recording__thumbnail-header-close">
             <RoundButton
-              type={ButtonTypes.Close}
+              type="Close"
               btnOptions={{ bgColor: BtnColorsEnum.Primary }}
               iconOptions={{ color: "White" }}
               onClick={() => onClose(false)}

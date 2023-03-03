@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { ButtonTypes } from "src/components/buttons/Icon/Icon"
 import { BtnColorsEnum, RoundButton } from "src/components/buttons/RoundButton/RoundButton"
 
 export default function LyricsPanel({ isOpen }: { isOpen: boolean }) {
@@ -13,7 +12,7 @@ export default function LyricsPanel({ isOpen }: { isOpen: boolean }) {
       <div className="post-recording__lyrics--bs-outset">
         <div className="post-recording__lyrics-header">
           <RoundButton
-            type={ButtonTypes.Expand}
+            type="Expand"
             btnOptions={{ bgColor: BtnColorsEnum.Primary }}
             iconOptions={{ color: "White" }}
             onClick={() => setIsExpanded((prev) => !prev)}

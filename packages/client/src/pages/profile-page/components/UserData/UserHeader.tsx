@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
-import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
+import { Icon } from "src/components/buttons/Icon/Icon"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import { useAuth } from "src/context/AuthContext"
 
@@ -16,7 +16,7 @@ const BackButton = () => {
   return (
     <div className="profile__header-back">
       <button type="button" className="profile__header-back-btn" onClick={() => navigate(-1)}>
-        <Icon type={ButtonTypes.Previous} options={{ color: "White", size: 70 }} />
+        <Icon type="Previous" options={{ color: "White", size: 70 }} />
       </button>
     </div>
   )

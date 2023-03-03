@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction, useEffect, useRef } from "react"
-import { ButtonTypes } from "./Icon/Icon"
 import { BtnColorsEnum, RoundButton } from "./RoundButton/RoundButton"
 
 type PlayButtonProps = {
@@ -43,14 +42,14 @@ export const PlayButton = ({ isPlaying, setIsPlaying, options, audio }: PlayButt
     <div className="PlayButton__wrapper">
       {isPlaying ? (
         <RoundButton
-          type={ButtonTypes.Pause}
+          type="Pause"
           btnOptions={{ bgColor: BtnColorsEnum.Primary }}
           iconOptions={{ color: "White" }}
           onClick={() => setIsPlaying((prev) => !prev)}
         />
       ) : (
         <RoundButton
-          type={ButtonTypes.Play}
+          type="Play"
           btnOptions={{ bgColor: BtnColorsEnum.Primary }}
           iconOptions={{ color: "White", margin: "0% 0% 0% 12%" }}
           onClick={() => setIsPlaying((prev) => !prev)}

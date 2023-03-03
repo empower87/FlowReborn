@@ -77,3 +77,49 @@
     }
   }
 }
+
+.sliding-btn-menu {
+  @include flexCenter(40px, 100%, 0, center, center, row);
+
+  .sliding-btn-menu--bs-inset {
+    @include flexCenter(80%, 95%, 2em, center, center, row);
+    box-shadow: inset 1px 1px 2px #414141, inset -1px -1px 2px #c3c3c3;
+
+    .sliding-btn-menu__list {
+      @include flexCenter(85%, 98%, 2em, flex-start, center, row);
+      overflow-x: scroll;
+
+      .sliding-btn-menu__item {
+        @include flexCenter(100%, 90px, 0, center, center, row);
+        flex: 0 0 auto;
+
+        .sliding-btn-menu__button {
+          @include flexCenter(85%, 95%, 0.2em, flex-start, center, row);
+          box-shadow: 1px 1px 2px #414141, -1px -1px 2px #c3c3c3;
+
+          .sliding-btn-menu__icon {
+            @include flexCenter(100%, 25%, 0, flex-end, center, row);
+
+            .sliding-btn-menu__icon--wrapper {
+              @include flexCenter(80%, 80%, 0, center, center, row);
+            }
+          }
+
+          .sliding-btn-menu__title {
+            margin-left: 2%;
+            color: $base-color;
+            font-size: 0.85rem;
+            white-space: nowrap;
+          }
+
+          &.First {
+            border-radius: 2em 0.2em 0.2em 2em;
+          }
+          &.Last {
+            border-radius: 0.2em 2em 2em 0.2em;
+          }
+        }
+      }
+    }
+  }
+}

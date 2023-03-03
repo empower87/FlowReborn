@@ -1,6 +1,5 @@
 import { useEffect } from "react"
-import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
-// import { IUser } from "../../../../../../server/src/models/User"
+import { Icon } from "src/components/buttons/Icon/Icon"
 import { IUser } from "src/types/ServerModelTypes"
 import useSongsFeed from "../../hooks/useSongFeeds"
 import SongItem from "./SongItem/Item"
@@ -24,7 +23,7 @@ const FeedButton = ({ type, selected, length, onClick, size }: FeedButtonProps) 
         onClick={() => onClick(type)}
       >
         <div className="profile-songs__feed-btn-icon">
-          <Icon type={ButtonTypes[type]} options={{ color: "Primary", size: size }} />
+          <Icon type={type} options={{ color: "Primary", size: size }} />
           <p className="profile-songs__feed-btn-count">{length}</p>
         </div>
       </button>
@@ -65,6 +64,13 @@ export default function SongFeeds({ user }: { user: IUser }) {
       </div>
 
       <div className="profile-songs__feed-toggle">
+        {/* <SlidingButtonMenu>
+          <SlidingButton icon="Songs" text="My Songs" index="First" />
+          <SlidingButton icon="Like" text="Liked" />
+          <SlidingButton icon="Followers" text="Followers" />
+          <SlidingButton icon="Comment" text="Commented" />
+          <SlidingButton icon="NoVideo" text="5" index="Last" />
+        </SlidingButtonMenu> */}
         <div className="profile-songs__feed-toggle--bs-inset">
           <FeedButton
             type="Songs"

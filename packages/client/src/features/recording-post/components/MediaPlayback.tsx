@@ -1,6 +1,5 @@
 import { PropsWithChildren, useRef } from "react"
 import AudioSlider from "src/components/audio/AudioSlider"
-import { ButtonTypes } from "src/components/buttons/Icon/Icon"
 import { PlayButton } from "src/components/buttons/PlayButton"
 import { BtnColorsEnum, RoundButton } from "src/components/buttons/RoundButton/RoundButton"
 import { ISongTake } from "src/features/recording-booth/utils/types"
@@ -36,7 +35,7 @@ const ControlButton = ({ type, onClick }: { type: "Fullscreen" | "Volume"; onCli
     <div className="record__other-controls-btn">
       <div className={`record__other-controls-btn--bs-outset ${type}`}>
         <RoundButton
-          type={ButtonTypes[btnType]}
+          type={btnType}
           btnOptions={{ bgColor: BtnColorsEnum.Initial, offset: 7 }}
           iconOptions={{ color: "Primary", size: size }}
         />

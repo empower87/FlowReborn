@@ -1,6 +1,6 @@
 import { PropsWithChildren, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
+import { Icon } from "src/components/buttons/Icon/Icon"
 import { useAuth } from "src/context/AuthContext"
 import useFollow from "src/features/socialize/follow/useFollow"
 import { IUser } from "src/types/ServerModelTypes"
@@ -22,7 +22,7 @@ const SocialProofItem = ({ title, onClick, size, addClasses, children }: Profile
         <div className="profile__side-btn--container">
           <div className="profile__side-btn-icon">
             <div className="profile__side-btn--bs-outset-2">
-              <Icon type={ButtonTypes[title]} options={{ color: "Primary", size: size }} />
+              <Icon type={title} options={{ color: "Primary", size: size }} />
             </div>
           </div>
         </div>

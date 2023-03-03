@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom"
 import { useAuth } from "../../context/AuthContext"
-import { ButtonTypes, Icon } from "../buttons/Icon/Icon"
+import { Icon } from "../buttons/Icon/Icon"
 
 type NavbarProps = {
   variant?: "light-variant" | "mid-variant"
@@ -48,13 +48,13 @@ export default function Navbar({ variant, isVisible }: NavbarProps) {
 const getButtonType = (path: string) => {
   switch (path) {
     case "/":
-      return ButtonTypes.Home
+      return "Home"
     case "/recording-booth":
-      return ButtonTypes.Record
+      return "Record"
     case "/search":
-      return ButtonTypes.Search
+      return "Search"
     default:
-      return ButtonTypes.Profile
+      return "Profile"
   }
 }
 
@@ -83,7 +83,7 @@ const NavbarButton = ({
   return (
     <div className="navbar-btn-container">
       <button className={`navbar-btn_shadow-div-inset ${isSelected}`} onClick={() => onClick(path)}>
-        <Icon type={ButtonTypes[type]} options={{ color: "Primary", size: size }} />
+        <Icon type={type} options={{ color: "Primary", size: size }} />
       </button>
     </div>
   )

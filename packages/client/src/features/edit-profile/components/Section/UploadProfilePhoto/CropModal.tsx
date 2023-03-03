@@ -3,7 +3,7 @@ import ReactDOM from "react-dom"
 import { useFormContext } from "react-hook-form"
 import ReactCrop, { Crop } from "react-image-crop"
 import "react-image-crop/src/ReactCrop.scss"
-import { ButtonTypes, Icon } from "src/components/buttons/Icon/Icon"
+import { Icon } from "src/components/buttons/Icon/Icon"
 
 export const CropModal = ({
   isOpen,
@@ -90,7 +90,7 @@ export const CropModal = ({
               <div className="image-crop__header--bs-inset">
                 <div className="image-crop__header-btn--container Close">
                   <button className="image-crop__header-btn" onClick={() => onClose(false)}>
-                    <Icon type={ButtonTypes.Back} options={{ color: "Primary" }} />
+                    <Icon type="Back" options={{ color: "Primary" }} />
                   </button>
                 </div>
                 <div className="image-crop__header-btn--container Header">
