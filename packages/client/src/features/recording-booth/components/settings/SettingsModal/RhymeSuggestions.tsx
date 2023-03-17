@@ -1,7 +1,41 @@
+import { ReactNode, useEffect, useRef, useState } from "react"
 import { Icon } from "src/components/buttons/Icon/Icon"
-import { SettingsProps } from "../SideSettingsMenu"
-import { ModalHeader } from "./SelectBeat"
+import { useSuggestionSettingsContext } from "src/features/recording-booth/hooks/useSuggestionSettings"
+import { ModalHeader, ModalHeaderButton } from "./SettingsModal"
 
+const OPTION_STYLE_1 = {
+  borderRadius: "1.2em 0.2em 1.2em 0.2em",
+  justifyContent: "flex-end",
+}
+const OPTION_STYLE_2 = {
+  borderRadius: "0.2em 1.2em 0.2em 1.2em",
+  justifyContent: "flex-start",
+}
+
+const SuggestionSettingOptionLayout = ({
+  styleOption,
+  headerText,
+  children,
+}: {
+  styleOption: 1 | 2
+  headerText: string
+  children: ReactNode
+}) => {
+  const STYLE = styleOption === 1 ? OPTION_STYLE_1 : OPTION_STYLE_2
+
+  return (
+    <div className="suggestion-settings__option">
+      <div className="suggestion-settings__option--bs-inset" style={{ borderRadius: STYLE.borderRadius }}>
+        <div className="suggestion-settings__rhyme-suggestions-header" style={{ justifyContent: STYLE.justifyContent }}>
+          <div className="suggestion-settings__rhyme-suggestions-header--bs-outset">
+            <p>{headerText}</p>
+          </div>
+        </div>
+        {children}
+      </div>
+    </div>
+  )
+}
 const SuggestionToggleButton = ({
   type,
   isSelected,
@@ -25,82 +59,81 @@ const SuggestionToggleButton = ({
   )
 }
 
-const Header = ({ text }: { text: string }) => {
+const ToggleSuggestionPanels = () => {
+  const { rhymeSuggestionPanels, updatePanelsHandler } = useSuggestionSettingsContext()
+
   return (
-    <div className="suggestion-settings__rhyme-suggestions-header">
-      <div className="suggestion-settings__rhyme-suggestions-header--bs-outset">
-        <p>{text}</p>
+    <SuggestionSettingOptionLayout styleOption={2} headerText="Toggle Suggestion panels">
+      <div className="suggestion-settings__list--container">
+        <ul className="suggestion-settings__list">
+          <SuggestionToggleButton
+            type="LastWord"
+            isSelected={rhymeSuggestionPanels.includes("LastWord")}
+            onClick={() => updatePanelsHandler("LastWord")}
+          />
+          <SuggestionToggleButton
+            type="Nouns"
+            isSelected={rhymeSuggestionPanels.includes("Nouns")}
+            onClick={() => updatePanelsHandler("Nouns")}
+          />
+          <SuggestionToggleButton
+            type="Verbs"
+            isSelected={rhymeSuggestionPanels.includes("Verbs")}
+            onClick={() => updatePanelsHandler("Verbs")}
+          />
+        </ul>
       </div>
-    </div>
+    </SuggestionSettingOptionLayout>
   )
 }
 
-const ToggleSuggestionPanels = ({ state, dispatch }: SettingsProps) => {
-  const { rhymeSuggestionPanels } = state
-  return (
-    <div className="suggestion-settings__rhyme-panels">
-      <div className="suggestion-settings__rhyme-panels--bs-inset">
-        <Header text="Toggle Rhyme Panels" />
+const SuggestionCountSlider = () => {
+  const { toggleModal, numOfRhymeSuggestions, dispatch } = useSuggestionSettingsContext()
+  const [value, setValue] = useState<string>(numOfRhymeSuggestions)
 
-        <div className="suggestion-settings__list--container">
-          <ul className="suggestion-settings__list">
-            <SuggestionToggleButton
-              type="LastWord"
-              isSelected={rhymeSuggestionPanels.includes("LastWord")}
-              onClick={() => dispatch({ type: "UPDATE_PANELS", payload: { rhymeSuggestionPanel: "LastWord" } })}
-            />
-            <SuggestionToggleButton
-              type="Nouns"
-              isSelected={rhymeSuggestionPanels.includes("Nouns")}
-              onClick={() => dispatch({ type: "UPDATE_PANELS", payload: { rhymeSuggestionPanel: "Nouns" } })}
-            />
-            <SuggestionToggleButton
-              type="Verbs"
-              isSelected={rhymeSuggestionPanels.includes("Verbs")}
-              onClick={() => dispatch({ type: "UPDATE_PANELS", payload: { rhymeSuggestionPanel: "Verbs" } })}
-            />
-          </ul>
+  useEffect(() => {
+    if (toggleModal === "Hide") {
+      dispatch({ type: "SET_NUM_OF_RHYMES", payload: { numOfRhymes: value } })
+    }
+  }, [toggleModal])
+
+  return (
+    <SuggestionSettingOptionLayout styleOption={1} headerText="Max Rhyme Suggestions">
+      <div className="suggestion-settings__rhyme-number-slider">
+        <div className="suggestion-settings__rhyme-number Min">1</div>
+        <div className="suggestion-settings__slider-input--container">
+          <input
+            type="range"
+            step="1"
+            min="1"
+            max="8"
+            value={value}
+            className="suggestion-settings__slider-input"
+            onChange={(e) => setValue(e.target.value)}
+            // onChange={(e) => dispatch({ type: "SET_NUM_OF_RHYMES", payload: { numOfRhymes: e.target.value } })}
+          />
         </div>
+        <div className="suggestion-settings__rhyme-number Max">8</div>
       </div>
-    </div>
+    </SuggestionSettingOptionLayout>
   )
 }
 
-const SuggestionCountSlider = ({ state, dispatch }: SettingsProps) => {
-  return (
-    <div className="suggestion-settings__rhyme-number">
-      <div className="suggestion-settings__rhyme-number--bs-inset">
-        <Header text="Rhyme Suggestion Count" />
+export default function RhymeSuggestions() {
+  const { closeModalHandler } = useSuggestionSettingsContext()
 
-        <div className="suggestion-settings__rhyme-number-slider">
-          <div className="suggestion-settings__rhyme-number Min">1</div>
-          <div className="suggestion-settings__slider-input--container">
-            <input
-              type="range"
-              step="1"
-              min="1"
-              max="8"
-              value={state.numOfRhymeSuggestions}
-              className="suggestion-settings__slider-input"
-              onChange={(e) => dispatch({ type: "SET_NUM_OF_RHYMES", payload: { numOfRhymes: e.target.value } })}
-            />
-          </div>
-          <div className="suggestion-settings__rhyme-number Max">{state.numOfRhymeSuggestions}</div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-export default function RhymeSuggestions({ dispatch, state }: SettingsProps) {
+  const renderRef = useRef<number>(0)
+  console.log(renderRef.current++, "<RhymeSuggestions /> -- Render test -- Layout 1")
   return (
     <div className="settings-modal__rhyme-suggestions">
       <div className="settings-modal__rhyme-suggestions--bs-inset">
-        <ModalHeader title={"Rhyme Suggestion Settings"} dispatch={dispatch} />
+        <ModalHeader title="Rhyme Suggestion Settings">
+          <ModalHeaderButton onClick={closeModalHandler} />
+        </ModalHeader>
 
         <div className="suggestion-settings__body">
-          <ToggleSuggestionPanels state={state} dispatch={dispatch} />
-          <SuggestionCountSlider state={state} dispatch={dispatch} />
+          <ToggleSuggestionPanels />
+          <SuggestionCountSlider />
         </div>
       </div>
     </div>

@@ -1,5 +1,7 @@
+import { useRef, useState } from "react"
 import { Icon } from "src/components/buttons/Icon/Icon"
 import { BtnColorsEnum, RoundButton } from "src/components/buttons/RoundButton/RoundButton"
+import ViewFullscreenVideo from "../ViewFullscreenVideo"
 
 type RecordButtonProps = {
   isRecording: boolean
@@ -54,7 +56,28 @@ export const RecordButton = ({ isRecording, startRecording, stopRecording }: Rec
   )
 }
 
-export const ActionButtons = ({ recordButton, postButton }: { recordButton: JSX.Element; postButton: JSX.Element }) => {
+export const ConfirmButtonWithModal = ({ src, onNext }: { src: string | undefined; onNext: () => void }) => {
+  const renderRef = useRef<number>(0)
+  const [showFullscreenVideo, setShowFullscreenVideo] = useState<boolean>(false)
+
+  console.log(renderRef.current++, "<ConfirmButtonWithModal /> -- Render test")
+  return (
+    <>
+      <ViewFullscreenVideo src={src} isOpen={showFullscreenVideo} onClose={setShowFullscreenVideo} onNext={onNext} />
+      <ActionButton type="Check" size={110} onClick={() => setShowFullscreenVideo(true)} />
+    </>
+  )
+}
+
+export const ActionButtons = ({
+  recordButton,
+  postButton,
+}: {
+  recordButton: JSX.Element
+  postButton: JSX.Element | null
+}) => {
+  const renderRef = useRef<number>(0)
+  // console.log(renderRef.current++, "<ActionButtons /> -- Render test -- Layout 2")
   return (
     <div className="suggestions__action-btns">
       <div className="suggestions__action-btns--container">

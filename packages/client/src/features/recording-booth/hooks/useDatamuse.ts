@@ -1,7 +1,7 @@
 import axios from "axios"
-import { useEffect, useReducer, useState } from "react"
+import { useEffect, useState } from "react"
 import { PosType } from "./useSuggestionSettings"
-import useTranscript from "./useTranscript"
+import { useTranscriptPos } from "./useTranscript"
 
 // getRhymeWords `rel_rhy=${param}`
 // getTriggerWords `rel_trg=${param}`
@@ -64,33 +64,47 @@ export const datamuseReducer = (state: State, action: Action): State => {
   }
 }
 
-export default function useDatamuse(category: PosType, rhymeCount: string) {
-  const transcript = useTranscript()
-  const [queryWord, setQueryWord] = useState<string>("")
-  const [state, dispatch] = useReducer(datamuseReducer, INITIAL_STATE)
+export type Transcript = {
+  Adjectives: string
+  Nouns: string
+  Verbs: string
+  LastWord: string
+  transcript: string
+  lyrics: string[][]
+  listening: boolean
+}
 
-  useEffect(() => {
-    setQueryWord(transcript[category])
-  }, [transcript[category]])
+export default function useDatamuse(category: PosType, rhymeCount: string) {
+  const [selectedPos, setSelectedPos] = useState<RhymeType>("RHY")
+  const [rhymes, setRhymes] = useState<string[]>([])
+
+  const { lastWord, partOfSpeech, listening } = useTranscriptPos(category)
+  const [queryWord, setQueryWord] = useState<string>("")
+  // const [state, dispatch] = useReducer(datamuseReducer, INITIAL_STATE)
+
+  // useEffect(() => {
+  //   setQueryWord(transcript[category])
+  // }, [transcript[category]])
 
   const selectedRhymesHandler = (selected: RhymeType) => {
-    switch (selected) {
-      case "REL":
-        dispatch({ type: "SET_SELECTED", payload: { selected: selected, selectedName: "Related" } })
-        break
-      case "TRG":
-        dispatch({ type: "SET_SELECTED", payload: { selected: selected, selectedName: "Triggers" } })
-        break
-      case "SYN":
-        dispatch({ type: "SET_SELECTED", payload: { selected: selected, selectedName: "Synonyms" } })
-        break
-      default:
-        dispatch({ type: "SET_SELECTED", payload: { selected: selected, selectedName: "Rhyming" } })
-    }
+    setSelectedPos(selected)
+    // switch (selected) {
+    //   case "REL":
+    //     dispatch({ type: "SET_SELECTED", payload: { selected: selected, selectedName: "Related" } })
+    //     break
+    //   case "TRG":
+    //     dispatch({ type: "SET_SELECTED", payload: { selected: selected, selectedName: "Triggers" } })
+    //     break
+    //   case "SYN":
+    //     dispatch({ type: "SET_SELECTED", payload: { selected: selected, selectedName: "Synonyms" } })
+    //     break
+    //   default:
+    //     dispatch({ type: "SET_SELECTED", payload: { selected: selected, selectedName: "Rhyming" } })
+    // }
   }
 
   useEffect(() => {
-    if (!transcript.listening) return
+    if (!listening) return
     const handleAsync = async () => {
       const getDatamuseRhymes = async (url: string, max: string) => {
         const getRhymes = await axios.get<DatamuseRes[]>(`https://api.datamuse.com/words?${url}&max=${max}`)
@@ -98,45 +112,44 @@ export default function useDatamuse(category: PosType, rhymeCount: string) {
         const data = getRhymes.data.map((each) => each.word)
         return data
       }
-      const pos = transcript[category]
+      // const pos = transcript[category]
+      const pos = partOfSpeech
+      let url
 
-      switch (state.selected) {
+      switch (selectedPos) {
         case "REL":
-          const related = await getDatamuseRhymes(`ml=${pos}&rel_rhy=${transcript.LastWord}`, rhymeCount)
-          dispatch({
-            type: "SET_RHYMES",
-            payload: { selectedName: "Related", selectedRhymes: related },
-          })
+          url = `ml=${pos}&rel_rhy=${lastWord}`
+          // const related = await getDatamuseRhymes(`ml=${pos}&rel_rhy=${transcript.LastWord}`, rhymeCount)
+          // setRhymes(related)
+          // dispatch({
+          //   type: "SET_RHYMES",
+          //   payload: { selectedName: "Related", selectedRhymes: related },
+          // })
           break
         case "TRG":
-          const triggers = await getDatamuseRhymes(`rel_trg=${pos}`, rhymeCount)
-          dispatch({
-            type: "SET_RHYMES",
-            payload: { selectedName: "Triggers", selectedRhymes: triggers },
-          })
+          url = `rel_trg=${pos}`
           break
         case "SYN":
-          const synonyms = await getDatamuseRhymes(`rel_jjb=${pos}`, rhymeCount)
-          dispatch({
-            type: "SET_RHYMES",
-            payload: { selectedName: "Synonyms", selectedRhymes: synonyms },
-          })
+          url = `rel_jjb=${pos}`
           break
         default:
-          const rhymes = await getDatamuseRhymes(`rel_rhy=${pos}`, rhymeCount)
-          dispatch({
-            type: "SET_RHYMES",
-            payload: { selectedName: "Rhyming", selectedRhymes: rhymes },
-          })
+          url = `rel_rhy=${pos}`
+          break
       }
+
+      if (!url) return console.log(url, "error in forming url")
+      const rhymes = await getDatamuseRhymes(url, rhymeCount)
+      setRhymes(rhymes)
     }
     handleAsync()
-  }, [state.selected, transcript[category], transcript.listening])
+  }, [selectedPos, lastWord, listening])
 
   return {
-    state: { ...state },
-    dispatch,
-    queryWord,
+    // state: { ...state },
+    // dispatch,
+    selectedPos,
+    queryWord: category === "LastWord" ? lastWord : partOfSpeech,
     selectedRhymesHandler,
+    rhymes,
   }
 }

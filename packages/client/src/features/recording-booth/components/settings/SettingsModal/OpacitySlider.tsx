@@ -1,6 +1,7 @@
-import { SettingsDispatcher } from "src/features/recording-booth/hooks/useSuggestionSettings"
+import { useSuggestionSettingsContext } from "src/features/recording-booth/hooks/useSuggestionSettings"
 
-export default function OpacitySlider({ UIOpacity, dispatch }: { UIOpacity: string; dispatch: SettingsDispatcher }) {
+export default function OpacitySlider() {
+  const { UIOpacity, dispatch } = useSuggestionSettingsContext()
   return (
     <div className="settings-modal__opacity-slider">
       <div className="opacity-slider--bs-inset">

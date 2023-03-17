@@ -22,12 +22,56 @@
     .suggestion-settings__body {
       @include flexCenter(85%, 100%, 0, flex-start, center, column);
 
-      .suggestion-settings__rhyme-panels {
+      .suggestion-settings__option {
         @include flexCenter(35%, 100%, 0, center, center, row);
 
-        .suggestion-settings__rhyme-panels--bs-inset {
+        // @include flexCenter(30%, 100%, 0, center, center, column);
+
+        // .suggestion-settings__rhyme-number--bs-inset {
+        //   @include flexCenter(90%, 95%, 0.2em 1.2em 0.2em 1.2em, center, center, column);
+        //   box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
+
+        .suggestion-settings__option--bs-inset {
           @include flexCenter(90%, 95%, 1.2em 0.2em 1.2em 0.2em, center, center, column);
           box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
+
+          .suggestion-settings__rhyme-number-slider {
+            @include flexCenter(60%, 100%, 0, center, center, row);
+
+            .suggestion-settings__slider-input--container {
+              @include flexCenter(100%, 80%, 0, center, center, row);
+
+              .suggestion-settings__slider-input {
+                @include flexCenter(50%, 100%, 2em, center, center, row);
+                box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
+                background: $primary-color-200;
+              }
+              input[type="range"] {
+                height: 12px;
+                appearance: none;
+                border-radius: 50px;
+                box-shadow: inset 1px 1px 2px 0px #3b3b3b, inset -1px -1px 2px #e8e4e4;
+                // background: -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage}, #63DEBC), color-stop(${currentPercentage}, ${bgColor}))
+              }
+              input[type="range"]::-webkit-slider-thumb {
+                height: 8px;
+                width: 18px;
+                border-radius: 1em;
+                box-shadow: 1px 1px 2px 0px #424141, -1px -1px 2px #ffffff;
+                background: $primary-color-300;
+                appearance: none;
+                cursor: pointer;
+              }
+              input[type="range"]::-moz-range-track {
+                background: pink;
+              }
+            }
+            .suggestion-settings__rhyme-number {
+              @include flexCenter(100%, 10%, 0, center, center, row);
+              color: $base-color;
+              font-size: 0.7rem;
+            }
+          }
 
           .suggestion-settings__list--container {
             @include flexCenter(60%, 100%, 0, center, center, row);
@@ -71,53 +115,6 @@
                   }
                 }
               }
-            }
-          }
-        }
-      }
-
-      .suggestion-settings__rhyme-number {
-        @include flexCenter(30%, 100%, 0, center, center, column);
-
-        .suggestion-settings__rhyme-number--bs-inset {
-          @include flexCenter(90%, 95%, 0.2em 1.2em 0.2em 1.2em, center, center, column);
-          box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
-
-          .suggestion-settings__rhyme-number-slider {
-            @include flexCenter(60%, 100%, 0, center, center, row);
-
-            .suggestion-settings__slider-input--container {
-              @include flexCenter(100%, 80%, 0, center, center, row);
-
-              .suggestion-settings__slider-input {
-                @include flexCenter(50%, 100%, 2em, center, center, row);
-                box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
-                background: $primary-color-200;
-              }
-              input[type="range"] {
-                height: 12px;
-                appearance: none;
-                border-radius: 50px;
-                box-shadow: inset 1px 1px 2px 0px #3b3b3b, inset -1px -1px 2px #e8e4e4;
-                // background: -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage}, #63DEBC), color-stop(${currentPercentage}, ${bgColor}))
-              }
-              input[type="range"]::-webkit-slider-thumb {
-                height: 8px;
-                width: 18px;
-                border-radius: 1em;
-                box-shadow: 1px 1px 2px 0px #424141, -1px -1px 2px #ffffff;
-                background: $primary-color-300;
-                appearance: none;
-                cursor: pointer;
-              }
-              input[type="range"]::-moz-range-track {
-                background: pink;
-              }
-            }
-            .suggestion-settings__rhyme-number {
-              @include flexCenter(100%, 10%, 0, center, center, row);
-              color: $base-color;
-              font-size: 0.7rem;
             }
           }
         }
@@ -240,7 +237,7 @@
 }
 
 .suggestion-settings__header {
-  @include flexCenter(15%, 100%, 0, center, center, row);
+  @include flexCenter(15%, 95%, 0, center, center, row);
 
   .suggestion-settings__header-title {
     @include flexCenter(100%, 90%, 0, center, center, row);
@@ -263,10 +260,10 @@
 }
 
 .suggestion-settings__rhyme-suggestions-header {
-  @include flexCenter(40%, 100%, 0, center, flex-end, row);
+  @include flexCenter(40%, 95%, 0, center, flex-end, row);
 
   .suggestion-settings__rhyme-suggestions-header--bs-outset {
-    @include flexCenter(78%, 95%, 2em, center, center, row);
+    @include flexCenter(78%, 99%, 2em, center, center, row);
     box-shadow: 1px 1px 2px 0px #535353, -1px -1px 2px #f7f7f7;
 
     p {

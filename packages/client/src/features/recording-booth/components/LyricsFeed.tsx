@@ -1,16 +1,20 @@
-import { PropsWithChildren, ReactNode, useCallback, useEffect, useRef, useState } from "react"
-import useTranscript from "../hooks/useTranscript"
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react"
+import { useLiveTranscript, useTranscriptLyrics } from "../hooks/useTranscript"
+import RhymeSuggestionPanels from "./RecordInteractions/RhymeSuggestionPanels"
 
-type LyricsFeedProps = PropsWithChildren<{
-  isRecording: boolean
-}>
+type LyricsFeedProps = {
+  lyricsRef: any
+  children: ReactNode
+}
 
-const LiveTranscript = ({ transcript }: { transcript: string }) => {
-  const scrollContainerRef = useRef<any>(null)
-  const scrollRef = useRef<any>(null)
+export const LiveTranscript = () => {
+  const { transcript } = useLiveTranscript()
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const scrollRef = useRef<HTMLParagraphElement>(null)
+  const renderRef = useRef<number>(0)
 
   useEffect(() => {
-    if (scrollContainerRef.current) {
+    if (scrollContainerRef.current && scrollRef.current) {
       let container = scrollContainerRef.current.clientWidth
       let scroller = scrollRef.current.clientWidth
       if (scroller > container) {
@@ -18,8 +22,9 @@ const LiveTranscript = ({ transcript }: { transcript: string }) => {
         scrollContainerRef.current.scrollLeft += difference
       }
     }
-  }, [transcript])
+  }, [transcript, scrollContainerRef, scrollRef])
 
+  console.log(renderRef.current++, "<LiveTranscript /> -- Render test -- Layer 2")
   return (
     <div className="suggestions__transcript--container">
       <div className="suggestions__transcript--bs-inset">
@@ -65,19 +70,20 @@ const LyricPrompt = ({ children }: { children: ReactNode }) => (
   </li>
 )
 
-export default function LyricsFeed({ isRecording, children }: LyricsFeedProps) {
-  const { lyrics, transcript } = useTranscript()
+const LyricsFeed = ({ lyricsRef, children }: LyricsFeedProps) => {
+  const { lyrics, listening: isRecording } = useTranscriptLyrics()
   const [feedLyrics, setFeedLyrics] = useState<string[][]>([])
   const scrollRef = useRef<any>(null)
+  const renderRef = useRef<number>(0)
 
   useEffect(() => {
-    console.log(transcript, "IN LYRICS FEED useTranscript")
     setFeedLyrics(lyrics)
-  }, [lyrics])
+    lyricsRef.current = [...lyrics]
+  }, [lyrics, lyricsRef])
 
   const handleLiveLyrics = useCallback(() => {
     if (feedLyrics[0] && feedLyrics[0].length === 0) return null
-    // console.log(feedLyrics, "what does this lyrics look like atm???")
+
     return feedLyrics.map((row, index) => {
       return <LyricLine key={`${row}_${index}`} row={row} index={index} />
     })
@@ -106,6 +112,7 @@ export default function LyricsFeed({ isRecording, children }: LyricsFeedProps) {
     }
   }, [lyrics])
 
+  console.log(renderRef.current++, "<LyricsFeed /> -- Render test -- Layer 2")
   return (
     <div className="lyrics__feed--container">
       <div className={`record__lyrics`}>
@@ -113,7 +120,33 @@ export default function LyricsFeed({ isRecording, children }: LyricsFeedProps) {
           {isRecording ? handleLiveLyrics() : handleSongLyricsLength(feedLyrics)}
         </ul>
       </div>
-      <LiveTranscript transcript={transcript} />
+      {children}
     </div>
   )
 }
+
+type LyricsControllerProps = {
+  lyricsRef: any
+  settingsMenu: ReactNode
+}
+
+const LyricsController = ({ lyricsRef, settingsMenu }: LyricsControllerProps) => {
+  const renderRef = useRef<number>(0)
+  console.log(renderRef.current++, "<LyricsController /> -- Render test -- Layer 1")
+  return (
+    <>
+      <div className="recording-video__actions--container">
+        <div className="record__lyrics--container">
+          <LyricsFeed lyricsRef={lyricsRef}>
+            <LiveTranscript />
+          </LyricsFeed>
+        </div>
+        {settingsMenu}
+      </div>
+
+      <RhymeSuggestionPanels />
+    </>
+  )
+}
+
+export default LyricsController

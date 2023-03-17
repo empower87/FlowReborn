@@ -1,5 +1,4 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { getFetch, httpBatchLink, loggerLink } from "@trpc/client"
 import React, { Suspense, useState } from "react"
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom"
@@ -101,7 +100,7 @@ function App() {
                 </Routes>
               </Suspense>
             </AuthProvider>
-            <ReactQueryDevtools initialIsOpen={true} />
+            {/* <ReactQueryDevtools initialIsOpen={true} /> */}
           </BrowserRouter>
         </div>
       </QueryClientProvider>

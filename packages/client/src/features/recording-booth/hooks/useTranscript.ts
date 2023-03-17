@@ -2,11 +2,78 @@ import { useEffect, useState } from "react"
 import { useSpeechRecognition } from "react-speech-recognition"
 import useDebounce from "src/hooks/useDebounce"
 import { refilterProfanity } from "../utils/profanityHandler"
+import { PosType } from "./useSuggestionSettings"
 var pos = require("pos")
 
 const ADJ_TAGS = ["JJ", "JJS", "JJR"]
 const NOUN_TAGS = ["NN", "NNP", "NNPS", "NNS"]
 const VERB_TAGS = ["VB", "VBD", "VBG", "VBN", "VBP", "VBZ"]
+
+export const useLiveTranscript = () => {
+  const { transcript, listening, resetTranscript } = useSpeechRecognition()
+
+  return {
+    transcript,
+  }
+}
+
+export const useTranscriptLyrics = () => {
+  const { transcript, listening, resetTranscript } = useSpeechRecognition()
+  const debouncedTranscript = useDebounce(transcript, 400)
+  const [lyrics, setLyrics] = useState<string[][]>([])
+
+  useEffect(() => {
+    const validArray = getValidTranscriptArray(debouncedTranscript)
+    if (validArray.length) {
+      setLyrics((prevLyrics) => [...prevLyrics, validArray])
+      resetTranscript()
+    }
+  }, [debouncedTranscript])
+
+  return {
+    lyrics,
+    listening,
+  }
+}
+
+const getPosArray = (posType: PosType) => {
+  switch (posType) {
+    case "Verbs":
+      return VERB_TAGS
+    case "Nouns":
+      return NOUN_TAGS
+    default:
+      return NOUN_TAGS
+  }
+}
+
+export const useTranscriptPos = (posType: PosType) => {
+  const { transcript, listening } = useSpeechRecognition()
+  const debounced500 = useDebounce(transcript, 400)
+  const [partOfSpeech, setPartOfSpeech] = useState<string>("")
+  const [lastWord, setLastWord] = useState<string>("")
+
+  useEffect(() => {
+    var words = new pos.Lexer().lex(debounced500)
+    var tagger = new pos.Tagger()
+    var taggedWords = tagger.tag(words)
+
+    const validWord = getValidTranscriptWord(debounced500)
+    if (validWord !== "") {
+      setLastWord(validWord)
+    }
+
+    if (posType !== "LastWord") {
+      setPartOfSpeech(findPOSWord(taggedWords, getPosArray(posType)))
+    }
+  }, [debounced500])
+
+  return {
+    lastWord,
+    partOfSpeech,
+    listening,
+  }
+}
 
 export default function useTranscript() {
   const { transcript, listening, finalTranscript, resetTranscript } = useSpeechRecognition()
@@ -38,7 +105,8 @@ export default function useTranscript() {
     const validArray = getValidTranscriptArray(debounced500)
     if (validArray.length) {
       setLyrics((prevLyrics) => [...prevLyrics, validArray])
-      // resetTranscript()
+
+      resetTranscript()
     }
   }, [debounced500])
 

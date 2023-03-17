@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import InputError from "src/components/errors/InputError"
 import LoadingSpinner from "src/components/loading/LoadingSpinner"
-import Header from "src/features/recording-booth/components/Header"
+import TitleBar, { TitleBarButton } from "src/components/ui/TitleBar"
 import { ISongTake } from "src/features/recording-booth/utils/types"
 import Recordings from "../../features/recording-post/components/Recordings/Recordings"
 import LyricsMenu from "./components/LyricsMenu"
@@ -52,7 +52,12 @@ export default function PostRecording() {
         message={error.message}
         options={{ position: [6, 27], size: [40, 72] }}
       />
-      <Header type="Back" opacity="1" onClose={() => onClose()} title={<p className="recording__title">Post</p>} />
+
+      <TitleBar
+        title={<p className="recording__title">Post</p>}
+        leftButton={<TitleBarButton type="Back" onClick={() => onClose()} />}
+      />
+
       <div className="post-recording__video-frame">
         <div className="post-recording__video-menu">
           {currentTake && currentTake.thumbnailBlob ? (
@@ -66,7 +71,9 @@ export default function PostRecording() {
         <div className="post-recording__video">
           <LyricsPanel isOpen={showLyrics} />
           <video id={currentTake?.audio} className="record__video" src={currentTake?.audio} ref={videoRef} />
-          <div className="post-recording__playback">{currentTake && <MediaPlayback take={currentTake} />}</div>
+          <div className="post-recording__playback">
+            {currentTake && <MediaPlayback take={currentTake} videoRef={videoRef} />}
+          </div>
         </div>
       </div>
 

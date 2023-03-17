@@ -1,4 +1,4 @@
-import { Dispatch, Reducer, useReducer } from "react"
+import { createContext, Dispatch, ReactNode, Reducer, useCallback, useContext, useReducer } from "react"
 import { Beat, beatList } from "src/constants"
 
 export type PosType = "LastWord" | "Nouns" | "Verbs"
@@ -111,7 +111,77 @@ export const recordingBoothSettingsReducer: Reducer<State, Action> = (state, act
   }
 }
 
-export default function useSuggestionSettings() {
+type SuggestionSettingsContextType = ReturnType<typeof useSuggestionSettings>
+
+const SuggestionSettingsContext = createContext<SuggestionSettingsContextType | null>(null)
+
+export const useSuggestionSettings = () => {
   const [state, dispatch] = useReducer(recordingBoothSettingsReducer, INITIAL_STATE)
-  return { state, dispatch }
+  const { rhymeSuggestionPanels, UIOpacity, beats, selectedBeat, recordingType, numOfRhymeSuggestions, toggleModal } =
+    state
+
+  const toggleSuggestionModalHandler = useCallback((type: "UIOpacity" | "Beat" | "Rhymes" | "Hide") => {
+    switch (type) {
+      case "UIOpacity":
+        dispatch({ type: "SHOW_MENU", payload: { menu: "UIOpacity" } })
+        break
+      case "Beat":
+        dispatch({ type: "SHOW_MENU", payload: { menu: "Beat" } })
+        break
+      case "Rhymes":
+        dispatch({ type: "SHOW_MENU", payload: { menu: "Rhymes" } })
+        break
+      case "Hide":
+        dispatch({ type: "SHOW_MENU", payload: { menu: "Hide" } })
+        break
+    }
+  }, [])
+
+  const toggleMediaTypeHandler = () => {
+    dispatch({ type: "TOGGLE_VIDEO", payload: {} })
+  }
+
+  const selectBeatHandler = (beat: Beat) => {
+    dispatch({ type: "SET_BEAT", payload: { selectBeat: beat } })
+    setTimeout(() => {
+      dispatch({ type: "SHOW_MENU", payload: { menu: "Hide" } })
+    }, 100)
+  }
+
+  const updatePanelsHandler = (panel: PosType) => {
+    dispatch({ type: "UPDATE_PANELS", payload: { rhymeSuggestionPanel: panel } })
+  }
+
+  const closeModalHandler = () => {
+    dispatch({ type: "SHOW_MENU", payload: { menu: "Hide" } })
+  }
+
+  return {
+    state,
+    rhymeSuggestionPanels,
+    UIOpacity,
+    beats,
+    selectedBeat,
+    recordingType,
+    numOfRhymeSuggestions,
+    toggleModal,
+    toggleSuggestionModalHandler,
+    toggleMediaTypeHandler,
+    dispatch,
+    selectBeatHandler,
+    updatePanelsHandler,
+    closeModalHandler,
+  }
+}
+
+export const SuggestionSettingsProvider = ({ children }: { children: ReactNode }) => {
+  const values = useSuggestionSettings()
+  return <SuggestionSettingsContext.Provider value={values}>{children}</SuggestionSettingsContext.Provider>
+}
+
+export const useSuggestionSettingsContext = () => {
+  const context = useContext(SuggestionSettingsContext)
+  if (!context)
+    throw new Error("useSuggestionSettingsContext has to be used within <SuggestionSettingsContext.Provider>")
+  return context
 }

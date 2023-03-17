@@ -1,210 +1,126 @@
-import { CSSProperties, Dispatch, SetStateAction, useEffect, useLayoutEffect, useRef, useState } from "react"
+import { CSSProperties, ReactNode, useLayoutEffect, useRef, useState } from "react"
+import { useInView } from "react-intersection-observer"
 import AudioSlider from "src/components/audio/AudioSlider"
 import { SideButton, SideButtonMenu } from "src/components/ui/SideButtonMenu"
-import CommentMenu from "src/features/socialize/comments/components/CommentMenu"
-import useFollow from "src/features/socialize/follow/useFollow"
-import useLike from "src/features/socialize/like/useLike"
 import useAudioPlayer from "src/hooks/useAudioPlayer"
-import { useIntersectionObserver } from "src/hooks/useIntersectionObserver"
-import { IComment, ISongPopulatedUserAndComments as ISong, IUser } from "src/types/ServerModelTypes"
-import SongDetails from "./Details/SongDetails"
+import { ISongPopulatedUserAndComments as ISong } from "src/types/ServerModelTypes"
+import {
+  CommentButtonWithCommentModal,
+  FollowButton,
+  FullscreenButton,
+  LikeButton,
+  LyricsButtonWithLyricsModal,
+} from "./components/ActionButtons"
+import SongPostDetails from "./components/SongPostDetails"
+import { MediaProgressBar, PlaybackButtonContainer, Video } from "./components/VideoPlayer"
 
 type SongPostProps = {
   song: ISong
-  isVideoFullscreen: boolean
-  setIsVideoFullscreen: Dispatch<SetStateAction<boolean>>
+  // isVideoFullscreen: boolean
+  // setIsVideoFullscreen: Dispatch<SetStateAction<boolean>>
 }
 
 interface ISongPostProps extends SongPostProps {
   style: CSSProperties
 }
 
-interface ISongPostUIOverlayProps extends SongPostProps {
-  isIntersecting: boolean
-  showComments: boolean
-  setShowComments: Dispatch<SetStateAction<boolean>>
-  toggleAspectRatio: "Landscape" | "Portrait"
-  handleToggleVideoAspect: () => void
+const INTERSECTION_OPTIONS = {
+  // root: document.querySelector(".song-post__list"),
+  threshold: 0.9,
 }
 
-type VideoProps = {
-  thumbnail: string | undefined
-  src: string | undefined
-  onClick: () => void
-  placeholder?: string | undefined
-  toggleAspectRatio: "Landscape" | "Portrait"
+const SongPostActionsBar = ({ children }: { children: ReactNode }) => {
+  return <SideButtonMenu>{children}</SideButtonMenu>
 }
 
-const LikeButton = ({ data }: { data: ISong | IComment }) => {
-  const { total, hasUser, onClick } = useLike(data._id, data.likes, "Song")
-  return <SideButton type="Like" text={`${total}`} hasUser={hasUser} onClick={onClick} size={75} />
-}
+export default function SongPost({ song, style }: ISongPostProps) {
+  const [itemRef, inView] = useInView(INTERSECTION_OPTIONS)
 
-const FollowButton = ({ data }: { data: IUser }) => {
-  const { total, hasUser, onClick } = useFollow(data._id, data.followers)
-  return <SideButton type="Follow" text={`${total}`} hasUser={hasUser} onClick={onClick} size={110} />
-}
+  const onClickHandler = () => {
+    // setIsVideoFullscreen((prev) => !prev)
+    console.log("LOL CLICKED DUMB BUTTON")
+  }
 
-const LyricsModal = ({ lyrics, isOpen }: { lyrics: string[][]; isOpen: boolean }) => {
   return (
-    <div className={`lyrics-popup ${isOpen ? "Open" : "Closed"}`} style={{ visibility: isOpen ? "visible" : "hidden" }}>
-      {lyrics.map((line, index) => {
-        return (
-          <div className="each-lyric-container" key={`${index}_${line}_songlyrics`}>
-            <p className="each-lyric-no">{index + 1}</p>
-            {line.map((lyric, i) => {
-              return (
-                <p key={`${i}_${lyric}`} className="each-lyric-line">
-                  {lyric}
-                </p>
-              )
-            })}
-          </div>
-        )
-      })}
-    </div>
+    <li ref={itemRef} className="song-post__item" style={style}>
+      <VideoProvider
+        inView={inView}
+        song={song}
+        sideBarActions={
+          <>
+            <LikeButton data={song} />
+            <CommentButtonWithCommentModal data={song} />
+            <FollowButton data={song.user} />
+            <LyricsButtonWithLyricsModal lyrics={song.lyrics} />
+            <FullscreenButton onClick={onClickHandler} />
+          </>
+        }
+        songDetails={<SongPostDetails song={song} />}
+      />
+    </li>
   )
 }
 
-const MediaPlayer = ({ song, autoPlay }: { song: ISong; autoPlay: boolean }) => {
+const VideoProvider = ({
+  inView,
+  song,
+  songDetails,
+  sideBarActions,
+}: {
+  inView: boolean
+  song: ISong
+  songDetails: ReactNode
+  sideBarActions: ReactNode
+}) => {
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const { toggleVideoAspect, handleToggleVideoAspect } = useSongVideoControls(song.audio)
+
   const {
     slider,
     time: { current, end },
     isPlaying,
     setIsPlaying,
+    setPlayHandler,
   } = useAudioPlayer({
-    src: song.audio,
+    ref: videoRef,
     duration: song.duration,
     bgColor: "#eeb2cb",
-    video: song.thumbnail ? song.audio : undefined,
+    video: song.audio,
   })
 
-  useEffect(() => {
-    if (autoPlay) {
-      setIsPlaying(true)
-    } else {
-      setIsPlaying(false)
-    }
-  }, [autoPlay])
+  if (!inView && isPlaying) setIsPlaying(false)
 
   return (
-    <div className="audio-player">
-      <div className="audio-player__slider">
-        <div className="audio-player__playback-text Start">{current}</div>
-        <div className="audio-player__slider">
-          <div className="audio-player__slider--bs-inset">
-            <AudioSlider addClass="" {...slider} />
-          </div>
-        </div>
-        <div className="audio-player__playback-text End">{end}</div>
-      </div>
-      {/* <div className="audio-player__play">
-        <div className="audio-player__play-btn">
-          <PlayButton isPlaying={isPlaying} setIsPlaying={setIsPlaying} audio={song.audio} />
-        </div>
-      </div> */}
-    </div>
-  )
-}
+    <>
+      <Video
+        ref={videoRef}
+        thumbnail={song.thumbnail}
+        src={song.audio}
+        onClick={setPlayHandler}
+        placeholder={song.video}
+        toggleAspectRatio={toggleVideoAspect}
+      />
 
-const SongPostUIOverlay = ({
-  song,
-  isVideoFullscreen,
-  setIsVideoFullscreen,
-  isIntersecting,
-  showComments,
-  setShowComments,
-  toggleAspectRatio,
-  handleToggleVideoAspect,
-}: ISongPostUIOverlayProps) => {
-  const [toggleLyrics, setToggleLyrics] = useState<boolean>(false)
-  return (
-    <div
-      className="song-post__item-uioverlay"
-      style={{ visibility: isVideoFullscreen ? "hidden" : "visible" }}
-      onClick={(e) => {
-        if (e.currentTarget === e.target) {
-          setIsVideoFullscreen((prev) => !prev)
-        }
-      }}
-    >
-      <SideButtonMenu>
-        <LikeButton data={song} />
+      <PlaybackButtonContainer isPlaying={isPlaying} setIsPlaying={setPlayHandler} />
+
+      <SongPostActionsBar>
+        {sideBarActions}
         <SideButton
-          type="Comment"
-          text={`${song.comments.length}`}
-          hasUser={false}
-          onClick={() => setShowComments(true)}
-          isPressed={showComments}
-          size={60}
-        />
-        <FollowButton data={song.user} />
-        <SideButton
-          type="Songs"
-          text={"Lyrics"}
-          hasUser={false}
-          onClick={() => setToggleLyrics((prev) => !prev)}
-          isPressed={toggleLyrics}
-          size={80}
-        />
-        <SideButton
-          type={toggleAspectRatio}
+          type={toggleVideoAspect}
           text="Aspect Ratio"
           hasUser={false}
           onClick={() => handleToggleVideoAspect()}
           size={60}
         />
-      </SideButtonMenu>
+      </SongPostActionsBar>
 
-      <LyricsModal lyrics={song.lyrics} isOpen={toggleLyrics} />
       <div className="song-post__details--wrapper">
-        <SongDetails song={song} />
-        <MediaPlayer song={song} autoPlay={isIntersecting} />
+        {songDetails}
+        <MediaProgressBar current={current} end={end}>
+          <AudioSlider addClass="" {...slider} />
+        </MediaProgressBar>
       </div>
-    </div>
-  )
-}
-
-export default function SongPost({ song, style, isVideoFullscreen, setIsVideoFullscreen }: ISongPostProps) {
-  const [showComments, setShowComments] = useState<boolean>(false)
-  const itemRef = useRef<HTMLLIElement>(null)
-
-  const { toggleVideoAspect, handleToggleVideoAspect } = useSongVideoControls(song.audio)
-  const isIntersecting = useIntersectionObserver(itemRef, {
-    threshold: 0.9,
-    root: document.querySelector(".song-post__container"),
-    rootMargin: "0px 0px 200px 0px",
-  })
-
-  const onClickHandler = () => {
-    setIsVideoFullscreen((prev) => !prev)
-  }
-
-  return (
-    <li id={song?._id} ref={itemRef} className="song-post__item" style={style}>
-      <CommentMenu song={song} isOpen={showComments} onClose={setShowComments} />
-
-      {isIntersecting && (
-        <Video
-          thumbnail={song.thumbnail}
-          src={song.audio}
-          onClick={onClickHandler}
-          placeholder={song.video}
-          toggleAspectRatio={toggleVideoAspect}
-        />
-      )}
-
-      <SongPostUIOverlay
-        song={song}
-        isVideoFullscreen={isVideoFullscreen}
-        setIsVideoFullscreen={setIsVideoFullscreen}
-        isIntersecting={isIntersecting}
-        showComments={showComments}
-        setShowComments={setShowComments}
-        toggleAspectRatio={toggleVideoAspect}
-        handleToggleVideoAspect={handleToggleVideoAspect}
-      />
-    </li>
+    </>
   )
 }
 
@@ -237,24 +153,9 @@ const useSongVideoControls = (id: string) => {
   }
 }
 
-const Video = ({ thumbnail, src, onClick, placeholder, toggleAspectRatio }: VideoProps) => {
-  return (
-    <div
-      className="song-post__video--container"
-      style={{ backgroundImage: `url(${placeholder ? placeholder : ""})` }}
-      onClick={onClick}
-    >
-      {thumbnail && (
-        <video
-          id={src}
-          className={`video-pane-video`}
-          style={{ objectFit: toggleAspectRatio === "Landscape" ? "contain" : "cover" }}
-          src={src}
-          poster={thumbnail}
-          loop
-          playsInline
-        />
-      )}
-    </div>
-  )
-}
+// const FullscreenVideoModal = ({ isOpen, children }: { isOpen: boolean; children: ReactNode }) => {
+//   const root = document.getElementById("root")!
+
+//   if (!isOpen) return null
+//   return ReactDOM.createPortal(<div className="fullscreen-video-modal">{children}</div>, root)
+// }

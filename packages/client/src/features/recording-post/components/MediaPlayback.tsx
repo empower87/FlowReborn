@@ -1,4 +1,4 @@
-import { PropsWithChildren, useRef } from "react"
+import { MutableRefObject, PropsWithChildren, useRef } from "react"
 import AudioSlider from "src/components/audio/AudioSlider"
 import { PlayButton } from "src/components/buttons/PlayButton"
 import { BtnColorsEnum, RoundButton } from "src/components/buttons/RoundButton/RoundButton"
@@ -44,10 +44,16 @@ const ControlButton = ({ type, onClick }: { type: "Fullscreen" | "Volume"; onCli
   )
 }
 
-export default function MediaPlayback({ take }: { take: ISongTake }) {
+export default function MediaPlayback({
+  take,
+  videoRef,
+}: {
+  take: ISongTake
+  videoRef: MutableRefObject<HTMLVideoElement | null>
+}) {
   const playContainerRef = useRef<HTMLDivElement>(null)
   const { slider, time, isPlaying, setIsPlaying } = useAudioPlayer({
-    src: take?.audio,
+    ref: videoRef,
     duration: take?.duration,
     bgColor: "#f5afcc",
     video: take?.audio,

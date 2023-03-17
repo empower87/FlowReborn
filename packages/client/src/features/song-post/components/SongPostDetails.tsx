@@ -2,7 +2,6 @@ import { Link } from "react-router-dom"
 import MarqueeText from "src/components/text/MarqueeText"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import useFormatDate from "src/hooks/useFormatDate"
-// import { ISong } from "../../../../../../server/src/models/Song"
 import { ISongPopulatedUserAndComments as ISong } from "src/types/ServerModelTypes"
 
 const PRIMARY_COLOR_400 = "#e24f8c"
@@ -55,7 +54,7 @@ const SongCaption = ({ song }: { song: ISong }) => {
   )
 }
 
-export default function SongDetails({ song }: { song: ISong }) {
+export default function SongPostDetails({ song }: { song: ISong }) {
   return (
     <div className="song-user-section">
       <div className="song-user-container">

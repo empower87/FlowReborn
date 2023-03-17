@@ -1,12 +1,40 @@
+import { ReactNode } from "react"
 import ReactDOM from "react-dom"
-import { SettingsProps } from "../SideSettingsMenu"
+import { BtnColorsEnum, RoundButton } from "src/components/buttons/RoundButton/RoundButton"
+import { useSuggestionSettingsContext } from "src/features/recording-booth/hooks/useSuggestionSettings"
 import OpacitySlider from "./OpacitySlider"
 import RhymeSuggestions from "./RhymeSuggestions"
 import SelectBeat from "./SelectBeat"
 
-export default function SettingsModal({ state, dispatch }: SettingsProps) {
+export const ModalHeaderButton = ({ onClick }: { onClick: () => void }) => {
+  return (
+    <div className="suggestion-settings__close">
+      <RoundButton
+        type="Close"
+        btnOptions={{ bgColor: BtnColorsEnum.Initial, offset: 8 }}
+        iconOptions={{ color: "Primary" }}
+        onClick={() => onClick()}
+      />
+    </div>
+  )
+}
+
+export const ModalHeader = ({ title, children }: { title: string; children: ReactNode }) => {
+  return (
+    <div className="suggestion-settings__header">
+      <div className="suggestion-settings__header-title">
+        <div className="suggestion-settings__header-title--bs-outset">
+          <p>{title}</p>
+        </div>
+      </div>
+      {children}
+    </div>
+  )
+}
+
+export default function SettingsModal() {
+  const { toggleModal, dispatch } = useSuggestionSettingsContext()
   const root = document.getElementById("root")!
-  const { toggleModal } = state
 
   const onCloseHandler = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -18,9 +46,9 @@ export default function SettingsModal({ state, dispatch }: SettingsProps) {
   if (toggleModal === "Hide") return null
   return ReactDOM.createPortal(
     <div className="settings-modal__background" onClick={(e) => onCloseHandler(e)}>
-      {toggleModal === "Rhymes" && <RhymeSuggestions state={state} dispatch={dispatch} />}
-      {toggleModal === "Beat" && <SelectBeat state={state} dispatch={dispatch} />}
-      {toggleModal === "UIOpacity" && <OpacitySlider UIOpacity={state.UIOpacity} dispatch={dispatch} />}
+      {toggleModal === "Rhymes" && <RhymeSuggestions />}
+      {toggleModal === "Beat" && <SelectBeat />}
+      {toggleModal === "UIOpacity" && <OpacitySlider />}
     </div>,
     root
   )

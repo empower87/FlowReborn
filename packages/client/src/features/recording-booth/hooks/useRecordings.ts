@@ -1,27 +1,38 @@
-import { useEffect, useState } from "react"
-import { Beat } from "src/constants/index"
+import { RefObject, useEffect, useRef, useState } from "react"
 import { useAuth } from "src/context/AuthContext"
 import { generateCanvas } from "../utils/generateThumbnail"
 import { ISongTake } from "../utils/types"
 import useMediaRecorder from "./useMediaRecorder"
-import useTranscript from "./useTranscript"
+import { useSuggestionSettingsContext } from "./useSuggestionSettings"
 
-export default function useRecordings(selectedBeat: Beat, recordingType: "audio" | "video") {
+export default function useRecordings(
+  // selectedBeat: Beat,
+  // recordingType: "audio" | "video",
+  // lyricsRef: string[][] | null
+  videoRef: RefObject<HTMLVideoElement>
+) {
+  const { selectedBeat, recordingType } = useSuggestionSettingsContext()
   const { user } = useAuth()
-  const { recorder, startRecording, stopRecording, resetRecording, videoRef } = useMediaRecorder(
+  const { recorder, startRecording, stopRecording, resetRecording } = useMediaRecorder(
     selectedBeat.beat,
-    recordingType
+    recordingType,
+    videoRef
   )
-  const { lyrics } = useTranscript()
+  // const { lyrics } = useTranscript()
   const [currentTake, setCurrentTake] = useState<ISongTake>()
   const [takes, setTakes] = useState<ISongTake[]>([])
+
+  const lyricsRef = useRef<string[][]>([])
+  const minutesRef = useRef<number>(0)
+  const secondsRef = useRef<number>(0)
 
   useEffect(() => {
     if (!user || !videoRef.current) return
     if (recorder.isActive === "finished" && recorder.blob) {
       const id = parseInt(takes.length?.toString()) + 1
-      const filteredLyrics = [...lyrics].filter((lyric) => lyric.length !== 0)
+      const filteredLyrics = [...lyricsRef.current].filter((lyric) => lyric.length !== 0)
       const duration = recorder.minutes * 60000 + recorder.seconds * 1000
+
       var newTake = {
         _id: `${id}`,
         title: "",
@@ -32,6 +43,9 @@ export default function useRecordings(selectedBeat: Beat, recordingType: "audio"
         duration: duration,
         caption: "",
       }
+
+      console.log(newTake, "creating a new take")
+
       const video = videoRef.current
       video.currentTime = 0
 
@@ -60,6 +74,11 @@ export default function useRecordings(selectedBeat: Beat, recordingType: "audio"
     }
   }, [recorder.isActive, recorder.blob])
 
+  useEffect(() => {
+    minutesRef.current = recorder.minutes
+    secondsRef.current = recorder.seconds
+  }, [recorder.minutes, recorder.seconds])
+
   const deleteTake = (_id: string) => {
     let filteredTakes = takes.filter((take) => take._id !== currentTake?._id)
     setTakes(filteredTakes)
@@ -74,9 +93,11 @@ export default function useRecordings(selectedBeat: Beat, recordingType: "audio"
     stopRecording,
     deleteTake,
     isRecording: recorder.isRecording,
-    minutes: recorder.minutes,
-    seconds: recorder.seconds,
+    minutes: minutesRef.current,
+    seconds: secondsRef.current,
     stream: recorder.mediaStream,
     videoRef,
+    lyricsRef,
+    recordingType,
   }
 }

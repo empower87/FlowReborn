@@ -1,23 +1,35 @@
-import { useState } from "react"
+import { ReactNode, RefObject, useRef } from "react"
 import { useNavigate } from "react-router-dom"
-import Header, { Title } from "./components/Header"
-import LyricsFeed from "./components/LyricsFeed"
-import { ActionButton, ActionButtons, RecordButton } from "./components/RecordInteractions/ActionButtons"
-import RhymeSuggestionPanels from "./components/RecordInteractions/RhymeSuggestionPanels"
+import TitleBar, { TitleBarButton } from "src/components/ui/TitleBar"
+import LyricsController from "./components/LyricsFeed"
+import { ActionButtons, ConfirmButtonWithModal, RecordButton } from "./components/RecordInteractions/ActionButtons"
 import SideSettingsMenu from "./components/settings/SideSettingsMenu"
-import ViewFullscreenVideo from "./components/ViewFullscreenVideo"
 import useRecordings from "./hooks/useRecordings"
-import useSuggestionSettings from "./hooks/useSuggestionSettings"
+import { SuggestionSettingsProvider } from "./hooks/useSuggestionSettings"
 
-export default function RecordingBooth() {
-  const navigate = useNavigate()
-  const { state, dispatch } = useSuggestionSettings()
-  const { selectedBeat, recordingType } = state
-  const { takes, currentTake, startRecording, stopRecording, isRecording, minutes, seconds, videoRef } = useRecordings(
-    selectedBeat,
-    recordingType
+type RecordingsControllerProps = {
+  videoRef: RefObject<HTMLVideoElement>
+  uiOpacity: number
+  // selectedBeat: Beat
+  // recordingType: "audio" | "video"
+  children: ReactNode
+}
+
+const RecordingsController = ({
+  videoRef,
+  uiOpacity,
+  // selectedBeat,
+  // recordingType,
+  children,
+}: RecordingsControllerProps) => {
+  const { takes, currentTake, startRecording, stopRecording, isRecording, recordingType } = useRecordings(
+    // selectedBeat,
+    // recordingType,
+    videoRef
   )
-  const [showFullscreenVideo, setShowFullscreenVideo] = useState<boolean>(false)
+  const renderRef = useRef<number>(0)
+
+  const navigate = useNavigate()
 
   const navigateToPostRecording = () => {
     navigate("/post-recording", {
@@ -29,52 +41,55 @@ export default function RecordingBooth() {
     })
   }
 
+  console.log(renderRef.current++, "<RecordingsController /> -- Render test -- Layout 1")
+  return (
+    <div className="recording-booth__body" style={{ opacity: uiOpacity }}>
+      {children}
+      <ActionButtons
+        recordButton={
+          <RecordButton isRecording={isRecording} startRecording={startRecording} stopRecording={stopRecording} />
+        }
+        postButton={
+          takes.length > 0 ? <ConfirmButtonWithModal src={currentTake?.audio} onNext={navigateToPostRecording} /> : null
+        }
+      />
+    </div>
+  )
+}
+
+const Title = () => {
+  const renderRef = useRef<number>(0)
+  console.log(
+    renderRef.current++,
+    "<TITLE /> -- Render test -- SHOULD RERENDER BEING UNDER SETTINGS PROVIDER UNFORTUNATELY"
+  )
+  return <p className="recording__title">Recording Booth</p>
+}
+
+export default function RecordingBooth() {
+  const navigate = useNavigate()
+
+  const renderRef = useRef<number>(0)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const lyricsRef = useRef<string[][]>([])
+
+  // console.log(renderRef.current++, "<RecordingBooth /> -- Render test -- Layer 0")
   return (
     <div className="RecordingVideo">
       <div className="record__video--wrapper">
         <video id="video-recorded" ref={videoRef} className="record__video" autoPlay playsInline muted />
       </div>
 
-      <ViewFullscreenVideo
-        src={currentTake?.audio}
-        isOpen={showFullscreenVideo}
-        onClose={setShowFullscreenVideo}
-        onNext={navigateToPostRecording}
-      />
+      <SuggestionSettingsProvider>
+        <TitleBar
+          title={<Title />}
+          leftButton={<TitleBarButton type="Back" size={80} onClick={() => navigate(-1)} />}
+        />
 
-      <Header
-        type="Close"
-        opacity={state.UIOpacity}
-        onClose={() => navigate(-1)}
-        title={<Title isRecording={isRecording} minutes={minutes} seconds={seconds} />}
-      />
-
-      <div className="recording-booth__body" style={{ opacity: state.UIOpacity }}>
-        <div className="recording-video__actions--container">
-          <div className="record__lyrics--container">
-            <LyricsFeed
-              // songLyrics={currentTake?.lyrics ? currentTake.lyrics : null}
-              isRecording={isRecording}
-            />
-          </div>
-          <SideSettingsMenu state={state} dispatch={dispatch} />
-        </div>
-
-        <RhymeSuggestionPanels categoryList={state.rhymeSuggestionPanels} numofRhymes={state.numOfRhymeSuggestions}>
-          <ActionButtons
-            recordButton={
-              <RecordButton isRecording={isRecording} startRecording={startRecording} stopRecording={stopRecording} />
-            }
-            postButton={
-              takes.length > 0 ? (
-                <ActionButton type="Check" size={110} onClick={() => setShowFullscreenVideo(true)} />
-              ) : (
-                <></>
-              )
-            }
-          />
-        </RhymeSuggestionPanels>
-      </div>
+        <RecordingsController uiOpacity={1} videoRef={videoRef}>
+          <LyricsController lyricsRef={lyricsRef} settingsMenu={<SideSettingsMenu />} />
+        </RecordingsController>
+      </SuggestionSettingsProvider>
     </div>
   )
 }

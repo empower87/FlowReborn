@@ -18,7 +18,7 @@ export default function SongPage() {
         {/* <CommentMenu song={songInView} isOpen={showCommentMenu} onClose={setShowCommentMenu} /> */}
 
         <Header song={songInView} songs={songs} isVideoFullscreen={isVideoFullscreen} />
-        <SongPostList songs={songs} isVideoFullscreen={isVideoFullscreen} setIsVideoFullscreen={setIsVideoFullscreen} />
+        <SongPostList songs={songs} />
       </div>
     </div>
   )

@@ -44,22 +44,6 @@ const useProvideAuth = () => {
     },
   })
 
-  // const authRefresh = trpc.useQuery(["auth.refresh"], {
-  //   retry: 1,
-  //   enabled: false,
-  //   onSuccess: (data) => {
-  //     localStorage.setItem("token", data)
-  //     setIsAuthenticated(data)
-  //     queryClient.invalidateQueries(["users.get-me"])
-  //   },
-  //   onError: (err) => {
-  //     console.log(err, "['auth.refresh']: onError")
-  //     setIsAuthenticated(null)
-  //     setUser(null)
-  //     navigate("/auth", { replace: true })
-  //   },
-  // })
-
   const authLogin = trpc.auth.login.useMutation({
     onSuccess: async (data) => {
       console.log(data, "FUCK THIS YO")
@@ -73,18 +57,6 @@ const useProvideAuth = () => {
     },
   })
 
-  // const authLogin = trpc.useMutation(["auth.login"], {
-  //   onSuccess: async (data) => {
-  //     localStorage.setItem("token", data.token)
-  //     setIsAuthenticated(data.token)
-  //     setUser(data.user)
-  //   },
-  //   onError: (err) => {
-  //     const message = trpcZodErrorHandler(err.message)
-  //     setError(message)
-  //   },
-  // })
-
   const authRegister = trpc.auth.register.useMutation({
     onSuccess: async (data) => {
       await login(data)
@@ -94,15 +66,6 @@ const useProvideAuth = () => {
       setError(message)
     },
   })
-  // const authRegister = trpc.useMutation(["auth.register"], {
-  //   onSuccess: async (data) => {
-  //     await login(data)
-  //   },
-  //   onError: (err) => {
-  //     const message = trpcZodErrorHandler(err.message)
-  //     setError(message)
-  //   },
-  // })
 
   const {
     data,
@@ -136,38 +99,6 @@ const useProvideAuth = () => {
       }
     },
   })
-  // const {
-  //   data,
-  //   refetch: refetchMe,
-  //   isLoading: meIsLoading,
-  //   isFetching,
-  // } = trpc.useQuery(["users.get-me"], {
-  //   enabled: !!isAuthenticated,
-  //   retry: 1,
-  //   onSuccess: async (data) => {
-  //     console.log(data, "['users.get-me']: onSuccess")
-  //     setUser(data)
-  //   },
-  //   onError: (error) => {
-  //     console.log(error, "['auth.get-me']: onError")
-  //     let retryRequest = true
-
-  //     if (error.message.includes("you must be logged in") && retryRequest) {
-  //       retryRequest = false
-
-  //       try {
-  //         setIsAuthenticated(null)
-  //         authRefresh.refetch({ throwOnError: true })
-  //       } catch (err: any) {
-  //         console.log(err, "try/catch ['auth.refresh']: error")
-  //         if (err.message.includes("refresh expired token")) {
-  //           setUser(null)
-  //           navigate("/auth")
-  //         }
-  //       }
-  //     }
-  //   },
-  // })
 
   const login = async (credentials: { username: string; password: string }) => {
     authLogin.mutate(credentials, {
@@ -229,3 +160,4 @@ function useAuth() {
 }
 
 export { useAuth, AuthProvider }
+

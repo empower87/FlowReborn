@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from "react"
+import { createContext, ReactNode, useContext, useEffect, useRef, useState } from "react"
 import { Beat } from "src/constants/index"
 import { useAuth } from "src/context/AuthContext"
 import { generateCanvas } from "../utils/generateThumbnail"
@@ -13,10 +13,12 @@ const RecordingsContext = createContext<RecordingsContextType | null>(null)
 const useRecordingsProvider = (selectedBeat: Beat, recordingType: "audio" | "video") => {
   // const [selectedBeat, setSelectedBeat] = useState<Beat>(beatList[0])
   // const [recordingType, setRecordingType] = useState<"audio" | "video">("video")
+  const videoRef = useRef<HTMLVideoElement>(null)
   const { user } = useAuth()
-  const { recorder, startRecording, stopRecording, resetRecording, videoRef } = useMediaRecorder(
+  const { recorder, startRecording, stopRecording, resetRecording } = useMediaRecorder(
     selectedBeat.beat,
-    recordingType
+    recordingType,
+    videoRef
   )
   const { lyrics } = useTranscript()
   const [currentTake, setCurrentTake] = useState<ISongTake>()

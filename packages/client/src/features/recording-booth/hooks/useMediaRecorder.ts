@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { RefObject, useEffect, useRef, useState } from "react"
 import SpeechRecognition from "react-speech-recognition"
 import RecordRTC, { RecordRTCPromisesHandler } from "recordrtc"
 
@@ -73,11 +73,11 @@ const useRecorderPermission = (recordingType: RecordRTC.Options["type"]) => {
   return { recorder, setRecorder }
 }
 
-export default function useVideoRecorder(beat: string, type: "audio" | "video") {
+export default function useVideoRecorder(beat: string, type: "audio" | "video", videoRef: RefObject<HTMLVideoElement>) {
   const { recorder, setRecorder } = useRecorderPermission(type)
   const { isRecording, mediaStream, mediaRecorder } = recorder
   const audioRef = useRef<any>(new Audio(beat))
-  const videoRef = useRef<HTMLVideoElement>(null)
+  // const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
     if (!videoRef.current) return

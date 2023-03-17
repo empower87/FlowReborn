@@ -1,10 +1,12 @@
-import { MouseEventHandler, ReactNode } from "react"
+import { MouseEventHandler, ReactNode, useRef } from "react"
 import { Icon } from "src/components/buttons/Icon/Icon"
+import useRenderCount from "src/hooks/useRenderCount"
 
 type TitleProps = {
   isRecording: boolean
   minutes: number
   seconds: number
+  // duration: number
 }
 
 type HeaderProps = {
@@ -18,6 +20,8 @@ interface HeaderButtonProps extends Pick<HeaderProps, "type" | "onClose"> {
   size?: number
 }
 
+// IN_PROGRESS: Converting this into global UI component
+
 const HeaderButton = ({ type, size, onClose }: HeaderButtonProps) => {
   return (
     <button className="recording__header-go-back-btn" type="button" onClick={onClose}>
@@ -27,6 +31,8 @@ const HeaderButton = ({ type, size, onClose }: HeaderButtonProps) => {
 }
 
 export const Title = ({ isRecording, minutes, seconds }: TitleProps) => {
+  const count = useRenderCount()
+  const renderRef = useRef(0)
   const handleRecordingTime = (minutes: number, seconds: number) => {
     let formattedSeconds = `${seconds}`
     if (seconds <= 9) {
@@ -36,6 +42,7 @@ export const Title = ({ isRecording, minutes, seconds }: TitleProps) => {
     return formattedTime
   }
 
+  console.log(count, renderRef.current++, "<Title /> -- Render test")
   return (
     <p className={`recording__title ${isRecording ? "isRecording" : ""}`}>
       {isRecording ? `Recording in Progress: ${handleRecordingTime(minutes, seconds)}` : `Recording Booth`}

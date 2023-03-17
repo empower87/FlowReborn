@@ -16,6 +16,7 @@ type SideButtonProps = {
     | "Follow"
     | "Landscape"
     | "Portrait"
+    | "Expand"
   text: string
   hasUser: boolean
   onClick: React.MouseEventHandler<HTMLButtonElement>
