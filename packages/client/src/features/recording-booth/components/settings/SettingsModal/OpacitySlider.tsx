@@ -1,27 +1,13 @@
 import { useSuggestionSettingsContext } from "src/features/recording-booth/hooks/useSuggestionSettings"
+import { SettingsModalLayout, SettingsSlider } from "./SettingsModal"
 
 export default function OpacitySlider() {
-  const { UIOpacity, dispatch } = useSuggestionSettingsContext()
+  const { UIOpacity, setUIOpacityHandler } = useSuggestionSettingsContext()
   return (
-    <div className="settings-modal__opacity-slider">
-      <div className="opacity-slider--bs-inset">
-        <div className="opacity-slider__number">0</div>
-        <div className="opacity-slider__input--wrapper">
-          <input
-            type="range"
-            className="opacity-slider__input"
-            step=".1"
-            min=".2"
-            max="1"
-            value={UIOpacity}
-            onChange={(e) => dispatch({ type: "SET_UIOPACITY", payload: { UIOpacity: e.target.value } })}
-            // onKeyUp={() => onClose(false)}
-            // onMouseUp={() => onClose(false)}
-            // onTouchEnd={() => onClose(false)}
-          />
-        </div>
-        <div className="opacity-slider__number">{UIOpacity}</div>
-      </div>
-    </div>
+    <SettingsModalLayout type="Opacity" title="Set UI Opacity">
+      {/* <div className="suggestion-settings__opacity--wrapper"> */}
+      <SettingsSlider minMaxTuple={[0, 1]} step={0.1} initialValue={UIOpacity} onBlurHandler={setUIOpacityHandler} />
+      {/* </div> */}
+    </SettingsModalLayout>
   )
 }

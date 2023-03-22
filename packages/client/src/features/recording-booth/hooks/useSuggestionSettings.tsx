@@ -6,11 +6,11 @@ const CATEGORIES: PosType[] = ["LastWord", "Nouns", "Verbs"]
 
 type State = {
   rhymeSuggestionPanels: PosType[]
-  UIOpacity: string
+  UIOpacity: number
   beats: Beat[]
   selectedBeat: Beat
   recordingType: "audio" | "video"
-  numOfRhymeSuggestions: string
+  numOfRhymeSuggestions: number
   toggleModal: "UIOpacity" | "Beat" | "Rhymes" | "Hide"
 }
 
@@ -19,8 +19,8 @@ type Action = {
   payload: {
     rhymeSuggestionPanel?: PosType
     menu?: "UIOpacity" | "Beat" | "Rhymes" | "Hide"
-    numOfRhymes?: string
-    UIOpacity?: string
+    numOfRhymes?: number
+    UIOpacity?: number
     recordingType?: "audio" | "video"
     selectBeat?: Beat
   }
@@ -31,11 +31,11 @@ export type SettingsState = State
 
 export const INITIAL_STATE: State = {
   rhymeSuggestionPanels: [...CATEGORIES],
-  UIOpacity: "1",
+  UIOpacity: 1,
   beats: beatList,
   selectedBeat: beatList[0],
   recordingType: "video",
-  numOfRhymeSuggestions: "5",
+  numOfRhymeSuggestions: 5,
   toggleModal: "Hide",
 }
 
@@ -156,21 +156,31 @@ export const useSuggestionSettings = () => {
     dispatch({ type: "SHOW_MENU", payload: { menu: "Hide" } })
   }
 
+  const setUIOpacityHandler = (value: number | undefined) => {
+    if (!value) return
+    dispatch({ type: "SET_UIOPACITY", payload: { UIOpacity: value } })
+  }
+
+  const setNumOfRhymeSuggestionsHandler = (value: number | undefined) => {
+    if (!value || numOfRhymeSuggestions === value) return
+    dispatch({ type: "SET_NUM_OF_RHYMES", payload: { numOfRhymes: value } })
+  }
+
   return {
-    state,
     rhymeSuggestionPanels,
     UIOpacity,
     beats,
     selectedBeat,
     recordingType,
     numOfRhymeSuggestions,
+    setNumOfRhymeSuggestionsHandler,
     toggleModal,
     toggleSuggestionModalHandler,
     toggleMediaTypeHandler,
-    dispatch,
     selectBeatHandler,
     updatePanelsHandler,
     closeModalHandler,
+    setUIOpacityHandler,
   }
 }
 

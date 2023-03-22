@@ -74,7 +74,7 @@ export type Transcript = {
   listening: boolean
 }
 
-export default function useDatamuse(category: PosType, rhymeCount: string) {
+export default function useDatamuse(category: PosType, rhymeCount: number) {
   const [selectedPos, setSelectedPos] = useState<RhymeType>("RHY")
   const [rhymes, setRhymes] = useState<string[]>([])
 
@@ -106,7 +106,7 @@ export default function useDatamuse(category: PosType, rhymeCount: string) {
   useEffect(() => {
     if (!listening) return
     const handleAsync = async () => {
-      const getDatamuseRhymes = async (url: string, max: string) => {
+      const getDatamuseRhymes = async (url: string, max: number) => {
         const getRhymes = await axios.get<DatamuseRes[]>(`https://api.datamuse.com/words?${url}&max=${max}`)
         if (!getRhymes.data) throw new Error("failed to fetch datamuse rhymes")
         const data = getRhymes.data.map((each) => each.word)

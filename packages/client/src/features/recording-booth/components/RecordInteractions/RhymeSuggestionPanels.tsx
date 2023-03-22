@@ -122,7 +122,7 @@ const RhymeSuggestionPanelLayout = ({ queryWord, buttons, rhymeName, text }: Rhy
   )
 }
 
-const RhymeSuggestionPanelWrapper = ({ type, numofRhymes }: { type: PosType; numofRhymes: string }) => {
+const RhymeSuggestionPanelWrapper = ({ type, numofRhymes }: { type: PosType; numofRhymes: number }) => {
   const { selectedPos, rhymes, queryWord, selectedRhymesHandler } = useDatamuse(type, numofRhymes)
   const renderRef = useRef<number>(0)
 

@@ -5,89 +5,102 @@
   top: 0;
   z-index: 1;
   background: #0000009e;
-}
 
-.settings-modal__rhyme-suggestions {
-  @include flexCenter(200px, 80%, 0.2em, center, center, column);
-  background: linear-gradient(323deg, #808080 0%, #b8b8b8 100%);
-  position: absolute;
-  top: 30%;
-  right: 17%;
+  .settings-modal__modal {
+    @include flexCenter(auto, 80%, 0.2em, center, center, column);
+    background: linear-gradient(323deg, #808080 0%, #b8b8b8 100%);
+    position: absolute;
+    padding: 2% 0%;
 
-  .settings-modal__rhyme-suggestions--bs-inset {
-    @include flexCenter(96%, 97%, 0.2em, center, center, column);
+    // Classes added to modal to position it closest to button that toggles it.
+    &.Beat {
+      top: 17%;
+      right: 17%;
+    }
+    &.RhymeSuggestions {
+      top: 30%;
+      right: 17%;
+    }
+    &.Opacity {
+      top: 10%;
+      right: 17%;
+    }
 
-    box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
+    .settings-modal__modal--bs-inset {
+      @include flexCenter(96%, 96%, 1em 0.2em 0.2em 0.2em, flex-start, center, column);
+      box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
 
-    .suggestion-settings__body {
-      @include flexCenter(85%, 100%, 0, flex-start, center, column);
+      .suggestion-settings__header {
+        @include flexCenter(30px, 100%, 0, center, center, row);
 
-      .suggestion-settings__option {
-        @include flexCenter(35%, 100%, 0, center, center, row);
+        .suggestion-settings__header-title {
+          @include flexCenter(100%, 90%, 0, center, center, row);
 
-        // @include flexCenter(30%, 100%, 0, center, center, column);
+          .suggestion-settings__header-title--bs-outset {
+            @include flexCenter(70%, 97%, 3em, center, center, row);
+            box-shadow: 1px 1px 2px 0px #535353, -1px -1px 2px #f7f7f7;
 
-        // .suggestion-settings__rhyme-number--bs-inset {
-        //   @include flexCenter(90%, 95%, 0.2em 1.2em 0.2em 1.2em, center, center, column);
-        //   box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
-
-        .suggestion-settings__option--bs-inset {
-          @include flexCenter(90%, 95%, 1.2em 0.2em 1.2em 0.2em, center, center, column);
-          box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
-
-          .suggestion-settings__rhyme-number-slider {
-            @include flexCenter(60%, 100%, 0, center, center, row);
-
-            .suggestion-settings__slider-input--container {
-              @include flexCenter(100%, 80%, 0, center, center, row);
-
-              .suggestion-settings__slider-input {
-                @include flexCenter(50%, 100%, 2em, center, center, row);
-                box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
-                background: $primary-color-200;
-              }
-              input[type="range"] {
-                height: 12px;
-                appearance: none;
-                border-radius: 50px;
-                box-shadow: inset 1px 1px 2px 0px #3b3b3b, inset -1px -1px 2px #e8e4e4;
-                // background: -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage}, #63DEBC), color-stop(${currentPercentage}, ${bgColor}))
-              }
-              input[type="range"]::-webkit-slider-thumb {
-                height: 8px;
-                width: 18px;
-                border-radius: 1em;
-                box-shadow: 1px 1px 2px 0px #424141, -1px -1px 2px #ffffff;
-                background: $primary-color-300;
-                appearance: none;
-                cursor: pointer;
-              }
-              input[type="range"]::-moz-range-track {
-                background: pink;
-              }
-            }
-            .suggestion-settings__rhyme-number {
-              @include flexCenter(100%, 10%, 0, center, center, row);
+            p {
               color: $base-color;
-              font-size: 0.7rem;
             }
           }
+        }
 
-          .suggestion-settings__list--container {
-            @include flexCenter(60%, 100%, 0, center, center, row);
+        .suggestion-settings__close {
+          @include flexCenter(100%, 10%, 0, center, center, row);
+          button {
+            box-shadow: 1px 1px 3px #313131, -1px -1px 2px #d2d2d2;
+          }
+        }
+      }
 
-            .suggestion-settings__list {
-              @include flexCenter(75%, 98%, 2em, flex-start, center, row);
-              display: inline-block;
+      .settings-modal__children--wrapper {
+        @include flexCenter(auto, 96%, 0, center, center, row);
+        min-height: 30px;
+        padding: 2%;
+      }
+
+      .suggestion-settings__list {
+        @include flexCenter(auto, 100%, 0, flex-start, center, column);
+        overflow-y: auto;
+
+        .suggestion-settings__item {
+          @include flexCenter(60px, 100%, 0, center, center, row);
+          flex: 0 0 auto;
+          margin-top: 1%;
+
+          .suggestion-settings__option--bs-inset {
+            @include flexCenter(99%, 99%, 1.2em 0.2em 1.2em 0.2em, center, center, column);
+            box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
+
+            .suggestion-settings__rhyme-suggestions-header {
+              @include flexCenter(40%, 95%, 0, center, flex-end, row);
+
+              .suggestion-settings__rhyme-suggestions-header--bs-outset {
+                @include flexCenter(78%, 99%, 2em, center, center, row);
+                box-shadow: 1px 1px 2px 0px #535353, -1px -1px 2px #f7f7f7;
+
+                p {
+                  font-size: 0.8rem;
+                  color: $base-color;
+                }
+              }
+            }
+
+            .suggestion-settings__item-children--wrapper {
+              @include flexCenter(60%, 100%, 0, center, center, row);
+              padding: 1% 0%;
+            }
+
+            .suggestion-settings__toggle-list {
+              @include flexCenter(75%, 97%, 0.2em, flex-start, center, row);
               overflow-x: scroll;
               overflow-y: hidden;
               white-space: nowrap;
-              padding-top: 2%;
 
               .suggestions__settings-item {
-                @include flexCenter(20px, 72px, 0, center, center, row);
-                margin-left: 1%;
-                display: inline-block;
+                @include flexCenter(100%, 75px, 0, center, center, row);
+                flex: 0 0 auto;
 
                 .suggestions__settings-item-btn {
                   @include flexCenter(95%, 95%, 2em, center, center, row);
@@ -123,152 +136,107 @@
   }
 }
 
-.settings-modal__select-beat {
-  position: absolute;
-  top: 17%;
-  right: 17%;
+.settings-modal__select-beat-body--bs-outset {
+  @include flexCenter(auto, 100%, 1.5em 0.2em, center, center, column);
+  box-shadow: inset 1px 1px 2px 0px #424141, inset -1px -1px 2px #ffffff;
 
-  .settings-modal__select-beat--bs-inset {
-    .settings-modal__select-beat-header {
-      .settings-modal__select-beat-header--bs-outset {
-        color: $base-color;
-        font-size: 0.9rem;
-      }
-    }
-    .settings-modal__select-beat-body {
-      .settings-modal__select-beat-body--bs-outset {
-        border-radius: 1.5em 0.2em;
+  .settings-modal__select-beat-list {
+    @include flexCenter(97%, 97%, 1.5em 0.2em, center, center, column);
+    display: inline-block;
+    overflow: auto;
 
-        .settings-modal__select-beat-list {
-          @include flexCenter(97%, 97%, 1.5em 0.2em, center, center, column);
-          display: inline-block;
-          overflow: auto;
+    .settings-modal__select-beat-item {
+      @include flexCenter(40px, 100%, 0, center, center, row);
 
-          .settings-modal__select-beat-item {
-            .settings-modal__select-beat-item--bs-outset {
-              .settings-modal__select-beat-item-title {
-                .settings-modal__select-beat-item-title--bs-inset {
-                  .settings-modal__title-index {
-                    @include flexCenter(100%, 15%, 0, center, center, row);
+      .settings-modal__select-beat-item--bs-outset {
+        @include flexCenter(85%, 98%, 2em, center, center, row);
+        box-shadow: 1px 1px 2px 0px #424141, -1px -1px 2px #ffffff;
 
-                    .settings-modal__title-index--bs-outset {
-                      @include flexCenter(75%, 80%, 2em 0.2em 0.2em 2em, center, center, row);
-                      box-shadow: 1px 1px 2px 0px #424141, -1px -1px 2px #ffffff;
-                      p {
-                        color: #797979;
-                        font-size: 0.75rem;
-                      }
-                    }
-                  }
-                  .settings-modal__title-text {
-                    @include flexCenter(100%, 85%, 0, flex-start, center, row);
+        .settings-modal__select-beat-item-title {
+          @include flexCenter(100%, 87%, 0, center, center, row);
 
-                    .settings-modal__title-text--bs-outset {
-                      @include flexCenter(75%, 98%, 0.2em 2em 2em 0.2em, flex-start, center, row);
-                      box-shadow: 1px 1px 2px 0px #424141, -1px -1px 2px #ffffff;
-                      p {
-                        width: 100%;
-                        color: $primary-color-200;
-                        font-size: 0.85rem;
-                        text-indent: 5%;
-                        text-align: start;
-                      }
-                    }
-                  }
+          .settings-modal__select-beat-item-title--bs-inset {
+            @include flexCenter(75%, 97%, 2em, center, center, row);
+            box-shadow: inset 1px 1px 2px 0px #424141, inset -1px -1px 2px #ffffff;
+
+            .settings-modal__title-index {
+              @include flexCenter(100%, 15%, 0, center, center, row);
+
+              .settings-modal__title-index--bs-outset {
+                @include flexCenter(75%, 80%, 2em 0.2em 0.2em 2em, center, center, row);
+                box-shadow: 1px 1px 2px 0px #424141, -1px -1px 2px #ffffff;
+                p {
+                  color: #797979;
+                  font-size: 0.75rem;
                 }
               }
-              .settings-modal__select-beat-play-btn {
-                @include flexCenter(100%, 13%, 0, center, center, row);
-              }
-              &.Selected {
-                background: $primary-color-300;
+            }
+            .settings-modal__title-text {
+              @include flexCenter(100%, 85%, 0, flex-start, center, row);
+
+              .settings-modal__title-text--bs-outset {
+                @include flexCenter(75%, 98%, 0.2em 2em 2em 0.2em, flex-start, center, row);
+                box-shadow: 1px 1px 2px 0px #424141, -1px -1px 2px #ffffff;
+                p {
+                  width: 100%;
+                  color: $primary-color-200;
+                  font-size: 0.85rem;
+                  text-indent: 5%;
+                  text-align: start;
+                }
               }
             }
           }
+        }
+        .settings-modal__select-beat-play-btn {
+          @include flexCenter(100%, 13%, 0, center, center, row);
+        }
+        &.Selected {
+          background: $primary-color-300;
         }
       }
     }
   }
 }
 
-.settings-modal__opacity-slider {
-  @include flexCenter(30px, 200px, 2em 0.2em 2em 2em, center, center, row);
-  background: linear-gradient(323deg, #808080 0%, #b8b8b8 100%);
-  position: absolute;
-  top: 10%;
-  right: 17%;
+// .suggestion-settings__opacity--wrapper {
+//   @include flexCenter(30px, 100%, 0, center, center, row);
+// }
 
-  .opacity-slider--bs-inset {
-    @include flexCenter(80%, 96%, 1em, center, center, row);
-    box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
+.suggestion-settings__rhyme-number-slider {
+  @include flexCenter(100%, 100%, 0, center, center, row);
 
-    .opacity-slider__number {
-      @include flexCenter(100%, 10%, 0, center, center, row);
-      color: $base-color;
-      font-size: 0.8rem;
+  .suggestion-settings__slider-input--container {
+    @include flexCenter(100%, 80%, 0, center, center, row);
+
+    .suggestion-settings__slider-input {
+      @include flexCenter(50%, 100%, 2em, center, center, row);
+      box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
+      background: $primary-color-200;
     }
-    .opacity-slider__input--wrapper {
-      @include flexCenter(100%, 80%, 0, center, center, row);
-
-      .opacity-slider__input {
-        @include flexCenter(80%, 95%, 0, center, center, row);
-      }
-      input[type="range"] {
-        height: 10px;
-        appearance: none;
-        border-radius: 50px;
-        box-shadow: inset 1px 1px 2px 0px #3b3b3b, inset -1px -1px 2px #e8e4e4;
-        // background: -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage}, #63DEBC), color-stop(${currentPercentage}, ${bgColor}))
-      }
-      input[type="range"]::-webkit-slider-thumb {
-        height: 7px;
-        width: 18px;
-        border-radius: 1em;
-        box-shadow: 1px 1px 2px 0px #424141, -1px -1px 2px #ffffff;
-        background: $primary-color-300;
-        appearance: none;
-        cursor: pointer;
-      }
-      input[type="range"]::-moz-range-track {
-        background: pink;
-      }
+    input[type="range"] {
+      height: 12px;
+      appearance: none;
+      border-radius: 50px;
+      box-shadow: inset 1px 1px 2px 0px #3b3b3b, inset -1px -1px 2px #e8e4e4;
+      // background: -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage}, #63DEBC), color-stop(${currentPercentage}, ${bgColor}))
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      height: 8px;
+      width: 18px;
+      border-radius: 1em;
+      box-shadow: 1px 1px 2px 0px #424141, -1px -1px 2px #ffffff;
+      background: $primary-color-300;
+      appearance: none;
+      cursor: pointer;
+    }
+    input[type="range"]::-moz-range-track {
+      background: pink;
     }
   }
-}
-
-.suggestion-settings__header {
-  @include flexCenter(15%, 95%, 0, center, center, row);
-
-  .suggestion-settings__header-title {
-    @include flexCenter(100%, 90%, 0, center, center, row);
-
-    .suggestion-settings__header-title--bs-outset {
-      @include flexCenter(70%, 97%, 3em, center, center, row);
-      box-shadow: 1px 1px 2px 0px #535353, -1px -1px 2px #f7f7f7;
-
-      p {
-        color: $base-color;
-      }
-    }
-  }
-  .suggestion-settings__close {
+  .suggestion-settings__rhyme-number {
     @include flexCenter(100%, 10%, 0, center, center, row);
-    button {
-      box-shadow: 1px 1px 3px #313131, -1px -1px 2px #d2d2d2;
-    }
-  }
-}
-
-.suggestion-settings__rhyme-suggestions-header {
-  @include flexCenter(40%, 95%, 0, center, flex-end, row);
-
-  .suggestion-settings__rhyme-suggestions-header--bs-outset {
-    @include flexCenter(78%, 99%, 2em, center, center, row);
-    box-shadow: 1px 1px 2px 0px #535353, -1px -1px 2px #f7f7f7;
-
-    p {
-      font-size: 0.8rem;
-      color: $base-color;
-    }
+    color: $base-color;
+    font-size: 0.7rem;
   }
 }

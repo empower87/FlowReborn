@@ -3668,9 +3668,8 @@ button {
   z-index: 1;
   background: rgba(0, 0, 0, 0.6196078431);
 }
-
-.settings-modal__rhyme-suggestions {
-  height: 200px;
+.settings-modal__background .settings-modal__modal {
+  height: auto;
   width: 80%;
   border-radius: 0.2em;
   display: flex;
@@ -3679,49 +3678,32 @@ button {
   flex-direction: column;
   background: linear-gradient(323deg, #808080 0%, #b8b8b8 100%);
   position: absolute;
+  padding: 2% 0%;
+}
+.settings-modal__background .settings-modal__modal.Beat {
+  top: 17%;
+  right: 17%;
+}
+.settings-modal__background .settings-modal__modal.RhymeSuggestions {
   top: 30%;
   right: 17%;
 }
-.settings-modal__rhyme-suggestions .settings-modal__rhyme-suggestions--bs-inset {
-  height: 96%;
-  width: 97%;
-  border-radius: 0.2em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
+.settings-modal__background .settings-modal__modal.Opacity {
+  top: 10%;
+  right: 17%;
 }
-.settings-modal__rhyme-suggestions .settings-modal__rhyme-suggestions--bs-inset .suggestion-settings__body {
-  height: 85%;
-  width: 100%;
-  border-radius: 0;
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset {
+  height: 96%;
+  width: 96%;
+  border-radius: 1em 0.2em 0.2em 0.2em;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
-}
-.settings-modal__rhyme-suggestions .settings-modal__rhyme-suggestions--bs-inset .suggestion-settings__body .suggestion-settings__option {
-  height: 35%;
-  width: 100%;
-  border-radius: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-}
-.settings-modal__rhyme-suggestions .settings-modal__rhyme-suggestions--bs-inset .suggestion-settings__body .suggestion-settings__option .suggestion-settings__option--bs-inset {
-  height: 90%;
-  width: 95%;
-  border-radius: 1.2em 0.2em 1.2em 0.2em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
   box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
 }
-.settings-modal__rhyme-suggestions .settings-modal__rhyme-suggestions--bs-inset .suggestion-settings__body .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__rhyme-number-slider {
-  height: 60%;
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__header {
+  height: 30px;
   width: 100%;
   border-radius: 0;
   display: flex;
@@ -3729,48 +3711,29 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.settings-modal__rhyme-suggestions .settings-modal__rhyme-suggestions--bs-inset .suggestion-settings__body .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__rhyme-number-slider .suggestion-settings__slider-input--container {
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__header .suggestion-settings__header-title {
   height: 100%;
-  width: 80%;
+  width: 90%;
   border-radius: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
 }
-.settings-modal__rhyme-suggestions .settings-modal__rhyme-suggestions--bs-inset .suggestion-settings__body .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__rhyme-number-slider .suggestion-settings__slider-input--container .suggestion-settings__slider-input {
-  height: 50%;
-  width: 100%;
-  border-radius: 2em;
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__header .suggestion-settings__header-title .suggestion-settings__header-title--bs-outset {
+  height: 70%;
+  width: 97%;
+  border-radius: 3em;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
-  background: #ff9ec7;
+  box-shadow: 1px 1px 2px 0px #535353, -1px -1px 2px #f7f7f7;
 }
-.settings-modal__rhyme-suggestions .settings-modal__rhyme-suggestions--bs-inset .suggestion-settings__body .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__rhyme-number-slider .suggestion-settings__slider-input--container input[type=range] {
-  height: 12px;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-  border-radius: 50px;
-  box-shadow: inset 1px 1px 2px 0px #3b3b3b, inset -1px -1px 2px #e8e4e4;
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__header .suggestion-settings__header-title .suggestion-settings__header-title--bs-outset p {
+  color: #ffffff;
 }
-.settings-modal__rhyme-suggestions .settings-modal__rhyme-suggestions--bs-inset .suggestion-settings__body .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__rhyme-number-slider .suggestion-settings__slider-input--container input[type=range]::-webkit-slider-thumb {
-  height: 8px;
-  width: 18px;
-  border-radius: 1em;
-  box-shadow: 1px 1px 2px 0px #424141, -1px -1px 2px #ffffff;
-  background: #ec6aa0;
-  -webkit-appearance: none;
-          appearance: none;
-  cursor: pointer;
-}
-.settings-modal__rhyme-suggestions .settings-modal__rhyme-suggestions--bs-inset .suggestion-settings__body .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__rhyme-number-slider .suggestion-settings__slider-input--container input[type=range]::-moz-range-track {
-  background: pink;
-}
-.settings-modal__rhyme-suggestions .settings-modal__rhyme-suggestions--bs-inset .suggestion-settings__body .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__rhyme-number-slider .suggestion-settings__rhyme-number {
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__header .suggestion-settings__close {
   height: 100%;
   width: 10%;
   border-radius: 0;
@@ -3778,10 +3741,76 @@ button {
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  color: #ffffff;
-  font-size: 0.7rem;
 }
-.settings-modal__rhyme-suggestions .settings-modal__rhyme-suggestions--bs-inset .suggestion-settings__body .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__list--container {
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__header .suggestion-settings__close button {
+  box-shadow: 1px 1px 3px #313131, -1px -1px 2px #d2d2d2;
+}
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .settings-modal__children--wrapper {
+  height: auto;
+  width: 96%;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  min-height: 30px;
+  padding: 2%;
+}
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list {
+  height: auto;
+  width: 100%;
+  border-radius: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item {
+  height: 60px;
+  width: 100%;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  flex: 0 0 auto;
+  margin-top: 1%;
+}
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item .suggestion-settings__option--bs-inset {
+  height: 99%;
+  width: 99%;
+  border-radius: 1.2em 0.2em 1.2em 0.2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
+}
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item .suggestion-settings__option--bs-inset .suggestion-settings__rhyme-suggestions-header {
+  height: 40%;
+  width: 95%;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  flex-direction: row;
+}
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item .suggestion-settings__option--bs-inset .suggestion-settings__rhyme-suggestions-header .suggestion-settings__rhyme-suggestions-header--bs-outset {
+  height: 78%;
+  width: 99%;
+  border-radius: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  box-shadow: 1px 1px 2px 0px #535353, -1px -1px 2px #f7f7f7;
+}
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item .suggestion-settings__option--bs-inset .suggestion-settings__rhyme-suggestions-header .suggestion-settings__rhyme-suggestions-header--bs-outset p {
+  font-size: 0.8rem;
+  color: #ffffff;
+}
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item .suggestion-settings__option--bs-inset .suggestion-settings__item-children--wrapper {
   height: 60%;
   width: 100%;
   border-radius: 0;
@@ -3789,33 +3818,31 @@ button {
   justify-content: center;
   align-items: center;
   flex-direction: row;
+  padding: 1% 0%;
 }
-.settings-modal__rhyme-suggestions .settings-modal__rhyme-suggestions--bs-inset .suggestion-settings__body .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__list--container .suggestion-settings__list {
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item .suggestion-settings__option--bs-inset .suggestion-settings__toggle-list {
   height: 75%;
-  width: 98%;
-  border-radius: 2em;
+  width: 97%;
+  border-radius: 0.2em;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   flex-direction: row;
-  display: inline-block;
   overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap;
-  padding-top: 2%;
 }
-.settings-modal__rhyme-suggestions .settings-modal__rhyme-suggestions--bs-inset .suggestion-settings__body .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__list--container .suggestion-settings__list .suggestions__settings-item {
-  height: 20px;
-  width: 72px;
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item .suggestion-settings__option--bs-inset .suggestion-settings__toggle-list .suggestions__settings-item {
+  height: 100%;
+  width: 75px;
   border-radius: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  margin-left: 1%;
-  display: inline-block;
+  flex: 0 0 auto;
 }
-.settings-modal__rhyme-suggestions .settings-modal__rhyme-suggestions--bs-inset .suggestion-settings__body .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__list--container .suggestion-settings__list .suggestions__settings-item .suggestions__settings-item-btn {
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item .suggestion-settings__option--bs-inset .suggestion-settings__toggle-list .suggestions__settings-item .suggestions__settings-item-btn {
   height: 95%;
   width: 95%;
   border-radius: 2em;
@@ -3825,7 +3852,7 @@ button {
   flex-direction: row;
   box-shadow: 1px 1px 3px 0px #6b6b6b, -1px -1px 2px #fafafa;
 }
-.settings-modal__rhyme-suggestions .settings-modal__rhyme-suggestions--bs-inset .suggestion-settings__body .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__list--container .suggestion-settings__list .suggestions__settings-item .suggestions__settings-item-btn .suggestions__settings-item-btn-text--wrapper {
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item .suggestion-settings__option--bs-inset .suggestion-settings__toggle-list .suggestions__settings-item .suggestions__settings-item-btn .suggestions__settings-item-btn-text--wrapper {
   height: 100%;
   width: 75%;
   border-radius: 0;
@@ -3834,13 +3861,13 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.settings-modal__rhyme-suggestions .settings-modal__rhyme-suggestions--bs-inset .suggestion-settings__body .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__list--container .suggestion-settings__list .suggestions__settings-item .suggestions__settings-item-btn .suggestions__settings-item-btn-text--wrapper .suggestions__settings-item-btn-text {
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item .suggestion-settings__option--bs-inset .suggestion-settings__toggle-list .suggestions__settings-item .suggestions__settings-item-btn .suggestions__settings-item-btn-text--wrapper .suggestions__settings-item-btn-text {
   color: #ffffff;
   font-size: 0.7rem;
   margin-left: 0.5em;
   white-space: nowrap;
 }
-.settings-modal__rhyme-suggestions .settings-modal__rhyme-suggestions--bs-inset .suggestion-settings__body .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__list--container .suggestion-settings__list .suggestions__settings-item .suggestions__settings-item-btn .suggestions__settings-item-btn-icon {
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item .suggestion-settings__option--bs-inset .suggestion-settings__toggle-list .suggestions__settings-item .suggestions__settings-item-btn .suggestions__settings-item-btn-icon {
   height: 100%;
   width: 25%;
   border-radius: 0;
@@ -3849,24 +3876,22 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.settings-modal__rhyme-suggestions .settings-modal__rhyme-suggestions--bs-inset .suggestion-settings__body .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__list--container .suggestion-settings__list .suggestions__settings-item .suggestions__settings-item-btn.Selected {
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item .suggestion-settings__option--bs-inset .suggestion-settings__toggle-list .suggestions__settings-item .suggestions__settings-item-btn.Selected {
   box-shadow: inset 1px 1px 3px 0px #922350, inset -1px -1px 2px #ffe5f0;
   background: #ec6aa0;
 }
 
-.settings-modal__select-beat {
-  position: absolute;
-  top: 17%;
-  right: 17%;
-}
-.settings-modal__select-beat .settings-modal__select-beat--bs-inset .settings-modal__select-beat-header .settings-modal__select-beat-header--bs-outset {
-  color: #ffffff;
-  font-size: 0.9rem;
-}
-.settings-modal__select-beat .settings-modal__select-beat--bs-inset .settings-modal__select-beat-body .settings-modal__select-beat-body--bs-outset {
+.settings-modal__select-beat-body--bs-outset {
+  height: auto;
+  width: 100%;
   border-radius: 1.5em 0.2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: inset 1px 1px 2px 0px #424141, inset -1px -1px 2px #ffffff;
 }
-.settings-modal__select-beat .settings-modal__select-beat--bs-inset .settings-modal__select-beat-body .settings-modal__select-beat-body--bs-outset .settings-modal__select-beat-list {
+.settings-modal__select-beat-body--bs-outset .settings-modal__select-beat-list {
   height: 97%;
   width: 97%;
   border-radius: 1.5em 0.2em;
@@ -3877,7 +3902,45 @@ button {
   display: inline-block;
   overflow: auto;
 }
-.settings-modal__select-beat .settings-modal__select-beat--bs-inset .settings-modal__select-beat-body .settings-modal__select-beat-body--bs-outset .settings-modal__select-beat-list .settings-modal__select-beat-item .settings-modal__select-beat-item--bs-outset .settings-modal__select-beat-item-title .settings-modal__select-beat-item-title--bs-inset .settings-modal__title-index {
+.settings-modal__select-beat-body--bs-outset .settings-modal__select-beat-list .settings-modal__select-beat-item {
+  height: 40px;
+  width: 100%;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+.settings-modal__select-beat-body--bs-outset .settings-modal__select-beat-list .settings-modal__select-beat-item .settings-modal__select-beat-item--bs-outset {
+  height: 85%;
+  width: 98%;
+  border-radius: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  box-shadow: 1px 1px 2px 0px #424141, -1px -1px 2px #ffffff;
+}
+.settings-modal__select-beat-body--bs-outset .settings-modal__select-beat-list .settings-modal__select-beat-item .settings-modal__select-beat-item--bs-outset .settings-modal__select-beat-item-title {
+  height: 100%;
+  width: 87%;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+.settings-modal__select-beat-body--bs-outset .settings-modal__select-beat-list .settings-modal__select-beat-item .settings-modal__select-beat-item--bs-outset .settings-modal__select-beat-item-title .settings-modal__select-beat-item-title--bs-inset {
+  height: 75%;
+  width: 97%;
+  border-radius: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  box-shadow: inset 1px 1px 2px 0px #424141, inset -1px -1px 2px #ffffff;
+}
+.settings-modal__select-beat-body--bs-outset .settings-modal__select-beat-list .settings-modal__select-beat-item .settings-modal__select-beat-item--bs-outset .settings-modal__select-beat-item-title .settings-modal__select-beat-item-title--bs-inset .settings-modal__title-index {
   height: 100%;
   width: 15%;
   border-radius: 0;
@@ -3886,7 +3949,7 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.settings-modal__select-beat .settings-modal__select-beat--bs-inset .settings-modal__select-beat-body .settings-modal__select-beat-body--bs-outset .settings-modal__select-beat-list .settings-modal__select-beat-item .settings-modal__select-beat-item--bs-outset .settings-modal__select-beat-item-title .settings-modal__select-beat-item-title--bs-inset .settings-modal__title-index .settings-modal__title-index--bs-outset {
+.settings-modal__select-beat-body--bs-outset .settings-modal__select-beat-list .settings-modal__select-beat-item .settings-modal__select-beat-item--bs-outset .settings-modal__select-beat-item-title .settings-modal__select-beat-item-title--bs-inset .settings-modal__title-index .settings-modal__title-index--bs-outset {
   height: 75%;
   width: 80%;
   border-radius: 2em 0.2em 0.2em 2em;
@@ -3896,11 +3959,11 @@ button {
   flex-direction: row;
   box-shadow: 1px 1px 2px 0px #424141, -1px -1px 2px #ffffff;
 }
-.settings-modal__select-beat .settings-modal__select-beat--bs-inset .settings-modal__select-beat-body .settings-modal__select-beat-body--bs-outset .settings-modal__select-beat-list .settings-modal__select-beat-item .settings-modal__select-beat-item--bs-outset .settings-modal__select-beat-item-title .settings-modal__select-beat-item-title--bs-inset .settings-modal__title-index .settings-modal__title-index--bs-outset p {
+.settings-modal__select-beat-body--bs-outset .settings-modal__select-beat-list .settings-modal__select-beat-item .settings-modal__select-beat-item--bs-outset .settings-modal__select-beat-item-title .settings-modal__select-beat-item-title--bs-inset .settings-modal__title-index .settings-modal__title-index--bs-outset p {
   color: #797979;
   font-size: 0.75rem;
 }
-.settings-modal__select-beat .settings-modal__select-beat--bs-inset .settings-modal__select-beat-body .settings-modal__select-beat-body--bs-outset .settings-modal__select-beat-list .settings-modal__select-beat-item .settings-modal__select-beat-item--bs-outset .settings-modal__select-beat-item-title .settings-modal__select-beat-item-title--bs-inset .settings-modal__title-text {
+.settings-modal__select-beat-body--bs-outset .settings-modal__select-beat-list .settings-modal__select-beat-item .settings-modal__select-beat-item--bs-outset .settings-modal__select-beat-item-title .settings-modal__select-beat-item-title--bs-inset .settings-modal__title-text {
   height: 100%;
   width: 85%;
   border-radius: 0;
@@ -3909,7 +3972,7 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.settings-modal__select-beat .settings-modal__select-beat--bs-inset .settings-modal__select-beat-body .settings-modal__select-beat-body--bs-outset .settings-modal__select-beat-list .settings-modal__select-beat-item .settings-modal__select-beat-item--bs-outset .settings-modal__select-beat-item-title .settings-modal__select-beat-item-title--bs-inset .settings-modal__title-text .settings-modal__title-text--bs-outset {
+.settings-modal__select-beat-body--bs-outset .settings-modal__select-beat-list .settings-modal__select-beat-item .settings-modal__select-beat-item--bs-outset .settings-modal__select-beat-item-title .settings-modal__select-beat-item-title--bs-inset .settings-modal__title-text .settings-modal__title-text--bs-outset {
   height: 75%;
   width: 98%;
   border-radius: 0.2em 2em 2em 0.2em;
@@ -3919,14 +3982,14 @@ button {
   flex-direction: row;
   box-shadow: 1px 1px 2px 0px #424141, -1px -1px 2px #ffffff;
 }
-.settings-modal__select-beat .settings-modal__select-beat--bs-inset .settings-modal__select-beat-body .settings-modal__select-beat-body--bs-outset .settings-modal__select-beat-list .settings-modal__select-beat-item .settings-modal__select-beat-item--bs-outset .settings-modal__select-beat-item-title .settings-modal__select-beat-item-title--bs-inset .settings-modal__title-text .settings-modal__title-text--bs-outset p {
+.settings-modal__select-beat-body--bs-outset .settings-modal__select-beat-list .settings-modal__select-beat-item .settings-modal__select-beat-item--bs-outset .settings-modal__select-beat-item-title .settings-modal__select-beat-item-title--bs-inset .settings-modal__title-text .settings-modal__title-text--bs-outset p {
   width: 100%;
   color: #ff9ec7;
   font-size: 0.85rem;
   text-indent: 5%;
   text-align: start;
 }
-.settings-modal__select-beat .settings-modal__select-beat--bs-inset .settings-modal__select-beat-body .settings-modal__select-beat-body--bs-outset .settings-modal__select-beat-list .settings-modal__select-beat-item .settings-modal__select-beat-item--bs-outset .settings-modal__select-beat-play-btn {
+.settings-modal__select-beat-body--bs-outset .settings-modal__select-beat-list .settings-modal__select-beat-item .settings-modal__select-beat-item--bs-outset .settings-modal__select-beat-play-btn {
   height: 100%;
   width: 13%;
   border-radius: 0;
@@ -3935,45 +3998,20 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.settings-modal__select-beat .settings-modal__select-beat--bs-inset .settings-modal__select-beat-body .settings-modal__select-beat-body--bs-outset .settings-modal__select-beat-list .settings-modal__select-beat-item .settings-modal__select-beat-item--bs-outset.Selected {
+.settings-modal__select-beat-body--bs-outset .settings-modal__select-beat-list .settings-modal__select-beat-item .settings-modal__select-beat-item--bs-outset.Selected {
   background: #ec6aa0;
 }
 
-.settings-modal__opacity-slider {
-  height: 30px;
-  width: 200px;
-  border-radius: 2em 0.2em 2em 2em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  background: linear-gradient(323deg, #808080 0%, #b8b8b8 100%);
-  position: absolute;
-  top: 10%;
-  right: 17%;
-}
-.settings-modal__opacity-slider .opacity-slider--bs-inset {
-  height: 80%;
-  width: 96%;
-  border-radius: 1em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
-}
-.settings-modal__opacity-slider .opacity-slider--bs-inset .opacity-slider__number {
+.suggestion-settings__rhyme-number-slider {
   height: 100%;
-  width: 10%;
+  width: 100%;
   border-radius: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  color: #ffffff;
-  font-size: 0.8rem;
 }
-.settings-modal__opacity-slider .opacity-slider--bs-inset .opacity-slider__input--wrapper {
+.suggestion-settings__rhyme-number-slider .suggestion-settings__slider-input--container {
   height: 100%;
   width: 80%;
   border-radius: 0;
@@ -3982,25 +4020,27 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.settings-modal__opacity-slider .opacity-slider--bs-inset .opacity-slider__input--wrapper .opacity-slider__input {
-  height: 80%;
-  width: 95%;
-  border-radius: 0;
+.suggestion-settings__rhyme-number-slider .suggestion-settings__slider-input--container .suggestion-settings__slider-input {
+  height: 50%;
+  width: 100%;
+  border-radius: 2em;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
+  box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
+  background: #ff9ec7;
 }
-.settings-modal__opacity-slider .opacity-slider--bs-inset .opacity-slider__input--wrapper input[type=range] {
-  height: 10px;
+.suggestion-settings__rhyme-number-slider .suggestion-settings__slider-input--container input[type=range] {
+  height: 12px;
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
   border-radius: 50px;
   box-shadow: inset 1px 1px 2px 0px #3b3b3b, inset -1px -1px 2px #e8e4e4;
 }
-.settings-modal__opacity-slider .opacity-slider--bs-inset .opacity-slider__input--wrapper input[type=range]::-webkit-slider-thumb {
-  height: 7px;
+.suggestion-settings__rhyme-number-slider .suggestion-settings__slider-input--container input[type=range]::-webkit-slider-thumb {
+  height: 8px;
   width: 18px;
   border-radius: 1em;
   box-shadow: 1px 1px 2px 0px #424141, -1px -1px 2px #ffffff;
@@ -4009,42 +4049,10 @@ button {
           appearance: none;
   cursor: pointer;
 }
-.settings-modal__opacity-slider .opacity-slider--bs-inset .opacity-slider__input--wrapper input[type=range]::-moz-range-track {
+.suggestion-settings__rhyme-number-slider .suggestion-settings__slider-input--container input[type=range]::-moz-range-track {
   background: pink;
 }
-
-.suggestion-settings__header {
-  height: 15%;
-  width: 95%;
-  border-radius: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-}
-.suggestion-settings__header .suggestion-settings__header-title {
-  height: 100%;
-  width: 90%;
-  border-radius: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-}
-.suggestion-settings__header .suggestion-settings__header-title .suggestion-settings__header-title--bs-outset {
-  height: 70%;
-  width: 97%;
-  border-radius: 3em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  box-shadow: 1px 1px 2px 0px #535353, -1px -1px 2px #f7f7f7;
-}
-.suggestion-settings__header .suggestion-settings__header-title .suggestion-settings__header-title--bs-outset p {
-  color: #ffffff;
-}
-.suggestion-settings__header .suggestion-settings__close {
+.suggestion-settings__rhyme-number-slider .suggestion-settings__rhyme-number {
   height: 100%;
   width: 10%;
   border-radius: 0;
@@ -4052,33 +4060,8 @@ button {
   justify-content: center;
   align-items: center;
   flex-direction: row;
-}
-.suggestion-settings__header .suggestion-settings__close button {
-  box-shadow: 1px 1px 3px #313131, -1px -1px 2px #d2d2d2;
-}
-
-.suggestion-settings__rhyme-suggestions-header {
-  height: 40%;
-  width: 95%;
-  border-radius: 0;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  flex-direction: row;
-}
-.suggestion-settings__rhyme-suggestions-header .suggestion-settings__rhyme-suggestions-header--bs-outset {
-  height: 78%;
-  width: 99%;
-  border-radius: 2em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  box-shadow: 1px 1px 2px 0px #535353, -1px -1px 2px #f7f7f7;
-}
-.suggestion-settings__rhyme-suggestions-header .suggestion-settings__rhyme-suggestions-header--bs-outset p {
-  font-size: 0.8rem;
   color: #ffffff;
+  font-size: 0.7rem;
 }
 
 .lyrics__feed--container {
