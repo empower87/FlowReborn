@@ -4,6 +4,7 @@ import React, { Suspense, useState } from "react"
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom"
 import Loading from "./components/loading/Loading"
 import { AuthProvider } from "./context/AuthContext"
+import { RecordingBoothLoading } from "./features/recording-booth/RecordingBooth"
 import Auth from "./pages/auth-page/Auth"
 import Home from "./pages/home-page/Home"
 import "./styles/style.css"
@@ -91,7 +92,17 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/profile/:id" element={<LazyProfile />} />
                     <Route path="/editProfile" element={<LazyEditProfile />} />
-                    <Route path="/recording-booth" element={<LazyRecordingBooth />} />
+                    <Route
+                      path="/recording-booth"
+                      element={
+                        <Suspense fallback={<RecordingBoothLoading />}>
+                          <LazyRecordingBooth />
+
+                          {/* <RecordingBoothLoading /> */}
+                        </Suspense>
+                      }
+                    />
+
                     <Route path="/post-recording" element={<LazyPostRecording />} />
                     <Route path="/editLyrics" element={<LazyEditLyrics />} />
                     <Route path="/songScreen/:id" element={<LazySongPage />} />

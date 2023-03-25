@@ -2895,7 +2895,7 @@ button {
   background: #a7a7a7;
 }
 
-.recording__header {
+.recording__header--container {
   height: 5%;
   width: 100%;
   border-radius: 0px;
@@ -2904,84 +2904,7 @@ button {
   align-items: center;
   flex-direction: column;
   z-index: 1;
-  background: #a7a7a7;
-  box-shadow: 0px 20px 50px 0px black;
-}
-.recording__header .recording__header--bs-inset {
-  height: 78%;
-  width: 98%;
-  border-radius: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  box-shadow: inset 2px 2px 3px rgba(112, 112, 112, 0.9882352941), inset -2px -2px 3px rgba(255, 255, 255, 0.8588235294);
-  overflow: scroll;
-}
-.recording__header .recording__header--bs-inset .recording__header-left {
-  height: 100%;
-  width: 8%;
-  border-radius: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-}
-.recording__header .recording__header--bs-inset .recording__header-left .recording__header-go-back-btn {
-  height: 70%;
-  width: 70%;
-  border-radius: 2em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  box-shadow: 1px 1px 3px #3a3a3a, -1px -1px 3px #ffffff;
-  background: #ec6aa0;
-}
-.recording__header .recording__header--bs-inset .recording__header-left .recording__header-go-back-btn:hover {
-  background: #ff9ec7;
-}
-.recording__header .recording__header--bs-inset .recording__header-left.Back {
-  width: 13%;
-}
-.recording__header .recording__header--bs-inset .recording__header-left.Back .recording__header-go-back-btn {
-  height: 70%;
-  width: 81%;
-  border-radius: 2em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-}
-.recording__header .recording__header--bs-inset .recording__header-right {
-  height: 100%;
-  width: -webkit-fill-available;
-  width: -moz-available;
-  width: stretch;
-  border-radius: 0;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  flex-direction: row;
-}
-.recording__header .recording__header--bs-inset .recording__header-right .recording__title {
-  height: 66%;
-  width: -webkit-fill-available;
-  width: -moz-available;
-  width: stretch;
-  border-radius: 0.2em 2em 2em 3em;
-  box-shadow: 1px 1px 3px #3a3a3a, -1px -1px 2px #ffffff;
-  text-indent: 5%;
-  text-align: center;
-  overflow-y: scroll;
-  color: #ffffff;
-  font-size: 0.85rem;
-  margin-right: 0.3em;
-}
-.recording__header .recording__header--bs-inset .recording__header-right .recording__title.isRecording {
-  background: linear-gradient(-45deg, #6bbba5, #58e4bc, #38d9ab);
-  background-size: 400% 400%;
-  animation: recording-title 4s ease infinite;
+  box-shadow: 0px 20px 50px 0px rgba(0, 0, 0, 0.4);
 }
 
 .recording-booth__body {
@@ -3018,7 +2941,7 @@ button {
   border-radius: 0;
   display: flex;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: flex-end;
   flex-direction: column;
 }
 .recording-booth__body .recording-video__actions--container .recording-booth__side-menu .recording-booth__side-menu--bs-inset {
@@ -3663,10 +3586,10 @@ button {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  background: rgba(0, 0, 0, 0.6196078431);
   position: absolute;
   top: 0;
   z-index: 1;
-  background: rgba(0, 0, 0, 0.6196078431);
 }
 .settings-modal__background .settings-modal__modal {
   height: auto;
@@ -3702,7 +3625,7 @@ button {
   flex-direction: column;
   box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
 }
-.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__header {
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .settings-modal__header {
   height: 30px;
   width: 100%;
   border-radius: 0;
@@ -3711,7 +3634,7 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__header .suggestion-settings__header-title {
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .settings-modal__header .settings-modal__title--container {
   height: 100%;
   width: 90%;
   border-radius: 0;
@@ -3720,7 +3643,7 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__header .suggestion-settings__header-title .suggestion-settings__header-title--bs-outset {
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .settings-modal__header .settings-modal__title--container .settings-modal__title--bs-outset {
   height: 70%;
   width: 97%;
   border-radius: 3em;
@@ -3730,10 +3653,10 @@ button {
   flex-direction: row;
   box-shadow: 1px 1px 2px 0px #535353, -1px -1px 2px #f7f7f7;
 }
-.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__header .suggestion-settings__header-title .suggestion-settings__header-title--bs-outset p {
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .settings-modal__header .settings-modal__title--container .settings-modal__title--bs-outset .settings-modal__title {
   color: #ffffff;
 }
-.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__header .suggestion-settings__close {
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .settings-modal__header .settings-modal__close-btn {
   height: 100%;
   width: 10%;
   border-radius: 0;
@@ -3742,10 +3665,10 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__header .suggestion-settings__close button {
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .settings-modal__header .settings-modal__close-btn button {
   box-shadow: 1px 1px 3px #313131, -1px -1px 2px #d2d2d2;
 }
-.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .settings-modal__children--wrapper {
+.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .settings-modal__content {
   height: auto;
   width: 96%;
   border-radius: 0;
@@ -3756,7 +3679,70 @@ button {
   min-height: 30px;
   padding: 2%;
 }
-.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list {
+
+.settings-modal__slider {
+  height: 100%;
+  width: 100%;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+.settings-modal__slider .settings-modal__slider-input--container {
+  height: 100%;
+  width: 80%;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+.settings-modal__slider .settings-modal__slider-input--container .settings-modal__slider-input {
+  height: 50%;
+  width: 100%;
+  border-radius: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
+  background: #ff9ec7;
+}
+.settings-modal__slider .settings-modal__slider-input--container input[type=range] {
+  height: 12px;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border-radius: 50px;
+  box-shadow: inset 1px 1px 2px 0px #3b3b3b, inset -1px -1px 2px #e8e4e4;
+}
+.settings-modal__slider .settings-modal__slider-input--container input[type=range]::-webkit-slider-thumb {
+  height: 8px;
+  width: 18px;
+  border-radius: 1em;
+  box-shadow: 1px 1px 2px 0px #424141, -1px -1px 2px #ffffff;
+  background: #ec6aa0;
+  -webkit-appearance: none;
+          appearance: none;
+  cursor: pointer;
+}
+.settings-modal__slider .settings-modal__slider-input--container input[type=range]::-moz-range-track {
+  background: pink;
+}
+.settings-modal__slider .settings-modal__slider-value {
+  height: 100%;
+  width: 10%;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  color: #ffffff;
+  font-size: 0.7rem;
+}
+
+.suggestion-settings__options {
   height: auto;
   width: 100%;
   border-radius: 0;
@@ -3766,7 +3752,7 @@ button {
   flex-direction: column;
   overflow-y: auto;
 }
-.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item {
+.suggestion-settings__options .suggestion-settings__option {
   height: 60px;
   width: 100%;
   border-radius: 0;
@@ -3777,7 +3763,7 @@ button {
   flex: 0 0 auto;
   margin-top: 1%;
 }
-.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item .suggestion-settings__option--bs-inset {
+.suggestion-settings__options .suggestion-settings__option .suggestion-settings__option--bs-inset {
   height: 99%;
   width: 99%;
   border-radius: 1.2em 0.2em 1.2em 0.2em;
@@ -3787,7 +3773,7 @@ button {
   flex-direction: column;
   box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
 }
-.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item .suggestion-settings__option--bs-inset .suggestion-settings__rhyme-suggestions-header {
+.suggestion-settings__options .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__title {
   height: 40%;
   width: 95%;
   border-radius: 0;
@@ -3796,7 +3782,7 @@ button {
   align-items: flex-end;
   flex-direction: row;
 }
-.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item .suggestion-settings__option--bs-inset .suggestion-settings__rhyme-suggestions-header .suggestion-settings__rhyme-suggestions-header--bs-outset {
+.suggestion-settings__options .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__title .suggestion-settings__title--bs-outset {
   height: 78%;
   width: 99%;
   border-radius: 2em;
@@ -3806,11 +3792,11 @@ button {
   flex-direction: row;
   box-shadow: 1px 1px 2px 0px #535353, -1px -1px 2px #f7f7f7;
 }
-.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item .suggestion-settings__option--bs-inset .suggestion-settings__rhyme-suggestions-header .suggestion-settings__rhyme-suggestions-header--bs-outset p {
+.suggestion-settings__options .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__title .suggestion-settings__title--bs-outset .suggestion-settings__title-text {
   font-size: 0.8rem;
   color: #ffffff;
 }
-.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item .suggestion-settings__option--bs-inset .suggestion-settings__item-children--wrapper {
+.suggestion-settings__options .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__content {
   height: 60%;
   width: 100%;
   border-radius: 0;
@@ -3820,7 +3806,7 @@ button {
   flex-direction: row;
   padding: 1% 0%;
 }
-.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item .suggestion-settings__option--bs-inset .suggestion-settings__toggle-list {
+.suggestion-settings__options .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__toggle-list {
   height: 75%;
   width: 97%;
   border-radius: 0.2em;
@@ -3832,7 +3818,7 @@ button {
   overflow-y: hidden;
   white-space: nowrap;
 }
-.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item .suggestion-settings__option--bs-inset .suggestion-settings__toggle-list .suggestions__settings-item {
+.suggestion-settings__options .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__toggle-list .suggestions__settings-item {
   height: 100%;
   width: 75px;
   border-radius: 0;
@@ -3842,7 +3828,7 @@ button {
   flex-direction: row;
   flex: 0 0 auto;
 }
-.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item .suggestion-settings__option--bs-inset .suggestion-settings__toggle-list .suggestions__settings-item .suggestions__settings-item-btn {
+.suggestion-settings__options .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__toggle-list .suggestions__settings-item .suggestions__settings-item-btn {
   height: 95%;
   width: 95%;
   border-radius: 2em;
@@ -3852,7 +3838,7 @@ button {
   flex-direction: row;
   box-shadow: 1px 1px 3px 0px #6b6b6b, -1px -1px 2px #fafafa;
 }
-.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item .suggestion-settings__option--bs-inset .suggestion-settings__toggle-list .suggestions__settings-item .suggestions__settings-item-btn .suggestions__settings-item-btn-text--wrapper {
+.suggestion-settings__options .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__toggle-list .suggestions__settings-item .suggestions__settings-item-btn .suggestions__settings-item-btn-text--wrapper {
   height: 100%;
   width: 75%;
   border-radius: 0;
@@ -3861,13 +3847,13 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item .suggestion-settings__option--bs-inset .suggestion-settings__toggle-list .suggestions__settings-item .suggestions__settings-item-btn .suggestions__settings-item-btn-text--wrapper .suggestions__settings-item-btn-text {
+.suggestion-settings__options .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__toggle-list .suggestions__settings-item .suggestions__settings-item-btn .suggestions__settings-item-btn-text--wrapper .suggestions__settings-item-btn-text {
   color: #ffffff;
   font-size: 0.7rem;
   margin-left: 0.5em;
   white-space: nowrap;
 }
-.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item .suggestion-settings__option--bs-inset .suggestion-settings__toggle-list .suggestions__settings-item .suggestions__settings-item-btn .suggestions__settings-item-btn-icon {
+.suggestion-settings__options .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__toggle-list .suggestions__settings-item .suggestions__settings-item-btn .suggestions__settings-item-btn-icon {
   height: 100%;
   width: 25%;
   border-radius: 0;
@@ -3876,7 +3862,7 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.settings-modal__background .settings-modal__modal .settings-modal__modal--bs-inset .suggestion-settings__list .suggestion-settings__item .suggestion-settings__option--bs-inset .suggestion-settings__toggle-list .suggestions__settings-item .suggestions__settings-item-btn.Selected {
+.suggestion-settings__options .suggestion-settings__option .suggestion-settings__option--bs-inset .suggestion-settings__toggle-list .suggestions__settings-item .suggestions__settings-item-btn.Selected {
   box-shadow: inset 1px 1px 3px 0px #922350, inset -1px -1px 2px #ffe5f0;
   background: #ec6aa0;
 }
@@ -4002,68 +3988,6 @@ button {
   background: #ec6aa0;
 }
 
-.suggestion-settings__rhyme-number-slider {
-  height: 100%;
-  width: 100%;
-  border-radius: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-}
-.suggestion-settings__rhyme-number-slider .suggestion-settings__slider-input--container {
-  height: 100%;
-  width: 80%;
-  border-radius: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-}
-.suggestion-settings__rhyme-number-slider .suggestion-settings__slider-input--container .suggestion-settings__slider-input {
-  height: 50%;
-  width: 100%;
-  border-radius: 2em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
-  background: #ff9ec7;
-}
-.suggestion-settings__rhyme-number-slider .suggestion-settings__slider-input--container input[type=range] {
-  height: 12px;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-  border-radius: 50px;
-  box-shadow: inset 1px 1px 2px 0px #3b3b3b, inset -1px -1px 2px #e8e4e4;
-}
-.suggestion-settings__rhyme-number-slider .suggestion-settings__slider-input--container input[type=range]::-webkit-slider-thumb {
-  height: 8px;
-  width: 18px;
-  border-radius: 1em;
-  box-shadow: 1px 1px 2px 0px #424141, -1px -1px 2px #ffffff;
-  background: #ec6aa0;
-  -webkit-appearance: none;
-          appearance: none;
-  cursor: pointer;
-}
-.suggestion-settings__rhyme-number-slider .suggestion-settings__slider-input--container input[type=range]::-moz-range-track {
-  background: pink;
-}
-.suggestion-settings__rhyme-number-slider .suggestion-settings__rhyme-number {
-  height: 100%;
-  width: 10%;
-  border-radius: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  color: #ffffff;
-  font-size: 0.7rem;
-}
-
 .lyrics__feed--container {
   height: 100%;
   width: 100%;
@@ -4140,12 +4064,6 @@ button {
   font-size: 0.85rem;
   line-height: 1;
   padding: 0em 0.3em 0em 0em;
-}
-.lyrics__feed--container .record__lyrics .record__lyrics-list .record__lyrics-item .record__item-words .record__item-words-text.initial-prompt {
-  color: #b4b4b4;
-  font-size: 0.9rem;
-  width: 100%;
-  text-align: center;
 }
 
 .record__transcript--container {
@@ -6299,14 +6217,13 @@ button {
 }
 
 .title-bar {
-  height: 5%;
+  height: 100%;
   width: 100%;
   border-radius: 0px;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   flex-direction: column;
-  z-index: 1;
   background: #a7a7a7;
 }
 .title-bar .title-bar--bs-inset {

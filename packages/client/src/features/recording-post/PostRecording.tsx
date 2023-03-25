@@ -12,8 +12,8 @@ import { ThumbnailSelector } from "./components/Thumbnail"
 import { INITIAL_ERROR_STATE, useSongForm } from "./hooks/useSongForm"
 
 type PostRecordingProps = {
-  currentTake: ISongTake | undefined
-  songTakes: ISongTake[]
+  currentDraft: ISongTake | undefined
+  allDrafts: ISongTake[]
   recordingType: "audio" | "video"
 }
 
@@ -21,7 +21,7 @@ export default function PostRecording() {
   const navigate = useNavigate()
   const location = useLocation()
   const data = location.state as PostRecordingProps
-  const { currentTake: take, songTakes: takes, recordingType } = data
+  const { currentDraft: take, allDrafts: takes, recordingType } = data
   const { handleSaveSong, methods, isSaving, error, setError } = useSongForm(recordingType)
   const [showLyrics, setShowLyrics] = useState<boolean>(false)
   const [currentTake, setCurrentTake] = useState<ISongTake>()
@@ -53,10 +53,12 @@ export default function PostRecording() {
         options={{ position: [6, 27], size: [40, 72] }}
       />
 
-      <TitleBar
-        title={<p className="recording__title">Post</p>}
-        leftButton={<TitleBarButton type="Back" onClick={() => onClose()} />}
-      />
+      <div className="recording__header--container">
+        <TitleBar
+          title={<p className="recording__title">Post</p>}
+          leftButton={<TitleBarButton type="Back" onClick={() => onClose()} />}
+        />
+      </div>
 
       <div className="post-recording__video-frame">
         <div className="post-recording__video-menu">

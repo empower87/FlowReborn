@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useSpeechRecognition } from "react-speech-recognition"
 import useDebounce from "src/hooks/useDebounce"
 import { refilterProfanity } from "../utils/profanityHandler"
@@ -9,8 +9,37 @@ const ADJ_TAGS = ["JJ", "JJS", "JJR"]
 const NOUN_TAGS = ["NN", "NNP", "NNPS", "NNS"]
 const VERB_TAGS = ["VB", "VBD", "VBG", "VBN", "VBP", "VBZ"]
 
+// IN_PROGRESS: Testing whether or not I need multiple hooks to satisfy different conditions
+export const useGetTranscriptLyrics = () => {
+  const { transcript } = useSpeechRecognition()
+  const debouncedTranscript = useDebounce(transcript, 400)
+  const lyricsRef = useRef<string[][]>([])
+
+  useEffect(() => {
+    const validArray = getValidTranscriptArray(debouncedTranscript)
+    if (!validArray.length || !lyricsRef.current) return
+    lyricsRef.current = [...lyricsRef.current, validArray]
+  }, [debouncedTranscript, lyricsRef])
+
+  const resetLyrics = () => {
+    lyricsRef.current = []
+  }
+
+  return {
+    totalLyrics: lyricsRef.current,
+    resetLyrics,
+  }
+}
+
 export const useLiveTranscript = () => {
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
+  const debouncedTranscript = useDebounce(transcript, 400)
+
+  useEffect(() => {
+    if (listening) {
+      resetTranscript()
+    }
+  }, [debouncedTranscript])
 
   return {
     transcript,
@@ -21,11 +50,15 @@ export const useTranscriptLyrics = () => {
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
   const debouncedTranscript = useDebounce(transcript, 400)
   const [lyrics, setLyrics] = useState<string[][]>([])
+  const lyricsRef = useRef<string[][] | null>(null)
 
   useEffect(() => {
     const validArray = getValidTranscriptArray(debouncedTranscript)
     if (validArray.length) {
       setLyrics((prevLyrics) => [...prevLyrics, validArray])
+
+      if (!lyricsRef.current) return
+      lyricsRef.current = [...lyricsRef.current, validArray]
       resetTranscript()
     }
   }, [debouncedTranscript])
@@ -33,6 +66,7 @@ export const useTranscriptLyrics = () => {
   return {
     lyrics,
     listening,
+    lyricsRef: lyricsRef.current,
   }
 }
 

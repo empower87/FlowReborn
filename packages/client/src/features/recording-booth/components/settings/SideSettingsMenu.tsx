@@ -25,29 +25,28 @@ const SideButton = ({ type, isPressed, onClick, size }: SideButtonProps) => {
   )
 }
 
-// export default function SideSettingsMenu({ state, dispatch }: SettingsProps) {
 export default function SideSettingsMenu() {
-  const { toggleModal, recordingType, toggleMediaTypeHandler, toggleSuggestionModalHandler } =
+  const { toggleModal, recordingType, toggleMediaTypeHandler, toggleSettingsModalHandler } =
     useSuggestionSettingsContext()
 
   const renderRef = useRef<number>(0)
   console.log(renderRef.current++, "<SideSettingsMenu /> -- Render test -- Layout 1")
   return (
     <>
-      <SettingsModal />
+      {toggleModal !== "Hide" && <SettingsModal />}
 
       <div className="recording-booth__side-menu">
         <div className="recording-booth__side-menu--bs-inset">
           <ul className="recording-booth__side-menu-list">
             <SideButton
               type="Opacity"
-              onClick={() => toggleSuggestionModalHandler("UIOpacity")}
+              onClick={() => toggleSettingsModalHandler("UIOpacity")}
               isPressed={toggleModal === "UIOpacity"}
               size={75}
             />
             <SideButton
               type="Songs"
-              onClick={() => toggleSuggestionModalHandler("Beat")}
+              onClick={() => toggleSettingsModalHandler("Beat")}
               isPressed={toggleModal === "Beat"}
               size={80}
             />
@@ -59,7 +58,7 @@ export default function SideSettingsMenu() {
             />
             <SideButton
               type="Settings"
-              onClick={() => toggleSuggestionModalHandler("Rhymes")}
+              onClick={() => toggleSettingsModalHandler("Rhymes")}
               isPressed={toggleModal === "Rhymes"}
               size={70}
             />

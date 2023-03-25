@@ -7,7 +7,7 @@ type LyricsFeedProps = {
   children: ReactNode
 }
 
-export const LiveTranscript = () => {
+export const LiveLyricsLine = () => {
   const { transcript } = useLiveTranscript()
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const scrollRef = useRef<HTMLParagraphElement>(null)
@@ -43,12 +43,14 @@ export const LiveTranscript = () => {
   )
 }
 
-const LyricLine = ({ row, index }: { row: string[]; index: number }) => {
+const LyricLine = ({ row, index }: { row: string[]; index?: number }) => {
   return (
-    <li className="record__lyrics-item" key={`${row}_${index}`}>
-      <div className="record__item-num">
-        <p className="record__item-num-text">{`${index + 1}`}</p>
-      </div>
+    <li className="record__lyrics-item">
+      {index && (
+        <div className="record__item-num">
+          <p className="record__item-num-text">{`${index + 1}`}</p>
+        </div>
+      )}
       <div className="record__item-words">
         {row.map((word, index) => {
           return (
@@ -62,18 +64,19 @@ const LyricLine = ({ row, index }: { row: string[]; index: number }) => {
   )
 }
 
-const LyricPrompt = ({ children }: { children: ReactNode }) => (
-  <li className="record__lyrics-item">
-    <div className="record__item-words">
-      <p className="record__item-words-text initial-prompt">{children}</p>
-    </div>
-  </li>
-)
+type LyricLineControllerProps = {
+  lyrics: string[]
+}
+
+const LyricLineController = ({ lyrics }: LyricLineControllerProps) => {
+  return
+}
 
 const LyricsFeed = ({ lyricsRef, children }: LyricsFeedProps) => {
   const { lyrics, listening: isRecording } = useTranscriptLyrics()
   const [feedLyrics, setFeedLyrics] = useState<string[][]>([])
   const scrollRef = useRef<any>(null)
+
   const renderRef = useRef<number>(0)
 
   useEffect(() => {
@@ -95,9 +98,9 @@ const LyricsFeed = ({ lyricsRef, children }: LyricsFeedProps) => {
 
     switch (lyricsLength) {
       case -1:
-        return <LyricPrompt>Start flowing to see your lyrics!</LyricPrompt>
+        return <LyricLine row={["Start flowing to see your lyrics!"]} />
       case 0:
-        return <LyricPrompt>This Flow contains no lyrics.</LyricPrompt>
+        return <LyricLine row={["This Flow contains no lyrics."]} />
       default:
         return copiedLyrics?.map((row, index) => {
           return <LyricLine key={`${row}_${index}`} row={row} index={index} />
@@ -115,7 +118,7 @@ const LyricsFeed = ({ lyricsRef, children }: LyricsFeedProps) => {
   console.log(renderRef.current++, "<LyricsFeed /> -- Render test -- Layer 2")
   return (
     <div className="lyrics__feed--container">
-      <div className={`record__lyrics`}>
+      <div className="record__lyrics">
         <ul className="record__lyrics-list" ref={scrollRef}>
           {isRecording ? handleLiveLyrics() : handleSongLyricsLength(feedLyrics)}
         </ul>
@@ -138,7 +141,7 @@ const LyricsController = ({ lyricsRef, settingsMenu }: LyricsControllerProps) =>
       <div className="recording-video__actions--container">
         <div className="record__lyrics--container">
           <LyricsFeed lyricsRef={lyricsRef}>
-            <LiveTranscript />
+            <LiveLyricsLine />
           </LyricsFeed>
         </div>
         {settingsMenu}

@@ -1,6 +1,7 @@
-import { MouseEventHandler, ReactNode, useRef } from "react"
-import { Icon } from "src/components/buttons/Icon/Icon"
-import useRenderCount from "src/hooks/useRenderCount"
+import { useRef } from "react"
+import { useNavigate } from "react-router-dom"
+import TitleBar, { TitleBarButton } from "src/components/ui/TitleBar"
+import { useSuggestionSettingsContext } from "../hooks/useSuggestionSettings"
 
 type TitleProps = {
   isRecording: boolean
@@ -9,57 +10,41 @@ type TitleProps = {
   // duration: number
 }
 
-type HeaderProps = {
-  type: "Back" | "Close"
-  opacity: string
-  onClose: MouseEventHandler<HTMLButtonElement>
-  title: ReactNode
-}
+// export const RecordingTitle = ({ isRecording, minutes, seconds }: TitleProps) => {
+//   const count = useRenderCount()
+//   const renderRef = useRef(0)
+//   const handleRecordingTime = (minutes: number, seconds: number) => {
+//     let formattedSeconds = `${seconds}`
+//     if (seconds <= 9) {
+//       formattedSeconds = `0${seconds}`
+//     }
+//     let formattedTime = `${minutes}:${formattedSeconds}`
+//     return formattedTime
+//   }
 
-interface HeaderButtonProps extends Pick<HeaderProps, "type" | "onClose"> {
-  size?: number
-}
+//   console.log(count, renderRef.current++, "<Title /> -- Render test")
+//   return (
+//     <p className={`recording__title ${isRecording ? "isRecording" : ""}`}>
+//       {isRecording ? `Recording in Progress: ${handleRecordingTime(minutes, seconds)}` : `Recording Booth`}
+//     </p>
+//   )
+// }
 
-// IN_PROGRESS: Converting this into global UI component
-
-const HeaderButton = ({ type, size, onClose }: HeaderButtonProps) => {
-  return (
-    <button className="recording__header-go-back-btn" type="button" onClick={onClose}>
-      <Icon type={type} options={{ color: "White", size: size }} />
-    </button>
+const Title = () => {
+  const renderRef = useRef<number>(0)
+  console.log(
+    renderRef.current++,
+    "<TITLE /> -- Render test -- SHOULD RERENDER BEING UNDER SETTINGS PROVIDER UNFORTUNATELY"
   )
+  return <p className="recording__title">Recording Booth</p>
 }
 
-export const Title = ({ isRecording, minutes, seconds }: TitleProps) => {
-  const count = useRenderCount()
-  const renderRef = useRef(0)
-  const handleRecordingTime = (minutes: number, seconds: number) => {
-    let formattedSeconds = `${seconds}`
-    if (seconds <= 9) {
-      formattedSeconds = `0${seconds}`
-    }
-    let formattedTime = `${minutes}:${formattedSeconds}`
-    return formattedTime
-  }
-
-  console.log(count, renderRef.current++, "<Title /> -- Render test")
+export default function Header() {
+  const navigate = useNavigate()
+  const { UIOpacity } = useSuggestionSettingsContext()
   return (
-    <p className={`recording__title ${isRecording ? "isRecording" : ""}`}>
-      {isRecording ? `Recording in Progress: ${handleRecordingTime(minutes, seconds)}` : `Recording Booth`}
-    </p>
-  )
-}
-
-export default function Header({ type, opacity, title, onClose }: HeaderProps) {
-  return (
-    <div className="recording__header" style={{ opacity: opacity }}>
-      <div className="recording__header--bs-inset">
-        <div className={`recording__header-left ${type === "Back" ? "Back" : "Close"}`}>
-          <HeaderButton type={type} onClose={onClose} size={type === "Back" ? 100 : undefined} />
-        </div>
-
-        <div className="recording__header-right">{title}</div>
-      </div>
+    <div className="recording__header--container" style={{ opacity: UIOpacity }}>
+      <TitleBar title={<Title />} leftButton={<TitleBarButton type="Back" size={80} onClick={() => navigate(-1)} />} />
     </div>
   )
 }

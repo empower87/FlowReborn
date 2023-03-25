@@ -44,61 +44,10 @@
 
 // IN_PROGRESS (3-10-23): need to delete this when global UI TitleBar component is completed.
 // < -------------
-.recording__header {
+.recording__header--container {
   @include flexCenter(5%, 100%, 0px, space-evenly, center, column);
   z-index: 1;
-  background: #a7a7a7;
-  box-shadow: 0px 20px 50px 0px black;
-
-  .recording__header--bs-inset {
-    @include flexCenter(78%, 98%, 100vh, center, center, row);
-    box-shadow: inset 2px 2px 3px #707070fc, inset -2px -2px 3px #ffffffdb;
-    overflow: scroll;
-
-    .recording__header-left {
-      @include flexCenter(100%, 8%, 0, center, center, row);
-
-      .recording__header-go-back-btn {
-        @include flexCenter(70%, 70%, 2em, center, center, row);
-        box-shadow: 1px 1px 3px #3a3a3a, -1px -1px 3px #ffffff;
-        background: $primary-color-300;
-
-        &:hover {
-          background: $primary-color-200;
-        }
-      }
-
-      &.Back {
-        width: 13%;
-        .recording__header-go-back-btn {
-          @include flexCenter(70%, 81%, 2em, center, center, row);
-        }
-      }
-    }
-
-    .recording__header-right {
-      @include flexCenter(100%, stretch, 0, flex-end, center, row);
-
-      .recording__title {
-        height: 66%;
-        width: stretch;
-        border-radius: 0.2em 2em 2em 3em;
-        box-shadow: 1px 1px 3px #3a3a3a, -1px -1px 2px #ffffff;
-        text-indent: 5%;
-        text-align: center;
-        overflow-y: scroll;
-        color: $base-color;
-        font-size: 0.85rem;
-        margin-right: 0.3em;
-
-        &.isRecording {
-          background: linear-gradient(-45deg, $secondary-color-200, $secondary-color-300, $secondary-color-400);
-          background-size: 400% 400%;
-          animation: recording-title 4s ease infinite;
-        }
-      }
-    }
-  }
+  box-shadow: 0px 20px 50px 0px #00000066;
 }
 // -------------- />
 
@@ -114,7 +63,7 @@
     }
 
     .recording-booth__side-menu {
-      @include flexCenter(100%, 16%, 0, flex-start, flex-start, column);
+      @include flexCenter(100%, 16%, 0, flex-start, flex-end, column);
 
       .recording-booth__side-menu--bs-inset {
         @include flexCenter(75%, 80%, 3em, center, center, column);

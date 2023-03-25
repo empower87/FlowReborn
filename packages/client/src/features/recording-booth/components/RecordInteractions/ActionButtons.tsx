@@ -1,7 +1,7 @@
 import { useRef, useState } from "react"
 import { Icon } from "src/components/buttons/Icon/Icon"
 import { BtnColorsEnum, RoundButton } from "src/components/buttons/RoundButton/RoundButton"
-import ViewFullscreenVideo from "../ViewFullscreenVideo"
+import VideoReviewScreen from "../VideoReviewScreen"
 
 type RecordButtonProps = {
   isRecording: boolean
@@ -56,14 +56,14 @@ export const RecordButton = ({ isRecording, startRecording, stopRecording }: Rec
   )
 }
 
-export const ConfirmButtonWithModal = ({ src, onNext }: { src: string | undefined; onNext: () => void }) => {
+export const ConfirmButtonWithModal = () => {
   const renderRef = useRef<number>(0)
   const [showFullscreenVideo, setShowFullscreenVideo] = useState<boolean>(false)
 
   console.log(renderRef.current++, "<ConfirmButtonWithModal /> -- Render test")
   return (
     <>
-      <ViewFullscreenVideo src={src} isOpen={showFullscreenVideo} onClose={setShowFullscreenVideo} onNext={onNext} />
+      <VideoReviewScreen isOpen={showFullscreenVideo} onClose={setShowFullscreenVideo} />
       <ActionButton type="Check" size={110} onClick={() => setShowFullscreenVideo(true)} />
     </>
   )

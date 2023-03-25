@@ -2,15 +2,15 @@ import { useState } from "react"
 import { PlayButton } from "src/components/buttons/PlayButton"
 import { Beat } from "src/constants"
 import { useSuggestionSettingsContext } from "src/features/recording-booth/hooks/useSuggestionSettings"
-import { SettingsModalLayout } from "./SettingsModal"
+import { SettingsModalLayout } from "./ModalUI"
 
-type BeatItemProps = {
+type SelectBeatItemProps = {
   beat: Beat
   isSelected: boolean
   selectBeatHandler: (beat: Beat) => void
 }
 
-const BeatItemButton = ({ beat, onClick }: { beat: Beat; onClick: (beat: Beat) => void }) => {
+const SelectBeatItemButton = ({ beat, onClick }: { beat: Beat; onClick: (beat: Beat) => void }) => {
   return (
     <button className="settings-modal__title-text" onClick={() => onClick(beat)}>
       <div className="settings-modal__title-text--bs-outset">
@@ -20,11 +20,11 @@ const BeatItemButton = ({ beat, onClick }: { beat: Beat; onClick: (beat: Beat) =
   )
 }
 
-const BeatItem = ({ beat, isSelected, selectBeatHandler }: BeatItemProps) => {
+const SelectBeatItem = ({ beat, isSelected, selectBeatHandler }: SelectBeatItemProps) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
 
   return (
-    <div className="settings-modal__select-beat-item">
+    <li className="settings-modal__select-beat-item">
       <div className={`settings-modal__select-beat-item--bs-outset ${isSelected ? "Selected" : ""}`}>
         <div className="settings-modal__select-beat-item-title">
           <div className="settings-modal__select-beat-item-title--bs-inset">
@@ -33,7 +33,7 @@ const BeatItem = ({ beat, isSelected, selectBeatHandler }: BeatItemProps) => {
                 <p>{beat.index + 1}</p>
               </div>
             </div>
-            <BeatItemButton beat={beat} onClick={selectBeatHandler} />
+            <SelectBeatItemButton beat={beat} onClick={selectBeatHandler} />
           </div>
         </div>
 
@@ -41,7 +41,7 @@ const BeatItem = ({ beat, isSelected, selectBeatHandler }: BeatItemProps) => {
           <PlayButton isPlaying={isPlaying} setIsPlaying={setIsPlaying} audio={beat.beat} />
         </div>
       </div>
-    </div>
+    </li>
   )
 }
 
@@ -54,7 +54,7 @@ const SelectBeatList = () => {
           let isSelected = false
           if (each.title === selectedBeat.title) isSelected = true
           return (
-            <BeatItem
+            <SelectBeatItem
               key={`${each.title}_${each.index}`}
               beat={each}
               isSelected={isSelected}

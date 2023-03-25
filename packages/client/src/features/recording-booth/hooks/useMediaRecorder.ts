@@ -1,6 +1,7 @@
 import { RefObject, useEffect, useRef, useState } from "react"
 import SpeechRecognition from "react-speech-recognition"
 import RecordRTC, { RecordRTCPromisesHandler } from "recordrtc"
+import { useSongDraftsContext } from "./useSongDrafts"
 
 type ActiveState = "inactive" | "active" | "finished"
 
@@ -73,7 +74,21 @@ const useRecorderPermission = (recordingType: RecordRTC.Options["type"]) => {
   return { recorder, setRecorder }
 }
 
-export default function useVideoRecorder(beat: string, type: "audio" | "video", videoRef: RefObject<HTMLVideoElement>) {
+type UseMediaRecorderProps = {
+  beat: string
+  type: "audio" | "video"
+  videoRef: RefObject<HTMLVideoElement>
+
+  // createDraftHandler: (
+  //   url: string,
+  //   blob: Blob,
+  //   duration: [number, number],
+  //   recordingType: "audio" | "video"
+  //   // videoRef: RefObject<HTMLVideoElement>
+  // ) => void
+}
+export default function useMediaRecorder({ beat, type, videoRef }: UseMediaRecorderProps) {
+  const { setSongDraftHandler } = useSongDraftsContext()
   const { recorder, setRecorder } = useRecorderPermission(type)
   const { isRecording, mediaStream, mediaRecorder } = recorder
   const audioRef = useRef<any>(new Audio(beat))
@@ -150,8 +165,8 @@ export default function useVideoRecorder(beat: string, type: "audio" | "video", 
   }, [mediaRecorder])
 
   const startRecording = async () => {
-    console.log(recorder, "startRecording function")
     if (!mediaStream || !mediaRecorder) return
+    console.log(recorder, "startRecording function")
 
     try {
       let stream = await navigator.mediaDevices.getUserMedia({
@@ -204,20 +219,30 @@ export default function useVideoRecorder(beat: string, type: "audio" | "video", 
 
     let blob = await mediaRecorder.getBlob()
 
+    let url = URL.createObjectURL(blob)
+
     setRecorder((prev) => ({
       ...prev,
-      src: URL.createObjectURL(blob),
+      src: url,
       blob: blob,
       isRecording: false,
       isActive: "finished",
     }))
+
+    setSongDraftHandler(url, blob, [recorder.minutes, recorder.seconds], type, videoRef)
   }
 
   const resetRecording = () => {
     setRecorder(INITIAL_STATE)
   }
 
-  return { recorder, startRecording, stopRecording, resetRecording, videoRef }
+  return {
+    isRecording: recorder.isRecording,
+    startRecording,
+    stopRecording,
+    resetRecording,
+    videoRef,
+  }
 }
 
 // import { useEffect, useRef, useState } from "react"

@@ -98,7 +98,12 @@ const Buttons = ({
   )
 }
 
-const RhymeSuggestionPanelLayout = ({ queryWord, buttons, rhymeName, text }: RhymeSuggestionPanelLayoutProps) => {
+export const RhymeSuggestionPanelLayout = ({
+  queryWord,
+  buttons,
+  rhymeName,
+  text,
+}: RhymeSuggestionPanelLayoutProps) => {
   const renderRef = useRef<number>(0)
   // console.log(renderRef.current++, "<RhymeSuggestionPanelLayout /> -- Render test -- Layer 3")
   return (

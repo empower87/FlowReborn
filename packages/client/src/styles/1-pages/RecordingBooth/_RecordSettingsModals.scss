@@ -1,0 +1,237 @@
+// Rhyme Suggestions Settings
+.settings-modal__background {
+  @include flexCenter(100%, 100%, 0, center, center, column);
+  background: #0000009e;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+
+  .settings-modal__modal {
+    @include flexCenter(auto, 80%, 0.2em, center, center, column);
+    background: linear-gradient(323deg, #808080 0%, #b8b8b8 100%);
+    position: absolute;
+    padding: 2% 0%;
+
+    // Classes added to modal to position it closest to button that toggles it.
+    &.Beat {
+      top: 17%;
+      right: 17%;
+    }
+    &.RhymeSuggestions {
+      top: 30%;
+      right: 17%;
+    }
+    &.Opacity {
+      top: 10%;
+      right: 17%;
+    }
+
+    .settings-modal__modal--bs-inset {
+      @include flexCenter(96%, 96%, 1em 0.2em 0.2em 0.2em, flex-start, center, column);
+      box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
+
+      .settings-modal__header {
+        @include flexCenter(30px, 100%, 0, center, center, row);
+
+        .settings-modal__title--container {
+          @include flexCenter(100%, 90%, 0, center, center, row);
+
+          .settings-modal__title--bs-outset {
+            @include flexCenter(70%, 97%, 3em, center, center, row);
+            box-shadow: 1px 1px 2px 0px #535353, -1px -1px 2px #f7f7f7;
+
+            .settings-modal__title {
+              color: $base-color;
+            }
+          }
+        }
+
+        .settings-modal__close-btn {
+          @include flexCenter(100%, 10%, 0, center, center, row);
+
+          button {
+            box-shadow: 1px 1px 3px #313131, -1px -1px 2px #d2d2d2;
+          }
+        }
+      }
+      .settings-modal__content {
+        @include flexCenter(auto, 96%, 0, center, center, row);
+        min-height: 30px;
+        padding: 2%;
+      }
+    }
+  }
+}
+
+.settings-modal__slider {
+  @include flexCenter(100%, 100%, 0, center, center, row);
+
+  .settings-modal__slider-input--container {
+    @include flexCenter(100%, 80%, 0, center, center, row);
+
+    .settings-modal__slider-input {
+      @include flexCenter(50%, 100%, 2em, center, center, row);
+      box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
+      background: $primary-color-200;
+    }
+    input[type="range"] {
+      height: 12px;
+      appearance: none;
+      border-radius: 50px;
+      box-shadow: inset 1px 1px 2px 0px #3b3b3b, inset -1px -1px 2px #e8e4e4;
+      // background: -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage}, #63DEBC), color-stop(${currentPercentage}, ${bgColor}))
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      height: 8px;
+      width: 18px;
+      border-radius: 1em;
+      box-shadow: 1px 1px 2px 0px #424141, -1px -1px 2px #ffffff;
+      background: $primary-color-300;
+      appearance: none;
+      cursor: pointer;
+    }
+    input[type="range"]::-moz-range-track {
+      background: pink;
+    }
+  }
+  .settings-modal__slider-value {
+    @include flexCenter(100%, 10%, 0, center, center, row);
+    color: $base-color;
+    font-size: 0.7rem;
+  }
+}
+
+.suggestion-settings__options {
+  @include flexCenter(auto, 100%, 0, flex-start, center, column);
+  overflow-y: auto;
+
+  .suggestion-settings__option {
+    @include flexCenter(60px, 100%, 0, center, center, row);
+    flex: 0 0 auto;
+    margin-top: 1%;
+
+    .suggestion-settings__option--bs-inset {
+      @include flexCenter(99%, 99%, 1.2em 0.2em 1.2em 0.2em, center, center, column);
+      box-shadow: inset 1px 1px 3px #383838, inset -1px -1px 3px #ffffff;
+
+      .suggestion-settings__title {
+        @include flexCenter(40%, 95%, 0, center, flex-end, row);
+
+        .suggestion-settings__title--bs-outset {
+          @include flexCenter(78%, 99%, 2em, center, center, row);
+          box-shadow: 1px 1px 2px 0px #535353, -1px -1px 2px #f7f7f7;
+
+          .suggestion-settings__title-text {
+            font-size: 0.8rem;
+            color: $base-color;
+          }
+        }
+      }
+
+      .suggestion-settings__content {
+        @include flexCenter(60%, 100%, 0, center, center, row);
+        padding: 1% 0%;
+      }
+
+      .suggestion-settings__toggle-list {
+        @include flexCenter(75%, 97%, 0.2em, flex-start, center, row);
+        overflow-x: scroll;
+        overflow-y: hidden;
+        white-space: nowrap;
+
+        .suggestions__settings-item {
+          @include flexCenter(100%, 75px, 0, center, center, row);
+          flex: 0 0 auto;
+
+          .suggestions__settings-item-btn {
+            @include flexCenter(95%, 95%, 2em, center, center, row);
+            box-shadow: 1px 1px 3px 0px #6b6b6b, -1px -1px 2px #fafafa;
+
+            .suggestions__settings-item-btn-text--wrapper {
+              @include flexCenter(100%, 75%, 0, center, center, row);
+
+              .suggestions__settings-item-btn-text {
+                color: $base-color;
+                font-size: 0.7rem;
+                margin-left: 0.5em;
+                white-space: nowrap;
+              }
+            }
+
+            .suggestions__settings-item-btn-icon {
+              @include flexCenter(100%, 25%, 0, center, center, row);
+            }
+
+            &.Selected {
+              box-shadow: inset 1px 1px 3px 0px #922350, inset -1px -1px 2px #ffe5f0;
+              background: $primary-color-300;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.settings-modal__select-beat-body--bs-outset {
+  @include flexCenter(auto, 100%, 1.5em 0.2em, center, center, column);
+  box-shadow: inset 1px 1px 2px 0px #424141, inset -1px -1px 2px #ffffff;
+
+  .settings-modal__select-beat-list {
+    @include flexCenter(97%, 97%, 1.5em 0.2em, center, center, column);
+    display: inline-block;
+    overflow: auto;
+
+    .settings-modal__select-beat-item {
+      @include flexCenter(40px, 100%, 0, center, center, row);
+
+      .settings-modal__select-beat-item--bs-outset {
+        @include flexCenter(85%, 98%, 2em, center, center, row);
+        box-shadow: 1px 1px 2px 0px #424141, -1px -1px 2px #ffffff;
+
+        .settings-modal__select-beat-item-title {
+          @include flexCenter(100%, 87%, 0, center, center, row);
+
+          .settings-modal__select-beat-item-title--bs-inset {
+            @include flexCenter(75%, 97%, 2em, center, center, row);
+            box-shadow: inset 1px 1px 2px 0px #424141, inset -1px -1px 2px #ffffff;
+
+            .settings-modal__title-index {
+              @include flexCenter(100%, 15%, 0, center, center, row);
+
+              .settings-modal__title-index--bs-outset {
+                @include flexCenter(75%, 80%, 2em 0.2em 0.2em 2em, center, center, row);
+                box-shadow: 1px 1px 2px 0px #424141, -1px -1px 2px #ffffff;
+                p {
+                  color: #797979;
+                  font-size: 0.75rem;
+                }
+              }
+            }
+            .settings-modal__title-text {
+              @include flexCenter(100%, 85%, 0, flex-start, center, row);
+
+              .settings-modal__title-text--bs-outset {
+                @include flexCenter(75%, 98%, 0.2em 2em 2em 0.2em, flex-start, center, row);
+                box-shadow: 1px 1px 2px 0px #424141, -1px -1px 2px #ffffff;
+                p {
+                  width: 100%;
+                  color: $primary-color-200;
+                  font-size: 0.85rem;
+                  text-indent: 5%;
+                  text-align: start;
+                }
+              }
+            }
+          }
+        }
+        .settings-modal__select-beat-play-btn {
+          @include flexCenter(100%, 13%, 0, center, center, row);
+        }
+        &.Selected {
+          background: $primary-color-300;
+        }
+      }
+    }
+  }
+}

@@ -115,12 +115,12 @@ type SuggestionSettingsContextType = ReturnType<typeof useSuggestionSettings>
 
 const SuggestionSettingsContext = createContext<SuggestionSettingsContextType | null>(null)
 
-export const useSuggestionSettings = () => {
+const useSuggestionSettings = () => {
   const [state, dispatch] = useReducer(recordingBoothSettingsReducer, INITIAL_STATE)
   const { rhymeSuggestionPanels, UIOpacity, beats, selectedBeat, recordingType, numOfRhymeSuggestions, toggleModal } =
     state
 
-  const toggleSuggestionModalHandler = useCallback((type: "UIOpacity" | "Beat" | "Rhymes" | "Hide") => {
+  const toggleSettingsModalHandler = useCallback((type: "UIOpacity" | "Beat" | "Rhymes" | "Hide") => {
     switch (type) {
       case "UIOpacity":
         dispatch({ type: "SHOW_MENU", payload: { menu: "UIOpacity" } })
@@ -152,18 +152,13 @@ export const useSuggestionSettings = () => {
     dispatch({ type: "UPDATE_PANELS", payload: { rhymeSuggestionPanel: panel } })
   }
 
-  const closeModalHandler = () => {
-    dispatch({ type: "SHOW_MENU", payload: { menu: "Hide" } })
-  }
-
-  const setUIOpacityHandler = (value: number | undefined) => {
+  const sliderValueHandler = (value: number | undefined, type: "Opacity" | "NumOfRhymes") => {
     if (!value) return
-    dispatch({ type: "SET_UIOPACITY", payload: { UIOpacity: value } })
-  }
-
-  const setNumOfRhymeSuggestionsHandler = (value: number | undefined) => {
-    if (!value || numOfRhymeSuggestions === value) return
-    dispatch({ type: "SET_NUM_OF_RHYMES", payload: { numOfRhymes: value } })
+    if (type === "Opacity") {
+      dispatch({ type: "SET_UIOPACITY", payload: { UIOpacity: value } })
+    } else {
+      dispatch({ type: "SET_NUM_OF_RHYMES", payload: { numOfRhymes: value } })
+    }
   }
 
   return {
@@ -173,14 +168,12 @@ export const useSuggestionSettings = () => {
     selectedBeat,
     recordingType,
     numOfRhymeSuggestions,
-    setNumOfRhymeSuggestionsHandler,
     toggleModal,
-    toggleSuggestionModalHandler,
+    toggleSettingsModalHandler,
     toggleMediaTypeHandler,
     selectBeatHandler,
     updatePanelsHandler,
-    closeModalHandler,
-    setUIOpacityHandler,
+    sliderValueHandler,
   }
 }
 

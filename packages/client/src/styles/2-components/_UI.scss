@@ -125,8 +125,7 @@
 }
 
 .title-bar {
-  @include flexCenter(5%, 100%, 0px, space-evenly, center, column);
-  z-index: 1;
+  @include flexCenter(100%, 100%, 0px, space-evenly, center, column);
   background: #a7a7a7;
   // box-shadow: 0px 20px 50px 0px black;
 
