@@ -1,7 +1,8 @@
-import { useRef, useState } from "react"
+import { useRef } from "react"
+import { useNavigate } from "react-router-dom"
 import { Icon } from "src/components/buttons/Icon/Icon"
 import { BtnColorsEnum, RoundButton } from "src/components/buttons/RoundButton/RoundButton"
-import VideoReviewScreen from "../VideoReviewScreen"
+import { useSongDraftsContext } from "../../hooks/useSongDrafts"
 
 type RecordButtonProps = {
   isRecording: boolean
@@ -58,13 +59,24 @@ export const RecordButton = ({ isRecording, startRecording, stopRecording }: Rec
 
 export const ConfirmButtonWithModal = () => {
   const renderRef = useRef<number>(0)
-  const [showFullscreenVideo, setShowFullscreenVideo] = useState<boolean>(false)
+  const { allDrafts, currentDraft } = useSongDraftsContext()
+  const navigate = useNavigate()
 
+  const navigateToConfirmRecording = () => {
+    // going to have to add a isVideo boolean to SongModel which will take a lot of refactoring,
+    // so I've hardcoded recordingType that needs to be passed to PostRecording
+    navigate("confirm-recording", {
+      replace: true,
+    })
+  }
   console.log(renderRef.current++, "<ConfirmButtonWithModal /> -- Render test")
   return (
     <>
-      <VideoReviewScreen isOpen={showFullscreenVideo} onClose={setShowFullscreenVideo} />
-      <ActionButton type="Check" size={110} onClick={() => setShowFullscreenVideo(true)} />
+      {allDrafts.length > 0 ? (
+        <ActionButton type="Check" size={110} onClick={() => navigateToConfirmRecording()} />
+      ) : (
+        <></>
+      )}
     </>
   )
 }

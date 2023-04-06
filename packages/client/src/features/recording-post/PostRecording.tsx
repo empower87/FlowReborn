@@ -1,27 +1,21 @@
 import { useEffect, useRef, useState } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import InputError from "src/components/errors/InputError"
 import LoadingSpinner from "src/components/loading/LoadingSpinner"
 import TitleBar, { TitleBarButton } from "src/components/ui/TitleBar"
 import { ISongTake } from "src/features/recording-booth/utils/types"
 import Recordings from "../../features/recording-post/components/Recordings/Recordings"
+import { useSongDraftsContext } from "../recording-booth/hooks/useSongDrafts"
 import LyricsMenu from "./components/LyricsMenu"
 import LyricsPanel from "./components/LyricsPanel"
 import MediaPlayback from "./components/MediaPlayback"
 import { ThumbnailSelector } from "./components/Thumbnail"
 import { INITIAL_ERROR_STATE, useSongForm } from "./hooks/useSongForm"
 
-type PostRecordingProps = {
-  currentDraft: ISongTake | undefined
-  allDrafts: ISongTake[]
-  recordingType: "audio" | "video"
-}
-
 export default function PostRecording() {
+  const { allDrafts: takes, currentDraft: take } = useSongDraftsContext()
   const navigate = useNavigate()
-  const location = useLocation()
-  const data = location.state as PostRecordingProps
-  const { currentDraft: take, allDrafts: takes, recordingType } = data
+  const recordingType = take && take.thumbnail ? "video" : "audio"
   const { handleSaveSong, methods, isSaving, error, setError } = useSongForm(recordingType)
   const [showLyrics, setShowLyrics] = useState<boolean>(false)
   const [currentTake, setCurrentTake] = useState<ISongTake>()
@@ -29,6 +23,7 @@ export default function PostRecording() {
 
   const videoRef = useRef<HTMLVideoElement>(null)
 
+  console.log(takes, take, "yo we getting context in this page????")
   useEffect(() => {
     setCurrentTake(take)
     setSongTakes(takes)
@@ -46,12 +41,14 @@ export default function PostRecording() {
 
   return (
     <div className="post-recording">
-      <InputError
-        isOpen={error.showError}
-        onClose={() => setError(INITIAL_ERROR_STATE)}
-        message={error.message}
-        options={{ position: [6, 27], size: [40, 72] }}
-      />
+      {error.showError && (
+        <InputError
+          isOpen={error.showError}
+          onClose={() => setError(INITIAL_ERROR_STATE)}
+          message={error.message}
+          options={{ position: [6, 27], size: [40, 72] }}
+        />
+      )}
 
       <div className="recording__header--container">
         <TitleBar

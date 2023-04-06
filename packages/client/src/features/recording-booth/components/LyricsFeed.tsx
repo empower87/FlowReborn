@@ -3,11 +3,13 @@ import { useLiveTranscript, useTranscriptLyrics } from "../hooks/useTranscript"
 import RhymeSuggestionPanels from "./RecordInteractions/RhymeSuggestionPanels"
 
 type LyricsFeedProps = {
-  lyricsRef: any
   children: ReactNode
 }
+type LyricsControllerProps = {
+  settingsMenu: ReactNode
+}
 
-export const LiveLyricsLine = () => {
+const LiveLyricsLine = () => {
   const { transcript } = useLiveTranscript()
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const scrollRef = useRef<HTMLParagraphElement>(null)
@@ -64,15 +66,7 @@ const LyricLine = ({ row, index }: { row: string[]; index?: number }) => {
   )
 }
 
-type LyricLineControllerProps = {
-  lyrics: string[]
-}
-
-const LyricLineController = ({ lyrics }: LyricLineControllerProps) => {
-  return
-}
-
-const LyricsFeed = ({ lyricsRef, children }: LyricsFeedProps) => {
+const LyricsFeed = ({ children }: LyricsFeedProps) => {
   const { lyrics, listening: isRecording } = useTranscriptLyrics()
   const [feedLyrics, setFeedLyrics] = useState<string[][]>([])
   const scrollRef = useRef<any>(null)
@@ -81,8 +75,7 @@ const LyricsFeed = ({ lyricsRef, children }: LyricsFeedProps) => {
 
   useEffect(() => {
     setFeedLyrics(lyrics)
-    lyricsRef.current = [...lyrics]
-  }, [lyrics, lyricsRef])
+  }, [lyrics])
 
   const handleLiveLyrics = useCallback(() => {
     if (feedLyrics[0] && feedLyrics[0].length === 0) return null
@@ -128,19 +121,14 @@ const LyricsFeed = ({ lyricsRef, children }: LyricsFeedProps) => {
   )
 }
 
-type LyricsControllerProps = {
-  lyricsRef: any
-  settingsMenu: ReactNode
-}
-
-const LyricsController = ({ lyricsRef, settingsMenu }: LyricsControllerProps) => {
+const LyricsController = ({ settingsMenu }: LyricsControllerProps) => {
   const renderRef = useRef<number>(0)
   console.log(renderRef.current++, "<LyricsController /> -- Render test -- Layer 1")
   return (
     <>
       <div className="recording-video__actions--container">
         <div className="record__lyrics--container">
-          <LyricsFeed lyricsRef={lyricsRef}>
+          <LyricsFeed>
             <LiveLyricsLine />
           </LyricsFeed>
         </div>

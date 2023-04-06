@@ -17,18 +17,20 @@ type SideButtonProps = {
     | "Landscape"
     | "Portrait"
     | "Expand"
-  text: string
+    | "Camera"
+    | "Rotate"
+  text?: string
   hasUser: boolean
   onClick: React.MouseEventHandler<HTMLButtonElement>
-  isPressed?: boolean
+  isActive?: boolean
   size?: number
 }
 
-export const SideButton = ({ type, text, hasUser, onClick, isPressed, size }: SideButtonProps) => {
+export const SideButton = ({ type, text, hasUser, onClick, isActive, size }: SideButtonProps) => {
   return (
     <li className="side-btn-menu__menu-item">
       <button
-        className={`side-btn-menu__menu-item-btn ${hasUser ? "HasUser" : ""} ${isPressed ? "Pressed" : ""}`}
+        className={`side-btn-menu__menu-item-btn ${hasUser ? "HasUser" : ""} ${isActive ? "Active" : ""}`}
         onClick={onClick}
       >
         <Icon type={type} options={{ color: hasUser ? "White" : "Primary", size: size }} />

@@ -1,5 +1,6 @@
 import {
   addVideoIcon,
+  cameraIcon,
   checkIcon,
   closeIcon,
   commentIcon,
@@ -26,6 +27,7 @@ import {
   previousIcon,
   profileIcon,
   redoIcon,
+  rotateIcon,
   saveIcon,
   searchIcon,
   selectArrowDownIcon,
@@ -43,54 +45,10 @@ import {
   volumeUpIcon,
 } from "src/assets/images/_icons"
 
-// export enum ButtonTypes {
-//   AddVideo = "AddVideo",
-//   Back = "Back",
-//   Check = "Check",
-//   Close = "Close",
-//   Comment = "Comment",
-//   Delete = "Delete",
-//   Down = "Down",
-//   Edit = "Edit",
-//   Expand = "Expand",
-//   Follow = "Follow",
-//   Followers = "Followers",
-//   Following = "Following",
-//   Forward = "Forward",
-//   Fullscreen = "Fullscreen",
-//   Home = "Home",
-//   Like = "Like",
-//   Locked = "Locked",
-//   Logout = "Logout",
-//   Next = "Next",
-//   NoVideo = "NoVideo",
-//   Pause = "Pause",
-//   Play = "Play",
-//   Plus = "Plus",
-//   Previous = "Previous",
-//   Profile = "Profile",
-//   Opacity = "Opacity",
-//   Reply = "Reply",
-//   Record = "Record",
-//   Save = "Save",
-//   Search = "Search",
-//   Settings = "Settings",
-//   Shuffle = "Shuffle",
-//   Stop = "Stop",
-//   Songs = "Songs",
-//   Up = "Up",
-//   Standard = "Standard",
-//   Landscape = "Landscape",
-//   Portrait = "Portrait",
-//   VideoRecord = "VideoRecord",
-//   VolumeUp = "VolumeUp",
-//   VolumeMute = "VolumeMute",
-//   Undo = "Undo",
-//   Redo = "Redo",
-// }
 export type ButtonTypes =
   | "AddVideo"
   | "Back"
+  | "Camera"
   | "Check"
   | "Close"
   | "Comment"
@@ -132,6 +90,7 @@ export type ButtonTypes =
   | "VolumeMute"
   | "Undo"
   | "Redo"
+  | "Rotate"
 
 const getButtonIcon = (type: ButtonTypes) => {
   switch (type) {
@@ -221,6 +180,10 @@ const getButtonIcon = (type: ButtonTypes) => {
       return undoIcon
     case "Redo":
       return redoIcon
+    case "Rotate":
+      return rotateIcon
+    case "Camera":
+      return cameraIcon
   }
 }
 

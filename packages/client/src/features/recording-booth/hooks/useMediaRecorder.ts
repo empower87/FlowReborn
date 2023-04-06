@@ -1,9 +1,8 @@
 import { RefObject, useEffect, useRef, useState } from "react"
 import SpeechRecognition from "react-speech-recognition"
 import RecordRTC, { RecordRTCPromisesHandler } from "recordrtc"
+import { GetUserMediaConstraints, useMediaStreamConstraints } from "./useMediaStream"
 import { useSongDraftsContext } from "./useSongDrafts"
-
-type ActiveState = "inactive" | "active" | "finished"
 
 type MediaRecorderProps = {
   minutes: number
@@ -13,7 +12,6 @@ type MediaRecorderProps = {
   mediaRecorder: RecordRTC.RecordRTCPromisesHandler | null
   src: string
   blob: Blob | null
-  isActive: ActiveState
 }
 
 type Interval = null | number | ReturnType<typeof setInterval>
@@ -26,32 +24,31 @@ const INITIAL_STATE: MediaRecorderProps = {
   mediaRecorder: null,
   src: "",
   blob: null,
-  isActive: "inactive",
 }
 
-const useRecorderPermission = (recordingType: RecordRTC.Options["type"]) => {
+type RecorderPermissionProps = {
+  constraints: GetUserMediaConstraints
+}
+
+type UseMediaRecorderProps = {
+  beat: string
+  videoRef: RefObject<HTMLVideoElement>
+}
+
+const useRecorderPermission = ({ constraints }: RecorderPermissionProps) => {
   const [recorder, setRecorder] = useState<MediaRecorderProps>(INITIAL_STATE)
 
   useEffect(() => {
     setRecorder(INITIAL_STATE)
-  }, [recordingType])
+  }, [constraints])
 
   useEffect(() => {
     const getPermissionInitializeRecorder = async () => {
       try {
-        let stream = await navigator.mediaDevices.getUserMedia({
-          video:
-            recordingType === "video"
-              ? {
-                  height: 648,
-                  width: 365,
-                  aspectRatio: 1.777777778,
-                }
-              : false,
-          audio: true,
-        })
-        let recorder = new RecordRTCPromisesHandler(stream, { type: recordingType })
+        let stream = await navigator.mediaDevices.getUserMedia(constraints)
+        let recorder = new RecordRTCPromisesHandler(stream, { type: constraints.video ? "video" : "audio" })
 
+        console.log(constraints, stream, recorder, "are these changing or valid??")
         setRecorder((prev) => ({
           ...prev,
           mediaStream: stream,
@@ -69,30 +66,19 @@ const useRecorderPermission = (recordingType: RecordRTC.Options["type"]) => {
         recorder.mediaStream?.getTracks().forEach((track) => track.stop())
       }
     }
-  }, [recorder.mediaStream, recordingType])
+  }, [recorder.mediaStream, constraints])
 
   return { recorder, setRecorder }
 }
 
-type UseMediaRecorderProps = {
-  beat: string
-  type: "audio" | "video"
-  videoRef: RefObject<HTMLVideoElement>
-
-  // createDraftHandler: (
-  //   url: string,
-  //   blob: Blob,
-  //   duration: [number, number],
-  //   recordingType: "audio" | "video"
-  //   // videoRef: RefObject<HTMLVideoElement>
-  // ) => void
-}
-export default function useMediaRecorder({ beat, type, videoRef }: UseMediaRecorderProps) {
+export default function useMediaRecorder({ beat, videoRef }: UseMediaRecorderProps) {
   const { setSongDraftHandler } = useSongDraftsContext()
-  const { recorder, setRecorder } = useRecorderPermission(type)
+  const { constraints, mediaStreamConstraintsHandler } = useMediaStreamConstraints()
+  const { recorder, setRecorder } = useRecorderPermission({ constraints })
   const { isRecording, mediaStream, mediaRecorder } = recorder
   const audioRef = useRef<any>(new Audio(beat))
-  // const videoRef = useRef<HTMLVideoElement>(null)
+
+  const type = constraints.video ? "video" : "audio"
 
   useEffect(() => {
     if (!videoRef.current) return
@@ -200,7 +186,6 @@ export default function useMediaRecorder({ beat, type, videoRef }: UseMediaRecor
         ...prev,
         isRecording: true,
         mediaStream: newStream,
-        isActive: "active",
       }))
     } catch (err) {
       console.log(err)
@@ -226,7 +211,6 @@ export default function useMediaRecorder({ beat, type, videoRef }: UseMediaRecor
       src: url,
       blob: blob,
       isRecording: false,
-      isActive: "finished",
     }))
 
     setSongDraftHandler(url, blob, [recorder.minutes, recorder.seconds], type, videoRef)
@@ -242,89 +226,6 @@ export default function useMediaRecorder({ beat, type, videoRef }: UseMediaRecor
     stopRecording,
     resetRecording,
     videoRef,
+    mediaStreamConstraintsHandler,
   }
 }
-
-// import { useEffect, useRef, useState } from "react"
-// import RecordRTC, { RecordRTCPromisesHandler } from "recordrtc"
-
-// const useRecorderPermission = (recordingType: RecordRTC.Options["type"]) => {
-//   const [recorder, setRecorder] = useState<any>()
-//   const [stream, setStream] = useState<MediaStream | null>(null)
-
-//   useEffect(() => {
-//     const getPermissionInitializeRecorder = async () => {
-//       try {
-//         let stream = await navigator.mediaDevices.getUserMedia({
-//           video: true,
-//           audio: true,
-//         })
-//         let recorder = new RecordRTCPromisesHandler(stream, { type: recordingType })
-//         setRecorder(recorder)
-//         setStream(stream)
-//       } catch (err) {
-//         console.log(err)
-//       }
-//     }
-//     console.log(stream, recorder, "ARE THESE VALUES UNDEFINED??")
-
-//     if (!stream) {
-//       getPermissionInitializeRecorder()
-//     } else {
-//       return function cleanup() {
-//         stream?.getTracks().forEach((track: MediaStreamTrack) => track.stop())
-//       }
-//     }
-//   }, [stream, recordingType])
-
-//   return { recorder, stream }
-// }
-
-// export default function useVideoRecorder(type: 'audio' | 'video') {
-//   const { recorder, stream } = useRecorderPermission(type)
-//   const [video, setVideo] = useState<string | undefined>()
-//   const recordingRef = useRef<any>()
-//   const [isRecording, setIsRecording] = useState(false)
-
-//   useEffect(() => {
-//     if (stream && recordingRef.current && !recordingRef.current.srcObject) {
-//       recordingRef.current.srcObject = stream
-//     }
-//   }, [stream])
-
-//   const startRecording = async () => {
-//     console.log(recorder, "startRecording function")
-//     setIsRecording(true)
-//     await recorder.startRecording()
-//     const video = document.getElementById("video-rec") as HTMLVideoElement
-//     if (video) {
-//       video.play()
-//     }
-//   }
-
-//   const stopRecording = async () => {
-//     console.log(recorder, "stopRecording function")
-
-//     setIsRecording(false)
-//     try {
-//       await recorder.stopRecording()
-
-//       let blob = await recorder.getBlob()
-//       const url = URL.createObjectURL(blob)
-//       console.log(recorder, blob, url, "HEY WTF IS GOING ON??")
-//       setVideo(url)
-//     } catch (err) {
-//       console.log(err)
-//     }
-//     // const video = document.getElementById("video-rec") as HTMLVideoElement
-//     // if (video) {
-//     //   video.pause()
-//     // }
-//     // recorder.getTracks().forEach((track: any) => track.stop())
-//     // if (stream) {
-//     //   stream.getTracks().forEach((track) => track.stop())
-//     // }
-//   }
-
-//   return { recorder, isRecording, startRecording, stopRecording, video, ref: recordingRef.current, stream }
-// }

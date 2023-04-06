@@ -131,6 +131,13 @@
           }
         }
       }
+
+      .song-post__side-bar {
+        @include flexCenter(55%, 60px, 0, flex-start, flex-start, column);
+        position: absolute;
+        right: 0;
+        top: 15%;
+      }
     }
   }
   .scroll-top-container {
@@ -146,7 +153,6 @@
 .song-post__details--wrapper {
   @include flexCenter(12%, 100%, 0, space-between, center, column);
   position: absolute;
-  // bottom: 10%;
   bottom: 10%;
   z-index: 1;
 

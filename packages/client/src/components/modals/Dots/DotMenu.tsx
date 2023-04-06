@@ -51,7 +51,7 @@ export const DotMenuModalItem = ({ icon, title, size, onClick }: DotMenuModalIte
   )
 }
 
-const DotMenuModal = ({ isOpen, onClose, children }: DotMenuModalProps) => {
+export const DotMenuModal = ({ isOpen, onClose, children }: DotMenuModalProps) => {
   const root = document.getElementById("root")!
 
   const onCloseHandler = (e: MouseEvent<HTMLDivElement>) => {

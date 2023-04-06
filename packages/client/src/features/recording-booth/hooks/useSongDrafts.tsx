@@ -8,7 +8,7 @@ type SongDraftsContextType = ReturnType<typeof useSongDrafts>
 
 const SongDraftsContext = createContext<SongDraftsContextType | null>(null)
 
-export const useSongDrafts = () => {
+const useSongDrafts = () => {
   const { user } = useAuth()
   const { totalLyrics } = useGetTranscriptLyrics()
   const [currentDraft, setCurrentDraft] = useState<ISongTake>()

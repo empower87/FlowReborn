@@ -30,7 +30,11 @@ const INTERSECTION_OPTIONS = {
 }
 
 const SongPostActionsBar = ({ children }: { children: ReactNode }) => {
-  return <SideButtonMenu>{children}</SideButtonMenu>
+  return (
+    <div className="song-post__side-bar">
+      <SideButtonMenu>{children}</SideButtonMenu>
+    </div>
+  )
 }
 
 export default function SongPost({ song, style }: ISongPostProps) {

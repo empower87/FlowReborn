@@ -4,7 +4,7 @@ import React, { Suspense, useState } from "react"
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom"
 import Loading from "./components/loading/Loading"
 import { AuthProvider } from "./context/AuthContext"
-import { RecordingBoothLoading } from "./features/recording-booth/RecordingBooth"
+import { RecordingBoothLoading } from "./features/recording-booth/components/RecordingBoothLoadingScreen"
 import Auth from "./pages/auth-page/Auth"
 import Home from "./pages/home-page/Home"
 import "./styles/style.css"
@@ -16,6 +16,7 @@ const LazySongPage = React.lazy(() => import("./pages/song-page/SongPage"))
 const LazyRecordingBooth = React.lazy(() => import("./features/recording-booth/RecordingBooth"))
 const LazyPostRecording = React.lazy(() => import("./features/recording-post/PostRecording"))
 const LazyEditLyrics = React.lazy(() => import("./features/edit-lyrics/EditLyrics"))
+const LazyConfirmRecording = React.lazy(() => import("./features/recording-booth/components/ConfirmRecording"))
 
 const getAuthToken = () => {
   const token = localStorage.getItem("token")!
@@ -93,17 +94,27 @@ function App() {
                     <Route path="/profile/:id" element={<LazyProfile />} />
                     <Route path="/editProfile" element={<LazyEditProfile />} />
                     <Route
-                      path="/recording-booth"
+                      path="recording-booth"
                       element={
                         <Suspense fallback={<RecordingBoothLoading />}>
                           <LazyRecordingBooth />
-
-                          {/* <RecordingBoothLoading /> */}
                         </Suspense>
                       }
-                    />
+                    >
+                      <Route path="confirm-recording" element={<LazyConfirmRecording />}>
+                        <Route path="post-recording" element={<LazyPostRecording />} />
+                      </Route>
+                    </Route>
+                    {/* <Route
+                      path="/recording-booth"
+                      element={
+                        <Suspense fallback={<RecordingBoothLoading />}>
+                          <LazyRecordingBooth />                            
+                        </Suspense>
+                      }
+                    /> */}
 
-                    <Route path="/post-recording" element={<LazyPostRecording />} />
+                    {/* <Route path="/post-recording" element={<LazyPostRecording />} /> */}
                     <Route path="/editLyrics" element={<LazyEditLyrics />} />
                     <Route path="/songScreen/:id" element={<LazySongPage />} />
                     <Route path="/search" element={<LazySearch />} />

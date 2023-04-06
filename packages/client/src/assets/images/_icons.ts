@@ -14,6 +14,7 @@ import eyeIcon from "./eye.svg"
 import followIcon from "./follow.svg"
 // import followersIcon from "./followers.svg"
 import addVideoIcon from "./add-video.svg"
+import cameraIcon from "./camera-filled.svg"
 import forwardIcon from "./forward.svg"
 import fullscreenIcon from "./fullscreen.svg"
 import heartIcon from "./heart2.svg"
@@ -42,6 +43,7 @@ import portraitIcon from "./portrait-filled.svg"
 import videoRecordIcon from "./record-video-filled.svg"
 import redoIcon from "./redo.svg"
 import replayIcon from "./replay.svg"
+import rotateIcon from "./rotate.svg"
 import saveIcon from "./save-disk.svg"
 import searchIcon from "./search.svg"
 import selectArrowDownIcon from "./select-down.svg"
@@ -115,4 +117,6 @@ export {
   settingsIcon,
   addVideoIcon,
   noVideoIcon,
+  rotateIcon,
+  cameraIcon,
 }

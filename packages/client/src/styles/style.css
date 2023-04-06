@@ -2916,6 +2916,75 @@ button {
   align-items: center;
   flex-direction: column;
 }
+.recording-booth__body .recording-booth__side-menu {
+  height: 50vh;
+  width: 16%;
+  border-radius: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  flex-direction: column;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding-top: 9%;
+}
+.recording-booth__body .recording-booth__side-menu .recording-booth__side-menu--bs-inset {
+  height: 75%;
+  width: 80%;
+  border-radius: 3em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: linear-gradient(323deg, #808080 0%, #b8b8b8 100%);
+  border: 2px solid #b8b8b8;
+  box-shadow: inset 2px 2px 3px 0px #313131, inset -1px -1px 3px #ffffff;
+  z-index: 1;
+  margin-top: 0.5em;
+}
+.recording-booth__body .recording-booth__side-menu .recording-booth__side-menu--bs-inset .recording-booth__side-menu-list {
+  height: 97%;
+  width: 88%;
+  border-radius: 3em;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+}
+.recording-booth__body .recording-booth__side-menu .recording-booth__side-menu--bs-inset .recording-booth__side-menu-list .recording-booth__side-menu-item {
+  height: 40px;
+  width: 100%;
+  border-radius: 3em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.recording-booth__body .recording-booth__side-menu .recording-booth__side-menu--bs-inset .recording-booth__side-menu-list .recording-booth__side-menu-item .recording-booth__side-menu-btn {
+  height: 90%;
+  width: 90%;
+  border-radius: 3em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 2px 2px 3px #5e5e5e, -1px -1px 3px #f6f6f6;
+  color: #ffffff;
+  font-size: 0.7em;
+}
+.recording-booth__body .recording-booth__side-menu .recording-booth__side-menu--bs-inset .recording-booth__side-menu-list .recording-booth__side-menu-item .recording-booth__side-menu-btn.Pressed {
+  box-shadow: inset 1px 1px 3px #61273f, inset -1px -1px 3px #fffafc;
+  background: #ff9ec7;
+}
+.recording-booth__body .recording-booth__side-menu .recording-booth__side-menu--bs-inset .recording-booth__side-menu-list .recording-booth__side-menu-item .recording-booth__side-menu-btn:hover {
+  background: #ff9ec7;
+}
+.recording-booth__body .recording-booth__side-menu .recording-booth__side-menu--bs-inset .recording-booth__side-menu-list .recording-booth__side-menu-item .recording-booth__side-menu-btn:active {
+  box-shadow: inset 1px 1px 3px #61273f, inset -1px -1px 3px #fffafc;
+  background: #ff9ec7;
+}
 .recording-booth__body .recording-video__actions--container {
   height: 100%;
   width: 100%;
@@ -2934,71 +3003,6 @@ button {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-}
-.recording-booth__body .recording-video__actions--container .recording-booth__side-menu {
-  height: 100%;
-  width: 16%;
-  border-radius: 0;
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-end;
-  flex-direction: column;
-}
-.recording-booth__body .recording-video__actions--container .recording-booth__side-menu .recording-booth__side-menu--bs-inset {
-  height: 75%;
-  width: 80%;
-  border-radius: 3em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  background: linear-gradient(323deg, #808080 0%, #b8b8b8 100%);
-  border: 2px solid #b8b8b8;
-  box-shadow: inset 2px 2px 3px 0px #313131, inset -1px -1px 3px #ffffff;
-  z-index: 1;
-  margin-top: 0.5em;
-}
-.recording-booth__body .recording-video__actions--container .recording-booth__side-menu .recording-booth__side-menu--bs-inset .recording-booth__side-menu-list {
-  height: 97%;
-  width: 88%;
-  border-radius: 3em;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-direction: column;
-  position: relative;
-}
-.recording-booth__body .recording-video__actions--container .recording-booth__side-menu .recording-booth__side-menu--bs-inset .recording-booth__side-menu-list .recording-booth__side-menu-item {
-  height: 40px;
-  width: 100%;
-  border-radius: 3em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-.recording-booth__body .recording-video__actions--container .recording-booth__side-menu .recording-booth__side-menu--bs-inset .recording-booth__side-menu-list .recording-booth__side-menu-item .recording-booth__side-menu-btn {
-  height: 90%;
-  width: 90%;
-  border-radius: 3em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  box-shadow: 2px 2px 3px #5e5e5e, -1px -1px 3px #f6f6f6;
-  color: #ffffff;
-  font-size: 0.7em;
-}
-.recording-booth__body .recording-video__actions--container .recording-booth__side-menu .recording-booth__side-menu--bs-inset .recording-booth__side-menu-list .recording-booth__side-menu-item .recording-booth__side-menu-btn.Pressed {
-  box-shadow: inset 1px 1px 3px #61273f, inset -1px -1px 3px #fffafc;
-  background: #ff9ec7;
-}
-.recording-booth__body .recording-video__actions--container .recording-booth__side-menu .recording-booth__side-menu--bs-inset .recording-booth__side-menu-list .recording-booth__side-menu-item .recording-booth__side-menu-btn:hover {
-  background: #ff9ec7;
-}
-.recording-booth__body .recording-video__actions--container .recording-booth__side-menu .recording-booth__side-menu--bs-inset .recording-booth__side-menu-list .recording-booth__side-menu-item .recording-booth__side-menu-btn:active {
-  box-shadow: inset 1px 1px 3px #61273f, inset -1px -1px 3px #fffafc;
-  background: #ff9ec7;
 }
 .recording-booth__body .suggestions {
   height: auto;
@@ -6014,16 +6018,13 @@ button {
 }
 
 .side-btn-menu__menu--container {
-  height: 43%;
-  width: 16%;
+  height: 100%;
+  width: 100%;
   border-radius: 0;
   display: flex;
   justify-content: center;
   align-items: flex-end;
   flex-direction: column;
-  position: absolute;
-  right: 0;
-  top: 32%;
 }
 .side-btn-menu__menu--container .side-btn-menu__menu--bs-inset {
   height: 90%;
@@ -6049,15 +6050,17 @@ button {
   flex-direction: column;
   position: relative;
   overflow-y: scroll;
+  padding-top: 5%;
 }
 .side-btn-menu__menu--container .side-btn-menu__menu--bs-inset .side-btn-menu__menu-list .side-btn-menu__menu-item {
-  height: 60px;
+  height: auto;
   width: 100%;
   border-radius: 3em;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  flex: 0 0 auto;
 }
 .side-btn-menu__menu--container .side-btn-menu__menu--bs-inset .side-btn-menu__menu-list .side-btn-menu__menu-item .side-btn-menu__menu-item-btn {
   height: 40px;
@@ -6074,7 +6077,7 @@ button {
 .side-btn-menu__menu--container .side-btn-menu__menu--bs-inset .side-btn-menu__menu-list .side-btn-menu__menu-item .side-btn-menu__menu-item-btn.HasUser {
   background: #ec6aa0;
 }
-.side-btn-menu__menu--container .side-btn-menu__menu--bs-inset .side-btn-menu__menu-list .side-btn-menu__menu-item .side-btn-menu__menu-item-btn.Pressed {
+.side-btn-menu__menu--container .side-btn-menu__menu--bs-inset .side-btn-menu__menu-list .side-btn-menu__menu-item .side-btn-menu__menu-item-btn.Active {
   box-shadow: inset 1px 1px 3px #61273f, inset -1px -1px 3px #fffafc;
   background: #ff9ec7;
 }
@@ -6086,8 +6089,11 @@ button {
   background: #ff9ec7;
 }
 .side-btn-menu__menu--container .side-btn-menu__menu--bs-inset .side-btn-menu__menu-list .side-btn-menu__menu-item .side-btn-menu__menu-item-text {
+  height: 15px;
   font-size: 0.75rem;
   color: #ffffff;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .resize-bar__title--shadow-outset {
@@ -7715,6 +7721,18 @@ button {
   background: #63debc;
   -webkit-transition: background-color 1s ease;
   transition: background-color 1s ease;
+}
+.song-post__container .song-post__list .song-post__item .song-post__side-bar {
+  height: 55%;
+  width: 60px;
+  border-radius: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  position: absolute;
+  right: 0;
+  top: 15%;
 }
 .song-post__container .scroll-top-container {
   height: 20px;

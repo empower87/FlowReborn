@@ -1,9 +1,9 @@
 .side-btn-menu__menu--container {
-  @include flexCenter(43%, 16%, 0, center, flex-end, column);
+  @include flexCenter(100%, 100%, 0, center, flex-end, column);
   // @include flexCenter(100%, 16%, 0, flex-start, flex-start, column);
-  position: absolute;
-  right: 0;
-  top: 32%;
+  // position: absolute;
+  // right: 0;
+  // top: 32%;
 
   .side-btn-menu__menu--bs-inset {
     @include flexCenter(90%, 80%, 3em, center, center, column);
@@ -18,9 +18,11 @@
       @include flexCenter(98%, 88%, 3em, flex-start, center, column);
       position: relative;
       overflow-y: scroll;
+      padding-top: 5%;
 
       .side-btn-menu__menu-item {
-        @include flexCenter(60px, 100%, 3em, center, center, column);
+        @include flexCenter(auto, 100%, 3em, center, center, column);
+        flex: 0 0 auto;
 
         .side-btn-menu__menu-item-btn {
           @include flexCenter(40px, 40px, 3em, center, center, column);
@@ -32,7 +34,7 @@
             background: $primary-color-300;
           }
 
-          &.Pressed {
+          &.Active {
             box-shadow: inset 1px 1px 3px #61273f, inset -1px -1px 3px #fffafc;
             background: $primary-color-200;
           }
@@ -45,8 +47,11 @@
           }
         }
         .side-btn-menu__menu-item-text {
+          height: 15px;
           font-size: 0.75rem;
           color: $base-color;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
       }
     }

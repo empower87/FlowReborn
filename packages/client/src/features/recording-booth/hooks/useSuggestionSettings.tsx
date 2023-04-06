@@ -9,7 +9,6 @@ type State = {
   UIOpacity: number
   beats: Beat[]
   selectedBeat: Beat
-  recordingType: "audio" | "video"
   numOfRhymeSuggestions: number
   toggleModal: "UIOpacity" | "Beat" | "Rhymes" | "Hide"
 }
@@ -21,7 +20,6 @@ type Action = {
     menu?: "UIOpacity" | "Beat" | "Rhymes" | "Hide"
     numOfRhymes?: number
     UIOpacity?: number
-    recordingType?: "audio" | "video"
     selectBeat?: Beat
   }
 }
@@ -34,7 +32,6 @@ export const INITIAL_STATE: State = {
   UIOpacity: 1,
   beats: beatList,
   selectedBeat: beatList[0],
-  recordingType: "video",
   numOfRhymeSuggestions: 5,
   toggleModal: "Hide",
 }
@@ -95,17 +92,6 @@ export const recordingBoothSettingsReducer: Reducer<State, Action> = (state, act
         ...state,
         selectedBeat: action.payload.selectBeat,
       }
-    case "SET_RECORDING_TYPE":
-      if (!action.payload.recordingType) return state
-      return {
-        ...state,
-        recordingType: action.payload.recordingType,
-      }
-    case "TOGGLE_VIDEO":
-      return {
-        ...state,
-        recordingType: state.recordingType === "video" ? "audio" : "video",
-      }
     default:
       return state
   }
@@ -117,8 +103,7 @@ const SuggestionSettingsContext = createContext<SuggestionSettingsContextType | 
 
 const useSuggestionSettings = () => {
   const [state, dispatch] = useReducer(recordingBoothSettingsReducer, INITIAL_STATE)
-  const { rhymeSuggestionPanels, UIOpacity, beats, selectedBeat, recordingType, numOfRhymeSuggestions, toggleModal } =
-    state
+  const { rhymeSuggestionPanels, UIOpacity, beats, selectedBeat, numOfRhymeSuggestions, toggleModal } = state
 
   const toggleSettingsModalHandler = useCallback((type: "UIOpacity" | "Beat" | "Rhymes" | "Hide") => {
     switch (type) {
@@ -136,10 +121,6 @@ const useSuggestionSettings = () => {
         break
     }
   }, [])
-
-  const toggleMediaTypeHandler = () => {
-    dispatch({ type: "TOGGLE_VIDEO", payload: {} })
-  }
 
   const selectBeatHandler = (beat: Beat) => {
     dispatch({ type: "SET_BEAT", payload: { selectBeat: beat } })
@@ -166,11 +147,9 @@ const useSuggestionSettings = () => {
     UIOpacity,
     beats,
     selectedBeat,
-    recordingType,
     numOfRhymeSuggestions,
     toggleModal,
     toggleSettingsModalHandler,
-    toggleMediaTypeHandler,
     selectBeatHandler,
     updatePanelsHandler,
     sliderValueHandler,

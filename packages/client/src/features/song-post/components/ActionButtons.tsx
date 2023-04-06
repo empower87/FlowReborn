@@ -47,7 +47,7 @@ export const LyricsButtonWithLyricsModal = ({ lyrics }: { lyrics: string[][] }) 
         text={"Lyrics"}
         hasUser={false}
         onClick={() => setToggleLyrics((prev) => !prev)}
-        isPressed={toggleLyrics}
+        isActive={toggleLyrics}
         size={80}
       />
     </>
