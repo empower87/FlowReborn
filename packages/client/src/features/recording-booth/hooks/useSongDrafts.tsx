@@ -11,7 +11,7 @@ const SongDraftsContext = createContext<SongDraftsContextType | null>(null)
 const useSongDrafts = () => {
   const { user } = useAuth()
   const { totalLyrics } = useGetTranscriptLyrics()
-  const [currentDraft, setCurrentDraft] = useState<ISongTake>()
+  const [currentDraftId, setCurrentDraftId] = useState<string | undefined>()
   const [allDrafts, setAllDrafts] = useState<ISongTake[]>([])
 
   const setSongDraftHandler = useCallback(
@@ -26,16 +26,18 @@ const useSongDrafts = () => {
       const id = parseInt(allDrafts.length?.toString()) + 1
       const filteredLyrics = totalLyrics.length ? [...totalLyrics]?.filter((lyric) => lyric.length !== 0) : []
       const duration = recordingTime[0] * 60000 + recordingTime[1] * 1000
+      const isVideo = recordingType === "video" ? true : false
 
       var newTake = {
         _id: `${id}`,
         title: "",
         blob: blob,
-        audio: url,
+        src: url,
         user: user,
         lyrics: [...filteredLyrics],
         duration: duration,
         caption: "",
+        isVideo: isVideo,
       }
 
       const video = videoRef.current
@@ -43,7 +45,7 @@ const useSongDrafts = () => {
 
       console.log(newTake, "created a new take")
 
-      if (recordingType === "video") {
+      if (isVideo) {
         let canvas = generateCanvas(video, videoRef.current?.videoHeight, videoRef.current?.videoWidth)
         if (!canvas) return
         canvas.toBlob(
@@ -53,7 +55,7 @@ const useSongDrafts = () => {
 
               let newTakeWithThumbnail = { ...newTake, thumbnail: url, thumbnailBlob: blob }
 
-              setCurrentDraft(newTakeWithThumbnail)
+              setCurrentDraftId(newTakeWithThumbnail._id)
               setAllDrafts((prev) => [...prev, newTakeWithThumbnail])
             }
           },
@@ -61,7 +63,7 @@ const useSongDrafts = () => {
           95
         )
       } else {
-        setCurrentDraft(newTake)
+        setCurrentDraftId(newTake._id)
         setAllDrafts((prev) => [...prev, newTake])
       }
     },
@@ -72,9 +74,9 @@ const useSongDrafts = () => {
     let filteredDrafts = allDrafts.filter((draft, index) => {
       if (draft._id !== _id) {
         if (filteredDrafts[index + 1]) {
-          setCurrentDraft(filteredDrafts[index + 1])
+          setCurrentDraftId(filteredDrafts[index + 1]._id)
         } else {
-          setCurrentDraft(filteredDrafts[index - 1])
+          setCurrentDraftId(filteredDrafts[index - 1]._id)
         }
         return draft
       }
@@ -82,8 +84,15 @@ const useSongDrafts = () => {
     setAllDrafts(filteredDrafts)
   }, [])
 
+  const currentDraft = allDrafts.find((draft) => draft._id === currentDraftId)
+
+  const setCurrentDraft = () => {
+    console.log("hehe, what we gon do here?")
+  }
+
   return {
     currentDraft,
+    setCurrentDraft,
     allDrafts,
     setSongDraftHandler,
     deleteDraftHandler,

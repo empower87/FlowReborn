@@ -77,7 +77,7 @@ const VideoProvider = ({
   sideBarActions: ReactNode
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const { toggleVideoAspect, handleToggleVideoAspect } = useSongVideoControls(song.audio)
+  const { toggleVideoAspect, handleToggleVideoAspect } = useSongVideoControls(song.src)
 
   const {
     slider,
@@ -89,7 +89,7 @@ const VideoProvider = ({
     ref: videoRef,
     duration: song.duration,
     bgColor: "#eeb2cb",
-    video: song.audio,
+    video: song.src,
   })
 
   if (!inView && isPlaying) setIsPlaying(false)
@@ -99,9 +99,9 @@ const VideoProvider = ({
       <Video
         ref={videoRef}
         thumbnail={song.thumbnail}
-        src={song.audio}
+        src={song.src}
         onClick={setPlayHandler}
-        placeholder={song.video}
+        placeholder={song.thumbnail}
         toggleAspectRatio={toggleVideoAspect}
       />
 

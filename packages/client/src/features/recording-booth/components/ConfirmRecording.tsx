@@ -33,7 +33,7 @@ export default function ConfirmRecording() {
         </div>
       </div>
       <Outlet />
-      <video src={currentDraft?.audio} className="fullscreen-video__video" autoPlay loop playsInline></video>
+      <video src={currentDraft?.src} className="fullscreen-video__video" autoPlay loop playsInline />
     </div>
   )
 }

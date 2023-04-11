@@ -47,10 +47,11 @@ const SongSchema = new Schema<ISong>(
     likes: [{ type: Schema.Types.ObjectId, ref: "User", default: [] }],
     lyrics: { type: [[String]], default: [] },
     title: String,
-    audio: String,
+    src: String,
     user: { type: Schema.Types.ObjectId, ref: "User" },
     thumbnail: String || undefined,
-    video: String || undefined,
+    isPosted: Boolean,
+    isVideo: Boolean,
   },
   {
     timestamps: { createdAt: "createdOn", updatedAt: "updatedOn" },

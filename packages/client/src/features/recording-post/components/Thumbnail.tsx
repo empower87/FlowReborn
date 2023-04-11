@@ -1,26 +1,31 @@
 import { Dispatch, SetStateAction, useRef, useState } from "react"
 import ReactDOM from "react-dom"
 import { BtnColorsEnum, RoundButton } from "src/components/buttons/RoundButton/RoundButton"
+import { useSongDraftsContext } from "src/features/recording-booth/hooks/useSongDrafts"
 import { generateCanvas } from "src/features/recording-booth/utils/generateThumbnail"
-import { ISongTake } from "src/features/recording-booth/utils/types"
 
+type ThumbnailType = {
+  thumbnail: string
+  thumbnailBlob: Blob
+}
 const ThumbnailModal = ({
   video,
   duration,
   isOpen,
   onClose,
-  setCurrentTake,
 }: {
   video: string | undefined
   duration: number | undefined
   isOpen: boolean
   onClose: Dispatch<SetStateAction<boolean>>
-  setCurrentTake: Dispatch<SetStateAction<ISongTake | undefined>>
 }) => {
   const root = document.getElementById("root")!
+  const { allDrafts, currentDraft, deleteDraftHandler } = useSongDraftsContext()
+
   const seconds = duration ? duration / 1000 : 0
   const videoRef = useRef<HTMLVideoElement>(null)
   const [value, setValue] = useState<string>("0")
+  const [thumbnail, setThumbnail] = useState<ThumbnailType | undefined>()
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!videoRef.current) return
@@ -39,14 +44,9 @@ const ThumbnailModal = ({
       if (!blob) return
       let url = URL.createObjectURL(blob)
 
-      setCurrentTake((prev) => {
-        if (prev) {
-          return {
-            ...prev,
-            thumbnail: url,
-            thumbnailBlob: blob,
-          }
-        }
+      setThumbnail({
+        thumbnail: url,
+        thumbnailBlob: blob,
       })
     })
   }
@@ -106,23 +106,17 @@ const ThumbnailModal = ({
   )
 }
 
-export const ThumbnailSelector = ({
-  currentTake,
-  setCurrentTake,
-}: {
-  currentTake: ISongTake | undefined
-  setCurrentTake: Dispatch<SetStateAction<ISongTake | undefined>>
-}) => {
+export const ThumbnailSelector = () => {
+  const { allDrafts, currentDraft, deleteDraftHandler } = useSongDraftsContext()
   const [showModal, setShowModal] = useState<boolean>(false)
 
   return (
     <div className="post-recording__choose-thumbnail">
       <ThumbnailModal
-        video={currentTake?.audio}
-        duration={currentTake?.duration}
+        video={currentDraft?.src}
+        duration={currentDraft?.duration}
         isOpen={showModal}
         onClose={setShowModal}
-        setCurrentTake={setCurrentTake}
       />
       <div className="post-recording__choose-thumbnail--bs-inset">
         <div className="post-recording__choose-thumbnail-title">
@@ -132,7 +126,7 @@ export const ThumbnailSelector = ({
         </div>
         <div className="post-recording__choose-thumbnail-btns">
           <div className="post-recording__choose-thumbnail-btn">
-            <img className="post-recording__choose-thumbnail-img" src={currentTake?.thumbnail} />
+            <img className="post-recording__choose-thumbnail-img" src={currentDraft?.thumbnail} />
           </div>
         </div>
       </div>

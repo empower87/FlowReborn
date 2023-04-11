@@ -204,7 +204,7 @@ export default function ItemBody({ song, isMe, children }: Pick<Props, "song" | 
       lyrics={
         <div className="profile-songs__lyrics--container">
           {children}
-          <PlayButtonContainer audio={song.audio} />
+          <PlayButtonContainer audio={song.src} />
         </div>
       }
     />

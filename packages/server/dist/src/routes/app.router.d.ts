@@ -532,28 +532,31 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 caption?: string | undefined;
                 lyrics?: string[][] | undefined;
                 thumbnail?: string | undefined;
-                video?: string | undefined;
+                isPosted?: boolean | undefined;
+                isVideo?: boolean | undefined;
                 user: string;
                 title: string;
                 duration: number;
-                audio: string;
+                src: string;
             };
             _input_out: {
                 caption?: string | undefined;
                 thumbnail?: string | undefined;
-                video?: string | undefined;
+                isPosted?: boolean | undefined;
+                isVideo?: boolean | undefined;
                 user: string;
                 title: string;
                 lyrics: string[][];
                 duration: number;
-                audio: string;
+                src: string;
             };
             _output_in: typeof import("@trpc/server").unsetMarker;
             _output_out: typeof import("@trpc/server").unsetMarker;
         }, {
             caption?: string | undefined;
             thumbnail?: string | undefined;
-            video?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
             _id: import("mongoose").Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
@@ -562,7 +565,7 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             title: string;
             lyrics: string[][];
             duration: number;
-            audio: string;
+            src: string;
             comments: import("mongoose").Types.ObjectId[];
         }>;
         deleteSong: import("@trpc/server").BuildProcedure<"mutation", {
@@ -605,7 +608,8 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
         }, (import("mongoose").Document<unknown, any, {
             caption?: string | undefined;
             thumbnail?: string | undefined;
-            video?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
             _id: import("mongoose").Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
@@ -614,12 +618,13 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             title: string;
             lyrics: string[][];
             duration: number;
-            audio: string;
+            src: string;
             comments: import("mongoose").Types.ObjectId[];
         }> & {
             caption?: string | undefined;
             thumbnail?: string | undefined;
-            video?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
             _id: import("mongoose").Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
@@ -628,7 +633,7 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             title: string;
             lyrics: string[][];
             duration: number;
-            audio: string;
+            src: string;
             comments: import("mongoose").Types.ObjectId[];
         } & Required<{
             _id: import("mongoose").Types.ObjectId;
@@ -677,7 +682,8 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
         }, {
             caption?: string | undefined;
             thumbnail?: string | undefined;
-            video?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
             _id: import("mongoose").Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
@@ -711,7 +717,7 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             title: string;
             lyrics: string[][];
             duration: number;
-            audio: string;
+            src: string;
             comments: {
                 updatedOn?: Date | undefined;
                 editedOn?: Date | undefined;
@@ -789,7 +795,8 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
         }, {
             caption?: string | undefined;
             thumbnail?: string | undefined;
-            video?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
             _id: import("mongoose").Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
@@ -823,7 +830,7 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             title: string;
             lyrics: string[][];
             duration: number;
-            audio: string;
+            src: string;
             comments: import("mongoose").Types.ObjectId[];
         }[]>;
         usersFollowersSongs: import("@trpc/server").BuildProcedure<"query", {
@@ -866,7 +873,8 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
         }, {
             caption?: string | undefined;
             thumbnail?: string | undefined;
-            video?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
             _id: import("mongoose").Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
@@ -900,7 +908,7 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             title: string;
             lyrics: string[][];
             duration: number;
-            audio: string;
+            src: string;
             comments: import("mongoose").Types.ObjectId[];
         }[]>;
         getSong: import("@trpc/server").BuildProcedure<"query", {
@@ -949,7 +957,8 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
         }, {
             caption?: string | undefined;
             thumbnail?: string | undefined;
-            video?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
             _id: import("mongoose").Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
@@ -958,7 +967,7 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             title: string;
             lyrics: string[][];
             duration: number;
-            audio: string;
+            src: string;
             comments: import("mongoose").Types.ObjectId[];
         }>;
         getSongPopulated: import("@trpc/server").BuildProcedure<"query", {
@@ -1007,7 +1016,8 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
         }, {
             caption?: string | undefined;
             thumbnail?: string | undefined;
-            video?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
             _id: import("mongoose").Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
@@ -1041,7 +1051,7 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             title: string;
             lyrics: string[][];
             duration: number;
-            audio: string;
+            src: string;
             comments: {
                 updatedOn?: Date | undefined;
                 editedOn?: Date | undefined;
@@ -1125,7 +1135,8 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
         }, {
             caption?: string | undefined;
             thumbnail?: string | undefined;
-            video?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
             _id: import("mongoose").Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
@@ -1159,7 +1170,7 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             title: string;
             lyrics: string[][];
             duration: number;
-            audio: string;
+            src: string;
             comments: import("mongoose").Types.ObjectId[];
         }>;
         usersSongs: import("@trpc/server").BuildProcedure<"query", {
@@ -1208,7 +1219,8 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
         }, {
             caption?: string | undefined;
             thumbnail?: string | undefined;
-            video?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
             _id: import("mongoose").Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
@@ -1242,7 +1254,7 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             title: string;
             lyrics: string[][];
             duration: number;
-            audio: string;
+            src: string;
             comments: import("mongoose").Types.ObjectId[];
         }[]>;
         usersSongsWithComments: import("@trpc/server").BuildProcedure<"query", {
@@ -1291,7 +1303,8 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
         }, {
             caption?: string | undefined;
             thumbnail?: string | undefined;
-            video?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
             _id: import("mongoose").Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
@@ -1325,7 +1338,7 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             title: string;
             lyrics: string[][];
             duration: number;
-            audio: string;
+            src: string;
             comments: {
                 updatedOn?: Date | undefined;
                 editedOn?: Date | undefined;
@@ -1399,7 +1412,8 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
         }, {
             caption?: string | undefined;
             thumbnail?: string | undefined;
-            video?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
             _id: import("mongoose").Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
@@ -1433,7 +1447,7 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             title: string;
             lyrics: string[][];
             duration: number;
-            audio: string;
+            src: string;
             comments: {
                 updatedOn?: Date | undefined;
                 editedOn?: Date | undefined;
@@ -1534,7 +1548,8 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             songs: {
                 caption?: string | undefined;
                 thumbnail?: string | undefined;
-                video?: string | undefined;
+                isPosted?: boolean | undefined;
+                isVideo?: boolean | undefined;
                 _id: import("mongoose").Types.ObjectId;
                 createdOn: Date;
                 updatedOn: Date;
@@ -1568,7 +1583,7 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 title: string;
                 lyrics: string[][];
                 duration: number;
-                audio: string;
+                src: string;
                 comments: {
                     updatedOn?: Date | undefined;
                     editedOn?: Date | undefined;

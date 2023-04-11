@@ -19,7 +19,6 @@ const RecordingsController = ({ videoRef, children }: RecordingsControllerProps)
   const { isRecording, startRecording, stopRecording, mediaStreamConstraintsHandler } = useMediaRecorder({
     beat: selectedBeat.beat,
     videoRef: videoRef,
-    // constraints: constraints,
   })
 
   const renderRef = useRef<number>(0)

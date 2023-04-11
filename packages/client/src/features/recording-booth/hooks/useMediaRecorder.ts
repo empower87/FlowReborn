@@ -152,7 +152,6 @@ export default function useMediaRecorder({ beat, videoRef }: UseMediaRecorderPro
 
   const startRecording = async () => {
     if (!mediaStream || !mediaRecorder) return
-    console.log(recorder, "startRecording function")
 
     try {
       let stream = await navigator.mediaDevices.getUserMedia({
@@ -162,6 +161,7 @@ export default function useMediaRecorder({ beat, videoRef }: UseMediaRecorderPro
       await mediaRecorder.startRecording()
       SpeechRecognition.startListening({ continuous: true })
 
+      console.log(recorder, recorder.mediaStream, stream, "startRecording function")
       var audio = audioRef.current?.captureStream()
       audioRef.current.play()
       audioRef.current.loop = true

@@ -1940,7 +1940,7 @@ button {
   width: 100%;
   position: absolute;
   top: 0;
-  z-index: 3;
+  z-index: 5;
 }
 
 .post-recording__video-frame {
@@ -2550,7 +2550,7 @@ button {
   flex-direction: row;
   box-shadow: inset 2px 2px 2px 0px #5c5c5c, inset -2px -2px 3px #d4d4d4;
 }
-.post-recording__bottom-menu .post-recording__bottom-menu-btns .post-recording__bottom-menu-btns--bs-inset .post-recording__save-btn {
+.post-recording__bottom-menu .post-recording__bottom-menu-btns .post-recording__bottom-menu-btns--bs-inset .post-recording__action-btn {
   height: 100%;
   width: 100%;
   border-radius: 0;
@@ -2559,7 +2559,17 @@ button {
   align-items: center;
   flex-direction: row;
 }
-.post-recording__bottom-menu .post-recording__bottom-menu-btns .post-recording__bottom-menu-btns--bs-inset .post-recording__save-btn .post-recording__save-btn--bs-outset {
+.post-recording__bottom-menu .post-recording__bottom-menu-btns .post-recording__bottom-menu-btns--bs-inset .post-recording__action-btn p {
+  color: #ffffff;
+  font-size: 0.9rem;
+}
+.post-recording__bottom-menu .post-recording__bottom-menu-btns .post-recording__bottom-menu-btns--bs-inset .post-recording__action-btn.Draft {
+  width: 35%;
+}
+.post-recording__bottom-menu .post-recording__bottom-menu-btns .post-recording__bottom-menu-btns--bs-inset .post-recording__action-btn.Post {
+  width: 65%;
+}
+.post-recording__bottom-menu .post-recording__bottom-menu-btns .post-recording__bottom-menu-btns--bs-inset .post-recording__action-btn .post-recording__action-btn--bs-outset {
   height: 74%;
   width: 97%;
   border-radius: 2em;
@@ -2569,15 +2579,11 @@ button {
   flex-direction: row;
   box-shadow: 2px 2px 2px 0px #5e5e5e, -1px -1px 2px #e9e9e9;
 }
-.post-recording__bottom-menu .post-recording__bottom-menu-btns .post-recording__bottom-menu-btns--bs-inset .post-recording__save-btn .post-recording__save-btn--bs-outset p {
-  color: #ffffff;
-  font-size: 0.9rem;
-}
-.post-recording__bottom-menu .post-recording__bottom-menu-btns .post-recording__bottom-menu-btns--bs-inset .post-recording__save-btn .post-recording__save-btn--bs-outset.Post {
+.post-recording__bottom-menu .post-recording__bottom-menu-btns .post-recording__bottom-menu-btns--bs-inset .post-recording__action-btn .post-recording__action-btn--bs-outset.Post {
   background: #58e4bc;
   color: #ffffff;
 }
-.post-recording__bottom-menu .post-recording__bottom-menu-btns .post-recording__bottom-menu-btns--bs-inset .post-recording__save-btn .post-recording__save-btn--bs-outset .post-recording__save-btn-saving {
+.post-recording__bottom-menu .post-recording__bottom-menu-btns .post-recording__bottom-menu-btns--bs-inset .post-recording__action-btn .post-recording__action-btn--bs-outset .post-recording__action-btn-saving {
   height: 100%;
   width: auto;
   border-radius: 0;

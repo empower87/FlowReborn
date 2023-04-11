@@ -56,7 +56,7 @@ export default function MediaPlayback({
     ref: videoRef,
     duration: take?.duration,
     bgColor: "#f5afcc",
-    video: take?.audio,
+    video: take?.src,
   })
 
   return (

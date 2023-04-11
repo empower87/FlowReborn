@@ -6,9 +6,10 @@ export declare const SongSchema: z.ZodObject<{
     caption: z.ZodOptional<z.ZodString>;
     lyrics: z.ZodDefault<z.ZodArray<z.ZodArray<z.ZodString, "many">, "many">>;
     duration: z.ZodNumber;
-    audio: z.ZodString;
+    src: z.ZodString;
     thumbnail: z.ZodOptional<z.ZodString>;
-    video: z.ZodOptional<z.ZodString>;
+    isPosted: z.ZodOptional<z.ZodBoolean>;
+    isVideo: z.ZodOptional<z.ZodBoolean>;
     user: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
     comments: z.ZodDefault<z.ZodArray<z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>, "many">>;
     likes: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
@@ -17,7 +18,8 @@ export declare const SongSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     caption?: string | undefined;
     thumbnail?: string | undefined;
-    video?: string | undefined;
+    isPosted?: boolean | undefined;
+    isVideo?: boolean | undefined;
     _id: Types.ObjectId;
     createdOn: Date;
     updatedOn: Date;
@@ -26,14 +28,15 @@ export declare const SongSchema: z.ZodObject<{
     title: string;
     lyrics: string[][];
     duration: number;
-    audio: string;
+    src: string;
     comments: Types.ObjectId[];
 }, {
     likes?: string[] | undefined;
     caption?: string | undefined;
     lyrics?: string[][] | undefined;
     thumbnail?: string | undefined;
-    video?: string | undefined;
+    isPosted?: boolean | undefined;
+    isVideo?: boolean | undefined;
     comments?: Types.ObjectId[] | undefined;
     _id: Types.ObjectId;
     createdOn: Date;
@@ -41,7 +44,7 @@ export declare const SongSchema: z.ZodObject<{
     user: Types.ObjectId;
     title: string;
     duration: number;
-    audio: string;
+    src: string;
 }>;
 export declare const SongSchemaPopulatedUserAndComments: z.ZodObject<{
     _id: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
@@ -52,9 +55,10 @@ export declare const SongSchemaPopulatedUserAndComments: z.ZodObject<{
     caption: z.ZodOptional<z.ZodString>;
     lyrics: z.ZodDefault<z.ZodArray<z.ZodArray<z.ZodString, "many">, "many">>;
     duration: z.ZodNumber;
-    audio: z.ZodString;
+    src: z.ZodString;
     thumbnail: z.ZodOptional<z.ZodString>;
-    video: z.ZodOptional<z.ZodString>;
+    isPosted: z.ZodOptional<z.ZodBoolean>;
+    isVideo: z.ZodOptional<z.ZodBoolean>;
     user: z.ZodObject<{
         _id: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
         username: z.ZodString;
@@ -330,7 +334,8 @@ export declare const SongSchemaPopulatedUserAndComments: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     caption?: string | undefined;
     thumbnail?: string | undefined;
-    video?: string | undefined;
+    isPosted?: boolean | undefined;
+    isVideo?: boolean | undefined;
     _id: Types.ObjectId;
     createdOn: Date;
     updatedOn: Date;
@@ -364,7 +369,7 @@ export declare const SongSchemaPopulatedUserAndComments: z.ZodObject<{
     title: string;
     lyrics: string[][];
     duration: number;
-    audio: string;
+    src: string;
     comments: {
         updatedOn?: Date | undefined;
         editedOn?: Date | undefined;
@@ -406,7 +411,8 @@ export declare const SongSchemaPopulatedUserAndComments: z.ZodObject<{
     caption?: string | undefined;
     lyrics?: string[][] | undefined;
     thumbnail?: string | undefined;
-    video?: string | undefined;
+    isPosted?: boolean | undefined;
+    isVideo?: boolean | undefined;
     _id: Types.ObjectId;
     createdOn: Date;
     updatedOn: Date;
@@ -438,7 +444,7 @@ export declare const SongSchemaPopulatedUserAndComments: z.ZodObject<{
     };
     title: string;
     duration: number;
-    audio: string;
+    src: string;
     comments: {
         updatedOn?: Date | undefined;
         replies?: Types.ObjectId[] | undefined;
@@ -485,9 +491,10 @@ export declare const SongSchemaPopulatedUser: z.ZodObject<{
     caption: z.ZodOptional<z.ZodString>;
     lyrics: z.ZodDefault<z.ZodArray<z.ZodArray<z.ZodString, "many">, "many">>;
     duration: z.ZodNumber;
-    audio: z.ZodString;
+    src: z.ZodString;
     thumbnail: z.ZodOptional<z.ZodString>;
-    video: z.ZodOptional<z.ZodString>;
+    isPosted: z.ZodOptional<z.ZodBoolean>;
+    isVideo: z.ZodOptional<z.ZodBoolean>;
     comments: z.ZodDefault<z.ZodArray<z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>, "many">>;
     user: z.ZodObject<{
         _id: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
@@ -588,7 +595,8 @@ export declare const SongSchemaPopulatedUser: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     caption?: string | undefined;
     thumbnail?: string | undefined;
-    video?: string | undefined;
+    isPosted?: boolean | undefined;
+    isVideo?: boolean | undefined;
     _id: Types.ObjectId;
     createdOn: Date;
     updatedOn: Date;
@@ -622,14 +630,15 @@ export declare const SongSchemaPopulatedUser: z.ZodObject<{
     title: string;
     lyrics: string[][];
     duration: number;
-    audio: string;
+    src: string;
     comments: Types.ObjectId[];
 }, {
     likes?: string[] | undefined;
     caption?: string | undefined;
     lyrics?: string[][] | undefined;
     thumbnail?: string | undefined;
-    video?: string | undefined;
+    isPosted?: boolean | undefined;
+    isVideo?: boolean | undefined;
     comments?: Types.ObjectId[] | undefined;
     _id: Types.ObjectId;
     createdOn: Date;
@@ -662,7 +671,7 @@ export declare const SongSchemaPopulatedUser: z.ZodObject<{
     };
     title: string;
     duration: number;
-    audio: string;
+    src: string;
 }>;
 export type SongSchemaType = z.infer<typeof SongSchema>;
 export declare const CreateSongSchema: z.ZodObject<{
@@ -670,28 +679,31 @@ export declare const CreateSongSchema: z.ZodObject<{
     caption: z.ZodOptional<z.ZodString>;
     lyrics: z.ZodDefault<z.ZodArray<z.ZodArray<z.ZodString, "many">, "many">>;
     duration: z.ZodNumber;
-    audio: z.ZodString;
+    src: z.ZodString;
     thumbnail: z.ZodOptional<z.ZodString>;
-    video: z.ZodOptional<z.ZodString>;
+    isPosted: z.ZodOptional<z.ZodBoolean>;
+    isVideo: z.ZodOptional<z.ZodBoolean>;
     user: z.ZodString;
 }, "strip", z.ZodTypeAny, {
     caption?: string | undefined;
     thumbnail?: string | undefined;
-    video?: string | undefined;
+    isPosted?: boolean | undefined;
+    isVideo?: boolean | undefined;
     user: string;
     title: string;
     lyrics: string[][];
     duration: number;
-    audio: string;
+    src: string;
 }, {
     caption?: string | undefined;
     lyrics?: string[][] | undefined;
     thumbnail?: string | undefined;
-    video?: string | undefined;
+    isPosted?: boolean | undefined;
+    isVideo?: boolean | undefined;
     user: string;
     title: string;
     duration: number;
-    audio: string;
+    src: string;
 }>;
 export declare const UpdateSongSchema: z.ZodObject<{
     title: z.ZodString;

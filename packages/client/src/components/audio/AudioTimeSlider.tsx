@@ -13,7 +13,7 @@ function UseAudioPlayer({ isPlaying, setIsPlaying, currentSong, bgColor }: Props
   const [trackProgress, setTrackProgress] = useState(0)
   const [songDuration, setSongDuration] = useState(0)
 
-  const audioRef = useRef<HTMLAudioElement>(new Audio(currentSong?.audio))
+  const audioRef = useRef<HTMLAudioElement>(new Audio(currentSong?.src))
   const intervalRef = useRef<ReturnType<typeof setInterval>>()
   const secondsRef = useRef<ReturnType<typeof setInterval>>()
   const currentProgressRef = useRef(0)
@@ -51,7 +51,7 @@ function UseAudioPlayer({ isPlaying, setIsPlaying, currentSong, bgColor }: Props
 
   useEffect(() => {
     audioRef.current.pause()
-    audioRef.current.src = currentSong?.audio
+    audioRef.current.src = currentSong?.src
     setTrackProgress(audioRef.current.currentTime)
     currentProgressRef.current = 0
   }, [currentSong])
