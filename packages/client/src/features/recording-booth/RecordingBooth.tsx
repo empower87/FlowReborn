@@ -43,6 +43,7 @@ export default function RecordingBooth() {
   const videoRef = useRef<HTMLVideoElement>(null)
 
   console.log(renderRef.current++, "<RecordingBooth /> -- Render test -- Layer 0")
+
   return (
     <div className="RecordingVideo">
       <div className="record__video--wrapper">

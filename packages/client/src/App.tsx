@@ -101,9 +101,9 @@ function App() {
                         </Suspense>
                       }
                     >
-                      <Route path="confirm-recording" element={<LazyConfirmRecording />}>
-                        <Route path="post-recording" element={<LazyPostRecording />} />
-                      </Route>
+                      <Route path="confirm-recording" element={<LazyConfirmRecording />} />
+                      <Route path="post-recording" element={<LazyPostRecording />} />
+                      {/* </Route> */}
                     </Route>
                     {/* <Route
                       path="/recording-booth"

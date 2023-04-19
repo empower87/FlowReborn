@@ -410,16 +410,33 @@
 
   .post-recording__lyrics--bs-outset {
     @include flexCenter(95%, 95%, 0.2em, flex-start, center, column);
-    background: $primary-color-300;
+    background: #ec6aa0ad;
+
     .post-recording__lyrics-header {
-      @include flexCenter(15%, 100%, 0, flex-start, center, column);
+      // height: 15%;
+      @include flexCenter(30px, 100%, 0, center, center, row);
+
+      .post-recording__lyrics-header-title {
+        @include flexCenter(100%, stretch, 0, center, center, row);
+
+        .post-recording__lyrics-header-title-text {
+          @include flexCenter(85%, 90%, 0, flex-start, center, row);
+          color: $base-color;
+          font-size: 0.9rem;
+        }
+      }
+      .post-recording__lyrics-header-btn {
+        @include flexCenter(100%, 15%, 0, center, center, row);
+      }
     }
+
     .post-recording__lyrics--wrapper {
-      @include flexCenter(85%, 100%, 0, center, center, column);
+      @include flexCenter(85%, 100%, 0, center, flex-start, column);
       overflow: scroll;
       p {
         font-size: 0.8rem;
         color: white;
+        text-align: start;
       }
     }
   }
@@ -434,7 +451,7 @@
 .post-recording__thumbnail {
   @include flexCenter(100%, 100%, 0, center, center, column);
   position: absolute;
-  z-index: 3;
+  z-index: 5;
   top: 0;
   background: linear-gradient(314deg, #858585 0%, #a7a7a7 100%);
 
@@ -448,6 +465,7 @@
       .post-recording__thumbnail-header-close {
         @include flexCenter(100%, 9%, 0, center, center, column);
       }
+
       .post-recording__thumbnail-header-title {
         @include flexCenter(100%, 91%, 0, center, center, column);
 

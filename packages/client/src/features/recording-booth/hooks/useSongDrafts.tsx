@@ -1,6 +1,6 @@
-import { createContext, ReactNode, RefObject, useCallback, useContext, useState } from "react"
+import { ReactNode, RefObject, createContext, useCallback, useContext, useState } from "react"
 import { useAuth } from "src/context/AuthContext"
-import { generateCanvas } from "../utils/generateThumbnail"
+import { createThumbnailUrl } from "../utils/generateThumbnail"
 import { ISongTake } from "../utils/types"
 import { useGetTranscriptLyrics } from "./useTranscript"
 
@@ -23,10 +23,13 @@ const useSongDrafts = () => {
       videoRef: RefObject<HTMLVideoElement>
     ) => {
       if (!videoRef.current || !user) return
-      const id = parseInt(allDrafts.length?.toString()) + 1
+      const id = allDrafts.length + 1
       const filteredLyrics = totalLyrics.length ? [...totalLyrics]?.filter((lyric) => lyric.length !== 0) : []
       const duration = recordingTime[0] * 60000 + recordingTime[1] * 1000
       const isVideo = recordingType === "video" ? true : false
+      const video = videoRef.current
+      video.currentTime = 0
+      const thumbnail = createThumbnailUrl(video)
 
       var newTake = {
         _id: `${id}`,
@@ -36,39 +39,33 @@ const useSongDrafts = () => {
         user: user,
         lyrics: [...filteredLyrics],
         duration: duration,
+        thumbnail: isVideo ? thumbnail : undefined,
         caption: "",
         isVideo: isVideo,
       }
+      console.log(newTake, allDrafts, id, "created a new take")
 
-      const video = videoRef.current
-      video.currentTime = 0
-
-      console.log(newTake, "created a new take")
-
-      if (isVideo) {
-        let canvas = generateCanvas(video, videoRef.current?.videoHeight, videoRef.current?.videoWidth)
-        if (!canvas) return
-        canvas.toBlob(
-          (blob) => {
-            if (blob) {
-              let url = URL.createObjectURL(blob)
-
-              let newTakeWithThumbnail = { ...newTake, thumbnail: url, thumbnailBlob: blob }
-
-              setCurrentDraftId(newTakeWithThumbnail._id)
-              setAllDrafts((prev) => [...prev, newTakeWithThumbnail])
-            }
-          },
-          "image/jpeg",
-          95
-        )
-      } else {
-        setCurrentDraftId(newTake._id)
-        setAllDrafts((prev) => [...prev, newTake])
-      }
+      setCurrentDraftId(newTake._id)
+      setAllDrafts((prev) => [...prev, newTake])
     },
-    []
+    [allDrafts]
   )
+
+  const updateThumbnail = (_id: string, thumbnail: string) => {
+    setAllDrafts((prevDrafts) => {
+      const updatedDrafts = prevDrafts.map((draft) => {
+        if (draft._id === _id) {
+          return { ...draft, thumbnail }
+        }
+        return draft
+      })
+      return updatedDrafts
+    })
+  }
+
+  const setCurrentDraft = (draft: ISongTake) => {
+    setCurrentDraftId(draft._id)
+  }
 
   const deleteDraftHandler = useCallback((_id: string) => {
     let filteredDrafts = allDrafts.filter((draft, index) => {
@@ -86,16 +83,13 @@ const useSongDrafts = () => {
 
   const currentDraft = allDrafts.find((draft) => draft._id === currentDraftId)
 
-  const setCurrentDraft = () => {
-    console.log("hehe, what we gon do here?")
-  }
-
   return {
     currentDraft,
     setCurrentDraft,
     allDrafts,
     setSongDraftHandler,
     deleteDraftHandler,
+    updateThumbnail,
   }
 }
 

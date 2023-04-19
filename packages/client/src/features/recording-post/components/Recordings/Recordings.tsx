@@ -1,9 +1,11 @@
-import { Dispatch, SetStateAction, useEffect, useRef } from "react"
+import { Dispatch, ReactNode, SetStateAction, useEffect, useRef } from "react"
 import { UseFormReturn } from "react-hook-form"
+import InputError from "src/components/errors/InputError"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import { useAuth } from "src/context/AuthContext"
+import { useSongDraftsContext } from "src/features/recording-booth/hooks/useSongDrafts"
 import { ISongTake } from "src/features/recording-booth/utils/types"
-import { IPostSongFormInputs } from "../../hooks/useSongForm"
+import { INITIAL_ERROR_STATE, IPostSongFormInputs, useSongForm } from "../../hooks/useSongForm"
 import Dropdown from "./Dropdown"
 
 type RecordingsProps = {
@@ -41,7 +43,50 @@ const Input = ({ name, placeholder, methods }: InputProps) => {
   )
 }
 
-export default function Recordings({ take, setTake, takes, deleteTake, methods, onSubmit }: RecordingsProps) {
+export const Form = ({
+  recordingType,
+  setSaving,
+}: {
+  recordingType: "audio" | "video"
+  setSaving: Dispatch<SetStateAction<boolean>>
+}) => {
+  const { handleSaveSong, methods, isSaving, error, setError } = useSongForm(recordingType)
+  const { allDrafts, currentDraft } = useSongDraftsContext()
+
+  useEffect(() => {
+    setSaving(isSaving)
+  }, [isSaving])
+
+  return (
+    <>
+      {error.showError && (
+        <InputError
+          isOpen={error.showError}
+          onClose={() => setError(INITIAL_ERROR_STATE)}
+          message={error.message}
+          options={{ position: [6, 27], size: [40, 72] }}
+        />
+      )}
+      <form
+        id="post-song-form"
+        className="record__recordings-details"
+        onSubmit={methods.handleSubmit((data, e) => handleSaveSong(e, currentDraft))}
+      >
+        <Dropdown>
+          <Input name="title" placeholder="Add a title" methods={methods} />
+        </Dropdown>
+
+        <div className="record__recordings-caption">
+          <div className="record__recordings-caption--bs-outset">
+            <Input name="caption" placeholder="Add a caption" methods={methods} />
+          </div>
+        </div>
+      </form>
+    </>
+  )
+}
+
+export default function Recordings({ children }: { children: ReactNode }) {
   const widthRef = useRef<HTMLDivElement>(null)
   const { user } = useAuth()
 
@@ -66,7 +111,8 @@ export default function Recordings({ take, setTake, takes, deleteTake, methods, 
           </div>
 
           <div className="record__recordings-content">
-            <form
+            {children}
+            {/* <form
               id="post-song-form"
               className="record__recordings-details"
               onSubmit={methods.handleSubmit((data, e) => onSubmit(e, take))}
@@ -80,7 +126,7 @@ export default function Recordings({ take, setTake, takes, deleteTake, methods, 
                   <Input name="caption" placeholder="Add a caption" methods={methods} />
                 </div>
               </div>
-            </form>
+            </form> */}
             <div className="record__recordings-delete"></div>
           </div>
         </div>

@@ -62,54 +62,55 @@ export const useSongForm = (recordingType: "audio" | "video") => {
 
   const handleSaveSong = useCallback(
     async (e: any, _song: ISongTake | undefined) => {
-      if (!_song || _song.blob == null) {
-        return setError({ message: "No Flows to be saved", showError: true })
-      }
-      if (!isDirty || !isValid) {
-        return setError({ message: "Must add a title", showError: true })
-      }
+      console.log(e.target, "HANDLING SAVING OF SONG WHAT'S THIS LOOK LIKE??")
+      // if (!_song || _song.blob == null) {
+      //   return setError({ message: "No Flows to be saved", showError: true })
+      // }
+      // if (!isDirty || !isValid) {
+      //   return setError({ message: "Must add a title", showError: true })
+      // }
 
-      setIsSaving(true)
+      // setIsSaving(true)
 
-      const userId = _song.user._id
-      const getTitle = methods.getValues("title")
-      const getCaption = methods.getValues("caption")
-      const songFileName = userId + getTitle.replaceAll(" ", "-")
-      let songToUpload = {
-        ..._song,
-        title: getTitle,
-        caption: getCaption,
-      }
+      // const userId = _song.user._id
+      // const getTitle = methods.getValues("title")
+      // const getCaption = methods.getValues("caption")
+      // const songFileName = userId + getTitle.replaceAll(" ", "-")
+      // let songToUpload = {
+      //   ..._song,
+      //   title: getTitle,
+      //   caption: getCaption,
+      // }
 
-      if (recordingType === "video") {
-        if (!_song.thumbnailBlob) return
+      // if (recordingType === "video") {
+      //   if (!_song.thumbnailBlob) return
 
-        let data = [
-          {
-            fileName: songFileName + "-thumbnail",
-            fileType: "image/png",
-            fileBlob: _song.thumbnailBlob,
-          },
-          {
-            fileName: songFileName,
-            fileType: "video/mp4",
-            fileBlob: _song.blob,
-          },
-        ]
+      //   let data = [
+      //     {
+      //       fileName: songFileName + "-thumbnail",
+      //       fileType: "image/png",
+      //       fileBlob: _song.thumbnailBlob,
+      //     },
+      //     {
+      //       fileName: songFileName,
+      //       fileType: "video/mp4",
+      //       fileBlob: _song.blob,
+      //     },
+      //   ]
 
-        await uploadAndCreateSongHandler(data, songToUpload)
-      } else {
-        let data = [
-          {
-            fileName: songFileName,
-            fileType: "audio/mpeg-4",
-            fileBlob: _song.blob,
-          },
-        ]
+      //   await uploadAndCreateSongHandler(data, songToUpload)
+      // } else {
+      //   let data = [
+      //     {
+      //       fileName: songFileName,
+      //       fileType: "audio/mpeg-4",
+      //       fileBlob: _song.blob,
+      //     },
+      //   ]
 
-        await uploadAndCreateSongHandler(data, songToUpload)
-      }
-      e.preventDefault()
+      //   await uploadAndCreateSongHandler(data, songToUpload)
+      // }
+      // e.preventDefault()
     },
     [isDirty, isValid]
   )

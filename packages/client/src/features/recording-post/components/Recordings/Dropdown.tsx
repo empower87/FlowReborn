@@ -1,20 +1,19 @@
-import { Dispatch, ReactNode, SetStateAction, useState } from "react"
+import { ReactNode, useState } from "react"
 import { Icon } from "src/components/buttons/Icon/Icon"
 import { SelectMenu } from "src/components/modals/SelectMenu/SelectMenu"
-import { ISongTake } from "src/features/recording-booth/utils/types"
+import { useSongDraftsContext } from "src/features/recording-booth/hooks/useSongDrafts"
 
 type DropdownProps = {
-  takes: ISongTake[]
-  take: ISongTake
-  setTake: Dispatch<SetStateAction<ISongTake | undefined>>
   children?: ReactNode
 }
 
-const Dropdown = ({ takes, take, setTake, children }: DropdownProps) => {
+const Dropdown = ({ children }: DropdownProps) => {
   const [showSelectSongMenu, setShowSelectSongMenu] = useState<boolean>(false)
+  const { allDrafts, currentDraft, setCurrentDraft } = useSongDraftsContext()
+  const [take, setTake] = useState()
 
   const handleShowMenu = () => {
-    if (takes.length <= 1) return
+    if (allDrafts.length <= 1) return
     setShowSelectSongMenu(true)
   }
 
@@ -23,23 +22,23 @@ const Dropdown = ({ takes, take, setTake, children }: DropdownProps) => {
       <SelectMenu
         position={["bottom", 45]}
         maxHeight={96 - 25}
-        list={takes}
+        list={allDrafts}
         listKey={["_id", "_id"]}
-        currentItem={take}
-        setCurrentItem={setTake}
+        currentItem={currentDraft}
+        setCurrentItem={setCurrentDraft}
         isOpen={showSelectSongMenu}
         onClose={setShowSelectSongMenu}
       />
       <div className="record__recordings-select--bs-outset">
-        {takes.length === 0 ? (
+        {allDrafts.length === 0 ? (
           <p className="record__no-takes-text">No Recorded Takes</p>
         ) : (
           <>
             <div className="record__select-title">{children}</div>
-            {takes.length > 1 && (
+            {allDrafts.length > 1 && (
               <div className="record__select-dropdown">
                 <button className="record__select-dropdown-btn" type="button" onClick={handleShowMenu}>
-                  <div className="record__select-take-number">{take._id}</div>
+                  <div className="record__select-take-number">{currentDraft?._id}</div>
                   <Icon type={showSelectSongMenu ? "Up" : "Down"} options={{ color: "Primary" }} />
                 </button>
               </div>

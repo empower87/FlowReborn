@@ -1,24 +1,35 @@
+import { useEffect, useRef, useState } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
 import { useSongDraftsContext } from "../hooks/useSongDrafts"
 import { ActionButton } from "./RecordInteractions/ActionButtons"
 
 export default function ConfirmRecording() {
-  const { allDrafts, currentDraft } = useSongDraftsContext()
+  const { currentDraft } = useSongDraftsContext()
   const navigate = useNavigate()
+  const [isPlaying, setIsPlaying] = useState<boolean>(false)
+
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    setIsPlaying(true)
+  }, [])
+
+  useEffect(() => {
+    if (!videoRef.current) return
+    if (isPlaying) {
+      videoRef.current.play()
+    } else {
+      videoRef.current.pause()
+    }
+  }, [isPlaying])
 
   const onClose = () => {
     navigate("/recording-booth")
   }
 
   const navigateToPostRecording = () => {
-    // going to have to add a isVideo boolean to SongModel which will take a lot of refactoring,
-    // so I've hardcoded recordingType that needs to be passed to PostRecording
-    navigate("post-recording", {
-      state: {
-        currentDraft: currentDraft,
-        allDrafts: allDrafts,
-        recordingType: "video",
-      },
+    navigate("/recording-booth/post-recording", {
+      replace: true,
     })
   }
 
@@ -33,7 +44,7 @@ export default function ConfirmRecording() {
         </div>
       </div>
       <Outlet />
-      <video src={currentDraft?.src} className="fullscreen-video__video" autoPlay loop playsInline />
+      <video src={currentDraft?.src} ref={videoRef} className="fullscreen-video__video" loop playsInline />
     </div>
   )
 }

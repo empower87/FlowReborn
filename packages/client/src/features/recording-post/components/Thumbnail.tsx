@@ -1,13 +1,9 @@
-import { Dispatch, SetStateAction, useRef, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 import ReactDOM from "react-dom"
 import { BtnColorsEnum, RoundButton } from "src/components/buttons/RoundButton/RoundButton"
 import { useSongDraftsContext } from "src/features/recording-booth/hooks/useSongDrafts"
-import { generateCanvas } from "src/features/recording-booth/utils/generateThumbnail"
+import useThumbnail from "../hooks/useThumbnail"
 
-type ThumbnailType = {
-  thumbnail: string
-  thumbnailBlob: Blob
-}
 const ThumbnailModal = ({
   video,
   duration,
@@ -20,36 +16,51 @@ const ThumbnailModal = ({
   onClose: Dispatch<SetStateAction<boolean>>
 }) => {
   const root = document.getElementById("root")!
-  const { allDrafts, currentDraft, deleteDraftHandler } = useSongDraftsContext()
+  const { allDrafts, currentDraft, deleteDraftHandler, updateThumbnail } = useSongDraftsContext()
 
   const seconds = duration ? duration / 1000 : 0
   const videoRef = useRef<HTMLVideoElement>(null)
-  const [value, setValue] = useState<string>("0")
-  const [thumbnail, setThumbnail] = useState<ThumbnailType | undefined>()
+  const [value, setValue] = useState<number>(0)
 
-  const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const _src = currentDraft && currentDraft.src ? currentDraft.src : null
+  const { thumbnail, selectThumbnail } = useThumbnail({ _src })
+
+  const onChangeHandler = (time: number) => {
     if (!videoRef.current) return
-    const numValue = parseInt(event.target.value)
-    setValue(event.target.value)
-    videoRef.current.currentTime = numValue
+    setValue(time)
+    selectThumbnail(time)
+    videoRef.current.currentTime = time
   }
+  // const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (!videoRef.current) return
+  //   const numValue = parseInt(event.target.value)
+  //   setValue(event.target.value)
+  //   videoRef.current.currentTime = numValue
+  // }
 
   const thumbnailHandler = () => {
-    if (!videoRef.current) return
+    if (!currentDraft || !thumbnail.thumbnail) return
+    updateThumbnail(currentDraft._id, thumbnail.thumbnail)
+    console.log(thumbnail, value, "saved thumbnail")
+    // if (!videoRef.current) return
 
-    const canvas = generateCanvas(videoRef.current, videoRef.current.videoHeight, videoRef.current.videoWidth)
-    if (!canvas) return
+    // const canvas = generateCanvas(videoRef.current, videoRef.current.videoHeight, videoRef.current.videoWidth)
+    // if (!canvas) return
 
-    canvas.toBlob((blob) => {
-      if (!blob) return
-      let url = URL.createObjectURL(blob)
+    // canvas.toBlob((blob) => {
+    //   if (!blob) return
+    //   let url = URL.createObjectURL(blob)
 
-      setThumbnail({
-        thumbnail: url,
-        thumbnailBlob: blob,
-      })
-    })
+    //   setThumbnail({
+    //     thumbnail: url,
+    //     thumbnailBlob: blob,
+    //   })
+    // })
   }
+
+  useEffect(() => {
+    console.log(allDrafts, currentDraft, thumbnail, value, "lets see if this worked")
+  }, [allDrafts])
 
   if (!isOpen) return null
   return ReactDOM.createPortal(
@@ -84,7 +95,7 @@ const ThumbnailModal = ({
                 max={`${seconds}`}
                 step="1"
                 value={value}
-                onChange={(event) => onChangeHandler(event)}
+                onChange={(event) => onChangeHandler(event.target.valueAsNumber)}
               />
             </div>
           </div>
@@ -133,3 +144,20 @@ export const ThumbnailSelector = () => {
     </div>
   )
 }
+
+const AVG_SET_TIME = "15-25"
+const REST_BETWEEN_SET = "30-180"
+const FULL_WORKOUT_MAX_DURATION = "3600"
+
+const ACCEPTABLE_UPPER_MUSCLES = ["biceps", "triceps", "back", "chest", "delts (side)", "delts (rear)", "traps"]
+const ACCEPTABLE_LOWER_MUSCLES = ["quads", "hamstrings", "glutes"]
+
+const ACCEPTABLE_PUSH_MUSCLES = ["triceps", "chest", "delts (side)"]
+const ACCEPTABLE_PULL_MUSCLES = ["biceps", "back", "delts (rear)", "traps"]
+const ACCEPTABLE_LEG_MUSCLES = ["quads", "hamstrings", "glutes"]
+
+const returnWorkout = {
+  duration: 60,
+}
+
+const workout = () => {}

@@ -2646,16 +2646,47 @@ button {
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
-  background: #ec6aa0;
+  background: rgba(236, 106, 160, 0.6784313725);
 }
 .post-recording__lyrics .post-recording__lyrics--bs-outset .post-recording__lyrics-header {
-  height: 15%;
+  height: 30px;
   width: 100%;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+.post-recording__lyrics .post-recording__lyrics--bs-outset .post-recording__lyrics-header .post-recording__lyrics-header-title {
+  height: 100%;
+  width: -webkit-fill-available;
+  width: -moz-available;
+  width: stretch;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+.post-recording__lyrics .post-recording__lyrics--bs-outset .post-recording__lyrics-header .post-recording__lyrics-header-title .post-recording__lyrics-header-title-text {
+  height: 85%;
+  width: 90%;
   border-radius: 0;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
+  color: #ffffff;
+  font-size: 0.9rem;
+}
+.post-recording__lyrics .post-recording__lyrics--bs-outset .post-recording__lyrics-header .post-recording__lyrics-header-btn {
+  height: 100%;
+  width: 15%;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
 }
 .post-recording__lyrics .post-recording__lyrics--bs-outset .post-recording__lyrics--wrapper {
   height: 85%;
@@ -2663,13 +2694,14 @@ button {
   border-radius: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: column;
   overflow: scroll;
 }
 .post-recording__lyrics .post-recording__lyrics--bs-outset .post-recording__lyrics--wrapper p {
   font-size: 0.8rem;
   color: white;
+  text-align: start;
 }
 .post-recording__lyrics.LyricsExpanded {
   height: 100%;
@@ -2687,7 +2719,7 @@ button {
   align-items: center;
   flex-direction: column;
   position: absolute;
-  z-index: 3;
+  z-index: 5;
   top: 0;
   background: linear-gradient(314deg, #858585 0%, #a7a7a7 100%);
 }
