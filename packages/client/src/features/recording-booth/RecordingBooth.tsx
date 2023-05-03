@@ -55,7 +55,7 @@ export default function RecordingBooth() {
           <Header />
 
           <RecordingsController videoRef={videoRef}>
-            <LyricsController settingsMenu={<></>} />
+            <LyricsController />
           </RecordingsController>
 
           <Outlet />

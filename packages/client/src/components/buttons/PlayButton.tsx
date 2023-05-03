@@ -65,6 +65,7 @@ type PlaybackButtonProps = {
   options?: ButtonStyleOptions
   audio?: any
 }
+
 export const PlaybackButton = ({ isPlaying, setIsPlaying, options, audio }: PlaybackButtonProps) => {
   const audioRef = useRef<HTMLAudioElement>(new Audio(audio))
 
@@ -103,6 +104,33 @@ export const PlaybackButton = ({ isPlaying, setIsPlaying, options, audio }: Play
           btnOptions={{ bgColor: BtnColorsEnum.Primary }}
           iconOptions={{ color: "White", margin: "0% 0% 0% 12%" }}
           onClick={() => setIsPlaying()}
+        />
+      )}
+    </div>
+  )
+}
+
+type PlayPauseButtonProps = {
+  isPlaying: boolean
+  onPlayPause: () => void
+}
+
+export const PlayPauseButton = ({ isPlaying, onPlayPause }: PlayPauseButtonProps) => {
+  return (
+    <div className="PlayButton__wrapper">
+      {isPlaying ? (
+        <RoundButton
+          type="Pause"
+          btnOptions={{ bgColor: BtnColorsEnum.Primary }}
+          iconOptions={{ color: "White" }}
+          onClick={() => onPlayPause()}
+        />
+      ) : (
+        <RoundButton
+          type="Play"
+          btnOptions={{ bgColor: BtnColorsEnum.Primary }}
+          iconOptions={{ color: "White", margin: "0% 0% 0% 12%" }}
+          onClick={() => onPlayPause()}
         />
       )}
     </div>

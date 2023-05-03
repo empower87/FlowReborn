@@ -26,12 +26,9 @@ export default function useAudioPlayer({ ref, duration, bgColor, video }: UseAud
 
   useEffect(() => {
     setSrc(ref.current)
-    // console.log(ref, src, "checking the ref prop and the src state created from it")
+    console.log(ref, src, "checking the ref prop and the src state created from it")
   }, [ref])
 
-  const stopMediaHandler = () => {
-    setIsPlaying(false)
-  }
   // const srcRef = useRef<any>(null)
 
   // useEffect(() => {
@@ -46,6 +43,11 @@ export default function useAudioPlayer({ ref, duration, bgColor, video }: UseAud
   //     src.current = audio
   //   }
   // }, [src, video])
+  useEffect(() => {
+    if (src) {
+      src.load()
+    }
+  }, [src])
 
   useEffect(() => {
     if (!src) return
@@ -172,7 +174,6 @@ export default function useAudioPlayer({ ref, duration, bgColor, video }: UseAud
     isPlaying,
     setIsPlaying,
     setPlayHandler,
-    stopMediaHandler,
   }
 }
 

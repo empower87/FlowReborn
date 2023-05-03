@@ -1,10 +1,11 @@
-import { forwardRef, ReactNode, useEffect, useState } from "react"
-import { PlaybackButton } from "src/components/buttons/PlayButton"
+import { forwardRef, RefObject, useState } from "react"
+import { PlayPauseButton } from "src/components/buttons/PlayButton"
+import MediaProgressBar from "src/features/video/components/MediaProgressBar"
+import { useMediaProgressTime } from "src/features/video/hooks/useMediaProgress"
 
 type MediaProgressBarProps = {
-  current: string
-  end: string
-  children: ReactNode
+  duration: number
+  videoRef: RefObject<HTMLVideoElement>
 }
 
 export const PlaybackButtonContainer = ({
@@ -16,41 +17,48 @@ export const PlaybackButtonContainer = ({
 }) => {
   const [isAdded, setIsAdded] = useState<boolean>(false)
 
-  const [visibility, setVisibility] = useState<"hidden" | "visible">("hidden")
+  // const [visibility, setVisibility] = useState<"hidden" | "visible">("hidden")
 
-  useEffect(() => {
-    setVisibility("visible")
-    setTimeout(() => {
-      setVisibility("hidden")
-    }, 2000)
-  }, [isPlaying])
+  // useEffect(() => {
+  //   setVisibility("visible")
+  //   setTimeout(() => {
+  //     setVisibility("hidden")
+  //   }, 2000)
+  // }, [isPlaying])
 
   return (
-    <div className={`song-post__playback-btn ${isAdded ? "btn-fade-anim" : ""}`} style={{ visibility: visibility }}>
+    <div className={`song-post__playback-btn `}>
       <div className="song-post__playback-btn--bs-inset">
         <div className="song-post__playback-btn--wrapper">
-          <PlaybackButton isPlaying={isPlaying} setIsPlaying={setIsPlaying} />
+          <PlayPauseButton isPlaying={isPlaying} onPlayPause={setIsPlaying} />
         </div>
       </div>
     </div>
   )
 }
 
-export const MediaProgressBar = ({ current, end, children }: MediaProgressBarProps) => {
+export const MediaProgressBarWrapper = ({ duration, videoRef }: MediaProgressBarProps) => {
+  const { currentTime, progress, end, onScrub, onScrubEnd } = useMediaProgressTime(videoRef, duration)
+  const bgColor = "#eeb2cb"
+  let filteredDuration = Math.round(duration / 1000)
+
+  const currentPercentage = duration ? `${(progress / filteredDuration) * 100 + 0.02}%` : "0%"
+  const style = `
+  -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage}, #63DEBC), color-stop(${currentPercentage}, ${bgColor}))
+`
   return (
     <div className="progress-bar">
-      <div className="progress-bar__text Start">{current}</div>
+      <div className="progress-bar__text Start">{currentTime}</div>
       <div className="progress-bar__slider">
         <div className="progress-bar__slider--bs-inset">
-          {/* <AudioSlider
+          <MediaProgressBar
             addClass=""
             progress={progress}
-            duration={duration}
+            duration={filteredDuration}
             onScrub={onScrub}
             onScrubEnd={onScrubEnd}
             style={style}
-          /> */}
-          {children}
+          />
         </div>
       </div>
       <div className="progress-bar__text End">{end}</div>

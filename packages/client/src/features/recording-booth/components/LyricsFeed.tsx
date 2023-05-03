@@ -5,9 +5,6 @@ import RhymeSuggestionPanels from "./RecordInteractions/RhymeSuggestionPanels"
 type LyricsFeedProps = {
   children: ReactNode
 }
-type LyricsControllerProps = {
-  settingsMenu: ReactNode
-}
 
 const LiveLyricsLine = () => {
   const { transcript } = useLiveTranscript()
@@ -121,7 +118,7 @@ const LyricsFeed = ({ children }: LyricsFeedProps) => {
   )
 }
 
-const LyricsController = ({ settingsMenu }: LyricsControllerProps) => {
+const LyricsController = () => {
   const renderRef = useRef<number>(0)
   console.log(renderRef.current++, "<LyricsController /> -- Render test -- Layer 1")
   return (
@@ -132,7 +129,6 @@ const LyricsController = ({ settingsMenu }: LyricsControllerProps) => {
             <LiveLyricsLine />
           </LyricsFeed>
         </div>
-        {settingsMenu}
       </div>
 
       <RhymeSuggestionPanels />

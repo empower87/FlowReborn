@@ -3,12 +3,11 @@ import { useNavigate } from "react-router-dom"
 // import InputError from "src/components/errors/InputError"
 import LoadingSpinner from "src/components/loading/LoadingSpinner"
 import TitleBar, { TitleBarButton } from "src/components/ui/TitleBar"
-import Video from "src/components/ui/Video"
 import { useSongDraftsContext } from "../recording-booth/hooks/useSongDrafts"
+import { Video } from "../video/Video"
 import LyricsMenu from "./components/LyricsMenu"
 import Recordings, { Form } from "./components/Recordings/Recordings"
 import { ThumbnailSelector } from "./components/Thumbnail"
-// import { INITIAL_ERROR_STATE, useSongForm } from "./hooks/useSongForm"
 
 const Header = () => {
   const navigate = useNavigate()

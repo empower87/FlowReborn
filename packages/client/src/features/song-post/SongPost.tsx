@@ -1,18 +1,15 @@
-import { CSSProperties, ReactNode, useLayoutEffect, useRef, useState } from "react"
+import { CSSProperties, ReactNode } from "react"
 import { useInView } from "react-intersection-observer"
-import AudioSlider from "src/components/audio/AudioSlider"
-import { SideButton, SideButtonMenu } from "src/components/ui/SideButtonMenu"
-import useAudioPlayer from "src/hooks/useAudioPlayer"
+import { SideButtonMenu } from "src/components/ui/SideButtonMenu"
 import { ISongPopulatedUserAndComments as ISong } from "src/types/ServerModelTypes"
+import { Video } from "../video/Video"
 import {
   CommentButtonWithCommentModal,
   FollowButton,
-  FullscreenButton,
   LikeButton,
   LyricsButtonWithLyricsModal,
 } from "./components/ActionButtons"
 import SongPostDetails from "./components/SongPostDetails"
-import { MediaProgressBar, PlaybackButtonContainer, Video } from "./components/VideoPlayer"
 
 type SongPostProps = {
   song: ISong
@@ -40,11 +37,6 @@ const SongPostActionsBar = ({ children }: { children: ReactNode }) => {
 export default function SongPost({ song, style }: ISongPostProps) {
   const [itemRef, inView] = useInView(INTERSECTION_OPTIONS)
 
-  const onClickHandler = () => {
-    // setIsVideoFullscreen((prev) => !prev)
-    console.log("LOL CLICKED DUMB BUTTON")
-  }
-
   return (
     <li ref={itemRef} className="song-post__item" style={style}>
       <VideoProvider
@@ -56,7 +48,6 @@ export default function SongPost({ song, style }: ISongPostProps) {
             <CommentButtonWithCommentModal data={song} />
             <FollowButton data={song.user} />
             <LyricsButtonWithLyricsModal lyrics={song.lyrics} />
-            <FullscreenButton onClick={onClickHandler} />
           </>
         }
         songDetails={<SongPostDetails song={song} />}
@@ -76,90 +67,18 @@ const VideoProvider = ({
   songDetails: ReactNode
   sideBarActions: ReactNode
 }) => {
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const { toggleVideoAspect, handleToggleVideoAspect } = useSongVideoControls(song.src)
-
-  const {
-    slider,
-    time: { current, end },
-    isPlaying,
-    setIsPlaying,
-    setPlayHandler,
-  } = useAudioPlayer({
-    ref: videoRef,
-    duration: song.duration,
-    bgColor: "#eeb2cb",
-    video: song.src,
-  })
-
-  if (!inView && isPlaying) setIsPlaying(false)
+  // const videoRef = useRef<HTMLVideoElement>(null)
 
   return (
     <>
-      <Video
-        ref={videoRef}
-        thumbnail={song.thumbnail}
-        src={song.src}
-        onClick={setPlayHandler}
-        placeholder={song.thumbnail}
-        toggleAspectRatio={toggleVideoAspect}
-      />
+      <Video src={song.src} inView={inView} />
 
-      <PlaybackButtonContainer isPlaying={isPlaying} setIsPlaying={setPlayHandler} />
-
-      <SongPostActionsBar>
-        {sideBarActions}
-        <SideButton
-          type={toggleVideoAspect}
-          text="Aspect Ratio"
-          hasUser={false}
-          onClick={() => handleToggleVideoAspect()}
-          size={60}
-        />
-      </SongPostActionsBar>
+      <SongPostActionsBar>{sideBarActions}</SongPostActionsBar>
 
       <div className="song-post__details--wrapper">
         {songDetails}
-        <MediaProgressBar current={current} end={end}>
-          <AudioSlider addClass="" {...slider} />
-        </MediaProgressBar>
+        {/* <MediaProgressBarWrapper duration={song.duration} videoRef={videoRef} /> */}
       </div>
     </>
   )
 }
-
-// button on top right to toggle between fullscreen and hide ui
-// landscape mode
-// onClick should allow pausing
-// easy muting
-
-const useSongVideoControls = (id: string) => {
-  const video = document.getElementById(id)
-
-  const [isVideoLandscape, setIsVideoLandscape] = useState<boolean>(false)
-  const [toggleVideoAspect, setToggleVideoAspect] = useState<"Landscape" | "Portrait">("Portrait")
-
-  useLayoutEffect(() => {
-    if (!video) return
-    const castedVideo = video as HTMLVideoElement
-
-    const isLandscapeRatio = castedVideo.videoWidth > castedVideo.videoHeight
-    setIsVideoLandscape(isLandscapeRatio)
-  }, [video])
-
-  const handleToggleVideoAspect = () => {
-    setToggleVideoAspect((prev) => (prev === "Landscape" ? "Portrait" : "Landscape"))
-  }
-
-  return {
-    handleToggleVideoAspect,
-    toggleVideoAspect,
-  }
-}
-
-// const FullscreenVideoModal = ({ isOpen, children }: { isOpen: boolean; children: ReactNode }) => {
-//   const root = document.getElementById("root")!
-
-//   if (!isOpen) return null
-//   return ReactDOM.createPortal(<div className="fullscreen-video-modal">{children}</div>, root)
-// }

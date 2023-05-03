@@ -112,21 +112,6 @@ export default function Recordings({ children }: { children: ReactNode }) {
 
           <div className="record__recordings-content">
             {children}
-            {/* <form
-              id="post-song-form"
-              className="record__recordings-details"
-              onSubmit={methods.handleSubmit((data, e) => onSubmit(e, take))}
-            >
-              <Dropdown take={take} setTake={setTake} takes={takes}>
-                <Input name="title" placeholder="Add a title" methods={methods} />
-              </Dropdown>
-
-              <div className="record__recordings-caption">
-                <div className="record__recordings-caption--bs-outset">
-                  <Input name="caption" placeholder="Add a caption" methods={methods} />
-                </div>
-              </div>
-            </form> */}
             <div className="record__recordings-delete"></div>
           </div>
         </div>

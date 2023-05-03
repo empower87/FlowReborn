@@ -51,7 +51,7 @@
         }
 
         .song-post__video-shadow-overlay {
-          @include flexCenter(100%, 100%, 0, flex-start, flex-start, column);
+          @include flexCenter(100%, 100%, 0, center, center, column);
           background: linear-gradient(
             0deg,
             black,
@@ -64,9 +64,10 @@
             rgb(0 0 0 / 26%),
             black
           );
-          margin-bottom: 3%;
-          overflow-y: scroll;
-          position: absolute;
+          z-index: 1;
+          // margin-bottom: 3%;
+          // overflow-y: scroll;
+          // position: absolute;
         }
       }
 
@@ -93,8 +94,11 @@
       }
 
       .progress-bar {
-        @include flexCenter(20%, 100%, 0em 0em 1em 1em, center, center, row);
+        // height: 20%;
+        @include flexCenter(15px, 100%, 0em 0em 1em 1em, center, center, row);
         background: linear-gradient(323deg, #808080 0%, #b8b8b8 100%);
+        position: absolute;
+        bottom: 10%;
 
         .progress-bar__text {
           @include flexCenter(100%, 8%, 0, center, center, row);
