@@ -1,6 +1,6 @@
 import memoize from "memoize-one"
 import { CSSProperties, memo, useEffect, useRef, useState } from "react"
-import { areEqual, FixedSizeList as List } from "react-window"
+import { FixedSizeList as List, areEqual } from "react-window"
 import { ISongPopulatedUserAndComments as ISong } from "src/types/ServerModelTypes"
 import SongPost from "./SongPost"
 

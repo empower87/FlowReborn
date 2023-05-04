@@ -21,6 +21,14 @@ interface ISongPostProps extends SongPostProps {
   style: CSSProperties
 }
 
+type VideoProviderProps = {
+  isVideo: boolean
+  inView: boolean
+  song: ISong
+  songDetails: ReactNode
+  sideBarActions: ReactNode
+}
+
 const INTERSECTION_OPTIONS = {
   // root: document.querySelector(".song-post__list"),
   threshold: 0.9,
@@ -37,9 +45,11 @@ const SongPostActionsBar = ({ children }: { children: ReactNode }) => {
 export default function SongPost({ song, style }: ISongPostProps) {
   const [itemRef, inView] = useInView(INTERSECTION_OPTIONS)
 
+  const isVideo = typeof song.isVideo !== "undefined" && song.isVideo === true ? true : false
   return (
     <li ref={itemRef} className="song-post__item" style={style}>
       <VideoProvider
+        isVideo={isVideo}
         inView={inView}
         song={song}
         sideBarActions={
@@ -56,22 +66,12 @@ export default function SongPost({ song, style }: ISongPostProps) {
   )
 }
 
-const VideoProvider = ({
-  inView,
-  song,
-  songDetails,
-  sideBarActions,
-}: {
-  inView: boolean
-  song: ISong
-  songDetails: ReactNode
-  sideBarActions: ReactNode
-}) => {
+const VideoProvider = ({ isVideo, inView, song, songDetails, sideBarActions }: VideoProviderProps) => {
   // const videoRef = useRef<HTMLVideoElement>(null)
 
   return (
     <>
-      <Video src={song.src} inView={inView} />
+      <Video src={song.src} isVideo={isVideo} inView={inView} />
 
       <SongPostActionsBar>{sideBarActions}</SongPostActionsBar>
 

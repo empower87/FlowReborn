@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 // import InputError from "src/components/errors/InputError"
 import LoadingSpinner from "src/components/loading/LoadingSpinner"
@@ -76,8 +76,7 @@ export default function PostRecording() {
   const { currentDraft } = useSongDraftsContext()
   const recordingType = currentDraft?.isVideo ? "video" : "audio"
 
-  const videoRef = useRef<HTMLVideoElement>(null)
-
+  const isVideo = typeof currentDraft?.isVideo !== "undefined" && currentDraft.isVideo === true ? true : false
   return (
     <div className="post-recording">
       <Header />
@@ -89,7 +88,7 @@ export default function PostRecording() {
         </div>
 
         <div id="lyrics-panel-root" className="post-recording__video">
-          <Video src={currentDraft?.src} />
+          <Video src={currentDraft?.src} isVideo={isVideo} />
           {/* <video id={currentDraft?.src} className="record__video" src={currentDraft?.src} ref={videoRef} />
           <div className="post-recording__playback">
             {currentDraft && <MediaPlayback take={currentDraft} videoRef={videoRef} />}

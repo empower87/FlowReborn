@@ -1,40 +1,10 @@
-import { forwardRef, RefObject, useState } from "react"
-import { PlayPauseButton } from "src/components/buttons/PlayButton"
+import { forwardRef, RefObject } from "react"
 import MediaProgressBar from "src/features/video/components/MediaProgressBar"
 import { useMediaProgressTime } from "src/features/video/hooks/useMediaProgress"
 
 type MediaProgressBarProps = {
   duration: number
   videoRef: RefObject<HTMLVideoElement>
-}
-
-export const PlaybackButtonContainer = ({
-  isPlaying,
-  setIsPlaying,
-}: {
-  isPlaying: boolean
-  setIsPlaying: () => void
-}) => {
-  const [isAdded, setIsAdded] = useState<boolean>(false)
-
-  // const [visibility, setVisibility] = useState<"hidden" | "visible">("hidden")
-
-  // useEffect(() => {
-  //   setVisibility("visible")
-  //   setTimeout(() => {
-  //     setVisibility("hidden")
-  //   }, 2000)
-  // }, [isPlaying])
-
-  return (
-    <div className={`song-post__playback-btn `}>
-      <div className="song-post__playback-btn--bs-inset">
-        <div className="song-post__playback-btn--wrapper">
-          <PlayPauseButton isPlaying={isPlaying} onPlayPause={setIsPlaying} />
-        </div>
-      </div>
-    </div>
-  )
 }
 
 export const MediaProgressBarWrapper = ({ duration, videoRef }: MediaProgressBarProps) => {
