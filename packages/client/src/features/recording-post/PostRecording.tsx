@@ -3,15 +3,15 @@ import { useNavigate } from "react-router-dom"
 // import InputError from "src/components/errors/InputError"
 import LoadingSpinner from "src/components/loading/LoadingSpinner"
 import TitleBar, { TitleBarButton } from "src/components/ui/TitleBar"
+import { Video } from "src/features/video/Video"
 import { useSongDraftsContext } from "../recording-booth/hooks/useSongDrafts"
-import { Video } from "../video/Video"
 import LyricsMenu from "./components/LyricsMenu"
 import Recordings, { Form } from "./components/Recordings/Recordings"
 import { ThumbnailSelector } from "./components/Thumbnail"
 
 const Header = () => {
   const navigate = useNavigate()
-  const onClose = () => navigate("/recording-booth/confirm-recording")
+  const onClose = () => navigate(-1)
 
   return (
     <div className="recording__header--container">
@@ -88,11 +88,7 @@ export default function PostRecording() {
         </div>
 
         <div id="lyrics-panel-root" className="post-recording__video">
-          <Video src={currentDraft?.src} isVideo={isVideo} />
-          {/* <video id={currentDraft?.src} className="record__video" src={currentDraft?.src} ref={videoRef} />
-          <div className="post-recording__playback">
-            {currentDraft && <MediaPlayback take={currentDraft} videoRef={videoRef} />}
-          </div> */}
+          <Video src={currentDraft?.src} isVideo={isVideo} duration={currentDraft ? currentDraft.duration : 0} />
         </div>
       </div>
 

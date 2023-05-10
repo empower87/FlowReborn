@@ -23,11 +23,7 @@ export default function HomeDisplay() {
         <FeedToggleButton feed={"Following"} selectedFeed={feedInView} onClick={() => toggleFeedHandler("Following")} />
       </HomeHeader>
 
-      <SongPostList
-        songs={feedSongs}
-        // isVideoFullscreen={isVideoFullscreen}
-        // setIsVideoFullscreen={setIsVideoFullscreen}
-      />
+      <SongPostList songs={feedSongs} />
 
       <Navbar isVisible={!isVideoFullscreen} />
     </div>

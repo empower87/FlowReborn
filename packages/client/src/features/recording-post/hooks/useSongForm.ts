@@ -73,7 +73,7 @@ export const useSongForm = (recordingType: "audio" | "video") => {
       // setIsSaving(true)
 
       // const userId = _song.user._id
-      // const getTitle = methods.getValues("title")
+      // const getTitle = methods.getValues("title") + '.mp4'
       // const getCaption = methods.getValues("caption")
       // const songFileName = userId + getTitle.replaceAll(" ", "-")
       // let songToUpload = {
@@ -87,12 +87,12 @@ export const useSongForm = (recordingType: "audio" | "video") => {
 
       //   let data = [
       //     {
-      //       fileName: songFileName + "-thumbnail",
+      //       fileName: songFileName + "-thumbnail.png",
       //       fileType: "image/png",
       //       fileBlob: _song.thumbnailBlob,
       //     },
       //     {
-      //       fileName: songFileName,
+      //       fileName: songFileName + '.mp4',
       //       fileType: "video/mp4",
       //       fileBlob: _song.blob,
       //     },
@@ -102,7 +102,7 @@ export const useSongForm = (recordingType: "audio" | "video") => {
       // } else {
       //   let data = [
       //     {
-      //       fileName: songFileName,
+      //       fileName: songFileName + '.mp3',
       //       fileType: "audio/mpeg-4",
       //       fileBlob: _song.blob,
       //     },

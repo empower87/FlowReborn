@@ -9,7 +9,7 @@ function formatTime(seconds: number) {
 }
 
 // TODO: should handle both current and total time
-export const useMediaProgressTime = (videoRef: RefObject<HTMLVideoElement>, duration: number) => {
+export const useMediaProgressTime = (videoRef: RefObject<HTMLVideoElement>, duration: number, isPlaying: boolean) => {
   const [currentTime, setCurrentTime] = useState<string>("0:00")
   const [progress, setProgress] = useState<number>(0)
   const [end, setEnd] = useState<string>("0:00")
@@ -37,7 +37,7 @@ export const useMediaProgressTime = (videoRef: RefObject<HTMLVideoElement>, dura
   }, [duration, videoRef])
 
   const handleTimeUpdate = () => {
-    if (videoRef.current) {
+    if (videoRef.current && isPlaying) {
       const roundTime = Math.floor(videoRef.current.currentTime)
       const time = formatTime(roundTime)
       setProgress(roundTime)

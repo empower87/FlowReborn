@@ -1,8 +1,8 @@
 import { CSSProperties, ReactNode } from "react"
 import { useInView } from "react-intersection-observer"
 import { SideButtonMenu } from "src/components/ui/SideButtonMenu"
+import { Video } from "src/features/video/Video"
 import { ISongPopulatedUserAndComments as ISong } from "src/types/ServerModelTypes"
-import { Video } from "../video/Video"
 import {
   CommentButtonWithCommentModal,
   FollowButton,
@@ -13,11 +13,6 @@ import SongPostDetails from "./components/SongPostDetails"
 
 type SongPostProps = {
   song: ISong
-  // isVideoFullscreen: boolean
-  // setIsVideoFullscreen: Dispatch<SetStateAction<boolean>>
-}
-
-interface ISongPostProps extends SongPostProps {
   style: CSSProperties
 }
 
@@ -30,7 +25,7 @@ type VideoProviderProps = {
 }
 
 const INTERSECTION_OPTIONS = {
-  // root: document.querySelector(".song-post__list"),
+  root: document.querySelector(".song-post__list"),
   threshold: 0.9,
 }
 
@@ -42,7 +37,7 @@ const SongPostActionsBar = ({ children }: { children: ReactNode }) => {
   )
 }
 
-export default function SongPost({ song, style }: ISongPostProps) {
+export default function SongPost({ song, style }: SongPostProps) {
   const [itemRef, inView] = useInView(INTERSECTION_OPTIONS)
 
   const isVideo = typeof song.isVideo !== "undefined" && song.isVideo === true ? true : false
@@ -67,18 +62,13 @@ export default function SongPost({ song, style }: ISongPostProps) {
 }
 
 const VideoProvider = ({ isVideo, inView, song, songDetails, sideBarActions }: VideoProviderProps) => {
-  // const videoRef = useRef<HTMLVideoElement>(null)
-
   return (
     <>
-      <Video src={song.src} isVideo={isVideo} inView={inView} />
+      <Video src={song.src} duration={song.duration} isVideo={isVideo} inView={inView} />
 
       <SongPostActionsBar>{sideBarActions}</SongPostActionsBar>
 
-      <div className="song-post__details--wrapper">
-        {songDetails}
-        {/* <MediaProgressBarWrapper duration={song.duration} videoRef={videoRef} /> */}
-      </div>
+      <div className="song-post__details--wrapper">{songDetails}</div>
     </>
   )
 }

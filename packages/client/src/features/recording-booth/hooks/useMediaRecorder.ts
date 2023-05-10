@@ -212,7 +212,7 @@ export default function useMediaRecorder({ beat, videoRef }: UseMediaRecorderPro
       blob: blob,
       isRecording: false,
     }))
-
+    console.log(blob, "what does this look like????????")
     setSongDraftHandler(url, blob, [recorder.minutes, recorder.seconds], type, videoRef)
   }
 

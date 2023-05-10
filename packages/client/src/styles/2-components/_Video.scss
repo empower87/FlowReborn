@@ -8,7 +8,8 @@
     position: absolute;
   }
 
-  .song-post__video-shadow-overlay {
+  // .song-post__video-shadow-overlay {
+  .song-post__video-controls-overlay {
     @include flexCenter(100%, 100%, 0, center, center, column);
     background: linear-gradient(
       0deg,
@@ -23,18 +24,38 @@
       black
     );
     z-index: 1;
-    // margin-bottom: 3%;
-    // overflow-y: scroll;
-    // position: absolute;
+
+    &.show-controls {
+      opacity: 1;
+      transition: opacity 0.25s linear;
+      background: #0000006b;
+    }
+
+    &.hide-controls {
+      opacity: 0;
+      transition: opacity 0.25s linear;
+      background: linear-gradient(
+        0deg,
+        black,
+        rgba(0, 0, 0, 0.5882352941),
+        rgba(0, 0, 0, 0.4),
+        rgba(0, 0, 0, 0.2784313725),
+        transparent,
+        transparent,
+        transparent,
+        rgb(0 0 0 / 26%),
+        black
+      );
+    }
   }
 }
 
 .song-post__playback-btn {
   @include flexCenter(50px, 50px, 2em, center, center, row);
   background: gray;
-  position: absolute;
-  top: 42%;
-  left: 43%;
+  // position: absolute;
+  // top: 42%;
+  // left: 43%;
   box-shadow: 2px 2px 3px 0px #4f4f4f, -1px -1px 2px #ffffff;
 
   .btn-fade-anim {
@@ -53,19 +74,20 @@
 
 .progress-bar {
   // height: 20%;
-  @include flexCenter(15px, 100%, 0em 0em 1em 1em, center, center, row);
+  // TODO: Fix it so styles are customizable to component parent
+  @include flexCenter(15px, 100%, 0.1em, center, center, row);
   background: linear-gradient(323deg, #808080 0%, #b8b8b8 100%);
   position: absolute;
   bottom: 10%;
 
   .progress-bar__text {
-    @include flexCenter(100%, 8%, 0, center, center, row);
+    @include flexCenter(100%, 9%, 0, center, center, row);
     font-size: 0.65rem;
     color: $base-color;
   }
 
   .progress-bar__slider {
-    @include flexCenter(100%, 84%, 2em, center, center, row);
+    @include flexCenter(100%, 82%, 2em, center, center, row);
 
     .progress-bar__slider--bs-inset {
       @include flexCenter(55%, 97%, 2em, center, center, row);

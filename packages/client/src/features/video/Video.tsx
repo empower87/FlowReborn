@@ -1,33 +1,59 @@
-import { useEffect, useRef, useState } from "react"
+import { MouseEvent, ReactNode, useEffect, useRef, useState } from "react"
 import placeholderGifs from "src/assets/images/gifs.json"
+import { Icon } from "src/components/buttons/Icon/Icon"
 import { PlayPauseButton } from "src/components/buttons/PlayButton"
-import { MediaProgressBarWrapper } from "../song-post/components/VideoPlayer"
+import { MediaProgressBarWrapper } from "./components/MediaProgressBar"
 
 type VideoProps = {
   src: string | undefined
+  duration: number
   isVideo: boolean
   thumbnail?: string
   inView?: boolean
 }
+type VideoControlsProps = {
+  showControls: boolean
+  onVideoClick: (e: MouseEvent<HTMLDivElement>) => void
+  children: ReactNode
+}
+
+function FullscreenButton({ toggleFullscreen }: { toggleFullscreen: () => void }) {
+  return (
+    <button onClick={toggleFullscreen}>
+      <Icon type="Fullscreen" options={{ color: "Primary", size: 70 }} />
+    </button>
+  )
+}
 
 function PlayPauseButtonWrapper({ isPlaying, onPlayPause }: { isPlaying: boolean; onPlayPause: () => void }) {
   return (
-    <div className={`song-post__playback-btn`}>
+    <div className="song-post__playback-btn">
       <div className="song-post__playback-btn--bs-inset">
         <div className="song-post__playback-btn--wrapper">
-          <PlayPauseButton isPlaying={isPlaying} onPlayPause={onPlayPause} />
+          <PlayPauseButton isPlaying={isPlaying} onPlayPause={() => onPlayPause()} />
         </div>
       </div>
     </div>
   )
 }
 
-export const Video = ({ src, isVideo, thumbnail, inView }: VideoProps) => {
+function VideoControls({ showControls, onVideoClick, children }: VideoControlsProps) {
+  return (
+    <div
+      className={`song-post__video-controls-overlay ${showControls ? "show-controls" : "hide-controls"}`}
+      onClick={onVideoClick}
+    >
+      {children}
+    </div>
+  )
+}
+
+export const Video = ({ src, duration, isVideo, thumbnail, inView }: VideoProps) => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isFullScreen, setIsFullScreen] = useState(false)
-  const [showPlayPauseButton, setShowPlayPauseButton] = useState(false)
-  // const [index, setIndex] = useState<number>()
-  const [placeholder, setPlaceholder] = useState<string>("")
+  const [placeholder, setPlaceholder] = useState<string | null>(null)
+  const [showVideoControls, setShowVideoControls] = useState<boolean>(false)
+
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -44,16 +70,18 @@ export const Video = ({ src, isVideo, thumbnail, inView }: VideoProps) => {
     }
   }, [src])
 
-  const playPauseHandler = () => {
+  useEffect(() => {
     if (videoRef.current) {
       if (isPlaying) {
         videoRef.current.pause()
-        setIsPlaying(false)
       } else {
         videoRef.current.play()
-        setIsPlaying(true)
       }
     }
+  }, [isPlaying])
+
+  const playPauseHandler = () => {
+    setIsPlaying((prev) => !prev)
   }
 
   const toggleFullScreen = () => {
@@ -73,37 +101,34 @@ export const Video = ({ src, isVideo, thumbnail, inView }: VideoProps) => {
     return video.videoWidth > video.videoHeight ? "landscape" : "portrait"
   }
 
-  const onVideoClickHandler = () => {
-    if (showPlayPauseButton) {
-      setShowPlayPauseButton(false)
+  const onVideoClickHandler = (event: MouseEvent<HTMLDivElement>) => {
+    if (event.target !== event.currentTarget) return
+    if (showVideoControls) {
+      setShowVideoControls(false)
     } else {
-      setShowPlayPauseButton(true)
+      setShowVideoControls(true)
     }
   }
 
   return (
-    <div
-      className="song-post__video--container"
-      style={!isVideo && placeholder ? { backgroundImage: `url(${placeholder})` } : {}}
-    >
-      {isVideo && (
+    <div className="song-post__video--container" style={!isVideo ? { backgroundImage: `url(${placeholder})` } : {}}>
+      {isVideo && inView === true && (
         <video
           src={src}
           ref={videoRef}
           className="video-pane-video"
-          style={{ objectFit: "contain" }}
+          style={{ objectFit: placeholder ? "contain" : "cover" }}
           poster={thumbnail}
           loop
           playsInline
         />
       )}
 
-      <div className="song-post__video-shadow-overlay" onClick={onVideoClickHandler}>
-        {showPlayPauseButton && <PlayPauseButtonWrapper isPlaying={isPlaying} onPlayPause={playPauseHandler} />}
-
-        <button onClick={toggleFullScreen}>{isFullScreen ? "Exit Fullscreen" : "Fullscreen"}</button>
-        <MediaProgressBarWrapper duration={10} videoRef={videoRef} />
-      </div>
+      <VideoControls showControls={showVideoControls} onVideoClick={(event) => onVideoClickHandler(event)}>
+        <PlayPauseButtonWrapper isPlaying={isPlaying} onPlayPause={playPauseHandler} />
+        <FullscreenButton toggleFullscreen={toggleFullScreen} />
+        <MediaProgressBarWrapper duration={duration} videoRef={videoRef} isPlaying={isPlaying} />
+      </VideoControls>
     </div>
   )
 }
