@@ -6061,7 +6061,7 @@ button {
   border-radius: 5em;
   margin-left: 0.5%;
   cursor: pointer;
-  background: #63debc;
+  background: #ec6aa0;
   -webkit-transition: background-color 1s ease;
   transition: background-color 1s ease;
 }
@@ -7807,7 +7807,6 @@ button {
   flex-direction: column;
   position: absolute;
   bottom: 10%;
-  z-index: 1;
 }
 .song-post__details--wrapper .song-user-section {
   height: 75%;

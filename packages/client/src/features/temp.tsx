@@ -65,6 +65,7 @@ type GetWorkoutVolumeProps = {
     numOfWorkouts: number
   }
 }
+
 const getWorkoutVolume = (props: GetWorkoutVolumeProps) => {
   const [lol, setLol] = useState()
 

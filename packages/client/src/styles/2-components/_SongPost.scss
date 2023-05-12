@@ -38,103 +38,6 @@
     .song-post__item {
       @include flexCenter(100%, 100%, 0px, center, center, column);
       scroll-snap-align: start;
-      // scroll-snap-stop: always;
-
-      // .song-post__video--container {
-      //   @include flexCenter(100%, 100%, 0px, center, center, column);
-      //   background-position: center;
-      //   background-size: cover;
-
-      //   .video-pane-video {
-      //     @include flexCenter(100%, 100%, 0px, center, center, column);
-      //     position: absolute;
-      //   }
-
-      //   .song-post__video-shadow-overlay {
-      //     @include flexCenter(100%, 100%, 0, center, center, column);
-      //     background: linear-gradient(
-      //       0deg,
-      //       black,
-      //       rgba(0, 0, 0, 0.5882352941),
-      //       rgba(0, 0, 0, 0.4),
-      //       rgba(0, 0, 0, 0.2784313725),
-      //       transparent,
-      //       transparent,
-      //       transparent,
-      //       rgb(0 0 0 / 26%),
-      //       black
-      //     );
-      //     z-index: 1;
-      //     // margin-bottom: 3%;
-      //     // overflow-y: scroll;
-      //     // position: absolute;
-      //   }
-      // }
-
-      // .song-post__playback-btn {
-      //   @include flexCenter(50px, 50px, 2em, center, center, row);
-      //   background: gray;
-      //   position: absolute;
-      //   top: 42%;
-      //   left: 43%;
-      //   box-shadow: 2px 2px 3px 0px #4f4f4f, -1px -1px 2px #ffffff;
-
-      //   .btn-fade-anim {
-      //     animation: fade-in-then-out 2s linear forwards;
-      //   }
-
-      //   .song-post__playback-btn--bs-inset {
-      //     @include flexCenter(85%, 85%, 2em, center, center, row);
-      //     box-shadow: inset 2px 2px 3px 0px #4f4f4f, inset -1px -1px 3px #ffffff;
-
-      //     .song-post__playback-btn--wrapper {
-      //       @include flexCenter(90%, 90%, 2em, center, center, row);
-      //     }
-      //   }
-      // }
-
-      // .progress-bar {
-      //   // height: 20%;
-      //   @include flexCenter(15px, 100%, 0em 0em 1em 1em, center, center, row);
-      //   background: linear-gradient(323deg, #808080 0%, #b8b8b8 100%);
-      //   position: absolute;
-      //   bottom: 10%;
-
-      //   .progress-bar__text {
-      //     @include flexCenter(100%, 8%, 0, center, center, row);
-      //     font-size: 0.65rem;
-      //     color: $base-color;
-      //   }
-
-      //   .progress-bar__slider {
-      //     @include flexCenter(100%, 84%, 2em, center, center, row);
-
-      //     .progress-bar__slider--bs-inset {
-      //       @include flexCenter(55%, 97%, 2em, center, center, row);
-      //       box-shadow: inset 1px 1px 2px 0px #313131, inset -1px -1px 2px #ffffff;
-
-      //       input[type="range"] {
-      //         appearance: none;
-      //         height: 50%;
-      //         width: 98%;
-      //         border-radius: 2em;
-      //         // box-shadow: inset 1px 1px 3px 0px #1b1b1b, inset -1px -1px 2px #e8e4e4;
-      //       }
-
-      //       input[type="range"]::-webkit-slider-thumb {
-      //         appearance: none;
-      //         height: 5px;
-      //         width: 10px;
-      //         border-radius: 5em;
-      //         margin-left: 0.5%;
-      //         cursor: pointer;
-      //         background: #63debc;
-      //         transition: background-color 1s ease;
-      //         // box-shadow: inset 1px 1px 1px 0px #c2c2c2, inset -1px -1px 1px #353535;
-      //       }
-      //     }
-      //   }
-      // }
 
       .song-post__side-bar {
         @include flexCenter(55%, 60px, 0, flex-start, flex-start, column);
@@ -158,7 +61,7 @@
   @include flexCenter(12%, 100%, 0, space-between, center, column);
   position: absolute;
   bottom: 10%;
-  z-index: 1;
+  // z-index: 1;
 
   .song-user-section {
     @include flexCenter(75%, 100%, 0, center, center, row);
