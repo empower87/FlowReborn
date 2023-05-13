@@ -1,87 +1,70 @@
-import { RefObject, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 
-function formatTime(seconds: number) {
-  const getMinutes = Math.floor(seconds / 60)
-  const getSeconds = seconds % 60
-  const getFormattedSeconds = getSeconds < 10 ? `0${getSeconds}` : `${getSeconds}`
-  const getFormattedMinutes = getMinutes >= 1 ? getMinutes : 0
-  return `${getFormattedMinutes}:${getFormattedSeconds}`
+const INITIAL_VALUE: State = {
+  isScrubbing: false,
+  seekValue: null,
+  progress: 0,
+  currentProgressPercent: "0%",
 }
 
-// TODO: should handle both current and total time
-export const useMediaProgressTime = (videoRef: RefObject<HTMLVideoElement>, duration: number, isPlaying: boolean) => {
-  const [progress, setProgress] = useState<number>(0)
+type State = {
+  isScrubbing: boolean
+  seekValue: number | null
+  progress: number
+  currentProgressPercent: string
+}
 
-  const [currentTime, setCurrentTime] = useState<string>("0:00")
-  const [end, setEnd] = useState<string>("0:00")
+type Action = {
+  type: string
+  payload: any
+}
 
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.addEventListener("timeupdate", handleTimeUpdate)
-    }
+const mediaSliderReducer = (state: State, action: Action): State => {
+  switch (action.type) {
+    case "SCRUBBING":
 
-    return () => {
-      if (videoRef.current) {
-        videoRef.current.removeEventListener("timeupdate", handleTimeUpdate)
-      }
-    }
-  }, [videoRef])
-
-  useEffect(() => {
-    if (!videoRef.current) return
-    console.log(currentTime, "tracking the currentTime of the videoRef")
-  }, [currentTime])
-
-  useEffect(() => {
-    const endTime = formatTime(duration)
-    setEnd(endTime)
-  }, [duration, videoRef])
-
-  const handleTimeUpdate = () => {
-    if (videoRef.current && isPlaying) {
-      const roundTime = Math.floor(videoRef.current.currentTime)
-      const time = formatTime(roundTime)
-      setProgress(roundTime)
-      setCurrentTime(time)
-    }
+    default:
+      return state
   }
-
-  const onScrub = (value: string) => {
-    if (!videoRef.current) return
-    const numberValue: number = parseInt(value)
-    videoRef.current.currentTime = numberValue
-  }
-
-  const onScrubEnd = () => {
-    console.log("scrub ended")
-  }
-
-  return { currentTime, progress, end, onScrub, onScrubEnd }
 }
 
 export const useMediaProgress = (
   videoRef: React.RefObject<HTMLVideoElement>,
+  duration: number,
   isPlaying: boolean,
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const [progress, setProgress] = useState<number>(0)
   const [isScrubbing, setIsScrubbing] = useState<boolean>(false)
+  const [seekValue, setSeekValue] = useState<number | null>(null)
+  const [currentPercentage, setCurrentPercentage] = useState<string>("0%")
+
+  const roundedDuration = Math.round(duration / 1000)
 
   useEffect(() => {
-    if (isScrubbing && isPlaying) {
-      setIsPlaying(false)
+    setCurrentPercentage(`${(progress / roundedDuration) * 100 + 0.02}%`)
+  }, [progress])
+
+  // useEffect(() => {
+  //   if (isScrubbing && isPlaying) {
+  //     setIsPlaying(false)
+  //   } else {
+  //     setIsPlaying(true)
+  //   }
+  // }, [isScrubbing])
+
+  useEffect(() => {
+    if (isScrubbing) {
     } else {
-      setIsPlaying(true)
     }
   }, [isScrubbing])
 
   const handleTimeUpdate = () => {
-    if (videoRef.current) {
-      const currentTime = videoRef.current.currentTime
-      console.log(currentTime, "is this updating every second?")
-
-      setProgress(currentTime)
-    }
+    // pause this function on scrub
+    if (!videoRef.current || isScrubbing) return
+    const currentTime = videoRef.current.currentTime
+    console.log(currentTime, "is this updating every second?")
+    setProgress(currentTime)
   }
 
   useEffect(() => {
@@ -94,8 +77,6 @@ export const useMediaProgress = (
     }
   }, [videoRef.current])
 
-  // const [seekValue, setSeekValue] = useState<number | null>(null)
-
   // useEffect(() => {
   //   if (!isScrubbing && seekValue && videoRef.current) {
   //     videoRef.current.currentTime = progress
@@ -103,21 +84,35 @@ export const useMediaProgress = (
   //   }
   // }, [isScrubbing, seekValue])
 
+  useEffect(() => {
+    if (isScrubbing) {
+    }
+  }, [])
+
   const onScrub = (value: string) => {
     if (!videoRef.current) return
+
     const newTime = parseInt(value)
-    videoRef.current.currentTime = newTime
-    setProgress(newTime)
+    // videoRef.current.currentTime = newTime
+    // setProgress(newTime)
     setIsScrubbing(true)
-    // setSeekValue(newTime)
+
+    setSeekValue(newTime)
   }
 
   const onScrubEnd = () => {
+    if (!videoRef.current || !seekValue) return
     setIsScrubbing(false)
+    videoRef.current.currentTime = seekValue
+    setProgress(seekValue)
+    setSeekValue(null)
   }
 
   return {
     progress,
+    seekValue,
+    isScrubbing,
+    currentPercentage,
     onScrub,
     onScrubEnd,
   }

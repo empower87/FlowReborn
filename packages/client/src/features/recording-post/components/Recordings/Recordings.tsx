@@ -51,7 +51,7 @@ export const Form = ({
   setSaving: Dispatch<SetStateAction<boolean>>
 }) => {
   const { handleSaveSong, methods, isSaving, error, setError } = useSongForm(recordingType)
-  const { allDrafts, currentDraft } = useSongDraftsContext()
+  const { currentDraft } = useSongDraftsContext()
 
   useEffect(() => {
     setSaving(isSaving)

@@ -1,9 +1,13 @@
 import { Dispatch, RefObject, SetStateAction } from "react"
 import { useMediaProgress } from "src/features/video/hooks/useMediaProgress"
+import { formatTime } from "src/utils/formatTime"
 
 type ProgressBarProps = {
   addClass: string
   progress: number
+  isScrubbing: boolean
+  seekValue: number | null
+  // currentPercentage: string
   duration: number
   onScrub: (value: string) => void
   onScrubEnd: () => void
@@ -22,25 +26,28 @@ type MediaProgressBarProps = {
 }
 
 function ProgressBarTime({ seconds, type }: ProgressBarTimeProps) {
-  function formatTime(seconds: number) {
-    const getMinutes = Math.floor(seconds / 60)
-    const getSeconds = seconds % 60
-    const getFormattedSeconds = getSeconds < 10 ? `0${getSeconds}` : `${getSeconds}`
-    const getFormattedMinutes = getMinutes >= 1 ? getMinutes : 0
-    return `${getFormattedMinutes}:${getFormattedSeconds}`
-  }
-
   const roundedTime = Math.round(seconds)
   const time = formatTime(roundedTime)
   return <div className={`progress-bar__text ${type}`}>{time}</div>
 }
 
-function ProgressBar({ addClass, progress, duration, onScrub, onScrubEnd }: ProgressBarProps) {
+function ProgressBar({
+  addClass,
+  progress,
+  isScrubbing,
+  seekValue,
+  // currentPercentage,
+  duration,
+  onScrub,
+  onScrubEnd,
+}: ProgressBarProps) {
   const BACKGROUND_COLOR = "#eeb2cb"
   const PROGRESS_COLOR = "#ec6aa0"
 
   const roundedDuration = Math.round(duration / 1000)
-  const currentPercentage = `${(progress / roundedDuration) * 100 + 0.02}%`
+  const prog = isScrubbing && seekValue ? seekValue : progress
+  const currentPercentage = `${(prog / roundedDuration) * 100 + 0.02}%`
+
   const trackSlider = `
     -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage}, ${PROGRESS_COLOR}), color-stop(${currentPercentage}, ${BACKGROUND_COLOR}))
   `
@@ -49,8 +56,8 @@ function ProgressBar({ addClass, progress, duration, onScrub, onScrubEnd }: Prog
     <input
       className={`${addClass}`}
       type="range"
-      value={`${progress}`}
-      step=".1"
+      value={`${prog}`}
+      step=".01"
       min="0"
       max={`${roundedDuration}`}
       onChange={(e) => onScrub(e.target.value)}
@@ -63,7 +70,12 @@ function ProgressBar({ addClass, progress, duration, onScrub, onScrubEnd }: Prog
 }
 
 export const MediaProgressBar = ({ duration, videoRef, isPlaying, setIsPlaying }: MediaProgressBarProps) => {
-  const { progress, onScrub, onScrubEnd } = useMediaProgress(videoRef, isPlaying, setIsPlaying)
+  const { progress, seekValue, isScrubbing, currentPercentage, onScrub, onScrubEnd } = useMediaProgress(
+    videoRef,
+    duration,
+    isPlaying,
+    setIsPlaying
+  )
 
   return (
     <div className="progress-bar">
@@ -71,7 +83,16 @@ export const MediaProgressBar = ({ duration, videoRef, isPlaying, setIsPlaying }
 
       <div className="progress-bar__slider">
         <div className="progress-bar__slider--bs-inset">
-          <ProgressBar addClass="" progress={progress} duration={duration} onScrub={onScrub} onScrubEnd={onScrubEnd} />
+          <ProgressBar
+            addClass=""
+            progress={progress}
+            seekValue={seekValue}
+            isScrubbing={isScrubbing}
+            // currentPercentage={currentPercentage}
+            duration={duration}
+            onScrub={onScrub}
+            onScrubEnd={onScrubEnd}
+          />
         </div>
       </div>
 
