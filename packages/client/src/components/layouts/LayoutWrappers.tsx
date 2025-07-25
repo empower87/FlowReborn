@@ -46,10 +46,10 @@ export const Container = ({ specs, classes, dim, background, children }: Contain
     width: dim[1],
     background: background,
   }
-  const containerChild = {
-    height: dim[2],
-    width: dim[3],
-  }
+  // const containerChild = {
+  //   height: dim[2],
+  //   width: dim[3],
+  // }
 
   return (
     <div className={`Container ${classes[0]}`} style={container}>

@@ -39,7 +39,7 @@ export const useLiveTranscript = () => {
     if (listening) {
       resetTranscript()
     }
-  }, [debouncedTranscript])
+  }, [debouncedTranscript, listening, resetTranscript])
 
   return {
     transcript,
@@ -61,7 +61,7 @@ export const useTranscriptLyrics = () => {
       lyricsRef.current = [...lyricsRef.current, validArray]
       resetTranscript()
     }
-  }, [debouncedTranscript])
+  }, [debouncedTranscript, resetTranscript])
 
   return {
     lyrics,
@@ -100,7 +100,7 @@ export const useTranscriptPos = (posType: PosType) => {
     if (posType !== "LastWord") {
       setPartOfSpeech(findPOSWord(taggedWords, getPosArray(posType)))
     }
-  }, [debounced500])
+  }, [debounced500, posType])
 
   return {
     lastWord,
@@ -110,7 +110,7 @@ export const useTranscriptPos = (posType: PosType) => {
 }
 
 export default function useTranscript() {
-  const { transcript, listening, finalTranscript, resetTranscript } = useSpeechRecognition()
+  const { transcript, listening, resetTranscript } = useSpeechRecognition()
   const debounced500 = useDebounce(transcript, 400)
   const [adjectives, setAdjectives] = useState<string>("")
   const [nouns, setNouns] = useState<string>("")
@@ -142,7 +142,7 @@ export default function useTranscript() {
 
       resetTranscript()
     }
-  }, [debounced500])
+  }, [debounced500, resetTranscript])
 
   return { Adjectives: adjectives, Nouns: nouns, Verbs: verbs, LastWord: lastWord, transcript, lyrics, listening }
 }

@@ -13,8 +13,8 @@ export default function SongField({ inputData, index }: Props) {
   const { _id: songId, title, caption } = inputData
   const { handleOnFocus } = useHandleOSK()
 
-  const [labelName, setLabelName] = useState<string>(title)
-  const [labelCaption, setLabelCaption] = useState<string>(caption ? caption : "")
+  const [labelName] = useState<string>(title)
+  const [labelCaption] = useState<string>(caption ? caption : "")
   const [songName, setSongName] = useState<string>("")
   const [songCaption, setSongCaption] = useState<string>("")
 

@@ -36,7 +36,7 @@ export default function EditLyricsItemWrapper({
   useEffect(() => {
     const isEdit = checkForEditedLyrics(songId, line.id, lyricLine[0])
     setIsEdited(isEdit)
-  }, [isEditing, lyricLine])
+  }, [isEditing, lyricLine, line.id, songId, checkForEditedLyrics])
 
   const editLyricLine = () => {
     setIsEditing(true)

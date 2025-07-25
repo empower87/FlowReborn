@@ -23,7 +23,7 @@ const Title = () => {
     if (!wrapperRef.current) return
     const getWidth = wrapperRef.current.offsetHeight
     wrapperRef.current.style.width = `${getWidth}px`
-  }, [wrapperRef.current])
+  }, [])
 
   return (
     <div className="edit-lyrics__title--container">

@@ -10,7 +10,6 @@ type DropdownProps = {
 const Dropdown = ({ children }: DropdownProps) => {
   const [showSelectSongMenu, setShowSelectSongMenu] = useState<boolean>(false)
   const { allDrafts, currentDraft, setCurrentDraft } = useSongDraftsContext()
-  const [take, setTake] = useState()
 
   const handleShowMenu = () => {
     if (allDrafts.length <= 1) return

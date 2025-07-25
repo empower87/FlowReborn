@@ -1,16 +1,16 @@
 import { ReactNode, useLayoutEffect, useRef } from "react"
 import { CSSTransition, TransitionGroup } from "react-transition-group"
-import useDatamuse, { FullRhymeType, RhymeType } from "../../hooks/useDatamuse"
+import useDatamuse, { RhymeType } from "../../hooks/useDatamuse"
 import { PosType, useSuggestionSettingsContext } from "../../hooks/useSuggestionSettings"
 
-type SuggestionDisplayProps = {
-  title: string
-  queryWord: string
-  selectedRhymeType: RhymeType
-  selectedRhymeName: FullRhymeType
-  selectedRhymes: string[]
-  onClick: (selected: RhymeType) => void
-}
+// type SuggestionDisplayProps = {
+//   title: string
+//   queryWord: string
+//   selectedRhymeType: RhymeType
+//   selectedRhymeName: FullRhymeType
+//   selectedRhymes: string[]
+//   onClick: (selected: RhymeType) => void
+// }
 
 const RhymeSuggestionButton = ({
   type,
@@ -87,7 +87,7 @@ const Buttons = ({
   selectedRhymeType: RhymeType
   onClick: (selected: RhymeType) => void
 }) => {
-  const renderRef = useRef<number>(0)
+  // const renderRef = useRef<number>(0)
   // console.log(renderRef.current++, "<RhymeName /> -- Render test -- Layer 3")
   return (
     <div className="suggestions__pos-btns--container">
@@ -104,7 +104,7 @@ export const RhymeSuggestionPanelLayout = ({
   rhymeName,
   text,
 }: RhymeSuggestionPanelLayoutProps) => {
-  const renderRef = useRef<number>(0)
+  // const renderRef = useRef<number>(0)
   // console.log(renderRef.current++, "<RhymeSuggestionPanelLayout /> -- Render test -- Layer 3")
   return (
     <div className="suggestions-box">

@@ -48,7 +48,7 @@ export default function useFollow(userId: string, userFollowers: string[]) {
     } else {
       setIsFollowed(false)
     }
-  }, [userFollowers, user])
+  }, [userFollowers, user, stopInvalidatedQueriesFromRerendering])
 
   useEffect(() => {
     if (isLoading || !hasClicked) return
@@ -60,7 +60,7 @@ export default function useFollow(userId: string, userFollowers: string[]) {
     }
 
     setHasClicked(false)
-  }, [debouncedIsFollowed, isLoading])
+  }, [debouncedIsFollowed, isLoading, addFollowHandler, deleteFollowHandler, hasClicked])
 
   const addFollowHandler = (_isFollowed: boolean) => {
     if (!user || !hasClicked) return

@@ -89,7 +89,7 @@ export default function useMediaRecorder({ beat, videoRef }: UseMediaRecorderPro
     } else {
       videoRef.current.srcObject = null
     }
-  }, [videoRef.current, mediaStream, type])
+  }, [videoRef, mediaStream, type])
 
   useEffect(() => {
     const MAX_RECORDER_TIME = 5
@@ -124,7 +124,7 @@ export default function useMediaRecorder({ beat, videoRef }: UseMediaRecorderPro
     return () => {
       typeof recordingInterval === "number" && clearInterval(recordingInterval)
     }
-  }, [isRecording])
+  }, [isRecording, setRecorder])
 
   useEffect(() => {
     setRecorder((prevState) => {
@@ -135,7 +135,7 @@ export default function useMediaRecorder({ beat, videoRef }: UseMediaRecorderPro
         }
       else return prevState
     })
-  }, [mediaStream])
+  }, [mediaStream, setRecorder])
 
   useEffect(() => {
     if (mediaRecorder) {

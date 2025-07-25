@@ -6,7 +6,7 @@ import useFormatDate from "src/hooks/useFormatDate"
 // import { IComment } from "../../../../../../../server/src/models/index"
 import { IComment } from "src/types/ServerModelTypes"
 
-type InputType = "Comment" | "Edit" | "Reply" | "Hide"
+// type InputType = "Comment" | "Edit" | "Reply" | "Hide"
 
 type ItemProps = {
   comment: IComment
@@ -29,9 +29,9 @@ type CommentItemLayoutProps = {
   children: ReactNode
 }
 
-type CommentItemButtonsProps = {
-  comment: IComment
-}
+// type CommentItemButtonsProps = {
+//   comment: IComment
+// }
 
 const Photo = ({ username, picture, onClick }: Omit<HeaderProps, "isAuthor">) => {
   const wrapperRef = useRef<HTMLDivElement>(null)

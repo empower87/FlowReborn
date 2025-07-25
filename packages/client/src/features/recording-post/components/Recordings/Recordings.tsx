@@ -4,20 +4,19 @@ import InputError from "src/components/errors/InputError"
 import { UserPhoto } from "src/components/user-photo/UserPhoto"
 import { useAuth } from "src/context/AuthContext"
 import { useSongDraftsContext } from "src/features/recording-booth/hooks/useSongDrafts"
-import { ISongTake } from "src/features/recording-booth/utils/types"
 import { INITIAL_ERROR_STATE, IPostSongFormInputs, useSongForm } from "../../hooks/useSongForm"
 import Dropdown from "./Dropdown"
 
-type RecordingsProps = {
-  take: ISongTake
-  setTake: Dispatch<SetStateAction<ISongTake | undefined>>
-  takes: ISongTake[]
-  deleteTake: (_id: string) => void
-  methods: UseFormReturn<IPostSongFormInputs, any>
-  onSubmit: (e: any, _song: ISongTake) => Promise<void | null>
-  // title: JSX.Element
-  // caption: JSX.Element
-}
+// type RecordingsProps = {
+//   take: ISongTake
+//   setTake: Dispatch<SetStateAction<ISongTake | undefined>>
+//   takes: ISongTake[]
+//   deleteTake: (_id: string) => void
+//   methods: UseFormReturn<IPostSongFormInputs, any>
+//   onSubmit: (e: any, _song: ISongTake) => Promise<void | null>
+//   // title: JSX.Element
+//   // caption: JSX.Element
+// }
 
 type InputProps = {
   name: "title" | "caption"
@@ -55,7 +54,7 @@ export const Form = ({
 
   useEffect(() => {
     setSaving(isSaving)
-  }, [isSaving])
+  }, [isSaving, setSaving])
 
   return (
     <>
@@ -94,7 +93,7 @@ export default function Recordings({ children }: { children: ReactNode }) {
     if (!widthRef.current) return
     const height = widthRef.current.offsetHeight
     widthRef.current.style.width = `${height}px`
-  }, [widthRef.current])
+  }, [])
 
   return (
     <div className="record__recordings">

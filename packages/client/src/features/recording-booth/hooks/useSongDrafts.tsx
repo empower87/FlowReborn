@@ -48,7 +48,7 @@ const useSongDrafts = () => {
       setCurrentDraftId(newTake._id)
       setAllDrafts((prev) => [...prev, newTake])
     },
-    [allDrafts]
+    [allDrafts, totalLyrics, user]
   )
 
   const updateThumbnail = (_id: string, thumbnail: string) => {
@@ -67,19 +67,22 @@ const useSongDrafts = () => {
     setCurrentDraftId(draft._id)
   }
 
-  const deleteDraftHandler = useCallback((_id: string) => {
-    let filteredDrafts = allDrafts.filter((draft, index) => {
-      if (draft._id !== _id) {
-        if (filteredDrafts[index + 1]) {
-          setCurrentDraftId(filteredDrafts[index + 1]._id)
-        } else {
-          setCurrentDraftId(filteredDrafts[index - 1]._id)
-        }
-        return draft
-      }
-    })
-    setAllDrafts(filteredDrafts)
-  }, [])
+  const deleteDraftHandler = useCallback(
+    (_id: string) => {
+      let filteredDrafts = allDrafts.filter((draft, index) => {
+        if (draft._id !== _id) {
+          if (filteredDrafts[index + 1]) {
+            setCurrentDraftId(filteredDrafts[index + 1]._id)
+          } else {
+            setCurrentDraftId(filteredDrafts[index - 1]._id)
+          }
+          return draft
+        } else return draft
+      })
+      setAllDrafts(filteredDrafts)
+    },
+    [allDrafts]
+  )
 
   const currentDraft = allDrafts.find((draft) => draft._id === currentDraftId)
 

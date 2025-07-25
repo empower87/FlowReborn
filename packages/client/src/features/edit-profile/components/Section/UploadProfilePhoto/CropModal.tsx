@@ -110,7 +110,7 @@ export const CropModal = ({
               locked={true}
               onChange={(crop, percentCrop) => setCrop(crop)}
             >
-              <img src={imageSrc} onLoad={imageOnLoad} />
+              <img src={imageSrc} onLoad={imageOnLoad} alt="" />
             </ReactCrop>
           </div>
 

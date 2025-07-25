@@ -45,7 +45,7 @@ const ItemButton = ({ type, onClick, total, isLiked }: ItemButtonProps) => {
 }
 
 export const LikeButton = ({ comment }: { comment: IComment }) => {
-  const { hasUser, total, onClick, loading } = useLike(comment._id, comment.likes, "Comment")
+  const { hasUser, total, onClick } = useLike(comment._id, comment.likes, "Comment")
   return (
     <ItemButton
       type={"Like"}

@@ -10,7 +10,7 @@ import CommentItem from "./CommentItem/CommentItem"
 import { EditDeleteButtons, LikeButton, ReplyButton } from "./CommentItem/ItemButtons"
 import TextBox from "./TextBox"
 
-type CommentMenuType = "Comments" | "Replies"
+// type CommentMenuType = "Comments" | "Replies"
 
 type CommentMenuProps = {
   song: ISong

@@ -34,18 +34,27 @@ export default function useComments() {
     onError: (err) => onErrorHandler("DELETE", err.message),
   })
 
-  const addComment = useCallback((parent: string, text: string, songId: string) => {
-    if (!user) return
-    add.mutate({ parent: parent, text: text, user: user._id, songId: songId })
-  }, [])
+  const addComment = useCallback(
+    (parent: string, text: string, songId: string) => {
+      if (!user) return
+      add.mutate({ parent: parent, text: text, user: user._id, songId: songId })
+    },
+    [add, user]
+  )
 
-  const editComment = useCallback((_id: string, text: string, songId: string) => {
-    edit.mutate({ _id, text, songId })
-  }, [])
+  const editComment = useCallback(
+    (_id: string, text: string, songId: string) => {
+      edit.mutate({ _id, text, songId })
+    },
+    [edit]
+  )
 
-  const deleteComment = useCallback((_id: string, parent: string, songId: string) => {
-    del.mutate({ _id, parent, songId })
-  }, [])
+  const deleteComment = useCallback(
+    (_id: string, parent: string, songId: string) => {
+      del.mutate({ _id, parent, songId })
+    },
+    [del]
+  )
 
   const invalidateQueries = (parentId: string, songId: string) => {
     const commentId = parentId !== songId && { _id: `${parentId}` }

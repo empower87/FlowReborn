@@ -68,7 +68,7 @@ export const RoundButton = ({ type, btnOptions, iconOptions, onClick }: RoundBut
     const offset = btnOptions?.offset ? btnOptions.offset : 6
 
     sizeRef.current = calculateButtonSize(height, width, offset)
-  }, [wrapperRef.current, sizeRef.current])
+  }, [btnOptions?.offset])
 
   useEffect(() => {
     setButtonStyles((prev) => ({
@@ -78,7 +78,7 @@ export const RoundButton = ({ type, btnOptions, iconOptions, onClick }: RoundBut
       marginLeft: isLeft && btnOptions?.alignment ? `${btnOptions.alignment[1]}em` : undefined,
       marginRight: !isLeft && btnOptions?.alignment ? `${btnOptions.alignment[1]}em` : undefined,
     }))
-  }, [])
+  }, [btnOptions?.alignment, isLeft])
 
   const iconColor = bgColor === BtnColorsEnum.Secondary || bgColor === BtnColorsEnum.Primary ? "White" : "Primary"
 

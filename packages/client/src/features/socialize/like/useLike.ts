@@ -26,6 +26,33 @@ export default function useLike(parentId: string, parentLikes: string[], type: "
 
   const debouncedIsLiked = useDebounce(isLiked, 200)
 
+  const stopInvalidatedQueriesFromRerendering = () => {
+    let isMatch = true
+    const songs: ISong[] | undefined = utils.songs.allSongs.getData()
+    if (songs) {
+      songs.forEach((each) => {
+        if (each._id === parentId) {
+          if (each.likes.length !== parentLikes.length) isMatch = false
+        }
+      })
+    }
+    return isMatch
+  }
+
+  const addLikeHandler = (_isLiked: boolean) => {
+    if (!user || !hasClicked) return
+    if (_isLiked) {
+      like.mutate({ _id: parentId })
+    }
+  }
+
+  const deleteLikeHandler = (_isLiked: boolean) => {
+    if (!user || !hasClicked) return
+    if (!_isLiked) {
+      unlike.mutate({ _id: parentId })
+    }
+  }
+
   useEffect(() => {
     if (like.isLoading || unlike.isLoading) {
       setIsLoading(true)
@@ -48,10 +75,10 @@ export default function useLike(parentId: string, parentLikes: string[], type: "
     } else {
       setIsLiked(false)
     }
-  }, [parentLikes, user])
+  }, [parentLikes, user, stopInvalidatedQueriesFromRerendering])
 
   useEffect(() => {
-    if (like.isLoading || unlike.isLoading || !hasClicked) return
+    if (like.isPending || unlike.isPending || !hasClicked) return
 
     if (!debouncedIsLiked) {
       deleteLikeHandler(debouncedIsLiked)
@@ -60,38 +87,11 @@ export default function useLike(parentId: string, parentLikes: string[], type: "
     }
 
     setHasClicked(false)
-  }, [debouncedIsLiked, like.isLoading, unlike.isLoading])
-
-  const addLikeHandler = (_isLiked: boolean) => {
-    if (!user || !hasClicked) return
-    if (_isLiked) {
-      like.mutate({ _id: parentId })
-    }
-  }
-
-  const deleteLikeHandler = (_isLiked: boolean) => {
-    if (!user || !hasClicked) return
-    if (!_isLiked) {
-      unlike.mutate({ _id: parentId })
-    }
-  }
+  }, [debouncedIsLiked, like.isPending, unlike.isPending, addLikeHandler, deleteLikeHandler, hasClicked])
 
   const invalidateQueries = () => {
     utils.users.getMe.invalidate()
     utils.songs.allSongs.invalidate()
-  }
-
-  const stopInvalidatedQueriesFromRerendering = () => {
-    let isMatch = true
-    const songs: ISong[] | undefined = utils.songs.allSongs.getData()
-    if (songs) {
-      songs.forEach((each) => {
-        if (each._id === parentId) {
-          if (each.likes.length !== parentLikes.length) isMatch = false
-        }
-      })
-    }
-    return isMatch
   }
 
   const handleOnClick = () => {

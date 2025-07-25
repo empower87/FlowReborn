@@ -26,6 +26,13 @@ export function useSongLyrics({ _songs }: Pick<UseEditLyricsProps, "_songs">) {
   const [songs, setSongs] = useState<(ISong | ISongTake)[] | ISong[]>([])
   const [initialLyricsHistory, setInitialLyricsHistory] = useState<LyricsState[]>([])
 
+  const setLyricsStateHandler = useCallback((_lyrics: string[][]) => {
+    let lyrics = _lyrics.map((each, index) => {
+      return { id: `${index + 1}${each}`, array: each }
+    })
+    return lyrics
+  }, [])
+
   useEffect(() => {
     if (!usersSongs.data) return
 
@@ -43,32 +50,22 @@ export function useSongLyrics({ _songs }: Pick<UseEditLyricsProps, "_songs">) {
       })
       setInitialLyricsHistory(takeLyrics)
     }
-  }, [songs])
-
-  const setLyricsStateHandler = useCallback((_lyrics: string[][]) => {
-    let lyrics = _lyrics.map((each, index) => {
-      return { id: `${index + 1}${each}`, array: each }
-    })
-    return lyrics
-  }, [])
+  }, [songs, setLyricsStateHandler])
 
   return { songs, initialLyricsHistory }
 }
 
 export default function useEditLyrics({ _initialLyrics, _currentSong }: UseEditLyricsProps) {
   const [currentSong, setCurrentSong] = useState<ISong | ISongTake>({ ..._currentSong })
-  const [
-    lyricsHistory,
-    setLyricsHistory,
-    { history, pointer, back: onUndo, forward: onRedo, reset, canUndo, canRedo },
-  ] = useHistory<LyricsState[]>([..._initialLyrics])
+  const [lyricsHistory, setLyricsHistory, { history, back: onUndo, forward: onRedo, reset, canUndo, canRedo }] =
+    useHistory<LyricsState[]>([..._initialLyrics])
   const [currentLyrics, setCurrentLyrics] = useState<LyricsState>({ songId: "1", lyrics: [{ id: "1", array: [""] }] })
 
   useEffect(() => {
     if (_initialLyrics.length) {
       setLyricsHistory([..._initialLyrics])
     }
-  }, [_initialLyrics])
+  }, [_initialLyrics, setLyricsHistory])
 
   useEffect(() => {
     if (_currentSong) {
@@ -117,7 +114,7 @@ export default function useEditLyrics({ _initialLyrics, _currentSong }: UseEditL
         })
       )
     },
-    [lyricsHistory]
+    [lyricsHistory, setLyricsHistory]
   )
 
   const onAddLyric = useCallback(
@@ -133,7 +130,7 @@ export default function useEditLyrics({ _initialLyrics, _currentSong }: UseEditL
         })
       )
     },
-    [lyricsHistory]
+    [lyricsHistory, setLyricsHistory]
   )
 
   const onReset = () => {
@@ -148,7 +145,7 @@ export default function useEditLyrics({ _initialLyrics, _currentSong }: UseEditL
   const onSaveLyric = (_songId: string, _lyric: LyricLine) => {
     setLyricsHistory((prev) =>
       prev.map((each) => {
-        if (each.songId == _songId) {
+        if (each.songId === _songId) {
           return {
             ...each,
             lyrics: each.lyrics.map((each) => {

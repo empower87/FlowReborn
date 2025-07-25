@@ -21,14 +21,14 @@ export default function useCommentMenu(song: ISong, onClose: Dispatch<SetStateAc
   useEffect(() => {
     setComments(sortByNewest)
     setSortComments("NEWEST")
-  }, [_comments])
+  }, [_comments, sortByNewest])
 
   useEffect(() => {
     if (mutationStatus.isSuccessful) {
       dispatch({ type: "HIDE_INPUT" })
       setMutationStatus({ type: "RESET", payload: { target: "NONE" } })
     }
-  }, [mutationStatus])
+  }, [mutationStatus, setMutationStatus])
 
   useEffect(() => {
     console.log(mutationStatus, "lets see how much this changes")
@@ -71,45 +71,48 @@ export default function useCommentMenu(song: ISong, onClose: Dispatch<SetStateAc
     }
   }, [])
 
-  const handleToggleInput = useCallback((type: InputTypes, data?: IComment | undefined) => {
-    switch (type) {
-      case "OPEN_EDIT_INPUT":
-        dispatch({ type: "OPEN_EDIT_INPUT", payload: { editComment: data } })
-        console.log("TOGGLE EDIT INPUT", data?.text, state.selectedComment?.text)
-        break
-      case "OPEN_REPLY_INPUT":
-        dispatch({ type: "OPEN_REPLY_INPUT", payload: { reply: data } })
-        console.log("TOGGLE REPLY INPUT", data?.text, state.selectedComment?.text)
-        break
-      case "OPEN_REPLY_MENU":
-        dispatch({ type: "OPEN_REPLY_MENU", payload: { reply: data } })
-        console.log("TOGGLE OPEN_REPLY INPUT", data?.text, state.selectedComment?.text)
-        break
-      case "CLOSE_REPLY_MENU":
-        dispatch({ type: "CLOSE_REPLY_MENU" })
-        console.log("TOGGLE CLOSE REPLY INPUT", data?.text, state.selectedComment?.text)
-        break
-      case "OPEN_COMMENT_INPUT":
-        dispatch({ type: "OPEN_COMMENT_INPUT" })
-        console.log("TOGGLE COMMENT INPUT", data?.text, state.selectedComment?.text)
-        break
-      case "CLOSE_MENUS":
-        dispatch({ type: "CLOSE_MENUS" })
-        onClose(false)
-        break
-      case "HIDE_INPUT":
-        dispatch({ type: "HIDE_INPUT" })
-        resetError()
-        break
-      case "DELETE":
-        if (!data) return
-        const parentId = data.parent
-        deleteComment(data._id, parentId, songId)
-        break
-      default:
-        return
-    }
-  }, [])
+  const handleToggleInput = useCallback(
+    (type: InputTypes, data?: IComment | undefined) => {
+      switch (type) {
+        case "OPEN_EDIT_INPUT":
+          dispatch({ type: "OPEN_EDIT_INPUT", payload: { editComment: data } })
+          console.log("TOGGLE EDIT INPUT", data?.text, state.selectedComment?.text)
+          break
+        case "OPEN_REPLY_INPUT":
+          dispatch({ type: "OPEN_REPLY_INPUT", payload: { reply: data } })
+          console.log("TOGGLE REPLY INPUT", data?.text, state.selectedComment?.text)
+          break
+        case "OPEN_REPLY_MENU":
+          dispatch({ type: "OPEN_REPLY_MENU", payload: { reply: data } })
+          console.log("TOGGLE OPEN_REPLY INPUT", data?.text, state.selectedComment?.text)
+          break
+        case "CLOSE_REPLY_MENU":
+          dispatch({ type: "CLOSE_REPLY_MENU" })
+          console.log("TOGGLE CLOSE REPLY INPUT", data?.text, state.selectedComment?.text)
+          break
+        case "OPEN_COMMENT_INPUT":
+          dispatch({ type: "OPEN_COMMENT_INPUT" })
+          console.log("TOGGLE COMMENT INPUT", data?.text, state.selectedComment?.text)
+          break
+        case "CLOSE_MENUS":
+          dispatch({ type: "CLOSE_MENUS" })
+          onClose(false)
+          break
+        case "HIDE_INPUT":
+          dispatch({ type: "HIDE_INPUT" })
+          resetError()
+          break
+        case "DELETE":
+          if (!data) return
+          const parentId = data.parent
+          deleteComment(data._id, parentId, songId)
+          break
+        default:
+          return
+      }
+    },
+    [state?.selectedComment?.text, onClose, resetError, deleteComment, songId]
+  )
 
   const onSubmit = (text: string, target: "EDIT" | "CREATE") => {
     if (!text)

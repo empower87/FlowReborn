@@ -8,7 +8,7 @@ import { useAuth } from "src/context/AuthContext"
 import { convertBase64ToBlob } from "src/utils/convertBase64ToBlob"
 import { trpc } from "src/utils/trpc"
 // import { ISong } from "../../../../../server/src/models"
-import { ISongPopulatedUser as ISong, IUser } from "src/types/ServerModelTypes"
+import { ISongPopulatedUser as ISong } from "src/types/ServerModelTypes"
 
 interface IFormInputs {
   picture: string
@@ -53,14 +53,14 @@ export default function useEditForm() {
       // await queryClient.cancelQueries(["users.getMe"])
       await utils.users.getMe.cancel()
       const prevUser = utils.users.getMe.getData()
-      const getType = prevUser ? typeof prevUser : undefined
-      const newData = utils.users.getMe.setData(undefined, (update: IUser | undefined) => {
-        if (!update) return
-        return {
-          ...update,
-          ...data,
-        }
-      })
+      // const getType = prevUser ? typeof prevUser : undefined
+      // const newData = utils.users.getMe.setData(undefined, (update: IUser | undefined) => {
+      //   if (!update) return
+      //   return {
+      //     ...update,
+      //     ...data,
+      //   }
+      // })
       // const prevUser = queryClient.getQueryData(["users.getMe"])
       // const newData = queryClient.setQueryData(["users.getMe"], (old: any) => ({
       //   ...old,
@@ -83,58 +83,61 @@ export default function useEditForm() {
     },
   })
 
-  const onSubmitHandler = useCallback(async (data: IFormInputs) => {
-    const { dirtyFields } = methods.formState
-    if (dirtyFields && Object.keys(dirtyFields).length === 0) return
+  const onSubmitHandler = useCallback(
+    async (data: IFormInputs) => {
+      const { dirtyFields } = methods.formState
+      if (dirtyFields && Object.keys(dirtyFields).length === 0) return
 
-    let socialFields: any = {}
-    let nonSocialFields: any = {}
-    let updatedUser: any = {}
+      let socialFields: any = {}
+      let nonSocialFields: any = {}
+      let updatedUser: any = {}
 
-    for (const [key, value] of Object.entries(dirtyFields)) {
-      if (["instagram", "twitter", "soundCloud"].includes(key)) {
-        socialFields[key] = data[key as keyof IFormInputs]
-      } else if (value && data[key as keyof IFormInputs] !== "") {
-        nonSocialFields[key] = data[key as keyof IFormInputs]
-      }
-    }
-
-    if (socialFields && Object.keys(socialFields).length === 0) {
-      updatedUser = { ...nonSocialFields }
-    } else {
-      updatedUser = { ...nonSocialFields, socials: socialFields }
-    }
-    console.log(updatedUser, "UPDATE USER input")
-
-    if (nonSocialFields.picture) {
-      const pic = nonSocialFields.picture
-      const randomID = Math.round(Math.random() * 1000000)
-      const blob = convertBase64ToBlob(pic)
-
-      const uploadData = {
-        fileName: userId + `-${randomID}-profile-picture`,
-        fileType: "image/jpeg",
-        fileBlob: blob,
+      for (const [key, value] of Object.entries(dirtyFields)) {
+        if (["instagram", "twitter", "soundCloud"].includes(key)) {
+          socialFields[key] = data[key as keyof IFormInputs]
+        } else if (value && data[key as keyof IFormInputs] !== "") {
+          nonSocialFields[key] = data[key as keyof IFormInputs]
+        }
       }
 
-      upload.mutate([uploadData], {
-        onSuccess: async (data) => {
-          console.log(data, "signed-s3 data BEFORE")
+      if (socialFields && Object.keys(socialFields).length === 0) {
+        updatedUser = { ...nonSocialFields }
+      } else {
+        updatedUser = { ...nonSocialFields, socials: socialFields }
+      }
+      console.log(updatedUser, "UPDATE USER input")
 
-          await axios
-            .put(data[0].signedUrl, blob, data[0].options)
-            .then((res) => console.log(res))
-            .catch((err) => console.log(err))
+      if (nonSocialFields.picture) {
+        const pic = nonSocialFields.picture
+        const randomID = Math.round(Math.random() * 1000000)
+        const blob = convertBase64ToBlob(pic)
 
-          console.log(data, pic, blob, "signed-s3 data AFTER")
+        const uploadData = {
+          fileName: userId + `-${randomID}-profile-picture`,
+          fileType: "image/jpeg",
+          fileBlob: blob,
+        }
 
-          updateUser.mutate({ ...updatedUser, picture: data[0].url })
-        },
-      })
-    } else {
-      updateUser.mutate({ ...updatedUser })
-    }
-  }, [])
+        upload.mutate([uploadData], {
+          onSuccess: async (data) => {
+            console.log(data, "signed-s3 data BEFORE")
+
+            await axios
+              .put(data[0].signedUrl, blob, data[0].options)
+              .then((res) => console.log(res))
+              .catch((err) => console.log(err))
+
+            console.log(data, pic, blob, "signed-s3 data AFTER")
+
+            updateUser.mutate({ ...updatedUser, picture: data[0].url })
+          },
+        })
+      } else {
+        updateUser.mutate({ ...updatedUser })
+      }
+    },
+    [methods.formState, updateUser, upload, userId]
+  )
   // const onSubmitHandler = useCallback(async (data: IFormInputs) => {
   //   const { dirtyFields } = methods.formState
   //   if (dirtyFields && Object.keys(dirtyFields).length === 0) return

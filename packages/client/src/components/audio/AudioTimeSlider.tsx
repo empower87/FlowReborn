@@ -21,46 +21,6 @@ function UseAudioPlayer({ isPlaying, setIsPlaying, currentSong, bgColor }: Props
   const [currentTime, setCurrentTime] = useState<string>("0:00")
   const [endTime, setEndTime] = useState<string>("0:00")
 
-  useEffect(() => {
-    if (isPlaying) {
-      audioRef.current.play()
-      startTimer()
-    } else {
-      if (intervalRef.current && secondsRef.current) {
-        clearInterval(intervalRef.current)
-        clearInterval(secondsRef.current)
-      }
-      audioRef.current.pause()
-    }
-  }, [isPlaying])
-
-  useEffect(() => {
-    if (currentProgressRef.current) {
-      const getCurrentTime = formatTime(currentProgressRef.current)
-      setCurrentTime(getCurrentTime)
-    }
-  }, [currentProgressRef.current])
-
-  useEffect(() => {
-    let filteredDuration = Math.round(currentSong?.duration / 1000)
-    setSongDuration(filteredDuration)
-
-    const getEndTime = formatTime(filteredDuration)
-    setEndTime(getEndTime)
-  }, [currentSong])
-
-  useEffect(() => {
-    audioRef.current.pause()
-    audioRef.current.src = currentSong?.src
-    setTrackProgress(audioRef.current.currentTime)
-    currentProgressRef.current = 0
-  }, [currentSong])
-
-  const currentPercentage = songDuration ? `${(trackProgress / songDuration) * 100}%` : "0%"
-  const trackStyling = `
-    -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage}, #63DEBC), color-stop(${currentPercentage}, ${bgColor}))
-  `
-
   const startTimer = () => {
     if (audioRef.current !== null) {
       if (intervalRef.current && secondsRef.current) {
@@ -85,6 +45,46 @@ function UseAudioPlayer({ isPlaying, setIsPlaying, currentSong, bgColor }: Props
       }, 1000)
     }
   }
+
+  useEffect(() => {
+    if (isPlaying) {
+      audioRef.current.play()
+      startTimer()
+    } else {
+      if (intervalRef.current && secondsRef.current) {
+        clearInterval(intervalRef.current)
+        clearInterval(secondsRef.current)
+      }
+      audioRef.current.pause()
+    }
+  }, [isPlaying, startTimer])
+
+  useEffect(() => {
+    if (currentProgressRef.current) {
+      const getCurrentTime = formatTime(currentProgressRef.current)
+      setCurrentTime(getCurrentTime)
+    }
+  }, [])
+
+  useEffect(() => {
+    let filteredDuration = Math.round(currentSong?.duration / 1000)
+    setSongDuration(filteredDuration)
+
+    const getEndTime = formatTime(filteredDuration)
+    setEndTime(getEndTime)
+  }, [currentSong])
+
+  useEffect(() => {
+    audioRef.current.pause()
+    audioRef.current.src = currentSong?.src
+    setTrackProgress(audioRef.current.currentTime)
+    currentProgressRef.current = 0
+  }, [currentSong])
+
+  const currentPercentage = songDuration ? `${(trackProgress / songDuration) * 100}%` : "0%"
+  const trackStyling = `
+    -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage}, #63DEBC), color-stop(${currentPercentage}, ${bgColor}))
+  `
 
   const onScrub = (value: string) => {
     if (intervalRef.current && secondsRef.current) {

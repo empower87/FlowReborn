@@ -28,7 +28,7 @@ export default function EditLyricsList({
       setLyricsHistory(currentLyrics.songId, lyricsState)
       setOnEnd(false)
     }
-  }, [onEnd])
+  }, [onEnd, lyricsState, currentLyrics.songId, setLyricsHistory])
 
   return (
     <div className="edit-lyrics__lyrics--container">

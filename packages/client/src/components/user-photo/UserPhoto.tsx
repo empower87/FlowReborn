@@ -7,7 +7,7 @@ export const UserPhoto = ({ photoUrl, username }: UserPhotoProps) => {
   if (!photoUrl) return <DefaultPhotoPlaceholder username={username} />
   return (
     <div className="DefaultPhotoPlaceholder">
-      <img src={photoUrl} alt={`profile photo for ${username}`} />
+      <img src={photoUrl} alt={`profile ${username}`} />
     </div>
   )
 }

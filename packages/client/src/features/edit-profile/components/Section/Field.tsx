@@ -4,7 +4,7 @@ import useMobileKeyboardHandler from "src/hooks/useMobileKeyboardHandler"
 
 export default function Field({ name, label, placeholder }: { name: string; label: string; placeholder: string }) {
   const { getFieldState, formState, resetField, register } = useFormContext()
-  const { error, isDirty } = getFieldState(name, formState)
+  const { isDirty } = getFieldState(name, formState)
   const { handleOnFocus } = useMobileKeyboardHandler()
 
   return (

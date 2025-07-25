@@ -13,14 +13,17 @@ const useSearch = () => {
     setSearchResults({ users: [], songs: [] })
   }, [])
 
-  const getSearchResults = useCallback((query: string) => {
-    search.mutate(query, {
-      onSuccess: (data) => {
-        console.log(data, "SEARCH DATA INC")
-        setSearchResults({ ...data })
-      },
-    })
-  }, [])
+  const getSearchResults = useCallback(
+    (query: string) => {
+      search.mutate(query, {
+        onSuccess: (data) => {
+          console.log(data, "SEARCH DATA INC")
+          setSearchResults({ ...data })
+        },
+      })
+    },
+    [search]
+  )
 
   return { searchResults, getSearchResults, clearSearchResults }
 }

@@ -59,7 +59,7 @@ export const RecordButton = ({ isRecording, startRecording, stopRecording }: Rec
 
 export const ConfirmButtonWithModal = () => {
   const renderRef = useRef<number>(0)
-  const { allDrafts, currentDraft } = useSongDraftsContext()
+  const { allDrafts } = useSongDraftsContext()
   const navigate = useNavigate()
 
   const navigateToConfirmRecording = () => {
@@ -88,7 +88,7 @@ export const ActionButtons = ({
   recordButton: JSX.Element
   postButton: JSX.Element | null
 }) => {
-  const renderRef = useRef<number>(0)
+  // const renderRef = useRef<number>(0)
   // console.log(renderRef.current++, "<ActionButtons /> -- Render test -- Layout 2")
   return (
     <div className="suggestions__action-btns">

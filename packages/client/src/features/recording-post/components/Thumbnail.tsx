@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
+import { Dispatch, SetStateAction, useRef, useState } from "react"
 import ReactDOM from "react-dom"
 import { BtnColorsEnum, RoundButton } from "src/components/buttons/RoundButton/RoundButton"
 import { useSongDraftsContext } from "src/features/recording-booth/hooks/useSongDrafts"
@@ -16,7 +16,7 @@ const ThumbnailModal = ({
   onClose: Dispatch<SetStateAction<boolean>>
 }) => {
   const root = document.getElementById("root")!
-  const { allDrafts, currentDraft, deleteDraftHandler, updateThumbnail } = useSongDraftsContext()
+  const { allDrafts, currentDraft, updateThumbnail } = useSongDraftsContext()
 
   const seconds = duration ? duration / 1000 : 0
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -57,10 +57,6 @@ const ThumbnailModal = ({
     //   })
     // })
   }
-
-  useEffect(() => {
-    console.log(allDrafts, currentDraft, thumbnail, value, "lets see if this worked")
-  }, [allDrafts])
 
   if (!isOpen) return null
   return ReactDOM.createPortal(
@@ -118,7 +114,7 @@ const ThumbnailModal = ({
 }
 
 export const ThumbnailSelector = () => {
-  const { allDrafts, currentDraft, deleteDraftHandler } = useSongDraftsContext()
+  const { currentDraft } = useSongDraftsContext()
   const [showModal, setShowModal] = useState<boolean>(false)
 
   return (
@@ -137,27 +133,10 @@ export const ThumbnailSelector = () => {
         </div>
         <div className="post-recording__choose-thumbnail-btns">
           <div className="post-recording__choose-thumbnail-btn">
-            <img className="post-recording__choose-thumbnail-img" src={currentDraft?.thumbnail} />
+            <img className="post-recording__choose-thumbnail-img" src={currentDraft?.thumbnail} alt="" />
           </div>
         </div>
       </div>
     </div>
   )
 }
-
-const AVG_SET_TIME = "15-25"
-const REST_BETWEEN_SET = "30-180"
-const FULL_WORKOUT_MAX_DURATION = "3600"
-
-const ACCEPTABLE_UPPER_MUSCLES = ["biceps", "triceps", "back", "chest", "delts (side)", "delts (rear)", "traps"]
-const ACCEPTABLE_LOWER_MUSCLES = ["quads", "hamstrings", "glutes"]
-
-const ACCEPTABLE_PUSH_MUSCLES = ["triceps", "chest", "delts (side)"]
-const ACCEPTABLE_PULL_MUSCLES = ["biceps", "back", "delts (rear)", "traps"]
-const ACCEPTABLE_LEG_MUSCLES = ["quads", "hamstrings", "glutes"]
-
-const returnWorkout = {
-  duration: 60,
-}
-
-const workout = () => {}

@@ -27,7 +27,7 @@ export const PlayButton = ({ isPlaying, setIsPlaying, options, audio }: PlayButt
       pauseRef.pause()
       setIsPlaying(false)
     }
-  }, [audio])
+  }, [audio, setIsPlaying])
 
   useEffect(() => {
     if (!audio) return

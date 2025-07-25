@@ -21,7 +21,7 @@ const SaveAndClearButtons = ({ onReset }: { onReset: () => void }) => {
     if (!wrapperRef.current) return
     const height = wrapperRef.current.offsetHeight
     wrapperRef.current.style.width = `${height}px`
-  }, [wrapperRef.current])
+  }, [])
 
   return (
     <div className="edit-profile__btns">

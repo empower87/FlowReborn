@@ -78,17 +78,14 @@ const TextArea = forwardRef(({ inputType, comment }: ITextAreaProps, ref: any) =
       const fontPixels = 16 * 0.95 + 1
       ref.current.style.height = `${height - fontPixels}px`
     }
-  }, [inputType, comment, text])
+  }, [inputType, comment, text, ref])
 
-  const expandTextarea = useCallback(
-    (_text: EventTarget & HTMLTextAreaElement) => {
-      setText(_text.value)
-      _text.style.height = "inherit"
-      const fontPixels = 16 * 0.95 + 1
-      _text.style.height = `${_text.scrollHeight - fontPixels}px`
-    },
-    [inputType, comment, text]
-  )
+  const expandTextarea = useCallback((_text: EventTarget & HTMLTextAreaElement) => {
+    setText(_text.value)
+    _text.style.height = "inherit"
+    const fontPixels = 16 * 0.95 + 1
+    _text.style.height = `${_text.scrollHeight - fontPixels}px`
+  }, [])
 
   return (
     <div className="comment-input__input--container">
@@ -137,7 +134,7 @@ export default function TextBox({ inputType, comment, onClose, onSubmit, status 
     } else {
       setShowError(false)
     }
-  }, [isError, error])
+  }, [isError, error, showError])
 
   if (inputType === "HIDE_INPUT") return null
   return ReactDOM.createPortal(

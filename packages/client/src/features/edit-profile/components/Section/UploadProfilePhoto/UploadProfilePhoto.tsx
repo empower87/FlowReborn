@@ -9,7 +9,6 @@ import { CropModal } from "./CropModal"
 export default function UploadProfilePhoto() {
   const { user } = useAuth()
   const { register } = useFormContext()
-  const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [imageSrc, setImageSrc] = useState<string | undefined>()
   const [isCropperOpen, setIsCropperOpen] = useState<boolean>(false)
 
@@ -17,7 +16,6 @@ export default function UploadProfilePhoto() {
     if (e.target.files && e.target.files.length > 0) {
       try {
         const file = e.target.files[0]
-        setSelectedFile(file)
 
         Resizer.imageFileResizer(
           file,

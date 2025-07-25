@@ -68,7 +68,6 @@ const useProvideAuth = () => {
   })
 
   const {
-    data,
     refetch: refetchMe,
     isLoading: meIsLoading,
     isFetching,
@@ -136,7 +135,7 @@ const useProvideAuth = () => {
       }
       getMeHandler()
     }
-  }, [])
+  }, [refetchMe])
 
   return {
     user,
@@ -159,5 +158,4 @@ function useAuth() {
   return useContext(AuthUserContext)
 }
 
-export { useAuth, AuthProvider }
-
+export { AuthProvider, useAuth }

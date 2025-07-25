@@ -33,15 +33,15 @@ type Action = {
   }
 }
 
-const INITIAL_STATE: State = {
-  Rhyming: [],
-  Triggers: [],
-  Synonyms: [],
-  Related: [],
-  selected: "RHY",
-  selectedName: "Rhyming",
-  selectedRhymes: [],
-}
+// const INITIAL_STATE: State = {
+//   Rhyming: [],
+//   Triggers: [],
+//   Synonyms: [],
+//   Related: [],
+//   selected: "RHY",
+//   selectedName: "Rhyming",
+//   selectedRhymes: [],
+// }
 
 export const datamuseReducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -79,7 +79,6 @@ export default function useDatamuse(category: PosType, rhymeCount: number) {
   const [rhymes, setRhymes] = useState<string[]>([])
 
   const { lastWord, partOfSpeech, listening } = useTranscriptPos(category)
-  const [queryWord, setQueryWord] = useState<string>("")
   // const [state, dispatch] = useReducer(datamuseReducer, INITIAL_STATE)
 
   // useEffect(() => {
@@ -142,7 +141,7 @@ export default function useDatamuse(category: PosType, rhymeCount: number) {
       setRhymes(rhymes)
     }
     handleAsync()
-  }, [selectedPos, lastWord, listening])
+  }, [selectedPos, lastWord, listening, partOfSpeech, rhymeCount])
 
   return {
     // state: { ...state },
