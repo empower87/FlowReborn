@@ -26,6 +26,32 @@ export default function useFollow(userId: string, userFollowers: string[]) {
 
   const debouncedIsFollowed = useDebounce(isFollowed, 200)
 
+  const addFollowHandler = (_isFollowed: boolean) => {
+    if (!user || !hasClicked) return
+    if (_isFollowed) {
+      follow.mutate({ follower: user._id, following: userId })
+    }
+  }
+
+  const deleteFollowHandler = (_isFollowed: boolean) => {
+    if (!user || !hasClicked) return
+    if (!_isFollowed) {
+      unfollow.mutate({ follower: user._id, following: userId })
+    }
+  }
+  const stopInvalidatedQueriesFromRerendering = () => {
+    let isMatch = true
+    const songs: ISong[] | undefined = utils.songs.allSongs.getData()
+    if (songs) {
+      // songs.forEach((each) => {
+      //   if (each._id === song._id) {
+      //     if (each.user.followers.length !== song.user.followers.length) isMatch = false
+      //   }
+      // })
+    }
+    return isMatch
+  }
+
   useEffect(() => {
     if (follow.isLoading || unfollow.isLoading) {
       setIsLoading(true)
@@ -62,38 +88,11 @@ export default function useFollow(userId: string, userFollowers: string[]) {
     setHasClicked(false)
   }, [debouncedIsFollowed, isLoading, addFollowHandler, deleteFollowHandler, hasClicked])
 
-  const addFollowHandler = (_isFollowed: boolean) => {
-    if (!user || !hasClicked) return
-    if (_isFollowed) {
-      follow.mutate({ follower: user._id, following: userId })
-    }
-  }
-
-  const deleteFollowHandler = (_isFollowed: boolean) => {
-    if (!user || !hasClicked) return
-    if (!_isFollowed) {
-      unfollow.mutate({ follower: user._id, following: userId })
-    }
-  }
-
   const invalidateQueries = () => {
     // queryClient.invalidateQueries(["users.getMe"])
     // queryClient.invalidateQueries(["songs.allSongs"])
     utils.users.getMe.invalidate()
     utils.songs.allSongs.invalidate()
-  }
-
-  const stopInvalidatedQueriesFromRerendering = () => {
-    let isMatch = true
-    const songs: ISong[] | undefined = utils.songs.allSongs.getData()
-    if (songs) {
-      // songs.forEach((each) => {
-      //   if (each._id === song._id) {
-      //     if (each.user.followers.length !== song.user.followers.length) isMatch = false
-      //   }
-      // })
-    }
-    return isMatch
   }
 
   const handleOnClick = () => {
