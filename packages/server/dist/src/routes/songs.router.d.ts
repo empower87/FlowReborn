@@ -1,5 +1,6 @@
 /// <reference types="qs" />
 /// <reference types="express" />
+/// <reference types="cookie-parser" />
 /// <reference types="mongoose/types/aggregate.js" />
 /// <reference types="mongoose/types/callback.js" />
 /// <reference types="mongoose/types/collection.js" />
@@ -71,34 +72,30 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
             };
         };
         _input_in: {
+            user: string;
+            title: string;
+            duration: number;
+            src: string;
             caption?: string | undefined;
             lyrics?: string[][] | undefined;
             thumbnail?: string | undefined;
             isPosted?: boolean | undefined;
             isVideo?: boolean | undefined;
-            user: string;
-            title: string;
-            duration: number;
-            src: string;
         };
         _input_out: {
-            caption?: string | undefined;
-            thumbnail?: string | undefined;
-            isPosted?: boolean | undefined;
-            isVideo?: boolean | undefined;
             user: string;
             title: string;
             lyrics: string[][];
             duration: number;
             src: string;
+            caption?: string | undefined;
+            thumbnail?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
         };
         _output_in: typeof import("@trpc/server").unsetMarker;
         _output_out: typeof import("@trpc/server").unsetMarker;
     }, {
-        caption?: string | undefined;
-        thumbnail?: string | undefined;
-        isPosted?: boolean | undefined;
-        isVideo?: boolean | undefined;
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         updatedOn: Date;
@@ -109,6 +106,10 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
         duration: number;
         src: string;
         comments: import("mongoose").Types.ObjectId[];
+        caption?: string | undefined;
+        thumbnail?: string | undefined;
+        isPosted?: boolean | undefined;
+        isVideo?: boolean | undefined;
     }>;
     deleteSong: import("@trpc/server").BuildProcedure<"mutation", {
         _config: import("@trpc/server").RootConfig<{
@@ -148,10 +149,6 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
         _output_in: typeof import("@trpc/server").unsetMarker;
         _output_out: typeof import("@trpc/server").unsetMarker;
     }, (import("mongoose").Document<unknown, any, {
-        caption?: string | undefined;
-        thumbnail?: string | undefined;
-        isPosted?: boolean | undefined;
-        isVideo?: boolean | undefined;
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         updatedOn: Date;
@@ -162,11 +159,11 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
         duration: number;
         src: string;
         comments: import("mongoose").Types.ObjectId[];
-    }> & {
         caption?: string | undefined;
         thumbnail?: string | undefined;
         isPosted?: boolean | undefined;
         isVideo?: boolean | undefined;
+    }> & Omit<{
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         updatedOn: Date;
@@ -177,9 +174,13 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
         duration: number;
         src: string;
         comments: import("mongoose").Types.ObjectId[];
+        caption?: string | undefined;
+        thumbnail?: string | undefined;
+        isPosted?: boolean | undefined;
+        isVideo?: boolean | undefined;
     } & Required<{
         _id: import("mongoose").Types.ObjectId;
-    }>) | null>;
+    }>, never>) | null>;
     updateSong: import("@trpc/server").BuildProcedure<"mutation", {
         _config: import("@trpc/server").RootConfig<{
             ctx: {
@@ -210,26 +211,27 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
             };
         };
         _input_in: {
-            caption?: string | undefined;
             _id: string;
             title: string;
+            caption?: string | undefined;
         };
         _input_out: {
-            caption?: string | undefined;
             _id: string;
             title: string;
+            caption?: string | undefined;
         };
         _output_in: typeof import("@trpc/server").unsetMarker;
         _output_out: typeof import("@trpc/server").unsetMarker;
     }, {
-        caption?: string | undefined;
-        thumbnail?: string | undefined;
-        isPosted?: boolean | undefined;
-        isVideo?: boolean | undefined;
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         updatedOn: Date;
         user: {
+            _id: import("mongoose").Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -249,11 +251,6 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: import("mongoose").Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
         likes: string[];
         title: string;
@@ -261,13 +258,16 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
         duration: number;
         src: string;
         comments: {
-            updatedOn?: Date | undefined;
-            editedOn?: Date | undefined;
             _id: import("mongoose").Types.ObjectId;
             createdOn: Date;
             text: string;
             parent: string;
             user: {
+                _id: import("mongoose").Types.ObjectId;
+                email: string;
+                followers: string[];
+                following: string[];
+                username: string;
                 google?: {
                     googleId: string;
                     userPhoto: string;
@@ -287,15 +287,16 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
                 } | undefined;
                 createdOn?: string | undefined;
                 updatedOn?: string | undefined;
-                _id: import("mongoose").Types.ObjectId;
-                email: string;
-                followers: string[];
-                following: string[];
-                username: string;
             };
             replies: import("mongoose").Types.ObjectId[];
             likes: string[];
+            updatedOn?: Date | undefined;
+            editedOn?: Date | undefined;
         }[];
+        caption?: string | undefined;
+        thumbnail?: string | undefined;
+        isPosted?: boolean | undefined;
+        isVideo?: boolean | undefined;
     }>;
     usersLikedSongs: import("@trpc/server").BuildProcedure<"query", {
         _config: import("@trpc/server").RootConfig<{
@@ -335,14 +336,15 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
         _output_in: typeof import("@trpc/server").unsetMarker;
         _output_out: typeof import("@trpc/server").unsetMarker;
     }, {
-        caption?: string | undefined;
-        thumbnail?: string | undefined;
-        isPosted?: boolean | undefined;
-        isVideo?: boolean | undefined;
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         updatedOn: Date;
         user: {
+            _id: import("mongoose").Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -362,11 +364,6 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: import("mongoose").Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
         likes: string[];
         title: string;
@@ -374,6 +371,10 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
         duration: number;
         src: string;
         comments: import("mongoose").Types.ObjectId[];
+        caption?: string | undefined;
+        thumbnail?: string | undefined;
+        isPosted?: boolean | undefined;
+        isVideo?: boolean | undefined;
     }[]>;
     usersFollowersSongs: import("@trpc/server").BuildProcedure<"query", {
         _config: import("@trpc/server").RootConfig<{
@@ -413,14 +414,15 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
         _output_in: typeof import("@trpc/server").unsetMarker;
         _output_out: typeof import("@trpc/server").unsetMarker;
     }, {
-        caption?: string | undefined;
-        thumbnail?: string | undefined;
-        isPosted?: boolean | undefined;
-        isVideo?: boolean | undefined;
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         updatedOn: Date;
         user: {
+            _id: import("mongoose").Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -440,11 +442,6 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: import("mongoose").Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
         likes: string[];
         title: string;
@@ -452,6 +449,10 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
         duration: number;
         src: string;
         comments: import("mongoose").Types.ObjectId[];
+        caption?: string | undefined;
+        thumbnail?: string | undefined;
+        isPosted?: boolean | undefined;
+        isVideo?: boolean | undefined;
     }[]>;
     getSong: import("@trpc/server").BuildProcedure<"query", {
         _config: import("@trpc/server").RootConfig<{
@@ -471,23 +472,19 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
             transformer: import("@trpc/server").DefaultDataTransformer;
         }>;
         _meta: object;
-        _ctx_out: import("@trpc/server").Overwrite<{
+        _ctx_out: {
+            user: {
+                username: string;
+            };
             req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
             res: import("express").Response<any, Record<string, any>>;
-            user: null;
         } | {
-            req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
-            res: import("express").Response<any, Record<string, any>>;
             user: {
                 username: string;
             };
-        }, {
             req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
             res: import("express").Response<any, Record<string, any>>;
-            user: {
-                username: string;
-            };
-        }>;
+        };
         _input_in: {
             _id: string;
         };
@@ -497,10 +494,6 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
         _output_in: typeof import("@trpc/server").unsetMarker;
         _output_out: typeof import("@trpc/server").unsetMarker;
     }, {
-        caption?: string | undefined;
-        thumbnail?: string | undefined;
-        isPosted?: boolean | undefined;
-        isVideo?: boolean | undefined;
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         updatedOn: Date;
@@ -511,6 +504,10 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
         duration: number;
         src: string;
         comments: import("mongoose").Types.ObjectId[];
+        caption?: string | undefined;
+        thumbnail?: string | undefined;
+        isPosted?: boolean | undefined;
+        isVideo?: boolean | undefined;
     }>;
     getSongPopulated: import("@trpc/server").BuildProcedure<"query", {
         _config: import("@trpc/server").RootConfig<{
@@ -530,23 +527,19 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
             transformer: import("@trpc/server").DefaultDataTransformer;
         }>;
         _meta: object;
-        _ctx_out: import("@trpc/server").Overwrite<{
+        _ctx_out: {
+            user: {
+                username: string;
+            };
             req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
             res: import("express").Response<any, Record<string, any>>;
-            user: null;
         } | {
-            req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
-            res: import("express").Response<any, Record<string, any>>;
             user: {
                 username: string;
             };
-        }, {
             req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
             res: import("express").Response<any, Record<string, any>>;
-            user: {
-                username: string;
-            };
-        }>;
+        };
         _input_in: {
             _id: string;
         };
@@ -556,14 +549,15 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
         _output_in: typeof import("@trpc/server").unsetMarker;
         _output_out: typeof import("@trpc/server").unsetMarker;
     }, {
-        caption?: string | undefined;
-        thumbnail?: string | undefined;
-        isPosted?: boolean | undefined;
-        isVideo?: boolean | undefined;
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         updatedOn: Date;
         user: {
+            _id: import("mongoose").Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -583,11 +577,6 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: import("mongoose").Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
         likes: string[];
         title: string;
@@ -595,13 +584,16 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
         duration: number;
         src: string;
         comments: {
-            updatedOn?: Date | undefined;
-            editedOn?: Date | undefined;
             _id: import("mongoose").Types.ObjectId;
             createdOn: Date;
             text: string;
             parent: string;
             user: {
+                _id: import("mongoose").Types.ObjectId;
+                email: string;
+                followers: string[];
+                following: string[];
+                username: string;
                 google?: {
                     googleId: string;
                     userPhoto: string;
@@ -621,15 +613,16 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
                 } | undefined;
                 createdOn?: string | undefined;
                 updatedOn?: string | undefined;
-                _id: import("mongoose").Types.ObjectId;
-                email: string;
-                followers: string[];
-                following: string[];
-                username: string;
             };
             replies: import("mongoose").Types.ObjectId[];
             likes: string[];
+            updatedOn?: Date | undefined;
+            editedOn?: Date | undefined;
         }[];
+        caption?: string | undefined;
+        thumbnail?: string | undefined;
+        isPosted?: boolean | undefined;
+        isVideo?: boolean | undefined;
     }>;
     getSongPopulatedUser: import("@trpc/server").BuildProcedure<"query", {
         _config: import("@trpc/server").RootConfig<{
@@ -649,23 +642,19 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
             transformer: import("@trpc/server").DefaultDataTransformer;
         }>;
         _meta: object;
-        _ctx_out: import("@trpc/server").Overwrite<{
+        _ctx_out: {
+            user: {
+                username: string;
+            };
             req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
             res: import("express").Response<any, Record<string, any>>;
-            user: null;
         } | {
-            req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
-            res: import("express").Response<any, Record<string, any>>;
             user: {
                 username: string;
             };
-        }, {
             req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
             res: import("express").Response<any, Record<string, any>>;
-            user: {
-                username: string;
-            };
-        }>;
+        };
         _input_in: {
             _id: string;
         };
@@ -675,14 +664,15 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
         _output_in: typeof import("@trpc/server").unsetMarker;
         _output_out: typeof import("@trpc/server").unsetMarker;
     }, {
-        caption?: string | undefined;
-        thumbnail?: string | undefined;
-        isPosted?: boolean | undefined;
-        isVideo?: boolean | undefined;
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         updatedOn: Date;
         user: {
+            _id: import("mongoose").Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -702,11 +692,6 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: import("mongoose").Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
         likes: string[];
         title: string;
@@ -714,6 +699,10 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
         duration: number;
         src: string;
         comments: import("mongoose").Types.ObjectId[];
+        caption?: string | undefined;
+        thumbnail?: string | undefined;
+        isPosted?: boolean | undefined;
+        isVideo?: boolean | undefined;
     }>;
     usersSongs: import("@trpc/server").BuildProcedure<"query", {
         _config: import("@trpc/server").RootConfig<{
@@ -733,23 +722,19 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
             transformer: import("@trpc/server").DefaultDataTransformer;
         }>;
         _meta: object;
-        _ctx_out: import("@trpc/server").Overwrite<{
+        _ctx_out: {
+            user: {
+                username: string;
+            };
             req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
             res: import("express").Response<any, Record<string, any>>;
-            user: null;
         } | {
-            req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
-            res: import("express").Response<any, Record<string, any>>;
             user: {
                 username: string;
             };
-        }, {
             req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
             res: import("express").Response<any, Record<string, any>>;
-            user: {
-                username: string;
-            };
-        }>;
+        };
         _input_in: {
             _id: string;
         };
@@ -759,14 +744,15 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
         _output_in: typeof import("@trpc/server").unsetMarker;
         _output_out: typeof import("@trpc/server").unsetMarker;
     }, {
-        caption?: string | undefined;
-        thumbnail?: string | undefined;
-        isPosted?: boolean | undefined;
-        isVideo?: boolean | undefined;
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         updatedOn: Date;
         user: {
+            _id: import("mongoose").Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -786,11 +772,6 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: import("mongoose").Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
         likes: string[];
         title: string;
@@ -798,6 +779,10 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
         duration: number;
         src: string;
         comments: import("mongoose").Types.ObjectId[];
+        caption?: string | undefined;
+        thumbnail?: string | undefined;
+        isPosted?: boolean | undefined;
+        isVideo?: boolean | undefined;
     }[]>;
     usersSongsWithComments: import("@trpc/server").BuildProcedure<"query", {
         _config: import("@trpc/server").RootConfig<{
@@ -817,23 +802,19 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
             transformer: import("@trpc/server").DefaultDataTransformer;
         }>;
         _meta: object;
-        _ctx_out: import("@trpc/server").Overwrite<{
+        _ctx_out: {
+            user: {
+                username: string;
+            };
             req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
             res: import("express").Response<any, Record<string, any>>;
-            user: null;
         } | {
-            req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
-            res: import("express").Response<any, Record<string, any>>;
             user: {
                 username: string;
             };
-        }, {
             req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
             res: import("express").Response<any, Record<string, any>>;
-            user: {
-                username: string;
-            };
-        }>;
+        };
         _input_in: {
             _id: string;
         };
@@ -843,14 +824,15 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
         _output_in: typeof import("@trpc/server").unsetMarker;
         _output_out: typeof import("@trpc/server").unsetMarker;
     }, {
-        caption?: string | undefined;
-        thumbnail?: string | undefined;
-        isPosted?: boolean | undefined;
-        isVideo?: boolean | undefined;
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         updatedOn: Date;
         user: {
+            _id: import("mongoose").Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -870,11 +852,6 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: import("mongoose").Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
         likes: string[];
         title: string;
@@ -882,13 +859,16 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
         duration: number;
         src: string;
         comments: {
-            updatedOn?: Date | undefined;
-            editedOn?: Date | undefined;
             _id: import("mongoose").Types.ObjectId;
             createdOn: Date;
             text: string;
             parent: string;
             user: {
+                _id: import("mongoose").Types.ObjectId;
+                email: string;
+                followers: string[];
+                following: string[];
+                username: string;
                 google?: {
                     googleId: string;
                     userPhoto: string;
@@ -908,15 +888,16 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
                 } | undefined;
                 createdOn?: string | undefined;
                 updatedOn?: string | undefined;
-                _id: import("mongoose").Types.ObjectId;
-                email: string;
-                followers: string[];
-                following: string[];
-                username: string;
             };
             replies: import("mongoose").Types.ObjectId[];
             likes: string[];
+            updatedOn?: Date | undefined;
+            editedOn?: Date | undefined;
         }[];
+        caption?: string | undefined;
+        thumbnail?: string | undefined;
+        isPosted?: boolean | undefined;
+        isVideo?: boolean | undefined;
     }[]>;
     allSongs: import("@trpc/server").BuildProcedure<"query", {
         _config: import("@trpc/server").RootConfig<{
@@ -952,14 +933,15 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
         _output_out: typeof import("@trpc/server").unsetMarker;
         _meta: object;
     }, {
-        caption?: string | undefined;
-        thumbnail?: string | undefined;
-        isPosted?: boolean | undefined;
-        isVideo?: boolean | undefined;
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         updatedOn: Date;
         user: {
+            _id: import("mongoose").Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -979,11 +961,6 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: import("mongoose").Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
         likes: string[];
         title: string;
@@ -991,13 +968,16 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
         duration: number;
         src: string;
         comments: {
-            updatedOn?: Date | undefined;
-            editedOn?: Date | undefined;
             _id: import("mongoose").Types.ObjectId;
             createdOn: Date;
             text: string;
             parent: string;
             user: {
+                _id: import("mongoose").Types.ObjectId;
+                email: string;
+                followers: string[];
+                following: string[];
+                username: string;
                 google?: {
                     googleId: string;
                     userPhoto: string;
@@ -1017,15 +997,16 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
                 } | undefined;
                 createdOn?: string | undefined;
                 updatedOn?: string | undefined;
-                _id: import("mongoose").Types.ObjectId;
-                email: string;
-                followers: string[];
-                following: string[];
-                username: string;
             };
             replies: import("mongoose").Types.ObjectId[];
             likes: string[];
+            updatedOn?: Date | undefined;
+            editedOn?: Date | undefined;
         }[];
+        caption?: string | undefined;
+        thumbnail?: string | undefined;
+        isPosted?: boolean | undefined;
+        isVideo?: boolean | undefined;
     }[]>;
     search: import("@trpc/server").BuildProcedure<"mutation", {
         _config: import("@trpc/server").RootConfig<{
@@ -1062,6 +1043,11 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
         _output_out: typeof import("@trpc/server").unsetMarker;
     }, {
         users: {
+            _id: import("mongoose").Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -1081,21 +1067,17 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: import("mongoose").Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         }[];
         songs: {
-            caption?: string | undefined;
-            thumbnail?: string | undefined;
-            isPosted?: boolean | undefined;
-            isVideo?: boolean | undefined;
             _id: import("mongoose").Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
             user: {
+                _id: import("mongoose").Types.ObjectId;
+                email: string;
+                followers: string[];
+                following: string[];
+                username: string;
                 google?: {
                     googleId: string;
                     userPhoto: string;
@@ -1115,11 +1097,6 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
                 } | undefined;
                 createdOn?: string | undefined;
                 updatedOn?: string | undefined;
-                _id: import("mongoose").Types.ObjectId;
-                email: string;
-                followers: string[];
-                following: string[];
-                username: string;
             };
             likes: string[];
             title: string;
@@ -1127,13 +1104,16 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
             duration: number;
             src: string;
             comments: {
-                updatedOn?: Date | undefined;
-                editedOn?: Date | undefined;
                 _id: import("mongoose").Types.ObjectId;
                 createdOn: Date;
                 text: string;
                 parent: string;
                 user: {
+                    _id: import("mongoose").Types.ObjectId;
+                    email: string;
+                    followers: string[];
+                    following: string[];
+                    username: string;
                     google?: {
                         googleId: string;
                         userPhoto: string;
@@ -1153,15 +1133,16 @@ export declare const songsRouter: import("@trpc/server").CreateRouterInner<impor
                     } | undefined;
                     createdOn?: string | undefined;
                     updatedOn?: string | undefined;
-                    _id: import("mongoose").Types.ObjectId;
-                    email: string;
-                    followers: string[];
-                    following: string[];
-                    username: string;
                 };
                 replies: import("mongoose").Types.ObjectId[];
                 likes: string[];
+                updatedOn?: Date | undefined;
+                editedOn?: Date | undefined;
             }[];
+            caption?: string | undefined;
+            thumbnail?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
         }[];
     }>;
 }>;

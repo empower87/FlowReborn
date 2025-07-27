@@ -2,7 +2,7 @@ import { User } from "../../models/index.js";
 import { verifyJwt } from "../jwt.js";
 export const createContext = async ({ req, res }) => {
     async function getUserFromHeader() {
-        const token = req.headers["authorization" || "Authorization"]?.split(" ")[1];
+        const token = req.headers.authorization?.split(" ")[1];
         const notAuthenticated = {
             req,
             res,

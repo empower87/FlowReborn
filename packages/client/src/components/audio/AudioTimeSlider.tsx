@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from "react"
 import { ISongTake } from "src/features/recording-booth/utils/types"
 import { ISong } from "../../../../server/src/models/Song"
 
@@ -21,7 +21,7 @@ function UseAudioPlayer({ isPlaying, setIsPlaying, currentSong, bgColor }: Props
   const [currentTime, setCurrentTime] = useState<string>("0:00")
   const [endTime, setEndTime] = useState<string>("0:00")
 
-  const startTimer = () => {
+  const startTimer = useCallback(() => {
     if (audioRef.current !== null) {
       if (intervalRef.current && secondsRef.current) {
         clearInterval(intervalRef.current)
@@ -44,7 +44,7 @@ function UseAudioPlayer({ isPlaying, setIsPlaying, currentSong, bgColor }: Props
         }
       }, 1000)
     }
-  }
+  }, [setTrackProgress, setIsPlaying])
 
   useEffect(() => {
     if (isPlaying) {

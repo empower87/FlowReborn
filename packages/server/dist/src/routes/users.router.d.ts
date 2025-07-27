@@ -1,5 +1,6 @@
 /// <reference types="qs" />
 /// <reference types="express" />
+/// <reference types="cookie-parser" />
 /// <reference types="mongoose/types/aggregate.js" />
 /// <reference types="mongoose/types/callback.js" />
 /// <reference types="mongoose/types/collection.js" />
@@ -75,6 +76,11 @@ export declare const userRouter: import("@trpc/server").CreateRouterInner<import
         _output_out: typeof import("@trpc/server").unsetMarker;
         _meta: object;
     }, {
+        _id: import("mongoose").Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -94,11 +100,6 @@ export declare const userRouter: import("@trpc/server").CreateRouterInner<import
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: import("mongoose").Types.ObjectId;
-        email: string;
-        followers: string[];
-        following: string[];
-        username: string;
     }>;
     getUser: import("@trpc/server").BuildProcedure<"query", {
         _config: import("@trpc/server").RootConfig<{
@@ -138,6 +139,11 @@ export declare const userRouter: import("@trpc/server").CreateRouterInner<import
         _output_in: typeof import("@trpc/server").unsetMarker;
         _output_out: typeof import("@trpc/server").unsetMarker;
     }, {
+        _id: import("mongoose").Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -157,11 +163,6 @@ export declare const userRouter: import("@trpc/server").CreateRouterInner<import
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: import("mongoose").Types.ObjectId;
-        email: string;
-        followers: string[];
-        following: string[];
-        username: string;
     }>;
     uploadFile: import("@trpc/server").BuildProcedure<"mutation", {
         _config: import("@trpc/server").RootConfig<{
@@ -193,14 +194,14 @@ export declare const userRouter: import("@trpc/server").CreateRouterInner<import
             };
         };
         _input_in: {
-            fileBlob?: any;
             fileName: string;
             fileType: string;
+            fileBlob?: any;
         }[];
         _input_out: {
-            fileBlob?: any;
             fileName: string;
             fileType: string;
+            fileBlob?: any;
         }[];
         _output_in: typeof import("@trpc/server").unsetMarker;
         _output_out: typeof import("@trpc/server").unsetMarker;
@@ -277,6 +278,11 @@ export declare const userRouter: import("@trpc/server").CreateRouterInner<import
         _output_in: typeof import("@trpc/server").unsetMarker;
         _output_out: typeof import("@trpc/server").unsetMarker;
     }, {
+        _id: import("mongoose").Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -296,11 +302,6 @@ export declare const userRouter: import("@trpc/server").CreateRouterInner<import
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: import("mongoose").Types.ObjectId;
-        email: string;
-        followers: string[];
-        following: string[];
-        username: string;
     }>;
 }>;
 export type UserRouter = typeof userRouter;

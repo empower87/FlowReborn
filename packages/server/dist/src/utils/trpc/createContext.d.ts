@@ -1,5 +1,6 @@
 /// <reference types="qs" />
 /// <reference types="express" />
+/// <reference types="cookie-parser" />
 import * as trpc from "@trpc/server";
 import * as trpcExpress from "@trpc/server/adapters/express";
 export declare const createContext: ({ req, res }: trpcExpress.CreateExpressContextOptions) => Promise<{

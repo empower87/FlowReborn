@@ -34,6 +34,11 @@ export declare const registerHandler: ({ input }: {
 export declare const loginHandler: ({ ctx, input }: ContextWithInput<LoginInputType>) => Promise<{
     token: string;
     user: {
+        _id: import("mongoose").Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -53,11 +58,6 @@ export declare const loginHandler: ({ ctx, input }: ContextWithInput<LoginInputT
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: import("mongoose").Types.ObjectId;
-        email: string;
-        followers: string[];
-        following: string[];
-        username: string;
     };
 }>;
 export declare const refreshHandler: ({ ctx }: {

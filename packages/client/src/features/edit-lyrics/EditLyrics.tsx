@@ -58,7 +58,7 @@ export default function EditLyrics() {
         </div>
       )
     })
-  }, [songs, currentSong, currentLyrics?.lyrics])
+  }, [currentLyrics?.lyrics])
 
   const onAdd = () => {
     onAddLyric(currentLyrics.songId)

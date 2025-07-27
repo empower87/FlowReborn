@@ -3,11 +3,13 @@ import z from "zod";
 export declare const UserSchemaFromClient: z.ZodObject<{
     _id: z.ZodString;
     email: z.ZodString;
-    google: z.ZodOptional<z.ZodObject<{
+    google: z.ZodOptional<z.ZodObject<Omit<{
         googleId: z.ZodString;
         userPhoto: z.ZodString;
+        userSignUpDate: z.ZodDate;
         given_name: z.ZodString;
         family_name: z.ZodString;
+    }, "userSignUpDate"> & {
         userSignUpDate: z.ZodString;
     }, "strip", z.ZodTypeAny, {
         googleId: string;
@@ -45,6 +47,10 @@ export declare const UserSchemaFromClient: z.ZodObject<{
     createdOn: z.ZodOptional<z.ZodString>;
     updatedOn: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
+    _id: string;
+    email: string;
+    followers: string[];
+    following: string[];
     google?: {
         googleId: string;
         userPhoto: string;
@@ -64,11 +70,9 @@ export declare const UserSchemaFromClient: z.ZodObject<{
     } | undefined;
     createdOn?: string | undefined;
     updatedOn?: string | undefined;
+}, {
     _id: string;
     email: string;
-    followers: string[];
-    following: string[];
-}, {
     google?: {
         googleId: string;
         userPhoto: string;
@@ -90,8 +94,6 @@ export declare const UserSchemaFromClient: z.ZodObject<{
     following?: string[] | undefined;
     createdOn?: string | undefined;
     updatedOn?: string | undefined;
-    _id: string;
-    email: string;
 }>;
 export declare const UserSchema: z.ZodObject<{
     _id: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
@@ -139,6 +141,11 @@ export declare const UserSchema: z.ZodObject<{
     createdOn: z.ZodOptional<z.ZodString>;
     updatedOn: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
+    _id: Types.ObjectId;
+    email: string;
+    followers: string[];
+    following: string[];
+    username: string;
     google?: {
         googleId: string;
         userPhoto: string;
@@ -158,12 +165,10 @@ export declare const UserSchema: z.ZodObject<{
     } | undefined;
     createdOn?: string | undefined;
     updatedOn?: string | undefined;
+}, {
     _id: Types.ObjectId;
     email: string;
-    followers: string[];
-    following: string[];
     username: string;
-}, {
     google?: {
         googleId: string;
         userPhoto: string;
@@ -185,9 +190,6 @@ export declare const UserSchema: z.ZodObject<{
     following?: string[] | undefined;
     createdOn?: string | undefined;
     updatedOn?: string | undefined;
-    _id: Types.ObjectId;
-    email: string;
-    username: string;
 }>;
 export declare const UserInputSchema: z.ZodObject<{
     _id: z.ZodString;
@@ -196,7 +198,29 @@ export declare const UserInputSchema: z.ZodObject<{
 }, {
     _id: string;
 }>;
-export declare const UpdateUserInputSchema: z.ZodObject<{
+export declare const UpdateUserInputSchema: z.ZodObject<Omit<{
+    _id: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
+    username: z.ZodString;
+    email: z.ZodString;
+    google: z.ZodOptional<z.ZodObject<{
+        googleId: z.ZodString;
+        userPhoto: z.ZodString;
+        userSignUpDate: z.ZodDate;
+        given_name: z.ZodString;
+        family_name: z.ZodString;
+    }, "strip", z.ZodTypeAny, {
+        googleId: string;
+        userPhoto: string;
+        userSignUpDate: Date;
+        given_name: string;
+        family_name: string;
+    }, {
+        googleId: string;
+        userPhoto: string;
+        userSignUpDate: Date;
+        given_name: string;
+        family_name: string;
+    }>>;
     picture: z.ZodOptional<z.ZodString>;
     firstName: z.ZodOptional<z.ZodString>;
     lastName: z.ZodOptional<z.ZodString>;
@@ -215,8 +239,11 @@ export declare const UpdateUserInputSchema: z.ZodObject<{
         instagram?: string | undefined;
         soundCloud?: string | undefined;
     }>>;
+    followers: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
+    following: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
     createdOn: z.ZodOptional<z.ZodString>;
     updatedOn: z.ZodOptional<z.ZodString>;
+}, "_id" | "email" | "google" | "followers" | "following" | "username"> & {
     username: z.ZodOptional<z.ZodString>;
     email: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {

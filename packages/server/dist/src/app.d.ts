@@ -1,4 +1,5 @@
 /// <reference types="qs" />
+/// <reference types="cookie-parser" />
 import { default as bodyParser } from "express";
 import mongoose from "mongoose";
 export declare const appRouter: import("@trpc/server").CreateRouterInner<import("@trpc/server").RootConfig<{
@@ -120,6 +121,11 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
         }, {
             token: string;
             user: {
+                _id: mongoose.Types.ObjectId;
+                email: string;
+                followers: string[];
+                following: string[];
+                username: string;
                 google?: {
                     googleId: string;
                     userPhoto: string;
@@ -139,11 +145,6 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 } | undefined;
                 createdOn?: string | undefined;
                 updatedOn?: string | undefined;
-                _id: mongoose.Types.ObjectId;
-                email: string;
-                followers: string[];
-                following: string[];
-                username: string;
             };
         }>;
         refresh: import("@trpc/server").BuildProcedure<"query", {
@@ -231,6 +232,11 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             _output_out: typeof import("@trpc/server").unsetMarker;
             _meta: object;
         }, {
+            _id: mongoose.Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -250,11 +256,6 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: mongoose.Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         }>;
         getUser: import("@trpc/server").BuildProcedure<"query", {
             _config: import("@trpc/server").RootConfig<{
@@ -294,6 +295,11 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             _output_in: typeof import("@trpc/server").unsetMarker;
             _output_out: typeof import("@trpc/server").unsetMarker;
         }, {
+            _id: mongoose.Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -313,11 +319,6 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: mongoose.Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         }>;
         uploadFile: import("@trpc/server").BuildProcedure<"mutation", {
             _config: import("@trpc/server").RootConfig<{
@@ -349,14 +350,14 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 };
             };
             _input_in: {
-                fileBlob?: any;
                 fileName: string;
                 fileType: string;
+                fileBlob?: any;
             }[];
             _input_out: {
-                fileBlob?: any;
                 fileName: string;
                 fileType: string;
+                fileBlob?: any;
             }[];
             _output_in: typeof import("@trpc/server").unsetMarker;
             _output_out: typeof import("@trpc/server").unsetMarker;
@@ -433,6 +434,11 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             _output_in: typeof import("@trpc/server").unsetMarker;
             _output_out: typeof import("@trpc/server").unsetMarker;
         }, {
+            _id: mongoose.Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -452,11 +458,6 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: mongoose.Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         }>;
     }>;
     songs: import("@trpc/server").CreateRouterInner<import("@trpc/server").RootConfig<{
@@ -505,34 +506,30 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 };
             };
             _input_in: {
+                user: string;
+                title: string;
+                duration: number;
+                src: string;
                 caption?: string | undefined;
                 lyrics?: string[][] | undefined;
                 thumbnail?: string | undefined;
                 isPosted?: boolean | undefined;
                 isVideo?: boolean | undefined;
-                user: string;
-                title: string;
-                duration: number;
-                src: string;
             };
             _input_out: {
-                caption?: string | undefined;
-                thumbnail?: string | undefined;
-                isPosted?: boolean | undefined;
-                isVideo?: boolean | undefined;
                 user: string;
                 title: string;
                 lyrics: string[][];
                 duration: number;
                 src: string;
+                caption?: string | undefined;
+                thumbnail?: string | undefined;
+                isPosted?: boolean | undefined;
+                isVideo?: boolean | undefined;
             };
             _output_in: typeof import("@trpc/server").unsetMarker;
             _output_out: typeof import("@trpc/server").unsetMarker;
         }, {
-            caption?: string | undefined;
-            thumbnail?: string | undefined;
-            isPosted?: boolean | undefined;
-            isVideo?: boolean | undefined;
             _id: mongoose.Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
@@ -543,6 +540,10 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             duration: number;
             src: string;
             comments: mongoose.Types.ObjectId[];
+            caption?: string | undefined;
+            thumbnail?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
         }>;
         deleteSong: import("@trpc/server").BuildProcedure<"mutation", {
             _config: import("@trpc/server").RootConfig<{
@@ -582,10 +583,6 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             _output_in: typeof import("@trpc/server").unsetMarker;
             _output_out: typeof import("@trpc/server").unsetMarker;
         }, (mongoose.Document<unknown, any, {
-            caption?: string | undefined;
-            thumbnail?: string | undefined;
-            isPosted?: boolean | undefined;
-            isVideo?: boolean | undefined;
             _id: mongoose.Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
@@ -596,11 +593,11 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             duration: number;
             src: string;
             comments: mongoose.Types.ObjectId[];
-        }> & {
             caption?: string | undefined;
             thumbnail?: string | undefined;
             isPosted?: boolean | undefined;
             isVideo?: boolean | undefined;
+        }> & Omit<{
             _id: mongoose.Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
@@ -611,9 +608,13 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             duration: number;
             src: string;
             comments: mongoose.Types.ObjectId[];
+            caption?: string | undefined;
+            thumbnail?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
         } & Required<{
             _id: mongoose.Types.ObjectId;
-        }>) | null>;
+        }>, never>) | null>;
         updateSong: import("@trpc/server").BuildProcedure<"mutation", {
             _config: import("@trpc/server").RootConfig<{
                 ctx: {
@@ -644,26 +645,27 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 };
             };
             _input_in: {
-                caption?: string | undefined;
                 _id: string;
                 title: string;
+                caption?: string | undefined;
             };
             _input_out: {
-                caption?: string | undefined;
                 _id: string;
                 title: string;
+                caption?: string | undefined;
             };
             _output_in: typeof import("@trpc/server").unsetMarker;
             _output_out: typeof import("@trpc/server").unsetMarker;
         }, {
-            caption?: string | undefined;
-            thumbnail?: string | undefined;
-            isPosted?: boolean | undefined;
-            isVideo?: boolean | undefined;
             _id: mongoose.Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
             user: {
+                _id: mongoose.Types.ObjectId;
+                email: string;
+                followers: string[];
+                following: string[];
+                username: string;
                 google?: {
                     googleId: string;
                     userPhoto: string;
@@ -683,11 +685,6 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 } | undefined;
                 createdOn?: string | undefined;
                 updatedOn?: string | undefined;
-                _id: mongoose.Types.ObjectId;
-                email: string;
-                followers: string[];
-                following: string[];
-                username: string;
             };
             likes: string[];
             title: string;
@@ -695,13 +692,16 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             duration: number;
             src: string;
             comments: {
-                updatedOn?: Date | undefined;
-                editedOn?: Date | undefined;
                 _id: mongoose.Types.ObjectId;
                 createdOn: Date;
                 text: string;
                 parent: string;
                 user: {
+                    _id: mongoose.Types.ObjectId;
+                    email: string;
+                    followers: string[];
+                    following: string[];
+                    username: string;
                     google?: {
                         googleId: string;
                         userPhoto: string;
@@ -721,15 +721,16 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                     } | undefined;
                     createdOn?: string | undefined;
                     updatedOn?: string | undefined;
-                    _id: mongoose.Types.ObjectId;
-                    email: string;
-                    followers: string[];
-                    following: string[];
-                    username: string;
                 };
                 replies: mongoose.Types.ObjectId[];
                 likes: string[];
+                updatedOn?: Date | undefined;
+                editedOn?: Date | undefined;
             }[];
+            caption?: string | undefined;
+            thumbnail?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
         }>;
         usersLikedSongs: import("@trpc/server").BuildProcedure<"query", {
             _config: import("@trpc/server").RootConfig<{
@@ -769,14 +770,15 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             _output_in: typeof import("@trpc/server").unsetMarker;
             _output_out: typeof import("@trpc/server").unsetMarker;
         }, {
-            caption?: string | undefined;
-            thumbnail?: string | undefined;
-            isPosted?: boolean | undefined;
-            isVideo?: boolean | undefined;
             _id: mongoose.Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
             user: {
+                _id: mongoose.Types.ObjectId;
+                email: string;
+                followers: string[];
+                following: string[];
+                username: string;
                 google?: {
                     googleId: string;
                     userPhoto: string;
@@ -796,11 +798,6 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 } | undefined;
                 createdOn?: string | undefined;
                 updatedOn?: string | undefined;
-                _id: mongoose.Types.ObjectId;
-                email: string;
-                followers: string[];
-                following: string[];
-                username: string;
             };
             likes: string[];
             title: string;
@@ -808,6 +805,10 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             duration: number;
             src: string;
             comments: mongoose.Types.ObjectId[];
+            caption?: string | undefined;
+            thumbnail?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
         }[]>;
         usersFollowersSongs: import("@trpc/server").BuildProcedure<"query", {
             _config: import("@trpc/server").RootConfig<{
@@ -847,14 +848,15 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             _output_in: typeof import("@trpc/server").unsetMarker;
             _output_out: typeof import("@trpc/server").unsetMarker;
         }, {
-            caption?: string | undefined;
-            thumbnail?: string | undefined;
-            isPosted?: boolean | undefined;
-            isVideo?: boolean | undefined;
             _id: mongoose.Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
             user: {
+                _id: mongoose.Types.ObjectId;
+                email: string;
+                followers: string[];
+                following: string[];
+                username: string;
                 google?: {
                     googleId: string;
                     userPhoto: string;
@@ -874,11 +876,6 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 } | undefined;
                 createdOn?: string | undefined;
                 updatedOn?: string | undefined;
-                _id: mongoose.Types.ObjectId;
-                email: string;
-                followers: string[];
-                following: string[];
-                username: string;
             };
             likes: string[];
             title: string;
@@ -886,6 +883,10 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             duration: number;
             src: string;
             comments: mongoose.Types.ObjectId[];
+            caption?: string | undefined;
+            thumbnail?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
         }[]>;
         getSong: import("@trpc/server").BuildProcedure<"query", {
             _config: import("@trpc/server").RootConfig<{
@@ -905,23 +906,19 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 transformer: import("@trpc/server").DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: import("@trpc/server").Overwrite<{
+            _ctx_out: {
+                user: {
+                    username: string;
+                };
                 req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
                 res: bodyParser.Response<any, Record<string, any>>;
-                user: null;
             } | {
-                req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
-                res: bodyParser.Response<any, Record<string, any>>;
                 user: {
                     username: string;
                 };
-            }, {
                 req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
                 res: bodyParser.Response<any, Record<string, any>>;
-                user: {
-                    username: string;
-                };
-            }>;
+            };
             _input_in: {
                 _id: string;
             };
@@ -931,10 +928,6 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             _output_in: typeof import("@trpc/server").unsetMarker;
             _output_out: typeof import("@trpc/server").unsetMarker;
         }, {
-            caption?: string | undefined;
-            thumbnail?: string | undefined;
-            isPosted?: boolean | undefined;
-            isVideo?: boolean | undefined;
             _id: mongoose.Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
@@ -945,6 +938,10 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             duration: number;
             src: string;
             comments: mongoose.Types.ObjectId[];
+            caption?: string | undefined;
+            thumbnail?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
         }>;
         getSongPopulated: import("@trpc/server").BuildProcedure<"query", {
             _config: import("@trpc/server").RootConfig<{
@@ -964,23 +961,19 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 transformer: import("@trpc/server").DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: import("@trpc/server").Overwrite<{
+            _ctx_out: {
+                user: {
+                    username: string;
+                };
                 req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
                 res: bodyParser.Response<any, Record<string, any>>;
-                user: null;
             } | {
-                req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
-                res: bodyParser.Response<any, Record<string, any>>;
                 user: {
                     username: string;
                 };
-            }, {
                 req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
                 res: bodyParser.Response<any, Record<string, any>>;
-                user: {
-                    username: string;
-                };
-            }>;
+            };
             _input_in: {
                 _id: string;
             };
@@ -990,14 +983,15 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             _output_in: typeof import("@trpc/server").unsetMarker;
             _output_out: typeof import("@trpc/server").unsetMarker;
         }, {
-            caption?: string | undefined;
-            thumbnail?: string | undefined;
-            isPosted?: boolean | undefined;
-            isVideo?: boolean | undefined;
             _id: mongoose.Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
             user: {
+                _id: mongoose.Types.ObjectId;
+                email: string;
+                followers: string[];
+                following: string[];
+                username: string;
                 google?: {
                     googleId: string;
                     userPhoto: string;
@@ -1017,11 +1011,6 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 } | undefined;
                 createdOn?: string | undefined;
                 updatedOn?: string | undefined;
-                _id: mongoose.Types.ObjectId;
-                email: string;
-                followers: string[];
-                following: string[];
-                username: string;
             };
             likes: string[];
             title: string;
@@ -1029,13 +1018,16 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             duration: number;
             src: string;
             comments: {
-                updatedOn?: Date | undefined;
-                editedOn?: Date | undefined;
                 _id: mongoose.Types.ObjectId;
                 createdOn: Date;
                 text: string;
                 parent: string;
                 user: {
+                    _id: mongoose.Types.ObjectId;
+                    email: string;
+                    followers: string[];
+                    following: string[];
+                    username: string;
                     google?: {
                         googleId: string;
                         userPhoto: string;
@@ -1055,15 +1047,16 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                     } | undefined;
                     createdOn?: string | undefined;
                     updatedOn?: string | undefined;
-                    _id: mongoose.Types.ObjectId;
-                    email: string;
-                    followers: string[];
-                    following: string[];
-                    username: string;
                 };
                 replies: mongoose.Types.ObjectId[];
                 likes: string[];
+                updatedOn?: Date | undefined;
+                editedOn?: Date | undefined;
             }[];
+            caption?: string | undefined;
+            thumbnail?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
         }>;
         getSongPopulatedUser: import("@trpc/server").BuildProcedure<"query", {
             _config: import("@trpc/server").RootConfig<{
@@ -1083,23 +1076,19 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 transformer: import("@trpc/server").DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: import("@trpc/server").Overwrite<{
+            _ctx_out: {
+                user: {
+                    username: string;
+                };
                 req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
                 res: bodyParser.Response<any, Record<string, any>>;
-                user: null;
             } | {
-                req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
-                res: bodyParser.Response<any, Record<string, any>>;
                 user: {
                     username: string;
                 };
-            }, {
                 req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
                 res: bodyParser.Response<any, Record<string, any>>;
-                user: {
-                    username: string;
-                };
-            }>;
+            };
             _input_in: {
                 _id: string;
             };
@@ -1109,14 +1098,15 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             _output_in: typeof import("@trpc/server").unsetMarker;
             _output_out: typeof import("@trpc/server").unsetMarker;
         }, {
-            caption?: string | undefined;
-            thumbnail?: string | undefined;
-            isPosted?: boolean | undefined;
-            isVideo?: boolean | undefined;
             _id: mongoose.Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
             user: {
+                _id: mongoose.Types.ObjectId;
+                email: string;
+                followers: string[];
+                following: string[];
+                username: string;
                 google?: {
                     googleId: string;
                     userPhoto: string;
@@ -1136,11 +1126,6 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 } | undefined;
                 createdOn?: string | undefined;
                 updatedOn?: string | undefined;
-                _id: mongoose.Types.ObjectId;
-                email: string;
-                followers: string[];
-                following: string[];
-                username: string;
             };
             likes: string[];
             title: string;
@@ -1148,6 +1133,10 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             duration: number;
             src: string;
             comments: mongoose.Types.ObjectId[];
+            caption?: string | undefined;
+            thumbnail?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
         }>;
         usersSongs: import("@trpc/server").BuildProcedure<"query", {
             _config: import("@trpc/server").RootConfig<{
@@ -1167,23 +1156,19 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 transformer: import("@trpc/server").DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: import("@trpc/server").Overwrite<{
+            _ctx_out: {
+                user: {
+                    username: string;
+                };
                 req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
                 res: bodyParser.Response<any, Record<string, any>>;
-                user: null;
             } | {
-                req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
-                res: bodyParser.Response<any, Record<string, any>>;
                 user: {
                     username: string;
                 };
-            }, {
                 req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
                 res: bodyParser.Response<any, Record<string, any>>;
-                user: {
-                    username: string;
-                };
-            }>;
+            };
             _input_in: {
                 _id: string;
             };
@@ -1193,14 +1178,15 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             _output_in: typeof import("@trpc/server").unsetMarker;
             _output_out: typeof import("@trpc/server").unsetMarker;
         }, {
-            caption?: string | undefined;
-            thumbnail?: string | undefined;
-            isPosted?: boolean | undefined;
-            isVideo?: boolean | undefined;
             _id: mongoose.Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
             user: {
+                _id: mongoose.Types.ObjectId;
+                email: string;
+                followers: string[];
+                following: string[];
+                username: string;
                 google?: {
                     googleId: string;
                     userPhoto: string;
@@ -1220,11 +1206,6 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 } | undefined;
                 createdOn?: string | undefined;
                 updatedOn?: string | undefined;
-                _id: mongoose.Types.ObjectId;
-                email: string;
-                followers: string[];
-                following: string[];
-                username: string;
             };
             likes: string[];
             title: string;
@@ -1232,6 +1213,10 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             duration: number;
             src: string;
             comments: mongoose.Types.ObjectId[];
+            caption?: string | undefined;
+            thumbnail?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
         }[]>;
         usersSongsWithComments: import("@trpc/server").BuildProcedure<"query", {
             _config: import("@trpc/server").RootConfig<{
@@ -1251,23 +1236,19 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 transformer: import("@trpc/server").DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: import("@trpc/server").Overwrite<{
+            _ctx_out: {
+                user: {
+                    username: string;
+                };
                 req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
                 res: bodyParser.Response<any, Record<string, any>>;
-                user: null;
             } | {
-                req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
-                res: bodyParser.Response<any, Record<string, any>>;
                 user: {
                     username: string;
                 };
-            }, {
                 req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
                 res: bodyParser.Response<any, Record<string, any>>;
-                user: {
-                    username: string;
-                };
-            }>;
+            };
             _input_in: {
                 _id: string;
             };
@@ -1277,14 +1258,15 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             _output_in: typeof import("@trpc/server").unsetMarker;
             _output_out: typeof import("@trpc/server").unsetMarker;
         }, {
-            caption?: string | undefined;
-            thumbnail?: string | undefined;
-            isPosted?: boolean | undefined;
-            isVideo?: boolean | undefined;
             _id: mongoose.Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
             user: {
+                _id: mongoose.Types.ObjectId;
+                email: string;
+                followers: string[];
+                following: string[];
+                username: string;
                 google?: {
                     googleId: string;
                     userPhoto: string;
@@ -1304,11 +1286,6 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 } | undefined;
                 createdOn?: string | undefined;
                 updatedOn?: string | undefined;
-                _id: mongoose.Types.ObjectId;
-                email: string;
-                followers: string[];
-                following: string[];
-                username: string;
             };
             likes: string[];
             title: string;
@@ -1316,13 +1293,16 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             duration: number;
             src: string;
             comments: {
-                updatedOn?: Date | undefined;
-                editedOn?: Date | undefined;
                 _id: mongoose.Types.ObjectId;
                 createdOn: Date;
                 text: string;
                 parent: string;
                 user: {
+                    _id: mongoose.Types.ObjectId;
+                    email: string;
+                    followers: string[];
+                    following: string[];
+                    username: string;
                     google?: {
                         googleId: string;
                         userPhoto: string;
@@ -1342,15 +1322,16 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                     } | undefined;
                     createdOn?: string | undefined;
                     updatedOn?: string | undefined;
-                    _id: mongoose.Types.ObjectId;
-                    email: string;
-                    followers: string[];
-                    following: string[];
-                    username: string;
                 };
                 replies: mongoose.Types.ObjectId[];
                 likes: string[];
+                updatedOn?: Date | undefined;
+                editedOn?: Date | undefined;
             }[];
+            caption?: string | undefined;
+            thumbnail?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
         }[]>;
         allSongs: import("@trpc/server").BuildProcedure<"query", {
             _config: import("@trpc/server").RootConfig<{
@@ -1386,14 +1367,15 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             _output_out: typeof import("@trpc/server").unsetMarker;
             _meta: object;
         }, {
-            caption?: string | undefined;
-            thumbnail?: string | undefined;
-            isPosted?: boolean | undefined;
-            isVideo?: boolean | undefined;
             _id: mongoose.Types.ObjectId;
             createdOn: Date;
             updatedOn: Date;
             user: {
+                _id: mongoose.Types.ObjectId;
+                email: string;
+                followers: string[];
+                following: string[];
+                username: string;
                 google?: {
                     googleId: string;
                     userPhoto: string;
@@ -1413,11 +1395,6 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 } | undefined;
                 createdOn?: string | undefined;
                 updatedOn?: string | undefined;
-                _id: mongoose.Types.ObjectId;
-                email: string;
-                followers: string[];
-                following: string[];
-                username: string;
             };
             likes: string[];
             title: string;
@@ -1425,13 +1402,16 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             duration: number;
             src: string;
             comments: {
-                updatedOn?: Date | undefined;
-                editedOn?: Date | undefined;
                 _id: mongoose.Types.ObjectId;
                 createdOn: Date;
                 text: string;
                 parent: string;
                 user: {
+                    _id: mongoose.Types.ObjectId;
+                    email: string;
+                    followers: string[];
+                    following: string[];
+                    username: string;
                     google?: {
                         googleId: string;
                         userPhoto: string;
@@ -1451,15 +1431,16 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                     } | undefined;
                     createdOn?: string | undefined;
                     updatedOn?: string | undefined;
-                    _id: mongoose.Types.ObjectId;
-                    email: string;
-                    followers: string[];
-                    following: string[];
-                    username: string;
                 };
                 replies: mongoose.Types.ObjectId[];
                 likes: string[];
+                updatedOn?: Date | undefined;
+                editedOn?: Date | undefined;
             }[];
+            caption?: string | undefined;
+            thumbnail?: string | undefined;
+            isPosted?: boolean | undefined;
+            isVideo?: boolean | undefined;
         }[]>;
         search: import("@trpc/server").BuildProcedure<"mutation", {
             _config: import("@trpc/server").RootConfig<{
@@ -1496,6 +1477,11 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             _output_out: typeof import("@trpc/server").unsetMarker;
         }, {
             users: {
+                _id: mongoose.Types.ObjectId;
+                email: string;
+                followers: string[];
+                following: string[];
+                username: string;
                 google?: {
                     googleId: string;
                     userPhoto: string;
@@ -1515,21 +1501,17 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 } | undefined;
                 createdOn?: string | undefined;
                 updatedOn?: string | undefined;
-                _id: mongoose.Types.ObjectId;
-                email: string;
-                followers: string[];
-                following: string[];
-                username: string;
             }[];
             songs: {
-                caption?: string | undefined;
-                thumbnail?: string | undefined;
-                isPosted?: boolean | undefined;
-                isVideo?: boolean | undefined;
                 _id: mongoose.Types.ObjectId;
                 createdOn: Date;
                 updatedOn: Date;
                 user: {
+                    _id: mongoose.Types.ObjectId;
+                    email: string;
+                    followers: string[];
+                    following: string[];
+                    username: string;
                     google?: {
                         googleId: string;
                         userPhoto: string;
@@ -1549,11 +1531,6 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                     } | undefined;
                     createdOn?: string | undefined;
                     updatedOn?: string | undefined;
-                    _id: mongoose.Types.ObjectId;
-                    email: string;
-                    followers: string[];
-                    following: string[];
-                    username: string;
                 };
                 likes: string[];
                 title: string;
@@ -1561,13 +1538,16 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 duration: number;
                 src: string;
                 comments: {
-                    updatedOn?: Date | undefined;
-                    editedOn?: Date | undefined;
                     _id: mongoose.Types.ObjectId;
                     createdOn: Date;
                     text: string;
                     parent: string;
                     user: {
+                        _id: mongoose.Types.ObjectId;
+                        email: string;
+                        followers: string[];
+                        following: string[];
+                        username: string;
                         google?: {
                             googleId: string;
                             userPhoto: string;
@@ -1587,15 +1567,16 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                         } | undefined;
                         createdOn?: string | undefined;
                         updatedOn?: string | undefined;
-                        _id: mongoose.Types.ObjectId;
-                        email: string;
-                        followers: string[];
-                        following: string[];
-                        username: string;
                     };
                     replies: mongoose.Types.ObjectId[];
                     likes: string[];
+                    updatedOn?: Date | undefined;
+                    editedOn?: Date | undefined;
                 }[];
+                caption?: string | undefined;
+                thumbnail?: string | undefined;
+                isPosted?: boolean | undefined;
+                isVideo?: boolean | undefined;
             }[];
         }>;
     }>;
@@ -1633,23 +1614,19 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 transformer: import("@trpc/server").DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: import("@trpc/server").Overwrite<{
+            _ctx_out: {
+                user: {
+                    username: string;
+                };
                 req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
                 res: bodyParser.Response<any, Record<string, any>>;
-                user: null;
             } | {
-                req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
-                res: bodyParser.Response<any, Record<string, any>>;
                 user: {
                     username: string;
                 };
-            }, {
                 req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
                 res: bodyParser.Response<any, Record<string, any>>;
-                user: {
-                    username: string;
-                };
-            }>;
+            };
             _input_in: {
                 _id: string;
             };
@@ -1659,13 +1636,16 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             _output_in: typeof import("@trpc/server").unsetMarker;
             _output_out: typeof import("@trpc/server").unsetMarker;
         }, {
-            updatedOn?: Date | undefined;
-            editedOn?: Date | undefined;
             _id: mongoose.Types.ObjectId;
             createdOn: Date;
             text: string;
             parent: string;
             user: {
+                _id: mongoose.Types.ObjectId;
+                email: string;
+                followers: string[];
+                following: string[];
+                username: string;
                 google?: {
                     googleId: string;
                     userPhoto: string;
@@ -1685,20 +1665,18 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 } | undefined;
                 createdOn?: string | undefined;
                 updatedOn?: string | undefined;
-                _id: mongoose.Types.ObjectId;
-                email: string;
-                followers: string[];
-                following: string[];
-                username: string;
             };
             replies: {
-                updatedOn?: Date | undefined;
-                editedOn?: Date | undefined;
                 _id: mongoose.Types.ObjectId;
                 createdOn: Date;
                 text: string;
                 parent: string;
                 user: {
+                    _id: mongoose.Types.ObjectId;
+                    email: string;
+                    followers: string[];
+                    following: string[];
+                    username: string;
                     google?: {
                         googleId: string;
                         userPhoto: string;
@@ -1718,16 +1696,15 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                     } | undefined;
                     createdOn?: string | undefined;
                     updatedOn?: string | undefined;
-                    _id: mongoose.Types.ObjectId;
-                    email: string;
-                    followers: string[];
-                    following: string[];
-                    username: string;
                 };
                 replies: mongoose.Types.ObjectId[];
                 likes: string[];
+                updatedOn?: Date | undefined;
+                editedOn?: Date | undefined;
             }[];
             likes: string[];
+            updatedOn?: Date | undefined;
+            editedOn?: Date | undefined;
         }>;
         getCommentPopulatedUser: import("@trpc/server").BuildProcedure<"query", {
             _config: import("@trpc/server").RootConfig<{
@@ -1747,23 +1724,19 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 transformer: import("@trpc/server").DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: import("@trpc/server").Overwrite<{
+            _ctx_out: {
+                user: {
+                    username: string;
+                };
                 req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
                 res: bodyParser.Response<any, Record<string, any>>;
-                user: null;
             } | {
-                req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
-                res: bodyParser.Response<any, Record<string, any>>;
                 user: {
                     username: string;
                 };
-            }, {
                 req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
                 res: bodyParser.Response<any, Record<string, any>>;
-                user: {
-                    username: string;
-                };
-            }>;
+            };
             _input_in: {
                 _id: string;
             };
@@ -1773,13 +1746,16 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             _output_in: typeof import("@trpc/server").unsetMarker;
             _output_out: typeof import("@trpc/server").unsetMarker;
         }, {
-            updatedOn?: Date | undefined;
-            editedOn?: Date | undefined;
             _id: mongoose.Types.ObjectId;
             createdOn: Date;
             text: string;
             parent: string;
             user: {
+                _id: mongoose.Types.ObjectId;
+                email: string;
+                followers: string[];
+                following: string[];
+                username: string;
                 google?: {
                     googleId: string;
                     userPhoto: string;
@@ -1799,14 +1775,11 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 } | undefined;
                 createdOn?: string | undefined;
                 updatedOn?: string | undefined;
-                _id: mongoose.Types.ObjectId;
-                email: string;
-                followers: string[];
-                following: string[];
-                username: string;
             };
             replies: mongoose.Types.ObjectId[];
             likes: string[];
+            updatedOn?: Date | undefined;
+            editedOn?: Date | undefined;
         }>;
         createComment: import("@trpc/server").BuildProcedure<"mutation", {
             _config: import("@trpc/server").RootConfig<{
@@ -1826,23 +1799,19 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 transformer: import("@trpc/server").DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: import("@trpc/server").Overwrite<{
+            _ctx_out: {
+                user: {
+                    username: string;
+                };
                 req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
                 res: bodyParser.Response<any, Record<string, any>>;
-                user: null;
             } | {
-                req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
-                res: bodyParser.Response<any, Record<string, any>>;
                 user: {
                     username: string;
                 };
-            }, {
                 req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
                 res: bodyParser.Response<any, Record<string, any>>;
-                user: {
-                    username: string;
-                };
-            }>;
+            };
             _input_in: {
                 text: string;
                 parent: string;
@@ -1858,13 +1827,16 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             _output_in: typeof import("@trpc/server").unsetMarker;
             _output_out: typeof import("@trpc/server").unsetMarker;
         }, {
-            updatedOn?: Date | undefined;
-            editedOn?: Date | undefined;
             _id: mongoose.Types.ObjectId;
             createdOn: Date;
             text: string;
             parent: string;
             user: {
+                _id: mongoose.Types.ObjectId;
+                email: string;
+                followers: string[];
+                following: string[];
+                username: string;
                 google?: {
                     googleId: string;
                     userPhoto: string;
@@ -1884,20 +1856,18 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 } | undefined;
                 createdOn?: string | undefined;
                 updatedOn?: string | undefined;
-                _id: mongoose.Types.ObjectId;
-                email: string;
-                followers: string[];
-                following: string[];
-                username: string;
             };
             replies: {
-                updatedOn?: Date | undefined;
-                editedOn?: Date | undefined;
                 _id: mongoose.Types.ObjectId;
                 createdOn: Date;
                 text: string;
                 parent: string;
                 user: {
+                    _id: mongoose.Types.ObjectId;
+                    email: string;
+                    followers: string[];
+                    following: string[];
+                    username: string;
                     google?: {
                         googleId: string;
                         userPhoto: string;
@@ -1917,16 +1887,15 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                     } | undefined;
                     createdOn?: string | undefined;
                     updatedOn?: string | undefined;
-                    _id: mongoose.Types.ObjectId;
-                    email: string;
-                    followers: string[];
-                    following: string[];
-                    username: string;
                 };
                 replies: mongoose.Types.ObjectId[];
                 likes: string[];
+                updatedOn?: Date | undefined;
+                editedOn?: Date | undefined;
             }[];
             likes: string[];
+            updatedOn?: Date | undefined;
+            editedOn?: Date | undefined;
         }>;
         editComment: import("@trpc/server").BuildProcedure<"mutation", {
             _config: import("@trpc/server").RootConfig<{
@@ -1946,23 +1915,19 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 transformer: import("@trpc/server").DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: import("@trpc/server").Overwrite<{
+            _ctx_out: {
+                user: {
+                    username: string;
+                };
                 req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
                 res: bodyParser.Response<any, Record<string, any>>;
-                user: null;
             } | {
-                req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
-                res: bodyParser.Response<any, Record<string, any>>;
                 user: {
                     username: string;
                 };
-            }, {
                 req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
                 res: bodyParser.Response<any, Record<string, any>>;
-                user: {
-                    username: string;
-                };
-            }>;
+            };
             _input_in: {
                 _id: string;
                 text: string;
@@ -1976,13 +1941,16 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             _output_in: typeof import("@trpc/server").unsetMarker;
             _output_out: typeof import("@trpc/server").unsetMarker;
         }, {
-            updatedOn?: Date | undefined;
-            editedOn?: Date | undefined;
             _id: mongoose.Types.ObjectId;
             createdOn: Date;
             text: string;
             parent: string;
             user: {
+                _id: mongoose.Types.ObjectId;
+                email: string;
+                followers: string[];
+                following: string[];
+                username: string;
                 google?: {
                     googleId: string;
                     userPhoto: string;
@@ -2002,20 +1970,18 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 } | undefined;
                 createdOn?: string | undefined;
                 updatedOn?: string | undefined;
-                _id: mongoose.Types.ObjectId;
-                email: string;
-                followers: string[];
-                following: string[];
-                username: string;
             };
             replies: {
-                updatedOn?: Date | undefined;
-                editedOn?: Date | undefined;
                 _id: mongoose.Types.ObjectId;
                 createdOn: Date;
                 text: string;
                 parent: string;
                 user: {
+                    _id: mongoose.Types.ObjectId;
+                    email: string;
+                    followers: string[];
+                    following: string[];
+                    username: string;
                     google?: {
                         googleId: string;
                         userPhoto: string;
@@ -2035,16 +2001,15 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                     } | undefined;
                     createdOn?: string | undefined;
                     updatedOn?: string | undefined;
-                    _id: mongoose.Types.ObjectId;
-                    email: string;
-                    followers: string[];
-                    following: string[];
-                    username: string;
                 };
                 replies: mongoose.Types.ObjectId[];
                 likes: string[];
+                updatedOn?: Date | undefined;
+                editedOn?: Date | undefined;
             }[];
             likes: string[];
+            updatedOn?: Date | undefined;
+            editedOn?: Date | undefined;
         }>;
         deleteComment: import("@trpc/server").BuildProcedure<"mutation", {
             _config: import("@trpc/server").RootConfig<{
@@ -2064,23 +2029,19 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 transformer: import("@trpc/server").DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: import("@trpc/server").Overwrite<{
+            _ctx_out: {
+                user: {
+                    username: string;
+                };
                 req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
                 res: bodyParser.Response<any, Record<string, any>>;
-                user: null;
             } | {
-                req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
-                res: bodyParser.Response<any, Record<string, any>>;
                 user: {
                     username: string;
                 };
-            }, {
                 req: bodyParser.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
                 res: bodyParser.Response<any, Record<string, any>>;
-                user: {
-                    username: string;
-                };
-            }>;
+            };
             _input_in: {
                 _id: string;
                 parent: string;
@@ -2094,13 +2055,16 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
             _output_in: typeof import("@trpc/server").unsetMarker;
             _output_out: typeof import("@trpc/server").unsetMarker;
         }, {
-            updatedOn?: Date | undefined;
-            editedOn?: Date | undefined;
             _id: mongoose.Types.ObjectId;
             createdOn: Date;
             text: string;
             parent: string;
             user: {
+                _id: mongoose.Types.ObjectId;
+                email: string;
+                followers: string[];
+                following: string[];
+                username: string;
                 google?: {
                     googleId: string;
                     userPhoto: string;
@@ -2120,20 +2084,18 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                 } | undefined;
                 createdOn?: string | undefined;
                 updatedOn?: string | undefined;
-                _id: mongoose.Types.ObjectId;
-                email: string;
-                followers: string[];
-                following: string[];
-                username: string;
             };
             replies: {
-                updatedOn?: Date | undefined;
-                editedOn?: Date | undefined;
                 _id: mongoose.Types.ObjectId;
                 createdOn: Date;
                 text: string;
                 parent: string;
                 user: {
+                    _id: mongoose.Types.ObjectId;
+                    email: string;
+                    followers: string[];
+                    following: string[];
+                    username: string;
                     google?: {
                         googleId: string;
                         userPhoto: string;
@@ -2153,16 +2115,15 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
                     } | undefined;
                     createdOn?: string | undefined;
                     updatedOn?: string | undefined;
-                    _id: mongoose.Types.ObjectId;
-                    email: string;
-                    followers: string[];
-                    following: string[];
-                    username: string;
                 };
                 replies: mongoose.Types.ObjectId[];
                 likes: string[];
+                updatedOn?: Date | undefined;
+                editedOn?: Date | undefined;
             }[];
             likes: string[];
+            updatedOn?: Date | undefined;
+            editedOn?: Date | undefined;
         }>;
     }>;
     likes: import("@trpc/server").CreateRouterInner<import("@trpc/server").RootConfig<{

@@ -1,5 +1,6 @@
 /// <reference types="qs" />
 /// <reference types="express" />
+/// <reference types="cookie-parser" />
 export declare const likesRouter: import("@trpc/server").CreateRouterInner<import("@trpc/server").RootConfig<{
     ctx: {
         req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;

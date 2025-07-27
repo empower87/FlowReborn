@@ -26,13 +26,16 @@
 import { CreateCommentType, DeleteCommentType, EditCommentType, GetCommentByIdType } from "../schema/comments.schema.js";
 import { ContextWithInput } from "../utils/trpc/index.js";
 export declare const getComment: ({ ctx, input }: ContextWithInput<GetCommentByIdType>) => Promise<{
-    updatedOn?: Date | undefined;
-    editedOn?: Date | undefined;
     _id: import("mongoose").Types.ObjectId;
     createdOn: Date;
     text: string;
     parent: string;
     user: {
+        _id: import("mongoose").Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -52,20 +55,18 @@ export declare const getComment: ({ ctx, input }: ContextWithInput<GetCommentByI
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: import("mongoose").Types.ObjectId;
-        email: string;
-        followers: string[];
-        following: string[];
-        username: string;
     };
     replies: {
-        updatedOn?: Date | undefined;
-        editedOn?: Date | undefined;
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         text: string;
         parent: string;
         user: {
+            _id: import("mongoose").Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -85,25 +86,27 @@ export declare const getComment: ({ ctx, input }: ContextWithInput<GetCommentByI
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: import("mongoose").Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
         replies: import("mongoose").Types.ObjectId[];
         likes: string[];
+        updatedOn?: Date | undefined;
+        editedOn?: Date | undefined;
     }[];
     likes: string[];
-}>;
-export declare const getCommentPopulatedUser: ({ ctx, input }: ContextWithInput<GetCommentByIdType>) => Promise<{
     updatedOn?: Date | undefined;
     editedOn?: Date | undefined;
+}>;
+export declare const getCommentPopulatedUser: ({ ctx, input }: ContextWithInput<GetCommentByIdType>) => Promise<{
     _id: import("mongoose").Types.ObjectId;
     createdOn: Date;
     text: string;
     parent: string;
     user: {
+        _id: import("mongoose").Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -123,23 +126,23 @@ export declare const getCommentPopulatedUser: ({ ctx, input }: ContextWithInput<
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: import("mongoose").Types.ObjectId;
-        email: string;
-        followers: string[];
-        following: string[];
-        username: string;
     };
     replies: import("mongoose").Types.ObjectId[];
     likes: string[];
+    updatedOn?: Date | undefined;
+    editedOn?: Date | undefined;
 }>;
 export declare const createCommentHandler: ({ ctx, input }: ContextWithInput<CreateCommentType>) => Promise<{
-    updatedOn?: Date | undefined;
-    editedOn?: Date | undefined;
     _id: import("mongoose").Types.ObjectId;
     createdOn: Date;
     text: string;
     parent: string;
     user: {
+        _id: import("mongoose").Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -159,20 +162,18 @@ export declare const createCommentHandler: ({ ctx, input }: ContextWithInput<Cre
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: import("mongoose").Types.ObjectId;
-        email: string;
-        followers: string[];
-        following: string[];
-        username: string;
     };
     replies: {
-        updatedOn?: Date | undefined;
-        editedOn?: Date | undefined;
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         text: string;
         parent: string;
         user: {
+            _id: import("mongoose").Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -192,25 +193,27 @@ export declare const createCommentHandler: ({ ctx, input }: ContextWithInput<Cre
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: import("mongoose").Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
         replies: import("mongoose").Types.ObjectId[];
         likes: string[];
+        updatedOn?: Date | undefined;
+        editedOn?: Date | undefined;
     }[];
     likes: string[];
+    updatedOn?: Date | undefined;
+    editedOn?: Date | undefined;
 }>;
 export declare const editCommentHandler: ({ ctx, input }: ContextWithInput<EditCommentType>) => Promise<{
-    updatedOn?: Date | undefined;
-    editedOn?: Date | undefined;
     _id: import("mongoose").Types.ObjectId;
     createdOn: Date;
     text: string;
     parent: string;
     user: {
+        _id: import("mongoose").Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -230,20 +233,18 @@ export declare const editCommentHandler: ({ ctx, input }: ContextWithInput<EditC
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: import("mongoose").Types.ObjectId;
-        email: string;
-        followers: string[];
-        following: string[];
-        username: string;
     };
     replies: {
-        updatedOn?: Date | undefined;
-        editedOn?: Date | undefined;
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         text: string;
         parent: string;
         user: {
+            _id: import("mongoose").Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -263,25 +264,27 @@ export declare const editCommentHandler: ({ ctx, input }: ContextWithInput<EditC
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: import("mongoose").Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
         replies: import("mongoose").Types.ObjectId[];
         likes: string[];
+        updatedOn?: Date | undefined;
+        editedOn?: Date | undefined;
     }[];
     likes: string[];
+    updatedOn?: Date | undefined;
+    editedOn?: Date | undefined;
 }>;
 export declare const deleteCommentHandler: ({ ctx, input }: ContextWithInput<DeleteCommentType>) => Promise<{
-    updatedOn?: Date | undefined;
-    editedOn?: Date | undefined;
     _id: import("mongoose").Types.ObjectId;
     createdOn: Date;
     text: string;
     parent: string;
     user: {
+        _id: import("mongoose").Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -301,20 +304,18 @@ export declare const deleteCommentHandler: ({ ctx, input }: ContextWithInput<Del
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: import("mongoose").Types.ObjectId;
-        email: string;
-        followers: string[];
-        following: string[];
-        username: string;
     };
     replies: {
-        updatedOn?: Date | undefined;
-        editedOn?: Date | undefined;
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         text: string;
         parent: string;
         user: {
+            _id: import("mongoose").Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -334,14 +335,13 @@ export declare const deleteCommentHandler: ({ ctx, input }: ContextWithInput<Del
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: import("mongoose").Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
         replies: import("mongoose").Types.ObjectId[];
         likes: string[];
+        updatedOn?: Date | undefined;
+        editedOn?: Date | undefined;
     }[];
     likes: string[];
+    updatedOn?: Date | undefined;
+    editedOn?: Date | undefined;
 }>;

@@ -5,21 +5,21 @@ export declare const UploadInputSchema: z.ZodArray<z.ZodObject<{
     fileType: z.ZodString;
     fileBlob: z.ZodAny;
 }, "strip", z.ZodTypeAny, {
-    fileBlob?: any;
     fileName: string;
     fileType: string;
+    fileBlob?: any;
 }, {
-    fileBlob?: any;
     fileName: string;
     fileType: string;
+    fileBlob?: any;
 }>, "many">;
 export type UploadInputType = z.infer<typeof UploadInputSchema>;
 export declare const uploadFileToAWS: ({ ctx, input }: {
     ctx: Context;
     input: {
-        fileBlob?: any;
         fileName: string;
         fileType: string;
+        fileBlob?: any;
     }[];
 }) => Promise<{
     options: {

@@ -11,8 +11,6 @@ export declare const CommentSchema: z.ZodObject<{
     updatedOn: z.ZodOptional<z.ZodDate>;
     editedOn: z.ZodOptional<z.ZodDate>;
 }, "strip", z.ZodTypeAny, {
-    updatedOn?: Date | undefined;
-    editedOn?: Date | undefined;
     _id: Types.ObjectId;
     createdOn: Date;
     text: string;
@@ -20,26 +18,30 @@ export declare const CommentSchema: z.ZodObject<{
     user: Types.ObjectId;
     replies: Types.ObjectId[];
     likes: string[];
-}, {
     updatedOn?: Date | undefined;
-    replies?: Types.ObjectId[] | undefined;
-    likes?: string[] | undefined;
     editedOn?: Date | undefined;
+}, {
     _id: Types.ObjectId;
     createdOn: Date;
     text: string;
     parent: string;
     user: Types.ObjectId;
+    updatedOn?: Date | undefined;
+    replies?: Types.ObjectId[] | undefined;
+    likes?: string[] | undefined;
+    editedOn?: Date | undefined;
 }>;
-export declare const CommentSchemaPopulatedUser: z.ZodObject<{
+export declare const CommentSchemaPopulatedUser: z.ZodObject<Omit<{
     _id: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
-    createdOn: z.ZodDate;
-    updatedOn: z.ZodOptional<z.ZodDate>;
-    text: z.ZodString;
     parent: z.ZodString;
+    text: z.ZodString;
+    user: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
     replies: z.ZodDefault<z.ZodArray<z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>, "many">>;
     likes: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
+    createdOn: z.ZodDate;
+    updatedOn: z.ZodOptional<z.ZodDate>;
     editedOn: z.ZodOptional<z.ZodDate>;
+}, "user"> & {
     user: z.ZodObject<{
         _id: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
         username: z.ZodString;
@@ -86,6 +88,11 @@ export declare const CommentSchemaPopulatedUser: z.ZodObject<{
         createdOn: z.ZodOptional<z.ZodString>;
         updatedOn: z.ZodOptional<z.ZodString>;
     }, "strip", z.ZodTypeAny, {
+        _id: Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -105,12 +112,10 @@ export declare const CommentSchemaPopulatedUser: z.ZodObject<{
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
+    }, {
         _id: Types.ObjectId;
         email: string;
-        followers: string[];
-        following: string[];
         username: string;
-    }, {
         google?: {
             googleId: string;
             userPhoto: string;
@@ -132,18 +137,18 @@ export declare const CommentSchemaPopulatedUser: z.ZodObject<{
         following?: string[] | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: Types.ObjectId;
-        email: string;
-        username: string;
     }>;
 }, "strip", z.ZodTypeAny, {
-    updatedOn?: Date | undefined;
-    editedOn?: Date | undefined;
     _id: Types.ObjectId;
     createdOn: Date;
     text: string;
     parent: string;
     user: {
+        _id: Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -163,58 +168,58 @@ export declare const CommentSchemaPopulatedUser: z.ZodObject<{
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: Types.ObjectId;
-        email: string;
-        followers: string[];
-        following: string[];
-        username: string;
     };
     replies: Types.ObjectId[];
     likes: string[];
+    updatedOn?: Date | undefined;
+    editedOn?: Date | undefined;
 }, {
+    _id: Types.ObjectId;
+    createdOn: Date;
+    text: string;
+    parent: string;
+    user: {
+        _id: Types.ObjectId;
+        email: string;
+        username: string;
+        google?: {
+            googleId: string;
+            userPhoto: string;
+            userSignUpDate: Date;
+            given_name: string;
+            family_name: string;
+        } | undefined;
+        picture?: string | undefined;
+        firstName?: string | undefined;
+        lastName?: string | undefined;
+        about?: string | undefined;
+        location?: string | undefined;
+        socials?: {
+            twitter?: string | undefined;
+            instagram?: string | undefined;
+            soundCloud?: string | undefined;
+        } | undefined;
+        followers?: string[] | undefined;
+        following?: string[] | undefined;
+        createdOn?: string | undefined;
+        updatedOn?: string | undefined;
+    };
     updatedOn?: Date | undefined;
     replies?: Types.ObjectId[] | undefined;
     likes?: string[] | undefined;
     editedOn?: Date | undefined;
-    _id: Types.ObjectId;
-    createdOn: Date;
-    text: string;
-    parent: string;
-    user: {
-        google?: {
-            googleId: string;
-            userPhoto: string;
-            userSignUpDate: Date;
-            given_name: string;
-            family_name: string;
-        } | undefined;
-        picture?: string | undefined;
-        firstName?: string | undefined;
-        lastName?: string | undefined;
-        about?: string | undefined;
-        location?: string | undefined;
-        socials?: {
-            twitter?: string | undefined;
-            instagram?: string | undefined;
-            soundCloud?: string | undefined;
-        } | undefined;
-        followers?: string[] | undefined;
-        following?: string[] | undefined;
-        createdOn?: string | undefined;
-        updatedOn?: string | undefined;
-        _id: Types.ObjectId;
-        email: string;
-        username: string;
-    };
 }>;
-export declare const CommentSchemaPopulatedUserAndReplies: z.ZodObject<{
+export declare const CommentSchemaPopulatedUserAndReplies: z.ZodObject<Omit<{
     _id: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
+    parent: z.ZodString;
+    text: z.ZodString;
+    user: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
+    replies: z.ZodDefault<z.ZodArray<z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>, "many">>;
+    likes: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
     createdOn: z.ZodDate;
     updatedOn: z.ZodOptional<z.ZodDate>;
-    text: z.ZodString;
-    parent: z.ZodString;
-    likes: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
     editedOn: z.ZodOptional<z.ZodDate>;
+}, "user" | "replies"> & {
     user: z.ZodObject<{
         _id: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
         username: z.ZodString;
@@ -261,6 +266,11 @@ export declare const CommentSchemaPopulatedUserAndReplies: z.ZodObject<{
         createdOn: z.ZodOptional<z.ZodString>;
         updatedOn: z.ZodOptional<z.ZodString>;
     }, "strip", z.ZodTypeAny, {
+        _id: Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -280,12 +290,10 @@ export declare const CommentSchemaPopulatedUserAndReplies: z.ZodObject<{
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
+    }, {
         _id: Types.ObjectId;
         email: string;
-        followers: string[];
-        following: string[];
         username: string;
-    }, {
         google?: {
             googleId: string;
             userPhoto: string;
@@ -307,19 +315,18 @@ export declare const CommentSchemaPopulatedUserAndReplies: z.ZodObject<{
         following?: string[] | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: Types.ObjectId;
-        email: string;
-        username: string;
     }>;
-    replies: z.ZodDefault<z.ZodArray<z.ZodObject<{
+    replies: z.ZodDefault<z.ZodArray<z.ZodObject<Omit<{
         _id: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
-        createdOn: z.ZodDate;
-        updatedOn: z.ZodOptional<z.ZodDate>;
-        text: z.ZodString;
         parent: z.ZodString;
+        text: z.ZodString;
+        user: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
         replies: z.ZodDefault<z.ZodArray<z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>, "many">>;
         likes: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
+        createdOn: z.ZodDate;
+        updatedOn: z.ZodOptional<z.ZodDate>;
         editedOn: z.ZodOptional<z.ZodDate>;
+    }, "user"> & {
         user: z.ZodObject<{
             _id: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
             username: z.ZodString;
@@ -366,6 +373,11 @@ export declare const CommentSchemaPopulatedUserAndReplies: z.ZodObject<{
             createdOn: z.ZodOptional<z.ZodString>;
             updatedOn: z.ZodOptional<z.ZodString>;
         }, "strip", z.ZodTypeAny, {
+            _id: Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -385,12 +397,10 @@ export declare const CommentSchemaPopulatedUserAndReplies: z.ZodObject<{
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
+        }, {
             _id: Types.ObjectId;
             email: string;
-            followers: string[];
-            following: string[];
             username: string;
-        }, {
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -412,18 +422,18 @@ export declare const CommentSchemaPopulatedUserAndReplies: z.ZodObject<{
             following?: string[] | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: Types.ObjectId;
-            email: string;
-            username: string;
         }>;
     }, "strip", z.ZodTypeAny, {
-        updatedOn?: Date | undefined;
-        editedOn?: Date | undefined;
         _id: Types.ObjectId;
         createdOn: Date;
         text: string;
         parent: string;
         user: {
+            _id: Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -443,58 +453,58 @@ export declare const CommentSchemaPopulatedUserAndReplies: z.ZodObject<{
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
         replies: Types.ObjectId[];
         likes: string[];
+        updatedOn?: Date | undefined;
+        editedOn?: Date | undefined;
     }, {
+        _id: Types.ObjectId;
+        createdOn: Date;
+        text: string;
+        parent: string;
+        user: {
+            _id: Types.ObjectId;
+            email: string;
+            username: string;
+            google?: {
+                googleId: string;
+                userPhoto: string;
+                userSignUpDate: Date;
+                given_name: string;
+                family_name: string;
+            } | undefined;
+            picture?: string | undefined;
+            firstName?: string | undefined;
+            lastName?: string | undefined;
+            about?: string | undefined;
+            location?: string | undefined;
+            socials?: {
+                twitter?: string | undefined;
+                instagram?: string | undefined;
+                soundCloud?: string | undefined;
+            } | undefined;
+            followers?: string[] | undefined;
+            following?: string[] | undefined;
+            createdOn?: string | undefined;
+            updatedOn?: string | undefined;
+        };
         updatedOn?: Date | undefined;
         replies?: Types.ObjectId[] | undefined;
         likes?: string[] | undefined;
         editedOn?: Date | undefined;
-        _id: Types.ObjectId;
-        createdOn: Date;
-        text: string;
-        parent: string;
-        user: {
-            google?: {
-                googleId: string;
-                userPhoto: string;
-                userSignUpDate: Date;
-                given_name: string;
-                family_name: string;
-            } | undefined;
-            picture?: string | undefined;
-            firstName?: string | undefined;
-            lastName?: string | undefined;
-            about?: string | undefined;
-            location?: string | undefined;
-            socials?: {
-                twitter?: string | undefined;
-                instagram?: string | undefined;
-                soundCloud?: string | undefined;
-            } | undefined;
-            followers?: string[] | undefined;
-            following?: string[] | undefined;
-            createdOn?: string | undefined;
-            updatedOn?: string | undefined;
-            _id: Types.ObjectId;
-            email: string;
-            username: string;
-        };
     }>, "many">>;
 }, "strip", z.ZodTypeAny, {
-    updatedOn?: Date | undefined;
-    editedOn?: Date | undefined;
     _id: Types.ObjectId;
     createdOn: Date;
     text: string;
     parent: string;
     user: {
+        _id: Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -514,61 +524,18 @@ export declare const CommentSchemaPopulatedUserAndReplies: z.ZodObject<{
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: Types.ObjectId;
-        email: string;
-        followers: string[];
-        following: string[];
-        username: string;
     };
     replies: {
-        updatedOn?: Date | undefined;
-        editedOn?: Date | undefined;
         _id: Types.ObjectId;
         createdOn: Date;
         text: string;
         parent: string;
         user: {
-            google?: {
-                googleId: string;
-                userPhoto: string;
-                userSignUpDate: Date;
-                given_name: string;
-                family_name: string;
-            } | undefined;
-            picture?: string | undefined;
-            firstName?: string | undefined;
-            lastName?: string | undefined;
-            about?: string | undefined;
-            location?: string | undefined;
-            socials?: {
-                twitter?: string | undefined;
-                instagram?: string | undefined;
-                soundCloud?: string | undefined;
-            } | undefined;
-            createdOn?: string | undefined;
-            updatedOn?: string | undefined;
             _id: Types.ObjectId;
             email: string;
             followers: string[];
             following: string[];
             username: string;
-        };
-        replies: Types.ObjectId[];
-        likes: string[];
-    }[];
-    likes: string[];
-}, {
-    updatedOn?: Date | undefined;
-    replies?: {
-        updatedOn?: Date | undefined;
-        replies?: Types.ObjectId[] | undefined;
-        likes?: string[] | undefined;
-        editedOn?: Date | undefined;
-        _id: Types.ObjectId;
-        createdOn: Date;
-        text: string;
-        parent: string;
-        user: {
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -586,22 +553,26 @@ export declare const CommentSchemaPopulatedUserAndReplies: z.ZodObject<{
                 instagram?: string | undefined;
                 soundCloud?: string | undefined;
             } | undefined;
-            followers?: string[] | undefined;
-            following?: string[] | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: Types.ObjectId;
-            email: string;
-            username: string;
         };
-    }[] | undefined;
-    likes?: string[] | undefined;
+        replies: Types.ObjectId[];
+        likes: string[];
+        updatedOn?: Date | undefined;
+        editedOn?: Date | undefined;
+    }[];
+    likes: string[];
+    updatedOn?: Date | undefined;
     editedOn?: Date | undefined;
+}, {
     _id: Types.ObjectId;
     createdOn: Date;
     text: string;
     parent: string;
     user: {
+        _id: Types.ObjectId;
+        email: string;
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -623,14 +594,58 @@ export declare const CommentSchemaPopulatedUserAndReplies: z.ZodObject<{
         following?: string[] | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: Types.ObjectId;
-        email: string;
-        username: string;
     };
+    updatedOn?: Date | undefined;
+    replies?: {
+        _id: Types.ObjectId;
+        createdOn: Date;
+        text: string;
+        parent: string;
+        user: {
+            _id: Types.ObjectId;
+            email: string;
+            username: string;
+            google?: {
+                googleId: string;
+                userPhoto: string;
+                userSignUpDate: Date;
+                given_name: string;
+                family_name: string;
+            } | undefined;
+            picture?: string | undefined;
+            firstName?: string | undefined;
+            lastName?: string | undefined;
+            about?: string | undefined;
+            location?: string | undefined;
+            socials?: {
+                twitter?: string | undefined;
+                instagram?: string | undefined;
+                soundCloud?: string | undefined;
+            } | undefined;
+            followers?: string[] | undefined;
+            following?: string[] | undefined;
+            createdOn?: string | undefined;
+            updatedOn?: string | undefined;
+        };
+        updatedOn?: Date | undefined;
+        replies?: Types.ObjectId[] | undefined;
+        likes?: string[] | undefined;
+        editedOn?: Date | undefined;
+    }[] | undefined;
+    likes?: string[] | undefined;
+    editedOn?: Date | undefined;
 }>;
-export declare const CreateCommentSchema: z.ZodObject<{
-    text: z.ZodString;
+export declare const CreateCommentSchema: z.ZodObject<Omit<{
+    _id: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
     parent: z.ZodString;
+    text: z.ZodString;
+    user: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
+    replies: z.ZodDefault<z.ZodArray<z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>, "many">>;
+    likes: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
+    createdOn: z.ZodDate;
+    updatedOn: z.ZodOptional<z.ZodDate>;
+    editedOn: z.ZodOptional<z.ZodDate>;
+}, "_id" | "createdOn" | "updatedOn" | "user" | "replies" | "likes" | "editedOn"> & {
     user: z.ZodString;
     songId: z.ZodString;
 }, "strip", z.ZodTypeAny, {

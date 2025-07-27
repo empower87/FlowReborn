@@ -114,7 +114,7 @@ export default function useEditLyrics({ _initialLyrics, _currentSong }: UseEditL
         })
       )
     },
-    [lyricsHistory, setLyricsHistory]
+    [setLyricsHistory]
   )
 
   const onAddLyric = useCallback(
@@ -130,7 +130,7 @@ export default function useEditLyrics({ _initialLyrics, _currentSong }: UseEditL
         })
       )
     },
-    [lyricsHistory, setLyricsHistory]
+    [setLyricsHistory]
   )
 
   const onReset = () => {

@@ -16,10 +16,6 @@ export declare const SongSchema: z.ZodObject<{
     createdOn: z.ZodDate;
     updatedOn: z.ZodDate;
 }, "strip", z.ZodTypeAny, {
-    caption?: string | undefined;
-    thumbnail?: string | undefined;
-    isPosted?: boolean | undefined;
-    isVideo?: boolean | undefined;
     _id: Types.ObjectId;
     createdOn: Date;
     updatedOn: Date;
@@ -30,14 +26,11 @@ export declare const SongSchema: z.ZodObject<{
     duration: number;
     src: string;
     comments: Types.ObjectId[];
-}, {
-    likes?: string[] | undefined;
     caption?: string | undefined;
-    lyrics?: string[][] | undefined;
     thumbnail?: string | undefined;
     isPosted?: boolean | undefined;
     isVideo?: boolean | undefined;
-    comments?: Types.ObjectId[] | undefined;
+}, {
     _id: Types.ObjectId;
     createdOn: Date;
     updatedOn: Date;
@@ -45,12 +38,16 @@ export declare const SongSchema: z.ZodObject<{
     title: string;
     duration: number;
     src: string;
+    likes?: string[] | undefined;
+    caption?: string | undefined;
+    lyrics?: string[][] | undefined;
+    thumbnail?: string | undefined;
+    isPosted?: boolean | undefined;
+    isVideo?: boolean | undefined;
+    comments?: Types.ObjectId[] | undefined;
 }>;
-export declare const SongSchemaPopulatedUserAndComments: z.ZodObject<{
+export declare const SongSchemaPopulatedUserAndComments: z.ZodObject<Omit<{
     _id: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
-    createdOn: z.ZodDate;
-    updatedOn: z.ZodDate;
-    likes: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
     title: z.ZodString;
     caption: z.ZodOptional<z.ZodString>;
     lyrics: z.ZodDefault<z.ZodArray<z.ZodArray<z.ZodString, "many">, "many">>;
@@ -59,6 +56,12 @@ export declare const SongSchemaPopulatedUserAndComments: z.ZodObject<{
     thumbnail: z.ZodOptional<z.ZodString>;
     isPosted: z.ZodOptional<z.ZodBoolean>;
     isVideo: z.ZodOptional<z.ZodBoolean>;
+    user: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
+    comments: z.ZodDefault<z.ZodArray<z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>, "many">>;
+    likes: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
+    createdOn: z.ZodDate;
+    updatedOn: z.ZodDate;
+}, "user" | "comments"> & {
     user: z.ZodObject<{
         _id: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
         username: z.ZodString;
@@ -105,6 +108,11 @@ export declare const SongSchemaPopulatedUserAndComments: z.ZodObject<{
         createdOn: z.ZodOptional<z.ZodString>;
         updatedOn: z.ZodOptional<z.ZodString>;
     }, "strip", z.ZodTypeAny, {
+        _id: Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -124,12 +132,10 @@ export declare const SongSchemaPopulatedUserAndComments: z.ZodObject<{
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
+    }, {
         _id: Types.ObjectId;
         email: string;
-        followers: string[];
-        following: string[];
         username: string;
-    }, {
         google?: {
             googleId: string;
             userPhoto: string;
@@ -151,19 +157,18 @@ export declare const SongSchemaPopulatedUserAndComments: z.ZodObject<{
         following?: string[] | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: Types.ObjectId;
-        email: string;
-        username: string;
     }>;
-    comments: z.ZodArray<z.ZodObject<{
+    comments: z.ZodArray<z.ZodObject<Omit<{
         _id: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
-        createdOn: z.ZodDate;
-        updatedOn: z.ZodOptional<z.ZodDate>;
-        text: z.ZodString;
         parent: z.ZodString;
+        text: z.ZodString;
+        user: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
         replies: z.ZodDefault<z.ZodArray<z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>, "many">>;
         likes: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
+        createdOn: z.ZodDate;
+        updatedOn: z.ZodOptional<z.ZodDate>;
         editedOn: z.ZodOptional<z.ZodDate>;
+    }, "user"> & {
         user: z.ZodObject<{
             _id: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
             username: z.ZodString;
@@ -210,6 +215,11 @@ export declare const SongSchemaPopulatedUserAndComments: z.ZodObject<{
             createdOn: z.ZodOptional<z.ZodString>;
             updatedOn: z.ZodOptional<z.ZodString>;
         }, "strip", z.ZodTypeAny, {
+            _id: Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -229,12 +239,10 @@ export declare const SongSchemaPopulatedUserAndComments: z.ZodObject<{
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
+        }, {
             _id: Types.ObjectId;
             email: string;
-            followers: string[];
-            following: string[];
             username: string;
-        }, {
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -256,18 +264,18 @@ export declare const SongSchemaPopulatedUserAndComments: z.ZodObject<{
             following?: string[] | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: Types.ObjectId;
-            email: string;
-            username: string;
         }>;
     }, "strip", z.ZodTypeAny, {
-        updatedOn?: Date | undefined;
-        editedOn?: Date | undefined;
         _id: Types.ObjectId;
         createdOn: Date;
         text: string;
         parent: string;
         user: {
+            _id: Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -287,59 +295,57 @@ export declare const SongSchemaPopulatedUserAndComments: z.ZodObject<{
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
         replies: Types.ObjectId[];
         likes: string[];
+        updatedOn?: Date | undefined;
+        editedOn?: Date | undefined;
     }, {
+        _id: Types.ObjectId;
+        createdOn: Date;
+        text: string;
+        parent: string;
+        user: {
+            _id: Types.ObjectId;
+            email: string;
+            username: string;
+            google?: {
+                googleId: string;
+                userPhoto: string;
+                userSignUpDate: Date;
+                given_name: string;
+                family_name: string;
+            } | undefined;
+            picture?: string | undefined;
+            firstName?: string | undefined;
+            lastName?: string | undefined;
+            about?: string | undefined;
+            location?: string | undefined;
+            socials?: {
+                twitter?: string | undefined;
+                instagram?: string | undefined;
+                soundCloud?: string | undefined;
+            } | undefined;
+            followers?: string[] | undefined;
+            following?: string[] | undefined;
+            createdOn?: string | undefined;
+            updatedOn?: string | undefined;
+        };
         updatedOn?: Date | undefined;
         replies?: Types.ObjectId[] | undefined;
         likes?: string[] | undefined;
         editedOn?: Date | undefined;
-        _id: Types.ObjectId;
-        createdOn: Date;
-        text: string;
-        parent: string;
-        user: {
-            google?: {
-                googleId: string;
-                userPhoto: string;
-                userSignUpDate: Date;
-                given_name: string;
-                family_name: string;
-            } | undefined;
-            picture?: string | undefined;
-            firstName?: string | undefined;
-            lastName?: string | undefined;
-            about?: string | undefined;
-            location?: string | undefined;
-            socials?: {
-                twitter?: string | undefined;
-                instagram?: string | undefined;
-                soundCloud?: string | undefined;
-            } | undefined;
-            followers?: string[] | undefined;
-            following?: string[] | undefined;
-            createdOn?: string | undefined;
-            updatedOn?: string | undefined;
-            _id: Types.ObjectId;
-            email: string;
-            username: string;
-        };
     }>, "many">;
 }, "strip", z.ZodTypeAny, {
-    caption?: string | undefined;
-    thumbnail?: string | undefined;
-    isPosted?: boolean | undefined;
-    isVideo?: boolean | undefined;
     _id: Types.ObjectId;
     createdOn: Date;
     updatedOn: Date;
     user: {
+        _id: Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -359,11 +365,6 @@ export declare const SongSchemaPopulatedUserAndComments: z.ZodObject<{
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: Types.ObjectId;
-        email: string;
-        followers: string[];
-        following: string[];
-        username: string;
     };
     likes: string[];
     title: string;
@@ -371,13 +372,16 @@ export declare const SongSchemaPopulatedUserAndComments: z.ZodObject<{
     duration: number;
     src: string;
     comments: {
-        updatedOn?: Date | undefined;
-        editedOn?: Date | undefined;
         _id: Types.ObjectId;
         createdOn: Date;
         text: string;
         parent: string;
         user: {
+            _id: Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -397,26 +401,24 @@ export declare const SongSchemaPopulatedUserAndComments: z.ZodObject<{
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
         replies: Types.ObjectId[];
         likes: string[];
+        updatedOn?: Date | undefined;
+        editedOn?: Date | undefined;
     }[];
-}, {
-    likes?: string[] | undefined;
     caption?: string | undefined;
-    lyrics?: string[][] | undefined;
     thumbnail?: string | undefined;
     isPosted?: boolean | undefined;
     isVideo?: boolean | undefined;
+}, {
     _id: Types.ObjectId;
     createdOn: Date;
     updatedOn: Date;
     user: {
+        _id: Types.ObjectId;
+        email: string;
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -438,23 +440,19 @@ export declare const SongSchemaPopulatedUserAndComments: z.ZodObject<{
         following?: string[] | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: Types.ObjectId;
-        email: string;
-        username: string;
     };
     title: string;
     duration: number;
     src: string;
     comments: {
-        updatedOn?: Date | undefined;
-        replies?: Types.ObjectId[] | undefined;
-        likes?: string[] | undefined;
-        editedOn?: Date | undefined;
         _id: Types.ObjectId;
         createdOn: Date;
         text: string;
         parent: string;
         user: {
+            _id: Types.ObjectId;
+            email: string;
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -476,17 +474,21 @@ export declare const SongSchemaPopulatedUserAndComments: z.ZodObject<{
             following?: string[] | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: Types.ObjectId;
-            email: string;
-            username: string;
         };
+        updatedOn?: Date | undefined;
+        replies?: Types.ObjectId[] | undefined;
+        likes?: string[] | undefined;
+        editedOn?: Date | undefined;
     }[];
+    likes?: string[] | undefined;
+    caption?: string | undefined;
+    lyrics?: string[][] | undefined;
+    thumbnail?: string | undefined;
+    isPosted?: boolean | undefined;
+    isVideo?: boolean | undefined;
 }>;
-export declare const SongSchemaPopulatedUser: z.ZodObject<{
+export declare const SongSchemaPopulatedUser: z.ZodObject<Omit<{
     _id: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
-    createdOn: z.ZodDate;
-    updatedOn: z.ZodDate;
-    likes: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
     title: z.ZodString;
     caption: z.ZodOptional<z.ZodString>;
     lyrics: z.ZodDefault<z.ZodArray<z.ZodArray<z.ZodString, "many">, "many">>;
@@ -495,7 +497,12 @@ export declare const SongSchemaPopulatedUser: z.ZodObject<{
     thumbnail: z.ZodOptional<z.ZodString>;
     isPosted: z.ZodOptional<z.ZodBoolean>;
     isVideo: z.ZodOptional<z.ZodBoolean>;
+    user: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
     comments: z.ZodDefault<z.ZodArray<z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>, "many">>;
+    likes: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
+    createdOn: z.ZodDate;
+    updatedOn: z.ZodDate;
+}, "user"> & {
     user: z.ZodObject<{
         _id: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
         username: z.ZodString;
@@ -542,6 +549,11 @@ export declare const SongSchemaPopulatedUser: z.ZodObject<{
         createdOn: z.ZodOptional<z.ZodString>;
         updatedOn: z.ZodOptional<z.ZodString>;
     }, "strip", z.ZodTypeAny, {
+        _id: Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -561,12 +573,10 @@ export declare const SongSchemaPopulatedUser: z.ZodObject<{
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
+    }, {
         _id: Types.ObjectId;
         email: string;
-        followers: string[];
-        following: string[];
         username: string;
-    }, {
         google?: {
             googleId: string;
             userPhoto: string;
@@ -588,19 +598,17 @@ export declare const SongSchemaPopulatedUser: z.ZodObject<{
         following?: string[] | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: Types.ObjectId;
-        email: string;
-        username: string;
     }>;
 }, "strip", z.ZodTypeAny, {
-    caption?: string | undefined;
-    thumbnail?: string | undefined;
-    isPosted?: boolean | undefined;
-    isVideo?: boolean | undefined;
     _id: Types.ObjectId;
     createdOn: Date;
     updatedOn: Date;
     user: {
+        _id: Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -620,11 +628,6 @@ export declare const SongSchemaPopulatedUser: z.ZodObject<{
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: Types.ObjectId;
-        email: string;
-        followers: string[];
-        following: string[];
-        username: string;
     };
     likes: string[];
     title: string;
@@ -632,18 +635,18 @@ export declare const SongSchemaPopulatedUser: z.ZodObject<{
     duration: number;
     src: string;
     comments: Types.ObjectId[];
-}, {
-    likes?: string[] | undefined;
     caption?: string | undefined;
-    lyrics?: string[][] | undefined;
     thumbnail?: string | undefined;
     isPosted?: boolean | undefined;
     isVideo?: boolean | undefined;
-    comments?: Types.ObjectId[] | undefined;
+}, {
     _id: Types.ObjectId;
     createdOn: Date;
     updatedOn: Date;
     user: {
+        _id: Types.ObjectId;
+        email: string;
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -665,16 +668,21 @@ export declare const SongSchemaPopulatedUser: z.ZodObject<{
         following?: string[] | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: Types.ObjectId;
-        email: string;
-        username: string;
     };
     title: string;
     duration: number;
     src: string;
+    likes?: string[] | undefined;
+    caption?: string | undefined;
+    lyrics?: string[][] | undefined;
+    thumbnail?: string | undefined;
+    isPosted?: boolean | undefined;
+    isVideo?: boolean | undefined;
+    comments?: Types.ObjectId[] | undefined;
 }>;
 export type SongSchemaType = z.infer<typeof SongSchema>;
-export declare const CreateSongSchema: z.ZodObject<{
+export declare const CreateSongSchema: z.ZodObject<Omit<{
+    _id: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
     title: z.ZodString;
     caption: z.ZodOptional<z.ZodString>;
     lyrics: z.ZodDefault<z.ZodArray<z.ZodArray<z.ZodString, "many">, "many">>;
@@ -683,40 +691,59 @@ export declare const CreateSongSchema: z.ZodObject<{
     thumbnail: z.ZodOptional<z.ZodString>;
     isPosted: z.ZodOptional<z.ZodBoolean>;
     isVideo: z.ZodOptional<z.ZodBoolean>;
+    user: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
+    comments: z.ZodDefault<z.ZodArray<z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>, "many">>;
+    likes: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
+    createdOn: z.ZodDate;
+    updatedOn: z.ZodDate;
+}, "_id" | "createdOn" | "updatedOn" | "user" | "likes" | "comments"> & {
     user: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    caption?: string | undefined;
-    thumbnail?: string | undefined;
-    isPosted?: boolean | undefined;
-    isVideo?: boolean | undefined;
     user: string;
     title: string;
     lyrics: string[][];
     duration: number;
     src: string;
+    caption?: string | undefined;
+    thumbnail?: string | undefined;
+    isPosted?: boolean | undefined;
+    isVideo?: boolean | undefined;
 }, {
+    user: string;
+    title: string;
+    duration: number;
+    src: string;
     caption?: string | undefined;
     lyrics?: string[][] | undefined;
     thumbnail?: string | undefined;
     isPosted?: boolean | undefined;
     isVideo?: boolean | undefined;
-    user: string;
-    title: string;
-    duration: number;
-    src: string;
 }>;
-export declare const UpdateSongSchema: z.ZodObject<{
+export declare const UpdateSongSchema: z.ZodObject<Pick<{
+    _id: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
     title: z.ZodString;
     caption: z.ZodOptional<z.ZodString>;
+    lyrics: z.ZodDefault<z.ZodArray<z.ZodArray<z.ZodString, "many">, "many">>;
+    duration: z.ZodNumber;
+    src: z.ZodString;
+    thumbnail: z.ZodOptional<z.ZodString>;
+    isPosted: z.ZodOptional<z.ZodBoolean>;
+    isVideo: z.ZodOptional<z.ZodBoolean>;
+    user: z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>;
+    comments: z.ZodDefault<z.ZodArray<z.ZodType<Types.ObjectId, z.ZodTypeDef, Types.ObjectId>, "many">>;
+    likes: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
+    createdOn: z.ZodDate;
+    updatedOn: z.ZodDate;
+}, "title" | "caption"> & {
     _id: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    caption?: string | undefined;
     _id: string;
     title: string;
+    caption?: string | undefined;
 }, {
-    caption?: string | undefined;
     _id: string;
     title: string;
+    caption?: string | undefined;
 }>;
 export declare const SongInputSchema: z.ZodObject<{
     _id: z.ZodString;

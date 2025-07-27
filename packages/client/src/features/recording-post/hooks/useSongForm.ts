@@ -1,9 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
 import { ISongTake } from "src/features/recording-booth/utils/types"
-import { trpc } from "src/utils/trpc"
 import { SaveSongInputSchema } from "../utils/input-schema"
 
 export interface IPostSongFormInputs {
@@ -19,17 +17,17 @@ export const INITIAL_ERROR_STATE = {
 type Error = typeof INITIAL_ERROR_STATE
 
 export const useSongForm = (recordingType: "audio" | "video") => {
-  const navigate = useNavigate()
-  const [isSaving, setIsSaving] = useState<boolean>(false)
+  // const navigate = useNavigate()
+  const [isSaving] = useState<boolean>(false)
   const [error, setError] = useState<Error>(INITIAL_ERROR_STATE)
 
-  const uploadToAWS = trpc.users.uploadFile.useMutation({
-    onError: (err) => onSettledMutation(err.message),
-  })
-  const createSong = trpc.songs.createSong.useMutation({
-    onSuccess: (data) => onSettledMutation("success", data._id),
-    onError: (err) => onSettledMutation(err.message),
-  })
+  // const uploadToAWS = trpc.users.uploadFile.useMutation({
+  //   onError: (err) => onSettledMutation(err.message),
+  // })
+  // const createSong = trpc.songs.createSong.useMutation({
+  //   onSuccess: (data) => onSettledMutation("success", data._id),
+  //   onError: (err) => onSettledMutation(err.message),
+  // })
   const methods = useForm<IPostSongFormInputs>({
     mode: "onChange",
     defaultValues: {
@@ -39,7 +37,7 @@ export const useSongForm = (recordingType: "audio" | "video") => {
     resolver: zodResolver(SaveSongInputSchema),
   })
   const {
-    formState: { isDirty, isValid, errors },
+    formState: { errors },
   } = methods
 
   useEffect(() => {
@@ -134,22 +132,22 @@ export const useSongForm = (recordingType: "audio" | "video") => {
   //   })
   // }
 
-  const onSettledMutation = useCallback(
-    (message: string, id?: string) => {
-      setIsSaving(false)
-      if (message === "you must be logged in to access this resource") {
-        navigate("/auth")
-      } else if (message !== "success") {
-        console.log(message, "error saving song")
-        setError({ message: message, showError: true })
-      } else {
-        if (!methods.formState.isSubmitted || !id) return
-        console.log("song saved successfully")
-        methods.reset()
-      }
-    },
-    [methods, navigate]
-  )
+  // const onSettledMutation = useCallback(
+  //   (message: string, id?: string) => {
+  //     setIsSaving(false)
+  //     if (message === "you must be logged in to access this resource") {
+  //       navigate("/auth")
+  //     } else if (message !== "success") {
+  //       console.log(message, "error saving song")
+  //       setError({ message: message, showError: true })
+  //     } else {
+  //       if (!methods.formState.isSubmitted || !id) return
+  //       console.log("song saved successfully")
+  //       methods.reset()
+  //     }
+  //   },
+  //   [methods, navigate]
+  // )
 
   return { handleSaveSong, methods, error, setError, isSaving }
 }

@@ -1,5 +1,6 @@
 /// <reference types="qs" />
 /// <reference types="express" />
+/// <reference types="cookie-parser" />
 /// <reference types="mongoose/types/aggregate.js" />
 /// <reference types="mongoose/types/callback.js" />
 /// <reference types="mongoose/types/collection.js" />
@@ -59,23 +60,19 @@ export declare const commentsRouter: import("@trpc/server").CreateRouterInner<im
             transformer: import("@trpc/server").DefaultDataTransformer;
         }>;
         _meta: object;
-        _ctx_out: import("@trpc/server").Overwrite<{
+        _ctx_out: {
+            user: {
+                username: string;
+            };
             req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
             res: import("express").Response<any, Record<string, any>>;
-            user: null;
         } | {
-            req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
-            res: import("express").Response<any, Record<string, any>>;
             user: {
                 username: string;
             };
-        }, {
             req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
             res: import("express").Response<any, Record<string, any>>;
-            user: {
-                username: string;
-            };
-        }>;
+        };
         _input_in: {
             _id: string;
         };
@@ -85,13 +82,16 @@ export declare const commentsRouter: import("@trpc/server").CreateRouterInner<im
         _output_in: typeof import("@trpc/server").unsetMarker;
         _output_out: typeof import("@trpc/server").unsetMarker;
     }, {
-        updatedOn?: Date | undefined;
-        editedOn?: Date | undefined;
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         text: string;
         parent: string;
         user: {
+            _id: import("mongoose").Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -111,20 +111,18 @@ export declare const commentsRouter: import("@trpc/server").CreateRouterInner<im
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: import("mongoose").Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
         replies: {
-            updatedOn?: Date | undefined;
-            editedOn?: Date | undefined;
             _id: import("mongoose").Types.ObjectId;
             createdOn: Date;
             text: string;
             parent: string;
             user: {
+                _id: import("mongoose").Types.ObjectId;
+                email: string;
+                followers: string[];
+                following: string[];
+                username: string;
                 google?: {
                     googleId: string;
                     userPhoto: string;
@@ -144,16 +142,15 @@ export declare const commentsRouter: import("@trpc/server").CreateRouterInner<im
                 } | undefined;
                 createdOn?: string | undefined;
                 updatedOn?: string | undefined;
-                _id: import("mongoose").Types.ObjectId;
-                email: string;
-                followers: string[];
-                following: string[];
-                username: string;
             };
             replies: import("mongoose").Types.ObjectId[];
             likes: string[];
+            updatedOn?: Date | undefined;
+            editedOn?: Date | undefined;
         }[];
         likes: string[];
+        updatedOn?: Date | undefined;
+        editedOn?: Date | undefined;
     }>;
     getCommentPopulatedUser: import("@trpc/server").BuildProcedure<"query", {
         _config: import("@trpc/server").RootConfig<{
@@ -173,23 +170,19 @@ export declare const commentsRouter: import("@trpc/server").CreateRouterInner<im
             transformer: import("@trpc/server").DefaultDataTransformer;
         }>;
         _meta: object;
-        _ctx_out: import("@trpc/server").Overwrite<{
+        _ctx_out: {
+            user: {
+                username: string;
+            };
             req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
             res: import("express").Response<any, Record<string, any>>;
-            user: null;
         } | {
-            req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
-            res: import("express").Response<any, Record<string, any>>;
             user: {
                 username: string;
             };
-        }, {
             req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
             res: import("express").Response<any, Record<string, any>>;
-            user: {
-                username: string;
-            };
-        }>;
+        };
         _input_in: {
             _id: string;
         };
@@ -199,13 +192,16 @@ export declare const commentsRouter: import("@trpc/server").CreateRouterInner<im
         _output_in: typeof import("@trpc/server").unsetMarker;
         _output_out: typeof import("@trpc/server").unsetMarker;
     }, {
-        updatedOn?: Date | undefined;
-        editedOn?: Date | undefined;
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         text: string;
         parent: string;
         user: {
+            _id: import("mongoose").Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -225,14 +221,11 @@ export declare const commentsRouter: import("@trpc/server").CreateRouterInner<im
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: import("mongoose").Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
         replies: import("mongoose").Types.ObjectId[];
         likes: string[];
+        updatedOn?: Date | undefined;
+        editedOn?: Date | undefined;
     }>;
     createComment: import("@trpc/server").BuildProcedure<"mutation", {
         _config: import("@trpc/server").RootConfig<{
@@ -252,23 +245,19 @@ export declare const commentsRouter: import("@trpc/server").CreateRouterInner<im
             transformer: import("@trpc/server").DefaultDataTransformer;
         }>;
         _meta: object;
-        _ctx_out: import("@trpc/server").Overwrite<{
+        _ctx_out: {
+            user: {
+                username: string;
+            };
             req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
             res: import("express").Response<any, Record<string, any>>;
-            user: null;
         } | {
-            req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
-            res: import("express").Response<any, Record<string, any>>;
             user: {
                 username: string;
             };
-        }, {
             req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
             res: import("express").Response<any, Record<string, any>>;
-            user: {
-                username: string;
-            };
-        }>;
+        };
         _input_in: {
             text: string;
             parent: string;
@@ -284,13 +273,16 @@ export declare const commentsRouter: import("@trpc/server").CreateRouterInner<im
         _output_in: typeof import("@trpc/server").unsetMarker;
         _output_out: typeof import("@trpc/server").unsetMarker;
     }, {
-        updatedOn?: Date | undefined;
-        editedOn?: Date | undefined;
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         text: string;
         parent: string;
         user: {
+            _id: import("mongoose").Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -310,20 +302,18 @@ export declare const commentsRouter: import("@trpc/server").CreateRouterInner<im
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: import("mongoose").Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
         replies: {
-            updatedOn?: Date | undefined;
-            editedOn?: Date | undefined;
             _id: import("mongoose").Types.ObjectId;
             createdOn: Date;
             text: string;
             parent: string;
             user: {
+                _id: import("mongoose").Types.ObjectId;
+                email: string;
+                followers: string[];
+                following: string[];
+                username: string;
                 google?: {
                     googleId: string;
                     userPhoto: string;
@@ -343,16 +333,15 @@ export declare const commentsRouter: import("@trpc/server").CreateRouterInner<im
                 } | undefined;
                 createdOn?: string | undefined;
                 updatedOn?: string | undefined;
-                _id: import("mongoose").Types.ObjectId;
-                email: string;
-                followers: string[];
-                following: string[];
-                username: string;
             };
             replies: import("mongoose").Types.ObjectId[];
             likes: string[];
+            updatedOn?: Date | undefined;
+            editedOn?: Date | undefined;
         }[];
         likes: string[];
+        updatedOn?: Date | undefined;
+        editedOn?: Date | undefined;
     }>;
     editComment: import("@trpc/server").BuildProcedure<"mutation", {
         _config: import("@trpc/server").RootConfig<{
@@ -372,23 +361,19 @@ export declare const commentsRouter: import("@trpc/server").CreateRouterInner<im
             transformer: import("@trpc/server").DefaultDataTransformer;
         }>;
         _meta: object;
-        _ctx_out: import("@trpc/server").Overwrite<{
+        _ctx_out: {
+            user: {
+                username: string;
+            };
             req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
             res: import("express").Response<any, Record<string, any>>;
-            user: null;
         } | {
-            req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
-            res: import("express").Response<any, Record<string, any>>;
             user: {
                 username: string;
             };
-        }, {
             req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
             res: import("express").Response<any, Record<string, any>>;
-            user: {
-                username: string;
-            };
-        }>;
+        };
         _input_in: {
             _id: string;
             text: string;
@@ -402,13 +387,16 @@ export declare const commentsRouter: import("@trpc/server").CreateRouterInner<im
         _output_in: typeof import("@trpc/server").unsetMarker;
         _output_out: typeof import("@trpc/server").unsetMarker;
     }, {
-        updatedOn?: Date | undefined;
-        editedOn?: Date | undefined;
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         text: string;
         parent: string;
         user: {
+            _id: import("mongoose").Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -428,20 +416,18 @@ export declare const commentsRouter: import("@trpc/server").CreateRouterInner<im
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: import("mongoose").Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
         replies: {
-            updatedOn?: Date | undefined;
-            editedOn?: Date | undefined;
             _id: import("mongoose").Types.ObjectId;
             createdOn: Date;
             text: string;
             parent: string;
             user: {
+                _id: import("mongoose").Types.ObjectId;
+                email: string;
+                followers: string[];
+                following: string[];
+                username: string;
                 google?: {
                     googleId: string;
                     userPhoto: string;
@@ -461,16 +447,15 @@ export declare const commentsRouter: import("@trpc/server").CreateRouterInner<im
                 } | undefined;
                 createdOn?: string | undefined;
                 updatedOn?: string | undefined;
-                _id: import("mongoose").Types.ObjectId;
-                email: string;
-                followers: string[];
-                following: string[];
-                username: string;
             };
             replies: import("mongoose").Types.ObjectId[];
             likes: string[];
+            updatedOn?: Date | undefined;
+            editedOn?: Date | undefined;
         }[];
         likes: string[];
+        updatedOn?: Date | undefined;
+        editedOn?: Date | undefined;
     }>;
     deleteComment: import("@trpc/server").BuildProcedure<"mutation", {
         _config: import("@trpc/server").RootConfig<{
@@ -490,23 +475,19 @@ export declare const commentsRouter: import("@trpc/server").CreateRouterInner<im
             transformer: import("@trpc/server").DefaultDataTransformer;
         }>;
         _meta: object;
-        _ctx_out: import("@trpc/server").Overwrite<{
+        _ctx_out: {
+            user: {
+                username: string;
+            };
             req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
             res: import("express").Response<any, Record<string, any>>;
-            user: null;
         } | {
-            req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
-            res: import("express").Response<any, Record<string, any>>;
             user: {
                 username: string;
             };
-        }, {
             req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
             res: import("express").Response<any, Record<string, any>>;
-            user: {
-                username: string;
-            };
-        }>;
+        };
         _input_in: {
             _id: string;
             parent: string;
@@ -520,13 +501,16 @@ export declare const commentsRouter: import("@trpc/server").CreateRouterInner<im
         _output_in: typeof import("@trpc/server").unsetMarker;
         _output_out: typeof import("@trpc/server").unsetMarker;
     }, {
-        updatedOn?: Date | undefined;
-        editedOn?: Date | undefined;
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         text: string;
         parent: string;
         user: {
+            _id: import("mongoose").Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -546,20 +530,18 @@ export declare const commentsRouter: import("@trpc/server").CreateRouterInner<im
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: import("mongoose").Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
         replies: {
-            updatedOn?: Date | undefined;
-            editedOn?: Date | undefined;
             _id: import("mongoose").Types.ObjectId;
             createdOn: Date;
             text: string;
             parent: string;
             user: {
+                _id: import("mongoose").Types.ObjectId;
+                email: string;
+                followers: string[];
+                following: string[];
+                username: string;
                 google?: {
                     googleId: string;
                     userPhoto: string;
@@ -579,16 +561,15 @@ export declare const commentsRouter: import("@trpc/server").CreateRouterInner<im
                 } | undefined;
                 createdOn?: string | undefined;
                 updatedOn?: string | undefined;
-                _id: import("mongoose").Types.ObjectId;
-                email: string;
-                followers: string[];
-                following: string[];
-                username: string;
             };
             replies: import("mongoose").Types.ObjectId[];
             likes: string[];
+            updatedOn?: Date | undefined;
+            editedOn?: Date | undefined;
         }[];
         likes: string[];
+        updatedOn?: Date | undefined;
+        editedOn?: Date | undefined;
     }>;
 }>;
 export type CommentsRouter = typeof commentsRouter;

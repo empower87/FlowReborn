@@ -1,8 +1,7 @@
 import dotenv from "dotenv";
-import path from "path";
 // import { fileURLToPath } from "url"
 // const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.resolve();
+// const __dirname = path.resolve()
 // dotenv.config({ path: path.join(__dirname, "../../.env") })
 dotenv.config();
 // dotenv.config()
@@ -11,7 +10,7 @@ const customConfig = {
     port: 5000,
     accessTokenExpiresIn: 15,
     refreshTokenExpiresIn: 60,
-    origin: ["http://localhost:3000", "https://flow-reborn.onrender.com"],
+    origin: ["http://localhost:3000", "https://flow-reborn.vercel.app"],
     dbUri: process.env.MONGODB_URI,
     accessTokenPrivateKey: process.env.ACCESS_TOKEN,
     refreshTokenPrivateKey: process.env.REFRESH_TOKEN,

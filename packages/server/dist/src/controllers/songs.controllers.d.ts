@@ -27,10 +27,6 @@ import { IUser } from "../models/index.js";
 import { CreateSongType, GetByFollowersType, SongInputType, SongSchemaPopulatedUserAndCommentsType, UpdateSongType } from "../schema/songs.schema.js";
 import { ContextWithInput } from "../utils/trpc/index.js";
 export declare const createSongHandler: ({ ctx, input }: ContextWithInput<CreateSongType>) => Promise<{
-    caption?: string | undefined;
-    thumbnail?: string | undefined;
-    isPosted?: boolean | undefined;
-    isVideo?: boolean | undefined;
     _id: import("mongoose").Types.ObjectId;
     createdOn: Date;
     updatedOn: Date;
@@ -41,16 +37,21 @@ export declare const createSongHandler: ({ ctx, input }: ContextWithInput<Create
     duration: number;
     src: string;
     comments: import("mongoose").Types.ObjectId[];
-}>;
-export declare const updateSongHandler: ({ ctx, input }: ContextWithInput<UpdateSongType>) => Promise<{
     caption?: string | undefined;
     thumbnail?: string | undefined;
     isPosted?: boolean | undefined;
     isVideo?: boolean | undefined;
+}>;
+export declare const updateSongHandler: ({ ctx, input }: ContextWithInput<UpdateSongType>) => Promise<{
     _id: import("mongoose").Types.ObjectId;
     createdOn: Date;
     updatedOn: Date;
     user: {
+        _id: import("mongoose").Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -70,11 +71,6 @@ export declare const updateSongHandler: ({ ctx, input }: ContextWithInput<Update
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: import("mongoose").Types.ObjectId;
-        email: string;
-        followers: string[];
-        following: string[];
-        username: string;
     };
     likes: string[];
     title: string;
@@ -82,13 +78,16 @@ export declare const updateSongHandler: ({ ctx, input }: ContextWithInput<Update
     duration: number;
     src: string;
     comments: {
-        updatedOn?: Date | undefined;
-        editedOn?: Date | undefined;
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         text: string;
         parent: string;
         user: {
+            _id: import("mongoose").Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -108,21 +107,18 @@ export declare const updateSongHandler: ({ ctx, input }: ContextWithInput<Update
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: import("mongoose").Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
         replies: import("mongoose").Types.ObjectId[];
         likes: string[];
+        updatedOn?: Date | undefined;
+        editedOn?: Date | undefined;
     }[];
+    caption?: string | undefined;
+    thumbnail?: string | undefined;
+    isPosted?: boolean | undefined;
+    isVideo?: boolean | undefined;
 }>;
 export declare const deleteSongHandler: ({ ctx, input }: ContextWithInput<SongInputType>) => Promise<(import("mongoose").Document<unknown, any, {
-    caption?: string | undefined;
-    thumbnail?: string | undefined;
-    isPosted?: boolean | undefined;
-    isVideo?: boolean | undefined;
     _id: import("mongoose").Types.ObjectId;
     createdOn: Date;
     updatedOn: Date;
@@ -133,11 +129,11 @@ export declare const deleteSongHandler: ({ ctx, input }: ContextWithInput<SongIn
     duration: number;
     src: string;
     comments: import("mongoose").Types.ObjectId[];
-}> & {
     caption?: string | undefined;
     thumbnail?: string | undefined;
     isPosted?: boolean | undefined;
     isVideo?: boolean | undefined;
+}> & Omit<{
     _id: import("mongoose").Types.ObjectId;
     createdOn: Date;
     updatedOn: Date;
@@ -148,16 +144,16 @@ export declare const deleteSongHandler: ({ ctx, input }: ContextWithInput<SongIn
     duration: number;
     src: string;
     comments: import("mongoose").Types.ObjectId[];
+    caption?: string | undefined;
+    thumbnail?: string | undefined;
+    isPosted?: boolean | undefined;
+    isVideo?: boolean | undefined;
 } & Required<{
     _id: import("mongoose").Types.ObjectId;
-}>) | null>;
+}>, never>) | null>;
 export declare const getSongHandler: ({ input }: {
     input: SongInputType;
 }) => Promise<{
-    caption?: string | undefined;
-    thumbnail?: string | undefined;
-    isPosted?: boolean | undefined;
-    isVideo?: boolean | undefined;
     _id: import("mongoose").Types.ObjectId;
     createdOn: Date;
     updatedOn: Date;
@@ -168,16 +164,21 @@ export declare const getSongHandler: ({ input }: {
     duration: number;
     src: string;
     comments: import("mongoose").Types.ObjectId[];
-}>;
-export declare const getSongWithPopulatedUserHandler: ({ ctx, input }: ContextWithInput<SongInputType>) => Promise<{
     caption?: string | undefined;
     thumbnail?: string | undefined;
     isPosted?: boolean | undefined;
     isVideo?: boolean | undefined;
+}>;
+export declare const getSongWithPopulatedUserHandler: ({ ctx, input }: ContextWithInput<SongInputType>) => Promise<{
     _id: import("mongoose").Types.ObjectId;
     createdOn: Date;
     updatedOn: Date;
     user: {
+        _id: import("mongoose").Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -197,11 +198,6 @@ export declare const getSongWithPopulatedUserHandler: ({ ctx, input }: ContextWi
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: import("mongoose").Types.ObjectId;
-        email: string;
-        followers: string[];
-        following: string[];
-        username: string;
     };
     likes: string[];
     title: string;
@@ -209,18 +205,23 @@ export declare const getSongWithPopulatedUserHandler: ({ ctx, input }: ContextWi
     duration: number;
     src: string;
     comments: import("mongoose").Types.ObjectId[];
+    caption?: string | undefined;
+    thumbnail?: string | undefined;
+    isPosted?: boolean | undefined;
+    isVideo?: boolean | undefined;
 }>;
 export declare const getSongWithPopulatedUserAndCommentsHandler: ({ input }: {
     input: SongInputType;
 }) => Promise<{
-    caption?: string | undefined;
-    thumbnail?: string | undefined;
-    isPosted?: boolean | undefined;
-    isVideo?: boolean | undefined;
     _id: import("mongoose").Types.ObjectId;
     createdOn: Date;
     updatedOn: Date;
     user: {
+        _id: import("mongoose").Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -240,11 +241,6 @@ export declare const getSongWithPopulatedUserAndCommentsHandler: ({ input }: {
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: import("mongoose").Types.ObjectId;
-        email: string;
-        followers: string[];
-        following: string[];
-        username: string;
     };
     likes: string[];
     title: string;
@@ -252,13 +248,16 @@ export declare const getSongWithPopulatedUserAndCommentsHandler: ({ input }: {
     duration: number;
     src: string;
     comments: {
-        updatedOn?: Date | undefined;
-        editedOn?: Date | undefined;
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         text: string;
         parent: string;
         user: {
+            _id: import("mongoose").Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -278,25 +277,27 @@ export declare const getSongWithPopulatedUserAndCommentsHandler: ({ input }: {
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: import("mongoose").Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
         replies: import("mongoose").Types.ObjectId[];
         likes: string[];
+        updatedOn?: Date | undefined;
+        editedOn?: Date | undefined;
     }[];
+    caption?: string | undefined;
+    thumbnail?: string | undefined;
+    isPosted?: boolean | undefined;
+    isVideo?: boolean | undefined;
 }>;
 export declare const getUsersSongsHandler: ({ ctx, input }: ContextWithInput<SongInputType>) => Promise<{
-    caption?: string | undefined;
-    thumbnail?: string | undefined;
-    isPosted?: boolean | undefined;
-    isVideo?: boolean | undefined;
     _id: import("mongoose").Types.ObjectId;
     createdOn: Date;
     updatedOn: Date;
     user: {
+        _id: import("mongoose").Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -316,11 +317,6 @@ export declare const getUsersSongsHandler: ({ ctx, input }: ContextWithInput<Son
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: import("mongoose").Types.ObjectId;
-        email: string;
-        followers: string[];
-        following: string[];
-        username: string;
     };
     likes: string[];
     title: string;
@@ -328,16 +324,21 @@ export declare const getUsersSongsHandler: ({ ctx, input }: ContextWithInput<Son
     duration: number;
     src: string;
     comments: import("mongoose").Types.ObjectId[];
+    caption?: string | undefined;
+    thumbnail?: string | undefined;
+    isPosted?: boolean | undefined;
+    isVideo?: boolean | undefined;
 }[]>;
 export declare const getUsersSongsWithCommentsHandler: ({ ctx, input }: ContextWithInput<SongInputType>) => Promise<{
-    caption?: string | undefined;
-    thumbnail?: string | undefined;
-    isPosted?: boolean | undefined;
-    isVideo?: boolean | undefined;
     _id: import("mongoose").Types.ObjectId;
     createdOn: Date;
     updatedOn: Date;
     user: {
+        _id: import("mongoose").Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -357,11 +358,6 @@ export declare const getUsersSongsWithCommentsHandler: ({ ctx, input }: ContextW
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: import("mongoose").Types.ObjectId;
-        email: string;
-        followers: string[];
-        following: string[];
-        username: string;
     };
     likes: string[];
     title: string;
@@ -369,13 +365,16 @@ export declare const getUsersSongsWithCommentsHandler: ({ ctx, input }: ContextW
     duration: number;
     src: string;
     comments: {
-        updatedOn?: Date | undefined;
-        editedOn?: Date | undefined;
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         text: string;
         parent: string;
         user: {
+            _id: import("mongoose").Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -395,25 +394,27 @@ export declare const getUsersSongsWithCommentsHandler: ({ ctx, input }: ContextW
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: import("mongoose").Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
         replies: import("mongoose").Types.ObjectId[];
         likes: string[];
+        updatedOn?: Date | undefined;
+        editedOn?: Date | undefined;
     }[];
+    caption?: string | undefined;
+    thumbnail?: string | undefined;
+    isPosted?: boolean | undefined;
+    isVideo?: boolean | undefined;
 }[]>;
 export declare const getUsersLikedSongs: ({ ctx, input }: ContextWithInput<SongInputType>) => Promise<{
-    caption?: string | undefined;
-    thumbnail?: string | undefined;
-    isPosted?: boolean | undefined;
-    isVideo?: boolean | undefined;
     _id: import("mongoose").Types.ObjectId;
     createdOn: Date;
     updatedOn: Date;
     user: {
+        _id: import("mongoose").Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -433,11 +434,6 @@ export declare const getUsersLikedSongs: ({ ctx, input }: ContextWithInput<SongI
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: import("mongoose").Types.ObjectId;
-        email: string;
-        followers: string[];
-        following: string[];
-        username: string;
     };
     likes: string[];
     title: string;
@@ -445,16 +441,21 @@ export declare const getUsersLikedSongs: ({ ctx, input }: ContextWithInput<SongI
     duration: number;
     src: string;
     comments: import("mongoose").Types.ObjectId[];
+    caption?: string | undefined;
+    thumbnail?: string | undefined;
+    isPosted?: boolean | undefined;
+    isVideo?: boolean | undefined;
 }[]>;
 export declare const getUsersFollowersSongs: ({ ctx, input }: ContextWithInput<GetByFollowersType>) => Promise<{
-    caption?: string | undefined;
-    thumbnail?: string | undefined;
-    isPosted?: boolean | undefined;
-    isVideo?: boolean | undefined;
     _id: import("mongoose").Types.ObjectId;
     createdOn: Date;
     updatedOn: Date;
     user: {
+        _id: import("mongoose").Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -474,11 +475,6 @@ export declare const getUsersFollowersSongs: ({ ctx, input }: ContextWithInput<G
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: import("mongoose").Types.ObjectId;
-        email: string;
-        followers: string[];
-        following: string[];
-        username: string;
     };
     likes: string[];
     title: string;
@@ -486,16 +482,21 @@ export declare const getUsersFollowersSongs: ({ ctx, input }: ContextWithInput<G
     duration: number;
     src: string;
     comments: import("mongoose").Types.ObjectId[];
-}[]>;
-export declare const getAllSongsHandler: () => Promise<{
     caption?: string | undefined;
     thumbnail?: string | undefined;
     isPosted?: boolean | undefined;
     isVideo?: boolean | undefined;
+}[]>;
+export declare const getAllSongsHandler: () => Promise<{
     _id: import("mongoose").Types.ObjectId;
     createdOn: Date;
     updatedOn: Date;
     user: {
+        _id: import("mongoose").Types.ObjectId;
+        email: string;
+        followers: string[];
+        following: string[];
+        username: string;
         google?: {
             googleId: string;
             userPhoto: string;
@@ -515,11 +516,6 @@ export declare const getAllSongsHandler: () => Promise<{
         } | undefined;
         createdOn?: string | undefined;
         updatedOn?: string | undefined;
-        _id: import("mongoose").Types.ObjectId;
-        email: string;
-        followers: string[];
-        following: string[];
-        username: string;
     };
     likes: string[];
     title: string;
@@ -527,13 +523,16 @@ export declare const getAllSongsHandler: () => Promise<{
     duration: number;
     src: string;
     comments: {
-        updatedOn?: Date | undefined;
-        editedOn?: Date | undefined;
         _id: import("mongoose").Types.ObjectId;
         createdOn: Date;
         text: string;
         parent: string;
         user: {
+            _id: import("mongoose").Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -553,15 +552,16 @@ export declare const getAllSongsHandler: () => Promise<{
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: import("mongoose").Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
         replies: import("mongoose").Types.ObjectId[];
         likes: string[];
+        updatedOn?: Date | undefined;
+        editedOn?: Date | undefined;
     }[];
+    caption?: string | undefined;
+    thumbnail?: string | undefined;
+    isPosted?: boolean | undefined;
+    isVideo?: boolean | undefined;
 }[]>;
 type SearchResults = {
     users: IUser[];

@@ -15,6 +15,7 @@ export declare const LikeInputSchema: z.ZodObject<{
 }>;
 export declare const LikeCommentInputSchema: z.ZodObject<{
     _id: z.ZodString;
+} & {
     commentId: z.ZodString;
 }, "strip", z.ZodTypeAny, {
     _id: string;

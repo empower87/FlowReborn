@@ -5,7 +5,7 @@ import { CtxUserToken, verifyJwt } from "../jwt.js"
 
 export const createContext = async ({ req, res }: trpcExpress.CreateExpressContextOptions) => {
   async function getUserFromHeader() {
-    const token = req.headers["authorization" || "Authorization"]?.split(" ")[1]
+    const token = req.headers.authorization?.split(" ")[1]
     const notAuthenticated = {
       req,
       res,

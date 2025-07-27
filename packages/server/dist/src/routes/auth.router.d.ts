@@ -1,5 +1,6 @@
 /// <reference types="qs" />
 /// <reference types="express" />
+/// <reference types="cookie-parser" />
 /// <reference types="mongoose/types/aggregate.js" />
 /// <reference types="mongoose/types/callback.js" />
 /// <reference types="mongoose/types/collection.js" />
@@ -128,6 +129,11 @@ export declare const authRouter: import("@trpc/server").CreateRouterInner<import
     }, {
         token: string;
         user: {
+            _id: import("mongoose").Types.ObjectId;
+            email: string;
+            followers: string[];
+            following: string[];
+            username: string;
             google?: {
                 googleId: string;
                 userPhoto: string;
@@ -147,11 +153,6 @@ export declare const authRouter: import("@trpc/server").CreateRouterInner<import
             } | undefined;
             createdOn?: string | undefined;
             updatedOn?: string | undefined;
-            _id: import("mongoose").Types.ObjectId;
-            email: string;
-            followers: string[];
-            following: string[];
-            username: string;
         };
     }>;
     refresh: import("@trpc/server").BuildProcedure<"query", {

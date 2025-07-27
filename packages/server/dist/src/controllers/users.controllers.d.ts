@@ -28,6 +28,11 @@ import { Context, ContextWithInput } from "../utils/trpc/index.js";
 export declare const getMeHandler: ({ ctx }: {
     ctx: Context;
 }) => Promise<{
+    _id: import("mongoose").Types.ObjectId;
+    email: string;
+    followers: string[];
+    following: string[];
+    username: string;
     google?: {
         googleId: string;
         userPhoto: string;
@@ -47,13 +52,13 @@ export declare const getMeHandler: ({ ctx }: {
     } | undefined;
     createdOn?: string | undefined;
     updatedOn?: string | undefined;
-    _id: import("mongoose").Types.ObjectId;
-    email: string;
-    followers: string[];
-    following: string[];
-    username: string;
 }>;
 export declare const getUserHandler: ({ ctx, input }: ContextWithInput<UserInputType>) => Promise<{
+    _id: import("mongoose").Types.ObjectId;
+    email: string;
+    followers: string[];
+    following: string[];
+    username: string;
     google?: {
         googleId: string;
         userPhoto: string;
@@ -73,13 +78,13 @@ export declare const getUserHandler: ({ ctx, input }: ContextWithInput<UserInput
     } | undefined;
     createdOn?: string | undefined;
     updatedOn?: string | undefined;
-    _id: import("mongoose").Types.ObjectId;
-    email: string;
-    followers: string[];
-    following: string[];
-    username: string;
 }>;
 export declare const updateUserHandler: ({ ctx, input }: ContextWithInput<UpdateUserInputType>) => Promise<{
+    _id: import("mongoose").Types.ObjectId;
+    email: string;
+    followers: string[];
+    following: string[];
+    username: string;
     google?: {
         googleId: string;
         userPhoto: string;
@@ -99,9 +104,4 @@ export declare const updateUserHandler: ({ ctx, input }: ContextWithInput<Update
     } | undefined;
     createdOn?: string | undefined;
     updatedOn?: string | undefined;
-    _id: import("mongoose").Types.ObjectId;
-    email: string;
-    followers: string[];
-    following: string[];
-    username: string;
 }>;
