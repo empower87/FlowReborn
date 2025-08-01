@@ -1,9 +1,9 @@
-type TimeFrameObj = {
-  m: "h" | "d" | "w" | "m" | "y"
-  mm: "hr" | "day" | "wk" | "mo" | "yr"
-  mmAgo: "sec ago" | "min ago" | "hr ago" | "day ago" | "wk ago" | "mo ago" | "yr ago"
-  mmmmAgo: "second ago" | "minute ago" | "hour ago" | "day ago" | "week ago" | "month ago" | "years ago"
-}
+// type TimeFrameObj = {
+//   m: "h" | "d" | "w" | "m" | "y"
+//   mm: "hr" | "day" | "wk" | "mo" | "yr"
+//   mmAgo: "sec ago" | "min ago" | "hr ago" | "day ago" | "wk ago" | "mo ago" | "yr ago"
+//   mmmmAgo: "second ago" | "minute ago" | "hour ago" | "day ago" | "week ago" | "month ago" | "years ago"
+// }
 
 enum TimeInMsEnum {
   Year = 31536000000,

@@ -11,6 +11,16 @@ export default function useSongFeeds() {
   const [state, dispatch] = useReducer(songFeedReducer, INITIAL_STATE)
   const [feedSongs, setFeedSongs] = useState<ISong[]>([])
 
+  const getTrendingSongs = useCallback((songs: ISong[]) => {
+    const byLikes = songs.sort((a, b) => b.likes.length - a.likes.length)
+    return byLikes
+  }, [])
+
+  const getFollowingSongs = useCallback((songs: ISong[], userId: string) => {
+    const byFollows = songs.filter((song) => song.user.followers.includes(userId)).reverse()
+    return byFollows
+  }, [])
+
   useEffect(() => {
     if (!songs.data || !user) return
     const songsData = songs.data
@@ -30,7 +40,7 @@ export default function useSongFeeds() {
         },
       },
     })
-  }, [songs.data, user])
+  }, [songs.data, user, getTrendingSongs, getFollowingSongs, dispatch])
 
   const toggleFeedHandler = (feed: Feeds) => {
     dispatch({ type: feed })
@@ -39,7 +49,7 @@ export default function useSongFeeds() {
   useEffect(() => {
     if (!songs.data) return
     setFeedSongs(state.ForYou.songs)
-  }, [songs])
+  }, [songs, state.ForYou.songs])
 
   useEffect(() => {
     switch (state.feedInView) {
@@ -55,7 +65,7 @@ export default function useSongFeeds() {
       default:
         return
     }
-  }, [state.feedInView])
+  }, [state.feedInView, state.ForYou.songs, state.Following.songs, state.Trending.songs])
 
   // useEffect(() => {
   //   if (state.feedSongs && state.feedSongs.length !== 0) {
@@ -64,16 +74,6 @@ export default function useSongFeeds() {
   //     setFeedSongs(state.ForYou.songs)
   //   }
   // }, [state])
-
-  const getTrendingSongs = useCallback((songs: ISong[]) => {
-    const byLikes = songs.sort((a, b) => b.likes.length - a.likes.length)
-    return byLikes
-  }, [])
-
-  const getFollowingSongs = useCallback((songs: ISong[], userId: string) => {
-    const byFollows = songs.filter((song) => song.user.followers.includes(userId)).reverse()
-    return byFollows
-  }, [])
 
   return {
     isLoading: songs.isLoading,

@@ -1,4 +1,4 @@
-import { Dispatch, RefObject, SetStateAction } from "react"
+import { RefObject } from "react"
 import { useMediaProgress } from "src/features/video/hooks/useMediaProgress"
 import { formatTime } from "src/utils/formatTime"
 
@@ -21,8 +21,8 @@ type ProgressBarTimeProps = {
 type MediaProgressBarProps = {
   duration: number
   videoRef: RefObject<HTMLVideoElement>
-  isPlaying: boolean
-  setIsPlaying: Dispatch<SetStateAction<boolean>>
+  // isPlaying: boolean
+  // setIsPlaying: Dispatch<SetStateAction<boolean>>
 }
 
 function ProgressBarTime({ seconds, type }: ProgressBarTimeProps) {
@@ -69,12 +69,12 @@ function ProgressBar({
   )
 }
 
-export const MediaProgressBar = ({ duration, videoRef, isPlaying, setIsPlaying }: MediaProgressBarProps) => {
-  const { progress, seekValue, isScrubbing, currentPercentage, onScrub, onScrubEnd } = useMediaProgress(
+export const MediaProgressBar = ({ duration, videoRef }: MediaProgressBarProps) => {
+  const { progress, seekValue, isScrubbing, onScrub, onScrubEnd } = useMediaProgress(
     videoRef,
-    duration,
-    isPlaying,
-    setIsPlaying
+    duration
+    // isPlaying,
+    // setIsPlaying
   )
 
   return (

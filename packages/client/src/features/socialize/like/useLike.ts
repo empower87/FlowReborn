@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useAuth } from "src/context/AuthContext"
 import useDebounce from "src/hooks/useDebounce"
 import { ISongPopulatedUserAndComments as ISong } from "src/types/ServerModelTypes"
@@ -26,7 +26,7 @@ export default function useLike(parentId: string, parentLikes: string[], type: "
 
   const debouncedIsLiked = useDebounce(isLiked, 200)
 
-  const stopInvalidatedQueriesFromRerendering = () => {
+  const stopInvalidatedQueriesFromRerendering = useCallback(() => {
     let isMatch = true
     const songs: ISong[] | undefined = utils.songs.allSongs.getData()
     if (songs) {
@@ -37,21 +37,27 @@ export default function useLike(parentId: string, parentLikes: string[], type: "
       })
     }
     return isMatch
-  }
+  }, [utils.songs.allSongs, parentId, parentLikes.length])
 
-  const addLikeHandler = (_isLiked: boolean) => {
-    if (!user || !hasClicked) return
-    if (_isLiked) {
-      like.mutate({ _id: parentId })
-    }
-  }
+  const addLikeHandler = useCallback(
+    (_isLiked: boolean) => {
+      if (!user || !hasClicked) return
+      if (_isLiked) {
+        like.mutate({ _id: parentId })
+      }
+    },
+    [user, hasClicked, like, parentId]
+  )
 
-  const deleteLikeHandler = (_isLiked: boolean) => {
-    if (!user || !hasClicked) return
-    if (!_isLiked) {
-      unlike.mutate({ _id: parentId })
-    }
-  }
+  const deleteLikeHandler = useCallback(
+    (_isLiked: boolean) => {
+      if (!user || !hasClicked) return
+      if (!_isLiked) {
+        unlike.mutate({ _id: parentId })
+      }
+    },
+    [user, hasClicked, unlike, parentId]
+  )
 
   useEffect(() => {
     if (like.isLoading || unlike.isLoading) {

@@ -11,7 +11,7 @@ import useSongFeeds from "./hooks/useSongFeeds"
 export default function HomeDisplay() {
   const renderCount = useRenderCount()
   const { isLoading, feedInView, feedSongs, toggleFeedHandler } = useSongFeeds()
-  const [isVideoFullscreen, setIsVideoFullscreen] = useState<boolean>(false)
+  const [isVideoFullscreen] = useState<boolean>(false)
 
   if (isLoading) return <HomeLoadingSkeleton />
   return (

@@ -66,7 +66,7 @@ export default function useStateWithHistory<T>(
     setValue(defaultValue)
     historyRef.current = [defaultValue]
     pointerRef.current = historyRef.current.length - 1
-  }, [])
+  }, [defaultValue])
 
   return [
     value,

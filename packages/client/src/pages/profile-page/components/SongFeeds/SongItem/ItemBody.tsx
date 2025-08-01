@@ -169,24 +169,27 @@ const PlayButtonContainer = ({ audio }: { audio: string }) => {
 export default function ItemBody({ song, isMe, children }: Pick<Props, "song" | "isMe" | "children">) {
   const navigate = useNavigate()
 
-  const onClickHandler = useCallback((location: "Profile" | "SongPage" | "EditLyrics" | "Delete") => {
-    switch (location) {
-      case "Profile":
-        navigate(`/profile/${song.user._id}`)
-        break
-      case "SongPage":
-        navigate(`/songScreen/${song._id}`)
-        break
-      case "EditLyrics":
-        navigate(`/editLyrics`, { state: { currentSong: song } })
-        break
-      case "Delete":
-        // no logic yet
-        break
-      default:
-        return
-    }
-  }, [])
+  const onClickHandler = useCallback(
+    (location: "Profile" | "SongPage" | "EditLyrics" | "Delete") => {
+      switch (location) {
+        case "Profile":
+          navigate(`/profile/${song.user._id}`)
+          break
+        case "SongPage":
+          navigate(`/songScreen/${song._id}`)
+          break
+        case "EditLyrics":
+          navigate(`/editLyrics`, { state: { currentSong: song } })
+          break
+        case "Delete":
+          // no logic yet
+          break
+        default:
+          return
+      }
+    },
+    [navigate, song]
+  )
 
   return (
     <SongItemBodyLayout

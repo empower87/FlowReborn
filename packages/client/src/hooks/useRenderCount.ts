@@ -1,4 +1,4 @@
-import { useRef, useEffect, MutableRefObject } from 'react'
+import { useEffect, useRef } from "react"
 
 export default function useRenderCount() {
   const count = useRef<number>(1)

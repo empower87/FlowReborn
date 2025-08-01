@@ -40,7 +40,7 @@ export default function SongFeeds({ user }: { user: IUser }) {
 
   useEffect(() => {
     dispatch({ type: "SHOW_LIST", payload: { list: [], displayed: "Songs" } })
-  }, [isLoading])
+  }, [isLoading, dispatch])
 
   return (
     <div className="section-2_profile">

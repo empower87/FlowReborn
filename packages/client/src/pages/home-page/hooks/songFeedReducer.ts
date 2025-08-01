@@ -65,7 +65,7 @@ export const songFeedReducer = (state: State, action: Action): State => {
     case "SET_SONG_INDEX":
       if (!action.payload?.songId || !action.payload?.feed) return state
       const type = action.payload.feed
-      const songInView = state[type].songs.filter((song) => song._id === action.payload?.songId)
+      // const songInView = state[type].songs.filter((song) => song._id === action.payload?.songId)
       return {
         ...state,
         [type]: { ...state[type], _id: action.payload.songId },

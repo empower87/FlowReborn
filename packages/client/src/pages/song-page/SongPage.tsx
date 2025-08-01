@@ -8,7 +8,7 @@ export default function SongPage() {
   const { id } = useParams()
   const { songInView, songs, isLoading, isError } = useSongPage(id)
   // const [showCommentMenu, setShowCommentMenu] = useState<boolean>(false)
-  const [isVideoFullscreen, setIsVideoFullscreen] = useState<boolean>(false)
+  const [isVideoFullscreen] = useState<boolean>(false)
 
   if (isLoading || !songInView || !songs) return <p>loading..</p>
   if (isError) return <p>loading..</p>

@@ -38,7 +38,7 @@ const SocialProofItem = ({ title, onClick, size, addClasses, children }: Profile
 }
 
 const FollowButton = ({ thisUser }: { thisUser: IUser }) => {
-  const { total, hasUser, onClick, loading } = useFollow(thisUser._id, thisUser.followers)
+  const { total, hasUser, onClick } = useFollow(thisUser._id, thisUser.followers)
   const [classes, setClasses] = useState<string>("")
   const [titleText, setTitleText] = useState<string>("Follow")
 
@@ -51,7 +51,7 @@ const FollowButton = ({ thisUser }: { thisUser: IUser }) => {
       setClasses("")
       setTitleText(`${total} ${totalText}`)
     }
-  }, [hasUser])
+  }, [hasUser, total])
 
   return (
     <SocialProofItem title="Follow" size={130} onClick={() => onClick()} addClasses={classes}>

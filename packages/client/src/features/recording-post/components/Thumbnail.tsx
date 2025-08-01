@@ -16,7 +16,7 @@ const ThumbnailModal = ({
   onClose: Dispatch<SetStateAction<boolean>>
 }) => {
   const root = document.getElementById("root")!
-  const { allDrafts, currentDraft, updateThumbnail } = useSongDraftsContext()
+  const { currentDraft, updateThumbnail } = useSongDraftsContext()
 
   const seconds = duration ? duration / 1000 : 0
   const videoRef = useRef<HTMLVideoElement>(null)

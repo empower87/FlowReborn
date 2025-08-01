@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useAuth } from "src/context/AuthContext"
 import useDebounce from "src/hooks/useDebounce"
 import { trpc } from "src/utils/trpc"
@@ -26,20 +26,26 @@ export default function useFollow(userId: string, userFollowers: string[]) {
 
   const debouncedIsFollowed = useDebounce(isFollowed, 200)
 
-  const addFollowHandler = (_isFollowed: boolean) => {
-    if (!user || !hasClicked) return
-    if (_isFollowed) {
-      follow.mutate({ follower: user._id, following: userId })
-    }
-  }
+  const addFollowHandler = useCallback(
+    (_isFollowed: boolean) => {
+      if (!user || !hasClicked) return
+      if (_isFollowed) {
+        follow.mutate({ follower: user._id, following: userId })
+      }
+    },
+    [user, hasClicked, follow, userId]
+  )
 
-  const deleteFollowHandler = (_isFollowed: boolean) => {
-    if (!user || !hasClicked) return
-    if (!_isFollowed) {
-      unfollow.mutate({ follower: user._id, following: userId })
-    }
-  }
-  const stopInvalidatedQueriesFromRerendering = () => {
+  const deleteFollowHandler = useCallback(
+    (_isFollowed: boolean) => {
+      if (!user || !hasClicked) return
+      if (!_isFollowed) {
+        unfollow.mutate({ follower: user._id, following: userId })
+      }
+    },
+    [user, hasClicked, unfollow, userId]
+  )
+  const stopInvalidatedQueriesFromRerendering = useCallback(() => {
     let isMatch = true
     const songs: ISong[] | undefined = utils.songs.allSongs.getData()
     if (songs) {
@@ -50,7 +56,7 @@ export default function useFollow(userId: string, userFollowers: string[]) {
       // })
     }
     return isMatch
-  }
+  }, [utils.songs.allSongs])
 
   useEffect(() => {
     if (follow.isLoading || unfollow.isLoading) {

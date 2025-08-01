@@ -1,14 +1,11 @@
-import { inferReactQueryProcedureOptions } from "@trpc/react-query"
-import { inferRouterInputs, inferRouterOutputs } from "@trpc/server"
 import { useCallback, useEffect, useState } from "react"
 import { trpc } from "src/utils/trpc"
 // import { ISong } from "../../../../../server/src/models"
 import { ISongPopulatedUserAndComments as ISong } from "src/types/ServerModelTypes"
-import type { AppRouter } from "../../../../../server/src/routes/app.router"
 
-type ReactQueryOptions = inferReactQueryProcedureOptions<AppRouter>
-type RouterInputs = inferRouterInputs<AppRouter>
-type RouterOutput = inferRouterOutputs<AppRouter>
+// type ReactQueryOptions = inferReactQueryProcedureOptions<AppRouter>
+// type RouterInputs = inferRouterInputs<AppRouter>
+// type RouterOutput = inferRouterOutputs<AppRouter>
 
 const useSongPage = (id: string | undefined) => {
   const songId = id ? id : ""
@@ -87,7 +84,7 @@ const useSongPage = (id: string | undefined) => {
   const findCurrentSong = useCallback(
     (direction: "Previous" | "Next") => {
       if (!allSongs) return
-      ;[...allSongs].filter((each, index) => {
+      allSongs.forEach((each, index) => {
         if (each._id === songInView?._id) {
           if (direction === "Previous") {
             if (index === 0) {

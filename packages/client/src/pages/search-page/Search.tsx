@@ -7,15 +7,15 @@ import { SearchInput } from "src/features/search/components/Input"
 import { SearchList } from "src/features/search/components/List"
 import useSearch from "src/features/search/hooks/useSearch"
 
-type LocationPropTypes = {
-  returnValue: string
-}
+// type LocationPropTypes = {
+//   returnValue: string
+// }
 
 function Search() {
   const navigate = useNavigate()
   const { searchResults, getSearchResults, clearSearchResults } = useSearch()
   const searchInputRef = useRef<HTMLInputElement>(null)
-  const renderRef = useRef<number>(0)
+  // const renderRef = useRef<number>(0)
 
   const navigateOnClick = (id: string, type: string) => {
     if (type === "song") navigate(`/songScreen/${id}`, { state: { currentSong: id } })

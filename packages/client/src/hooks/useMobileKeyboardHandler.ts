@@ -13,7 +13,7 @@ export default function useMobileKeyboardHandler() {
     // const windowSize = Math.max(clientHeight, innerHeight || 0)
     const windowSize = Math.round(viewport.height * 10) / 10
     setWindowSize(windowSize)
-  }, [])
+  }, [viewport])
 
   const handleOnFocus = () => {
     if (!viewport) return

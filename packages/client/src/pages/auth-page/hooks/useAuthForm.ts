@@ -54,7 +54,7 @@ export default function useAuthForm(type: AccessTitleType) {
     methods.clearErrors()
     setError("")
     setShowError(false)
-  }, [accessTitle])
+  }, [accessTitle, methods, setError])
 
   useEffect(() => {
     const errors = methods.formState.errors
@@ -70,7 +70,7 @@ export default function useAuthForm(type: AccessTitleType) {
       setError(errors.password.message)
       methods.setFocus("password")
     }
-  }, [methods.formState, error, type])
+  }, [methods, error, type, setError])
 
   return {
     methods,

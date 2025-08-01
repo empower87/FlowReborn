@@ -30,7 +30,7 @@ const useProfileUser = (id: string | undefined) => {
       }
       fetchUserByParams()
     }
-  }, [user, id])
+  }, [user, id, getUser])
 
   useEffect(() => {
     if (getUser.isLoading || getUser.isFetching || typeof thisUser === "undefined") {

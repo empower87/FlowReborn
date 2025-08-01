@@ -129,7 +129,7 @@ export const RhymeSuggestionPanelLayout = ({
 
 const RhymeSuggestionPanelWrapper = ({ type, numofRhymes }: { type: PosType; numofRhymes: number }) => {
   const { selectedPos, rhymes, queryWord, selectedRhymesHandler } = useDatamuse(type, numofRhymes)
-  const renderRef = useRef<number>(0)
+  // const renderRef = useRef<number>(0)
 
   // console.log(renderRef.current++, "<RhymeSuggestionPanelWrapper /> -- Render test -- Layer 2")
   return (

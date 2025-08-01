@@ -17,7 +17,7 @@ export default function AuthInput({
   height?: string | undefined
 }) {
   const { handleOnFocus } = useMobileKeyboardHandler()
-  const { register, resetField, reset, formState, getFieldState, setFocus, clearErrors } = methods
+  const { register, formState, getFieldState } = methods
   const { error, isDirty } = getFieldState(name, formState)
 
   // useEffect(() => {
