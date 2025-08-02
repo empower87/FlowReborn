@@ -46,6 +46,12 @@ app.use(
   })
 )
 app.use("/api/trpc", trpcExpress.createExpressMiddleware({ router: appRouter, createContext }))
+app.use(express.static(path.join(__dirname, "../../../client/build")))
+
+app.get("*", (req: Request, res: Response, next: NextFunction) => {
+  if (req.originalUrl.startsWith("/api/")) return next()
+  res.sendFile(path.join(__dirname, "../../../client/build/index.html"))
+})
 
 const MONGODB_URI = customConfig.dbUri
 mongoose
@@ -55,13 +61,6 @@ mongoose
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
-
-app.use(express.static(path.join(__dirname, "../../../client/build")))
-
-app.get("*", (req: Request, res: Response, next: NextFunction) => {
-  if (req.originalUrl.startsWith("/api/")) return next()
-  res.sendFile(path.join(__dirname, "../../../client/build/index.html"))
-})
 
 const PORT = customConfig.port
 
