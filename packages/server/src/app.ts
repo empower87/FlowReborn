@@ -59,6 +59,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, "../../../client/build")))
 
 app.get("*", (req: Request, res: Response, next: NextFunction) => {
+  if (req.originalUrl.startsWith("/api/")) return next()
   res.sendFile(path.join(__dirname, "../../../client/build/index.html"))
 })
 
