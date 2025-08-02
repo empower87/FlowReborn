@@ -36,7 +36,8 @@ export const appRouter = router({
 
 export type AppRouter = typeof appRouter
 const app = express()
-
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieparser())
 app.use(
   cors({
@@ -58,9 +59,6 @@ mongoose
   .connect(MONGODB_URI)
   .then((x: any) => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
   .catch((err: any) => console.error("Error connecting to mongo", err))
-
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
 
 const PORT = customConfig.port
 
