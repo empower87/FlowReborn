@@ -8,7 +8,7 @@ type SongItemProps = {
 }
 
 export default function SongItem({ song, profileUser }: SongItemProps) {
-  const [deleteCheck, setDeleteCheck] = useState(false)
+  // const [deleteCheck, setDeleteCheck] = useState(false)
   const [isMe, setIsMe] = useState<boolean>(false)
   const [lyricsExpanded, setLyricsExpanded] = useState<boolean>(false)
 
