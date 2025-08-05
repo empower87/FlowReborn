@@ -48,7 +48,7 @@ function App() {
         httpBatchLink({
           url:
             process.env.NODE_ENV === "production"
-              ? "https://flow-reborn.vercel.app/api/trpc/"
+              ? "https://flow-reborn.onrender.com/api/trpc/"
               : "http://localhost:5000/api/trpc",
           fetch(input, init?) {
             const fetch = getFetch()
