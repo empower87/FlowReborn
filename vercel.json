@@ -1,4 +1,4 @@
 {
   "version": 2,
-  "rewrites": [{ "source": "/api/(.*)", "destination": "https://flow-reborn.vercel.app/api/$1" }]
+  "rewrites": [{ "source": "/api/(.*)", "destination": "https://flow-reborn.onrender.com/api/$1" }]
 }

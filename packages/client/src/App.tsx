@@ -20,6 +20,7 @@ const LazyConfirmRecording = React.lazy(() => import("./features/recording-booth
 
 const getAuthToken = () => {
   const token = localStorage.getItem("token")!
+  console.log(token, "AM I GETTING A TOKEN?")
   return `Bearer ${token}`
 }
 
@@ -47,18 +48,18 @@ function App() {
         httpBatchLink({
           url:
             process.env.NODE_ENV === "production"
-              ? "https://flow-reborn.vercel.app/api/trpc"
+              ? "https://flow-reborn.vercel.app/api/trpc/"
               : "http://localhost:5000/api/trpc",
-          async fetch(input, init?) {
+          fetch(input, init?) {
             const fetch = getFetch()
             return fetch(input, {
               ...init,
               credentials: "include",
             })
           },
-          headers() {
+          async headers() {
             return {
-              authorization: getAuthToken(),
+              Authorization: getAuthToken(),
             }
           },
         }),
