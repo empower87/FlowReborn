@@ -14,12 +14,12 @@ export const SearchInput = forwardRef(({ getResults, clearResults }: SearchInput
   const debouncedSearch = useDebounce(searchValue, 300)
 
   useEffect(() => {
-    if (searchValue !== "") {
+    if (debouncedSearch !== "") {
       getResults(debouncedSearch)
     } else {
       clearResults()
     }
-  }, [debouncedSearch, getResults, clearResults, searchValue])
+  }, [debouncedSearch, getResults, clearResults])
 
   useEffect(() => {
     if (ref) ref.current.focus()
