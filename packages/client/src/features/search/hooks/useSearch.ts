@@ -17,8 +17,11 @@ const useSearch = () => {
     (query: string) => {
       search.mutate(query, {
         onSuccess: (data) => {
-          console.log(data, "SEARCH DATA INC")
+          console.log(data, "Search data results...")
           setSearchResults({ ...data })
+        },
+        onError: (error) => {
+          console.error("Error fetching search results: ", error)
         },
       })
     },
