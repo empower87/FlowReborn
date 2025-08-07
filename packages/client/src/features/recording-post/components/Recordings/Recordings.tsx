@@ -31,7 +31,7 @@ const Input = ({ name, placeholder, methods }: InputProps) => {
         className="record__select-text"
         {...methods.register(name)}
         type="text"
-        name={name}
+        // name={name}
         autoComplete="off"
         // value={value}
         // onChange={(e) => setValue(e.target.value)}

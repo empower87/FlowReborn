@@ -19,7 +19,7 @@ export const SearchInput = forwardRef(({ getResults, clearResults }: SearchInput
     } else {
       clearResults()
     }
-  }, [debouncedSearch, getResults, clearResults])
+  }, [debouncedSearch, clearResults])
 
   useEffect(() => {
     if (ref) ref.current.focus()
