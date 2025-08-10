@@ -50,7 +50,7 @@ module.exports = function sign_s3(req: ISignedRequest, res: Response, next: Next
       // req.signedRequest = {}
       req.signedRequest.options = { headers: { "Content-Type": fileType } }
       req.signedRequest.signedURL = data
-      req.signedRequest.bucketURL = `https://${S3_BUCKET}.s3.amazonaws.com/${fileName}`
+      req.signedRequest.bucketURL = `${S3_BUCKET}/${fileName}`
       req.signedRequest.currentSong = currentSong
       req.signedRequest.fileBlob = fileBlob
       next()

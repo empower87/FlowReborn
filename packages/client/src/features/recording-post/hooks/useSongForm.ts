@@ -18,6 +18,7 @@ export const INITIAL_ERROR_STATE = {
   message: "",
   showError: false,
 }
+
 type Error = typeof INITIAL_ERROR_STATE
 
 export const useSongForm = (recordingType: "audio" | "video") => {
@@ -28,10 +29,12 @@ export const useSongForm = (recordingType: "audio" | "video") => {
   const uploadToAWS = trpc.users.uploadFile.useMutation({
     onError: (err) => onSettledMutation(err.message),
   })
+
   const createSong = trpc.songs.createSong.useMutation({
     onSuccess: (data) => onSettledMutation("success", data._id),
     onError: (err) => onSettledMutation(err.message),
   })
+
   const methods = useForm<IPostSongFormInputs>({
     mode: "onChange",
     defaultValues: {
@@ -40,8 +43,9 @@ export const useSongForm = (recordingType: "audio" | "video") => {
     },
     resolver: zodResolver(SaveSongInputSchema),
   })
+
   const {
-    formState: { errors, isDirty, isValid },
+    formState: { errors },
   } = methods
 
   useEffect(() => {
@@ -64,6 +68,7 @@ export const useSongForm = (recordingType: "audio" | "video") => {
     if (!_song || _song.blob == null) {
       return setError({ message: "No Flows to be saved", showError: true })
     }
+
     // if (!isDirty) {
     //   return setError({ message: "Must add a title", showError: true })
     // }
@@ -82,7 +87,7 @@ export const useSongForm = (recordingType: "audio" | "video") => {
 
     console.log(e, _song, songToUpload, recordingType, "handleSaveSong in useSongForm.ts")
     if (recordingType === "video") {
-      // if (!_song.thumbnailBlob) return
+      if (!_song.thumbnailBlob) return
 
       let data = [
         {
@@ -96,6 +101,7 @@ export const useSongForm = (recordingType: "audio" | "video") => {
           fileBlob: _song.blob,
         },
       ]
+
       console.log(data, "handleSaveSong if recordingType is video in useSongForm.ts")
 
       await uploadAndCreateSongHandler(data, songToUpload)

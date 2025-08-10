@@ -8,6 +8,7 @@ AWS.config.update({
   secretAccessKey: process.env.AWSSecretKey!,
 })
 const S3_BUCKET = process.env.Bucket!
+const AWS_BUCKET_NAME = process.env.AWS_BUCKET_NAME
 
 type SignedRequest = {
   options: any
@@ -31,9 +32,12 @@ export const uploadFileToAWS = async ({ ctx, input }: { ctx: Context; input: Upl
   if (!ctx.user) throw TRPCError("INTERNAL_SERVER_ERROR", "you must be logged in")
   const s3 = new AWS.S3()
 
+  if (!AWS_BUCKET_NAME) {
+    throw new Error("S3_BUCKET environment variable is not set")
+  }
   const params = (object: UploadInputObjectType) => {
     return {
-      Bucket: S3_BUCKET,
+      Bucket: AWS_BUCKET_NAME,
       Key: object.fileName,
       Expires: 1000,
       ContentType: object.fileType,
@@ -48,7 +52,7 @@ export const uploadFileToAWS = async ({ ctx, input }: { ctx: Context; input: Upl
     response.push({
       options: { headers: { "Content-Type": input[i].fileType } },
       signedUrl: responses[i],
-      url: `https://${S3_BUCKET}.s3.amazonaws.com/${input[i].fileName}`,
+      url: `https://${AWS_BUCKET_NAME}.s3.us-west-1.amazonaws.com/${input[i].fileName}`,
     })
   }
   console.log(responses, response, "response / responses uploadFileToAWS")
