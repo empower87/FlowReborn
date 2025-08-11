@@ -27,6 +27,7 @@ export const useSongForm = (recordingType: "audio" | "video") => {
   const [error, setError] = useState<Error>(INITIAL_ERROR_STATE)
 
   const uploadToAWS = trpc.users.uploadFile.useMutation({
+    onSuccess: (data) => onSettledMutation("success", data[0].url),
     onError: (err) => onSettledMutation(err.message),
   })
 
@@ -87,7 +88,7 @@ export const useSongForm = (recordingType: "audio" | "video") => {
 
     console.log(e, _song, songToUpload, recordingType, "handleSaveSong in useSongForm.ts")
     if (recordingType === "video") {
-      if (!_song.thumbnailBlob) return
+      // if (!_song.thumbnailBlob) return
 
       let data = [
         {
@@ -109,7 +110,7 @@ export const useSongForm = (recordingType: "audio" | "video") => {
       let data = [
         {
           fileName: songFileName + ".mp3",
-          fileType: "audio/mpeg-4",
+          fileType: "audio/mp3",
           fileBlob: _song.blob,
         },
       ]
@@ -124,12 +125,19 @@ export const useSongForm = (recordingType: "audio" | "video") => {
       onSuccess: async (data, variables) => {
         let thumbnailUrl
         let songUrl
+        console.log(data, variables, thumbnailUrl, songUrl, "DATA HERE ON UPLOAD TO AWS???")
         for (let i = 0; i < data.length; i++) {
-          axios.put(data[i].signedUrl, variables[i].fileBlob, data[i].options)
-          if (variables[i].fileName.includes("-thumbnail") && variables.length > 1) {
-            thumbnailUrl = data[i].url
-          } else {
-            songUrl = data[i].url
+          try {
+            await axios.put(data[i].signedUrl, variables[i].fileBlob, data[i].options)
+            if (variables[i].fileName.includes("-thumbnail") && variables.length > 1) {
+              thumbnailUrl = data[i].url
+            } else {
+              songUrl = data[i].url
+            }
+          } catch (err) {
+            console.error("s3 upload failed:", err)
+            setError({ message: "Upload to S3 failed", showError: true })
+            return
           }
         }
 
@@ -138,8 +146,8 @@ export const useSongForm = (recordingType: "audio" | "video") => {
           let songToCreate = { ...rest, user: songToUpload.user._id, thumbnail: thumbnailUrl, audio: songUrl }
           createSong.mutate({ ...songToCreate })
         }
-        console.log(data, thumbnailUrl, songUrl, "DATA HERE ON UPLOAD TO AWS???")
       },
+      onError: (err) => console.log(err),
     })
   }
 

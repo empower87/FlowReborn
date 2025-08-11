@@ -1,14 +1,12 @@
-import AWS from "aws-sdk"
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3"
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
 import z from "zod"
 import { Context, TRPCError } from "../utils/trpc/index.js"
 
-AWS.config.update({
-  region: "us-west-1",
-  accessKeyId: process.env.AWSAccessKeyId!,
-  secretAccessKey: process.env.AWSSecretKey!,
-})
-const S3_BUCKET = process.env.Bucket!
 const AWS_BUCKET_NAME = process.env.AWS_BUCKET_NAME
+const AWS_REGION = "us-west-1"
+const AWS_ACCESS_KEY_ID = process.env.AWSAccessKeyId
+const AWS_SECRET_ACCESS_KEY = process.env.AWSSecretKey
 
 type SignedRequest = {
   options: any
@@ -30,59 +28,36 @@ export type UploadInputType = z.infer<typeof UploadInputSchema>
 
 export const uploadFileToAWS = async ({ ctx, input }: { ctx: Context; input: UploadInputType }) => {
   if (!ctx.user) throw TRPCError("INTERNAL_SERVER_ERROR", "you must be logged in")
-  const s3 = new AWS.S3()
+  if (!AWS_BUCKET_NAME || !AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY) {
+    throw new Error("AWS S3 environment variables are not set")
+  }
 
-  if (!AWS_BUCKET_NAME) {
-    throw new Error("S3_BUCKET environment variable is not set")
-  }
-  const params = (object: UploadInputObjectType) => {
-    return {
-      Bucket: AWS_BUCKET_NAME,
-      Key: object.fileName,
-      Expires: 1000,
-      ContentType: object.fileType,
-      ACL: "public-read",
-    }
-  }
-  const responses = await Promise.all(input.map((each) => s3.getSignedUrl("putObject", params(each))))
+  const s3 = new S3Client({
+    region: AWS_REGION,
+    credentials: {
+      accessKeyId: AWS_ACCESS_KEY_ID,
+      secretAccessKey: AWS_SECRET_ACCESS_KEY,
+    },
+  })
 
   let response = []
 
-  for (let i = 0; i < responses.length; i++) {
+  for (let i = 0; i < input.length; i++) {
+    const command = new PutObjectCommand({
+      Bucket: AWS_BUCKET_NAME,
+      Key: input[i].fileName,
+      ContentType: input[i].fileType,
+      ACL: "public-read",
+    })
+    const signedUrl = await getSignedUrl(s3, command, { expiresIn: 1000 })
+
+    console.log(input[i], signedUrl, "I NEED TO SEE THIS NOT THE OLD ONE uploadFileToAWS")
+
     response.push({
       options: { headers: { "Content-Type": input[i].fileType } },
-      signedUrl: responses[i],
-      url: `https://${AWS_BUCKET_NAME}.s3.us-west-1.amazonaws.com/${input[i].fileName}`,
+      signedUrl,
+      url: `https://${AWS_BUCKET_NAME}.s3.${AWS_REGION}.amazonaws.com/${input[i].fileName}`,
     })
   }
-  console.log(responses, response, "response / responses uploadFileToAWS")
-
   return response
 }
-
-// export const uploadFileToAWS = async ({ ctx, input }: { ctx: Context; input: UploadInputType }) => {
-//   const s3 = new AWS.S3()
-//   const { fileName, fileType } = input
-
-//   const s3Params = {
-//     Bucket: S3_BUCKET,
-//     Key: fileName,
-//     Expires: 1000,
-//     ContentType: fileType,
-//     ACL: "public-read",
-//   }
-
-//   console.log(s3Params, fileName, fileType, "WHAT ARE THESE LOOKING?")
-
-//   const signedUrl = s3.getSignedUrl("putObject", s3Params)
-//   console.log(signedUrl, "aws signed url, potentially")
-//   if (!signedUrl) throw TRPCError("INTERNAL_SERVER_ERROR", "AWS failed to sign url")
-
-//   const signedRequest = {
-//     options: { headers: { "Content-Type": fileType } },
-//     signedUrl: signedUrl,
-//     url: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName}`,
-//   }
-
-//   return signedRequest
-// }
