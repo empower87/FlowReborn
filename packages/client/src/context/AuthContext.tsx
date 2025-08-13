@@ -38,6 +38,7 @@ const useProvideAuth = () => {
     },
     onError: (err) => {
       console.log(err, err.message, "['auth.refresh']: onError")
+      setError("refresh expired token")
       setIsAuthenticated(null)
       setUser(null)
       navigate("/auth", { replace: true })
@@ -46,7 +47,6 @@ const useProvideAuth = () => {
 
   const authLogin = trpc.auth.login.useMutation({
     onSuccess: async (data) => {
-      console.log(data, "FUCK THIS YO")
       localStorage.setItem("token", data.token)
       setIsAuthenticated(data.token)
       setUser(data.user as IUser)

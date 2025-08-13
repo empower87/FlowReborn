@@ -32,6 +32,8 @@ export const appRouter = router({
     follows: followsRouter,
 });
 const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieparser());
 app.use(cors({
     credentials: true,
@@ -39,17 +41,17 @@ app.use(cors({
     optionsSuccessStatus: 200,
 }));
 app.use("/api/trpc", trpcExpress.createExpressMiddleware({ router: appRouter, createContext }));
+app.use(express.static(path.join(__dirname, "../../../client/build")));
+app.get("*", (req, res, next) => {
+    if (req.originalUrl.startsWith("/api/"))
+        return next();
+    res.sendFile(path.join(__dirname, "../../../client/build/index.html"));
+});
 const MONGODB_URI = customConfig.dbUri;
 mongoose
     .connect(MONGODB_URI)
     .then((x) => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
     .catch((err) => console.error("Error connecting to mongo", err));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, "../../../client/build")));
-app.get("*", (req, res, next) => {
-    res.sendFile(path.join(__dirname, "../../../client/build/index.html"));
-});
 const PORT = customConfig.port;
 app.listen(PORT, () => console.log(`Listening to port ${PORT}`));
 // exports.module = app
