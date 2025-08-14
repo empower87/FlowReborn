@@ -76,16 +76,21 @@ export default function useMediaRecorder({ beat, videoRef }: UseMediaRecorderPro
   const { constraints, mediaStreamConstraintsHandler } = useMediaStreamConstraints()
   const { recorder, setRecorder } = useRecorderPermission({ constraints })
   const { isRecording, mediaStream, mediaRecorder } = recorder
+  const [recordStartTime, setRecordStartTime] = useState<number | null>(null)
+
   const audioRef = useRef<any>(new Audio(beat))
 
   const type = constraints.video ? "video" : "audio"
 
   useEffect(() => {
     if (!videoRef.current) return
+
     if (type === "video" && mediaStream) {
       videoRef.current.srcObject = mediaStream
       videoRef.current.muted = true
-      videoRef.current.play()
+      if (videoRef.current.readyState < 2) {
+        videoRef.current.play()
+      }
     } else {
       videoRef.current.srcObject = null
     }
@@ -158,13 +163,17 @@ export default function useMediaRecorder({ beat, videoRef }: UseMediaRecorderPro
         video: type === "video" ? true : false,
         audio: true,
       })
+
       await mediaRecorder.startRecording()
       SpeechRecognition.startListening({ continuous: true })
 
       console.log(recorder, recorder.mediaStream, stream, "startRecording function")
       var audio = audioRef.current?.captureStream()
-      audioRef.current.play()
-      audioRef.current.loop = true
+
+      if (audioRef.current.readyState < 2) {
+        audioRef.current.play().catch((err: any) => console.warn("Audio play interrupted:", err))
+        audioRef.current.loop = true
+      }
 
       const audioContext = new AudioContext()
       let audioIn_01 = audioContext.createMediaStreamSource(stream)
@@ -188,12 +197,18 @@ export default function useMediaRecorder({ beat, videoRef }: UseMediaRecorderPro
         mediaStream: newStream,
       }))
     } catch (err) {
-      console.log(err)
+      console.log(err, "Error starting recording")
     }
+    setRecordStartTime(Date.now())
   }
 
   const stopRecording = async () => {
     if (!mediaRecorder) return
+
+    if (recordStartTime && Date.now() - recordStartTime < 500) {
+      console.warn("Recording too short, not saving.")
+      return
+    }
 
     await mediaRecorder.stopRecording()
 
@@ -214,6 +229,7 @@ export default function useMediaRecorder({ beat, videoRef }: UseMediaRecorderPro
     }))
 
     setSongDraftHandler(url, blob, [recorder.minutes, recorder.seconds], type, videoRef)
+    setRecordStartTime(null)
   }
 
   const resetRecording = () => {
