@@ -1,4 +1,4 @@
-import { ReactNode, RefObject, useRef } from "react"
+import { ReactNode, RefObject, useRef, useState } from "react"
 import { Outlet } from "react-router-dom"
 import Header from "./components/Header"
 import LyricsController from "./components/LyricsFeed"
@@ -15,22 +15,36 @@ type RecordingsControllerProps = {
 
 const RecordingsController = ({ videoRef, children }: RecordingsControllerProps) => {
   const { selectedBeat, UIOpacity } = useSuggestionSettingsContext()
-
   const { isRecording, startRecording, stopRecording, mediaStreamConstraintsHandler } = useMediaRecorder({
     beat: selectedBeat.beat,
     videoRef: videoRef,
   })
+  const [recordDisabled, setRecordDisabled] = useState(false)
 
-  const renderRef = useRef<number>(0)
+  const handleStartRecording = async () => {
+    setRecordDisabled(true)
+    await startRecording()
+    setTimeout(() => setRecordDisabled(false), 1500)
+  }
 
-  console.log(renderRef.current++, "<RecordingsController /> -- Render test -- Layout 1")
+  const handleStopRecording = async () => {
+    setRecordDisabled(true)
+    await stopRecording()
+    setTimeout(() => setRecordDisabled(false), 1000)
+  }
+
   return (
     <div className="recording-booth__body" style={{ opacity: UIOpacity }}>
       {children}
       <SideSettingsMenu recorderConstraintButtons={<RecorderOptionButtons onClick={mediaStreamConstraintsHandler} />} />
       <ActionButtons
         recordButton={
-          <RecordButton isRecording={isRecording} startRecording={startRecording} stopRecording={stopRecording} />
+          <RecordButton
+            isRecording={isRecording}
+            isDisabled={recordDisabled}
+            startRecording={handleStartRecording}
+            stopRecording={handleStopRecording}
+          />
         }
         postButton={<ConfirmButtonWithModal />}
       />
@@ -39,10 +53,7 @@ const RecordingsController = ({ videoRef, children }: RecordingsControllerProps)
 }
 
 export default function RecordingBooth() {
-  const renderRef = useRef<number>(0)
   const videoRef = useRef<HTMLVideoElement>(null)
-
-  console.log(renderRef.current++, "<RecordingBooth /> -- Render test -- Layer 0")
 
   return (
     <div className="RecordingVideo">

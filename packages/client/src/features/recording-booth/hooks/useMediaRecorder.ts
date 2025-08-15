@@ -205,10 +205,10 @@ export default function useMediaRecorder({ beat, videoRef }: UseMediaRecorderPro
   const stopRecording = async () => {
     if (!mediaRecorder) return
 
-    if (recordStartTime && Date.now() - recordStartTime < 500) {
-      console.warn("Recording too short, not saving.")
-      return
-    }
+    // if (recordStartTime && Date.now() - recordStartTime < 1000) {
+    //   console.warn("Recording too short, not saving.")
+    //   return
+    // }
 
     await mediaRecorder.stopRecording()
 
@@ -217,9 +217,20 @@ export default function useMediaRecorder({ beat, videoRef }: UseMediaRecorderPro
     audioRef.current.pause()
     audioRef.current.currentTime = 0
 
-    let blob = await mediaRecorder.getBlob()
+    const blob = await mediaRecorder.getBlob()
 
-    let url = URL.createObjectURL(blob)
+    // if (!blob || blob.size == 0) {
+    //   setRecorder((prev) => ({
+    //     ...prev,
+    //     src: "",
+    //     blob: null,
+    //     isRecording: false,
+    //   }))
+    //   console.warn("No blob recorded, stopping recording.")
+    //   return
+    // }
+
+    const url = URL.createObjectURL(blob)
 
     setRecorder((prev) => ({
       ...prev,

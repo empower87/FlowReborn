@@ -1,11 +1,12 @@
-import { useRef } from "react"
+import { ButtonHTMLAttributes, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import { Icon } from "src/components/buttons/Icon/Icon"
 import { BtnColorsEnum, RoundButton } from "src/components/buttons/RoundButton/RoundButton"
 import { useSongDraftsContext } from "../../hooks/useSongDrafts"
 
-type RecordButtonProps = {
+interface RecordButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isRecording: boolean
+  isDisabled: boolean
   startRecording: () => void
   stopRecording: () => void
 }
@@ -28,27 +29,43 @@ export const ActionButton = ({
   )
 }
 
-export const RecordButton = ({ isRecording, startRecording, stopRecording }: RecordButtonProps) => {
+export const RecordButton = ({
+  isRecording,
+  isDisabled,
+  startRecording,
+  stopRecording,
+  ...props
+}: RecordButtonProps) => {
   return (
     <div className={`record-btn`}>
       <div className="record-btn_shadow-div-inset">
         <div className="record-btn_shadow-div-inset-2">
           {isRecording ? (
-            <div className="record-btn_shadow-div-outset" onClick={() => stopRecording()}>
+            <button
+              {...props}
+              disabled={isDisabled}
+              className="record-btn_shadow-div-outset"
+              onClick={() => stopRecording()}
+            >
               <RoundButton
                 type="Stop"
                 btnOptions={{ offset: 3, bgColor: BtnColorsEnum.Secondary }}
                 iconOptions={{ color: "Primary" }}
               />
-            </div>
+            </button>
           ) : (
-            <div className="record-btn_shadow-div-outset" onClick={() => startRecording()}>
+            <button
+              {...props}
+              disabled={isDisabled}
+              className="record-btn_shadow-div-outset"
+              onClick={() => startRecording()}
+            >
               <RoundButton
                 type="Record"
                 btnOptions={{ offset: 3, bgColor: BtnColorsEnum.Secondary }}
                 iconOptions={{ color: "Primary", size: 70 }}
               />
-            </div>
+            </button>
           )}
           <div className={`record-2_record-btn--animation-div ${isRecording ? "record-btn-animation" : ""}`}></div>
         </div>
