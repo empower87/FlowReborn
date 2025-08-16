@@ -5,8 +5,8 @@ import dotenv from "dotenv";
 import { default as bodyParser, default as express } from "express";
 import mongoose from "mongoose";
 import path from "path";
+import { fileURLToPath } from "url";
 import customConfig from "./config/default.js";
-// import { appRouter } from "./routes/app.router"
 import { authRouter } from "./routes/auth.router.js";
 import { commentsRouter } from "./routes/comments.router.js";
 import { followsRouter } from "./routes/follows.router.js";
@@ -14,11 +14,9 @@ import { likesRouter } from "./routes/likes.router.js";
 import { songsRouter } from "./routes/songs.router.js";
 import { userRouter } from "./routes/users.router.js";
 import { createContext, router } from "./utils/trpc/index.js";
-// const mongoose = require("mongoose")
-import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-console.log("directory-name", __dirname);
+console.log(__filename, __dirname, "--dirname and filename");
 console.log(path.join(__dirname, "../../../client/build", "index.html"));
 // const __dirname = path.resolve()
 // dotenv.config({ path: path.join(__dirname, "./.env") })

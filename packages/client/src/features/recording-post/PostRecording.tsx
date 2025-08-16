@@ -1,27 +1,12 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
 // import InputError from "src/components/errors/InputError"
 import LoadingSpinner from "src/components/loading/LoadingSpinner"
-import TitleBar, { TitleBarButton } from "src/components/ui/TitleBar"
 import { Video } from "src/features/video/Video"
+import Header from "../recording-booth/components/Header"
 import { useSongDraftsContext } from "../recording-booth/hooks/useSongDrafts"
 import LyricsMenu from "./components/LyricsMenu"
 import Recordings, { Form } from "./components/Recordings/Recordings"
 import { ThumbnailSelector } from "./components/Thumbnail"
-
-const Header = () => {
-  const navigate = useNavigate()
-  const onClose = () => navigate(-1)
-
-  return (
-    <div className="recording__header--container">
-      <TitleBar
-        title={<p className="recording__title">Post</p>}
-        leftButton={<TitleBarButton type="Back" onClick={() => onClose()} />}
-      />
-    </div>
-  )
-}
 
 type SaveButtonProps = {
   type: "Post" | "Draft"
@@ -79,16 +64,22 @@ export default function PostRecording() {
   const isVideo = typeof currentDraft?.isVideo !== "undefined" && currentDraft.isVideo === true ? true : false
   return (
     <div className="post-recording">
-      <Header />
+      <Header title={"Post"} />
 
       <div className="post-recording__video-frame">
         <div className="post-recording__video-menu">
-          {recordingType === "video" && <ThumbnailSelector />}
+          {recordingType === "video" ? <ThumbnailSelector /> : null}
           <LyricsMenu />
         </div>
 
         <div id="lyrics-panel-root" className="post-recording__video">
-          <Video src={currentDraft?.src} isVideo={isVideo} duration={currentDraft ? currentDraft.duration : 0} />
+          <Video
+            src={currentDraft?.src}
+            isVideo={isVideo}
+            duration={currentDraft ? currentDraft.duration : 0}
+            thumbnail={currentDraft?.thumbnail}
+            inView={true}
+          />
         </div>
       </div>
 

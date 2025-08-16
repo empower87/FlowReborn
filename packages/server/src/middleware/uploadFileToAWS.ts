@@ -23,7 +23,7 @@ const UploadInputObjectSchema = z.object({
 
 export const UploadInputSchema = z.array(UploadInputObjectSchema)
 
-type UploadInputObjectType = z.infer<typeof UploadInputObjectSchema>
+// type UploadInputObjectType = z.infer<typeof UploadInputObjectSchema>
 export type UploadInputType = z.infer<typeof UploadInputSchema>
 
 export const uploadFileToAWS = async ({ ctx, input }: { ctx: Context; input: UploadInputType }) => {

@@ -4,17 +4,13 @@ import { BtnColorsEnum, RoundButton } from "src/components/buttons/RoundButton/R
 import { useSongDraftsContext } from "src/features/recording-booth/hooks/useSongDrafts"
 import useThumbnail from "../hooks/useThumbnail"
 
-const ThumbnailModal = ({
-  video,
-  duration,
-  isOpen,
-  onClose,
-}: {
+type ThumbnailModalProps = {
   video: string | undefined
   duration: number | undefined
   isOpen: boolean
   onClose: Dispatch<SetStateAction<boolean>>
-}) => {
+}
+const ThumbnailModal = ({ video, duration, isOpen, onClose }: ThumbnailModalProps) => {
   const root = document.getElementById("root")!
   const { currentDraft, updateThumbnail } = useSongDraftsContext()
 

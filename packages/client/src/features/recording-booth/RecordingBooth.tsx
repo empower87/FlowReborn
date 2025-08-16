@@ -63,7 +63,7 @@ export default function RecordingBooth() {
 
       <SuggestionSettingsProvider>
         <SongDraftsProvider>
-          <Header />
+          <Header title={"Recording Booth"} />
 
           <RecordingsController videoRef={videoRef}>
             <LyricsController />
