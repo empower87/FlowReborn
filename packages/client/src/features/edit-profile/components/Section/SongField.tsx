@@ -44,19 +44,15 @@ export default function SongField({ inputData, index }: Props) {
         </div>
         <div className="edit-section__flow--container">
           <div className="edit-section__flow-input--container">
-            <label
-              htmlFor={labelName}
-              className="edit-section__item-input-container name"
-              // style={{ borderRadius: '2em 2em 2em 0.5em' }}
-            >
-              <p>{labelName}</p>
+            <label htmlFor={labelName} className="edit-section__item-input-container name">
+              {/* <p>{labelName}</p> */}
               <input
                 id={title}
                 className="edit-section__item-input"
                 // ref={nameRef}
                 // style={inputData?.errorPath === 'name' ? errorStyles : {}}
                 name={title}
-                placeholder={"Change name.."}
+                placeholder={labelName}
                 type="text"
                 autoComplete="off"
                 value={songName}
@@ -79,14 +75,14 @@ export default function SongField({ inputData, index }: Props) {
               className="edit-section__item-input-container caption"
               // style={{ borderRadius: '0.5em 2em 2em 2em' }}
             >
-              <p>{labelCaption}</p>
+              {/* <p>{labelCaption}</p> */}
               <input
                 id={caption}
                 className="edit-section__item-input"
                 // style={inputData?.errorPath === 'name' ? errorStyles : {}}
                 // ref={captionRef}
                 name={caption}
-                placeholder={"Caption this Flow.."}
+                placeholder={labelCaption}
                 type="text"
                 autoComplete="off"
                 value={songCaption}

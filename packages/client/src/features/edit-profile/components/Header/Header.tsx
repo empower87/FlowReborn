@@ -82,9 +82,8 @@ export default function Header({ children }: { children: ReactNode }) {
           <div className="edit-profile__user-title">
             <div className="edit-profile__user-title--shadow-inset">
               <div className="edit-profile__user-title--container">
-                <h3>
-                  Edit Your Profile <span>{user?.username}</span>
-                </h3>
+                <h3>Edit Your Profile</h3>
+                <p>{user?.username}</p>
               </div>
             </div>
           </div>

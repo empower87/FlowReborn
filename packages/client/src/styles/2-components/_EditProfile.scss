@@ -95,19 +95,18 @@
                     margin-right: 0.3em;
 
                     .edit-profile__user-title--container {
-                      @include flexCenter(74%, 94%, 2em, center, center, row);
+                      @include flexCenter(74%, 94%, 2em, center, center, column);
                       box-shadow: 2px 2px 3px #7a7a7a, -1px -1px 3px #ffffff;
 
                       h3 {
-                        height: 80%;
-                        width: 95%;
+                        @include flexCenter(60%, 100%, 0, center, center, column);
                         color: #ec6aa0;
                         line-height: 0.9;
-                        text-align: start;
-
-                        span {
-                          color: white;
-                        }
+                        // text-align: start;
+                      }
+                      p {
+                        font-size: 1.25rem;
+                        color: white;
                       }
                     }
                   }
@@ -228,7 +227,7 @@
                     //height: 77%
                     @include flexCenter(99%, 100%, 1.4em, flex-start, center, column);
                     overflow: scroll;
-                    padding-top: 1%;
+                    padding-top: 2%;
 
                     .edit-section__item {
                       @include flexCenter(33%, 100%, 0, center, center, column);
@@ -368,8 +367,16 @@
 
                 .edit-section__form {
                   height: 97%;
+
                   .edit-section__list {
                     height: 99%;
+
+                    .edit-section__item.song:first-child {
+                      .edit-section__item--shadow-outset {
+                        border-radius: 2vh 2vh 0.5vh 0.5vh;
+                      }
+                    }
+
                     .edit-section__item.song {
                       min-height: 120px;
                       margin-bottom: 1%;
@@ -404,7 +411,7 @@
                             @include flexCenter(100%, 96%, 0, center, center, row);
 
                             .edit-section__item-input-container {
-                              @include flexCenter(88%, stretch, 2em, center, flex-end, row);
+                              @include flexCenter(88%, stretch, 2em, center, center, row);
                               position: relative;
                               box-shadow: inset 2px 2px 3px #535353, inset -2px -2px 3px #f1f1f1;
                               background: #919191;
@@ -424,8 +431,10 @@
                                 pointer-events: none;
                               }
                               .edit-section__item-input {
-                                @include flexCenter(70%, 95%, 100vh, center, center, column);
+                                @include flexCenter(60%, 90%, 100vh, center, center, column);
                                 padding-left: 6%;
+                                background: #7c7a7a;
+                                border: none;
 
                                 &:defined {
                                   color: pink;

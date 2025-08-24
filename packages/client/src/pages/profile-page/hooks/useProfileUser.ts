@@ -6,6 +6,7 @@ import { trpc } from "src/utils/trpc"
 const useProfileUser = (id: string | undefined) => {
   const { user } = useAuth()
   const userId = id ? id : ""
+
   const getUser = trpc.users.getUser.useQuery(
     { _id: userId },
     {
@@ -13,6 +14,7 @@ const useProfileUser = (id: string | undefined) => {
       refetchOnWindowFocus: false,
     }
   )
+
   const [thisUser, setThisUser] = useState<IUser>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -25,12 +27,16 @@ const useProfileUser = (id: string | undefined) => {
   useEffect(() => {
     if (user && user._id !== id) {
       const fetchUserByParams = async () => {
-        const fetchedUser = await getUser.refetch({ throwOnError: true })
-        setThisUser(fetchedUser.data)
+        try {
+          const fetchedUser = await getUser.refetch({ throwOnError: true })
+          setThisUser(fetchedUser.data)
+        } catch (error) {
+          console.error("Error fetching user: ", error)
+        }
       }
       fetchUserByParams()
     }
-  }, [user, id, getUser])
+  }, [user, id])
 
   useEffect(() => {
     if (getUser.isLoading || getUser.isFetching || typeof thisUser === "undefined") {
